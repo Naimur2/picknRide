@@ -40,7 +40,14 @@ export default function SplashThird() {
                         mt={4}
                         space={2}
                     >
-                        <Text color={"gray.100"} fontWeight={500} fontSize={13}>
+                        <Text
+                            color={"gray.100"}
+                            fontWeight={500}
+                            fontSize={13}
+                            _dark={{
+                                color: "light.100",
+                            }}
+                        >
                             Already have an account?
                         </Text>
                         <Text
@@ -48,6 +55,9 @@ export default function SplashThird() {
                             color={"gray.200"}
                             fontWeight={500}
                             fontSize={13}
+                            _dark={{
+                                color: "light.100",
+                            }}
                         >
                             Sign In
                         </Text>

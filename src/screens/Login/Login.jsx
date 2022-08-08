@@ -1,10 +1,15 @@
-import { Center, Input, Text, useColorMode, VStack } from "native-base";
+import { useNavigation } from "@react-navigation/native";
+import { HStack, Text, useColorMode, VStack } from "native-base";
 import React from "react";
 import ImageBg from "../../components/ImageBg/ImageBg";
 import Scroller from "./../../components/Scroller/Scroller";
+import InputForm from "./components/InputForm/InputForm";
+import SocialButton from "./components/SocialButton/SocialButton";
 
 export default function Login() {
     const { colorMode } = useColorMode();
+    const navigation = useNavigation();
+
     return (
         <ImageBg type={colorMode}>
             <Scroller
@@ -16,7 +21,7 @@ export default function Login() {
             >
                 <VStack alignItems={"center"} space="4">
                     <Text
-                        mt={"16"}
+                        mt={"30px"}
                         color="primary.200"
                         fontSize={17}
                         fontWeight="bold"
@@ -29,44 +34,55 @@ export default function Login() {
                         fontWeight="500"
                         w="170"
                         textAlign={"center"}
+                        _dark={{
+                            color: "light.200",
+                        }}
                     >
                         Enter your login details toaccess your account
                     </Text>
                 </VStack>
-                <VStack mt={10} space={4}>
-                    <Input
-                        borderWidth={0}
-                        bg="white"
-                        shadow="4"
-                        px={6}
-                        py={6}
-                        borderRadius={20}
-                        placeholder="Enter email"
-                        _focus={{
-                            bg: "white",
-                        }}
-                        color="gray.200"
-                        fontSize={14}
-                        fontWeight="500"
-                        placeholderTextColor="gray.300"
+
+                <InputForm />
+
+                <VStack space={4} mt={6}>
+                    <SocialButton
+                        type={"facebook"}
+                        onPress={() => console.log("log")}
                     />
-                    <Input
-                        borderWidth={0}
-                        bg="white"
-                        shadow="4"
-                        px={6}
-                        py={6}
-                        borderRadius={20}
-                        placeholder="Enter email"
-                        _focus={{
-                            bg: "white",
-                        }}
-                        color="gray.200"
-                        fontSize={14}
-                        fontWeight="500"
-                        placeholderTextColor="gray.300"
+                    <SocialButton
+                        type={"google"}
+                        onPress={() => console.log("log")}
                     />
                 </VStack>
+
+                <HStack
+                    my={4}
+                    alignItems={"center"}
+                    justifyContent="center"
+                    space={2}
+                >
+                    <Text
+                        color={"gray.100"}
+                        fontWeight={500}
+                        fontSize={13}
+                        _dark={{
+                            color: "light.100",
+                        }}
+                    >
+                        Need an account?
+                    </Text>
+                    <Text
+                        onPress={() => navigation.navigate("Register")}
+                        color={"gray.200"}
+                        fontWeight={500}
+                        fontSize={13}
+                        _dark={{
+                            color: "light.100",
+                        }}
+                    >
+                        Sign Up
+                    </Text>
+                </HStack>
             </Scroller>
         </ImageBg>
     );

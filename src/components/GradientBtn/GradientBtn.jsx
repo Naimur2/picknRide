@@ -17,7 +17,7 @@ export default function GradientBtn({
     const Touchable = Factory(TouchableOpacity);
 
     return (
-        <Touchable onPress={onPress} {...rest}>
+        <Touchable onPress={onPress} shadow="7" {...rest}>
             <LinearGard
                 w={scale(265) + "px"}
                 h={scale(50) + "px"}
