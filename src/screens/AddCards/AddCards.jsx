@@ -1,29 +1,27 @@
 import { useNavigation } from "@react-navigation/native";
 import {
-    Factory,
     FormControl,
     HStack,
     Image,
     Input,
     Pressable,
     Text,
-    useColorMode,
     VStack,
 } from "native-base";
 import React from "react";
-import { TouchableOpacity } from "react-native";
 import { scale } from "react-native-size-matters";
 import GradientBtn from "../../components/GradientBtn/GradientBtn";
 import OutlineButton from "../../components/OutlineButton/OutlineButton";
 import Scroller from "../../components/Scroller/Scroller";
 import Camera from "../../svgs/Camera";
+import useAuth from "./../../hooks/useAuth";
 import Pen from "./../../svgs/Pen";
 const creditCardImage = require("../../../assets/images/credit-card.png");
 
 export default function AddCards() {
     const navigation = useNavigation();
-    const { toggleColorMode } = useColorMode();
-    const Touchable = Factory(TouchableOpacity);
+
+    const auth = useAuth();
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -205,7 +203,9 @@ export default function AddCards() {
                         width: scale(250) + "px",
                     }}
                     title={"Continue"}
-                    onPress={toggleColorMode}
+                    onPress={() =>
+                        auth.login({ email: "test@test.gg", uname: "Naimur" })
+                    }
                 />
             </VStack>
         </Scroller>

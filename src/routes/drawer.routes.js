@@ -1,10 +1,17 @@
-import { View, Text } from "react-native";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import React from "react";
+import UserRoute from "./user.routes";
+
 
 export default function DrawerRoute() {
+    const Drawer = createDrawerNavigator();
     return (
-        <View>
-            <Text>D</Text>
-        </View>
+        <Drawer.Navigator
+            screenOptions={{
+                headerTransparent: true,
+            }}
+        >
+            <Drawer.Screen name="UserRoute" component={UserRoute} />
+        </Drawer.Navigator>
     );
 }
