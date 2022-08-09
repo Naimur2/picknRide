@@ -4,6 +4,7 @@ import {
     Ionicons,
     Entypo,
     MaterialCommunityIcons,
+    Fontisto,
 } from "@expo/vector-icons";
 
 import { Factory } from "native-base";
@@ -38,4 +39,8 @@ export const Circle = Factory((props) => (
 
 export const CloseIcon = Factory((props) => (
     <MaterialCommunityIcons name="close" size={24} color="black" {...props} />
+));
+
+export const Plus = Factory((props) => (
+    <Fontisto name="plus-a" size={24} color="black" {...props} />
 ));

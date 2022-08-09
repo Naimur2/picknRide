@@ -1,14 +1,33 @@
-import React from "react";
+import { Octicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { useColorMode, Avatar } from "native-base";
-import Toggler from "../../svgs/Toggler";
+import {
+    Avatar,
+    Factory,
+    FormControl,
+    HStack,
+    Input,
+    Pressable,
+    Text,
+    useColorMode,
+    VStack,
+} from "native-base";
+import React from "react";
+import { TouchableOpacity } from "react-native";
+import { scale } from "react-native-size-matters";
+import { ChevronDownFill, Plus, Tick } from "../../components/Icons/Icons";
 import ImageBg from "../../components/ImageBg/ImageBg";
 import Scroller from "../../components/Scroller/Scroller";
 import TopSection from "../../components/TopSection/TopSection";
+import Form from "./components/Form/Form";
+import YesNo from "./components/YesNo/YesNo";
 
 export default function DocumentSubmission() {
     const navigation = useNavigation();
     const { colorMode } = useColorMode();
+    const Touchable = Factory(TouchableOpacity);
+    let [service, setService] = React.useState("yes");
+
+    const [hasIntlLicense, setHasIntlLicense] = React.useState(false);
 
     React.useEffect(() => {
         navigation.setOptions({
@@ -33,13 +52,21 @@ export default function DocumentSubmission() {
         });
     }, [navigation]);
     return (
-        <Scroller bg="#fff">
-            <ImageBg type={colorMode} alignItems={"center"}>
+        <ImageBg type={colorMode}>
+            <Scroller
+                bg="#fff"
+                h="full"
+                contentStyle={{
+                    alignItems: "center",
+                    flexGrow: 1,
+                }}
+            >
                 <TopSection
                     title="Document Submission"
                     subtitle="Please submit documents below to unlock Car rental option"
                 />
-            </ImageBg>
-        </Scroller>
+                <Form />
+            </Scroller>
+        </ImageBg>
     );
 }
