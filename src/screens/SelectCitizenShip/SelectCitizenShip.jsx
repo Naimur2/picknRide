@@ -46,7 +46,7 @@ export default function SelectCitizenShip() {
         <ImageBg type={bgType}>
             <VStack alignItems={"center"}>
                 <Text
-                    maxW={210}
+                    w={210}
                     color={"#fff"}
                     fontWeight={700}
                     fontSize={17}
@@ -61,7 +61,7 @@ export default function SelectCitizenShip() {
                     bg="#fff"
                     px="6"
                     py={6}
-                    w="320"
+                    w={[320, 360, 500]}
                     borderRadius={26}
                     space={4}
                     _dark={{
@@ -116,7 +116,7 @@ export default function SelectCitizenShip() {
                     onPress={() => navigation.navigate("SelectArrivalDate")}
                     mt={"60%"}
                     title="Continue"
-                    w="250"
+                    w={[250, 280, 310]}
                     p="3"
                     bg="#fff"
                     borderRadius={16}

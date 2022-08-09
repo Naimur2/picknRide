@@ -69,7 +69,7 @@ export default function SelectArrivalDate() {
         <ImageBg type={bgType}>
             <VStack alignItems={"center"}>
                 <Text
-                    maxW={210}
+                    w={210}
                     color={"#fff"}
                     fontWeight={700}
                     fontSize={17}
@@ -84,7 +84,7 @@ export default function SelectArrivalDate() {
                     bg="#fff"
                     px="6"
                     py={2}
-                    w="320"
+                    w={[320, 360, 500]}
                     borderRadius={25}
                     space={4}
                     _dark={{
@@ -129,7 +129,7 @@ export default function SelectArrivalDate() {
                     onPress={() => navigation.navigate("AddCards")}
                     mt={"80%"}
                     title="Continue"
-                    w="250"
+                    w={[250, 280, 310]}
                     p="3"
                     bg="#fff"
                     borderRadius={16}

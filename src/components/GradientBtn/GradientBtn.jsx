@@ -20,7 +20,7 @@ export default function GradientBtn({
         <Touchable onPress={onPress} shadow="7" {...rest}>
             <LinearGard
                 w={scale(265) + "px"}
-                h={scale(50) + "px"}
+                h={55 + "px"}
                 colors={gradient[100]}
                 start={[1, 0]}
                 end={[1, 1]}
