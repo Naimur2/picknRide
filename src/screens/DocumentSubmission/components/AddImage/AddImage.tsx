@@ -17,7 +17,7 @@ export default function AddImage({
             <HStack justifyContent={"space-between"}>
                 <VStack space="2" w={"48%"}>
                     <Pressable
-                        h={"100px"}
+                        h={"90px"}
                         w="full"
                         borderRadius={35}
                         bg="#fff"
@@ -32,7 +32,7 @@ export default function AddImage({
                 </VStack>
                 <VStack space="2" w={"48%"}>
                     <Pressable
-                        h={"100px"}
+                        h={"90px"}
                         w="full"
                         borderRadius={35}
                         bg="#fff"
