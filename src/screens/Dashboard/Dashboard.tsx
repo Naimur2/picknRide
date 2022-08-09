@@ -45,17 +45,22 @@ export default function Dashboard() {
     }, [navigation]);
 
     return (
-        <Scroller bg="#fff">
-            <ImageBg type={colorMode} alignItems={"center"}>
+        <ImageBg type={colorMode}>
+            <Scroller
+                h="full"
+                contentStyle={{
+                    alignItems: "center",
+                    flexGrow: 1,
+                }}
+            >
                 <TopSection
                     title="Good Evening Alexis"
                     subtitle="Select your ride"
                 />
 
                 <VeichleCards />
-            </ImageBg>
-
-            <DashModal />
-        </Scroller>
+                <DashModal />
+            </Scroller>
+        </ImageBg>
     );
 }

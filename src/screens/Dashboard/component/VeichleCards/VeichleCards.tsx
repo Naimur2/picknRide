@@ -11,6 +11,7 @@ import ThreeSwitch from "../../../../components/ThreeSwitch/ThreeSwitch";
 import VeichleCard, { IVeichleCardProps } from "../VeichleCard/VeichleCard";
 import { VStack } from "native-base";
 import { useNavigation } from "@react-navigation/native";
+import { scale } from "react-native-size-matters";
 
 const veichels: IVeichleCardProps[] = [
     {
@@ -46,7 +47,7 @@ export default function VeichleCards() {
     );
 
     return (
-        <VStack maxW={350} px={2}>
+        <VStack w={scale(310)} px={2} alignItems="center">
             <ThreeSwitch
                 leftTitle="Scooter"
                 rightTitle="Car"

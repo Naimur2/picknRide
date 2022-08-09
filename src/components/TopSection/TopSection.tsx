@@ -21,11 +21,11 @@ export default function TopSection({ title, subtitle }: ITopSection) {
             }}
         >
             <Text
-                lineHeight={40}
+                lineHeight={scale(40) + "px"}
                 fontWeight={700}
                 fontSize={scale(35) + "px"}
                 pt={7}
-                maxW={300}
+                maxW={scale(300)}
                 color="primary.200"
                 _dark={{
                     color: "#000",

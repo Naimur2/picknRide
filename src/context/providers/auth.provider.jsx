@@ -2,7 +2,7 @@ import React from "react";
 import { AuthContext } from "../contexts";
 
 const defaultState = {
-    isLoggedIn: true,
+    isLoggedIn: false,
     user: null,
 };
 
