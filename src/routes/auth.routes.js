@@ -31,7 +31,7 @@ export default function AuthRoute() {
                 component={SplashSecond}
             />
             <Stack.Screen
-                options={{ headerShown: false}}
+                options={{ headerShown: false }}
                 name="SplashThird"
                 component={SplashThird}
             />
@@ -39,7 +39,7 @@ export default function AuthRoute() {
                 options={{
                     headerShadowVisible: false,
                     headerTransparent: true,
-                    headerBackTitleVisible: false 
+                    headerBackTitleVisible: false,
                 }}
                 name="Login"
                 component={Login}
@@ -48,7 +48,7 @@ export default function AuthRoute() {
                 options={{
                     headerShadowVisible: false,
                     headerTransparent: true,
-                    headerBackTitleVisible: false 
+                    headerBackTitleVisible: false,
                 }}
                 name="Register"
                 component={Register}
@@ -62,7 +62,13 @@ export default function AuthRoute() {
                 name="SelectArrivalDate"
                 component={SelectArrivalDate}
             />
-            <Stack.Screen name="AddCards" component={AddCards} />
+            <Stack.Screen
+                name="AddCards"
+                component={AddCards}
+                options={{
+                    headerBackVisible: false,
+                }}
+            />
         </Stack.Navigator>
     );
 }

@@ -46,5 +46,10 @@ export const Plus = Factory((props) => (
 ));
 
 export const ChevronLeft = Factory((props) => (
-    <Entypo name="chevron-left" size={24} color="black" {...props} />
+    <MaterialIcons
+        name="keyboard-backspace"
+        size={24}
+        color="black"
+        {...props}
+    />
 ));

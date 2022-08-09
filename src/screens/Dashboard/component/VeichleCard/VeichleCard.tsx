@@ -22,20 +22,14 @@ function VCard({ image, title, distance, availableNumber }: IVeichleCardProps) {
         >
             <Image
                 source={image}
-                alt={"cucle"}
+                alt={"cicle"}
                 height={scale(180) + "px"}
                 width={scale(180) + "px"}
                 resizeMode="contain"
             />
 
-            <HStack
-                w="full"
-                mt={5}
-                justifyContent={"space-between"}
-                px={5}
-                pb={2}
-            >
-                <VStack>
+            <HStack w="full" mt={8} px={5} pb={2} alignItems={"center"}>
+                <VStack mr={"auto"}>
                     <Text
                         color={"gray.100"}
                         fontSize={13}
@@ -55,6 +49,7 @@ function VCard({ image, title, distance, availableNumber }: IVeichleCardProps) {
                     w={"128px"}
                     bg={"primary.100"}
                     borderRadius={24}
+                    ml="auto"
                 >
                     <Text fontSize={13} fontWeight={500} color="#fff">
                         Distance {distance}
