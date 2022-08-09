@@ -23,9 +23,7 @@ export default function UserRoute() {
                 headerStyle: {
                     height: "100",
                 },
-                headerLeft: () => (
-                   <BackButton />
-                ),
+                headerLeft: () => <BackButton />,
             }}
         >
             <Stack.Screen name="Dashboard" component={Dashboard} />

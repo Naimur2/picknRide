@@ -22,6 +22,7 @@ export default function AuthRoute() {
                 headerTitleStyle: { color: "white" },
                 headerTintColor: colorMode === "light" ? "black" : "white",
                 headerTransparent: true,
+                headerLeft: () => <BackButton />,
             }}
         >
             <Stack.Screen
