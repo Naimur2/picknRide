@@ -1,16 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
-import {
-    Box,
-    Factory,
-    HStack,
-    Input,
-    Text,
-    useColorMode,
-    VStack,
-} from "native-base";
+import { Box, HStack, Input, Text, useColorMode, VStack } from "native-base";
 import React, { useEffect, useRef, useState } from "react";
 
-import { Alert, TouchableOpacity, useWindowDimensions } from "react-native";
+import { Alert, useWindowDimensions } from "react-native";
 
 import GradientBtn from "../../components/GradientBtn/GradientBtn";
 import ImageBg from "../../components/ImageBg/ImageBg";
@@ -21,7 +13,7 @@ let newInputIndex = 0;
 
 export default function OtpScreen({}) {
     const navigation = useNavigation();
-    const Touchable = Factory(TouchableOpacity);
+
     const { width } = useWindowDimensions();
     const { colorMode } = useColorMode();
 

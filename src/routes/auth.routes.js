@@ -11,7 +11,6 @@ import SelectArrivalDate from "../screens/SelectArrivalDate/SelectArrivalDate";
 import AddCards from "../screens/AddCards/AddCards";
 import BackButton from "../components/BackButton/BackButton";
 
-
 export default function AuthRoute() {
     const Stack = createNativeStackNavigator();
     const { colorMode } = useColorMode();
@@ -23,9 +22,6 @@ export default function AuthRoute() {
                 headerTitleStyle: { color: "white" },
                 headerTintColor: colorMode === "light" ? "black" : "white",
                 headerTransparent: true,
-                headerLeft: () => (
-                    <BackButton />
-                 ),
             }}
         >
             <Stack.Screen
@@ -34,7 +30,7 @@ export default function AuthRoute() {
                 component={SplashSecond}
             />
             <Stack.Screen
-                options={{ headerShown: false }}
+                options={{ headerShown: false}}
                 name="SplashThird"
                 component={SplashThird}
             />
@@ -42,7 +38,7 @@ export default function AuthRoute() {
                 options={{
                     headerShadowVisible: false,
                     headerTransparent: true,
-                    headerTitle: "",
+                    headerBackTitleVisible: false 
                 }}
                 name="Login"
                 component={Login}
@@ -51,14 +47,20 @@ export default function AuthRoute() {
                 options={{
                     headerShadowVisible: false,
                     headerTransparent: true,
-                    headerTitle: "",
+                    headerBackTitleVisible: false 
                 }}
                 name="Register"
                 component={Register}
             />
             <Stack.Screen name="OtpScreen" component={OtpScreen} />
-            <Stack.Screen name="SelectCitizenShip" component={SelectCitizenShip} />
-            <Stack.Screen name="SelectArrivalDate" component={SelectArrivalDate} />
+            <Stack.Screen
+                name="SelectCitizenShip"
+                component={SelectCitizenShip}
+            />
+            <Stack.Screen
+                name="SelectArrivalDate"
+                component={SelectArrivalDate}
+            />
             <Stack.Screen name="AddCards" component={AddCards} />
         </Stack.Navigator>
     );

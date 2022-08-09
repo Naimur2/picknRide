@@ -7,7 +7,7 @@ export default function BackButton() {
     const navigation = useNavigation();
     return (
         <Pressable onPress={() => navigation.goBack()}>
-            <ChevronLeft px="2" />
+            <ChevronLeft px="1" />
         </Pressable>
     );
 }

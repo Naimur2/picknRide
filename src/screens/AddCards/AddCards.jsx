@@ -42,6 +42,7 @@ export default function AddCards() {
             ),
             headerTitleAlign: "center",
             headerTitleVisible: true,
+            headerBackTitleVisible: false,
         });
     }, [navigation]);
 
