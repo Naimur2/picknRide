@@ -1,5 +1,6 @@
 import { Text, VStack } from "native-base";
 import React from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
 
 interface ITopSection {
@@ -8,12 +9,14 @@ interface ITopSection {
 }
 
 export default function TopSection({ title, subtitle }: ITopSection) {
+    const insets = useSafeAreaInsets();
+
     return (
         <VStack
             borderBottomRadius={40}
             bg="green.200"
             w="full"
-            pt={60}
+            pt={60 + insets.top + "px"}
             pb={10}
             px={8}
             _dark={{

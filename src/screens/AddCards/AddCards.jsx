@@ -9,6 +9,7 @@ import {
     VStack,
 } from "native-base";
 import React from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
 import GradientBtn from "../../components/GradientBtn/GradientBtn";
 import OutlineButton from "../../components/OutlineButton/OutlineButton";
@@ -20,6 +21,7 @@ const creditCardImage = require("../../../assets/images/credit-card.png");
 
 export default function AddCards() {
     const navigation = useNavigation();
+    const insets = useSafeAreaInsets();
 
     const auth = useAuth();
 
@@ -46,7 +48,8 @@ export default function AddCards() {
     return (
         <Scroller bg="#fff">
             <VStack
-                py={50}
+                pt={50 + insets.top + "px"}
+                pb={"50px"}
                 flex="1"
                 alignItems={"center"}
                 _dark={{

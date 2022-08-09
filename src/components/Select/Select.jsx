@@ -22,12 +22,10 @@ export default function Select({ data, onSelect }) {
         <>
             <Pressable onPress={() => SheetManager.show("location_picker")}>
                 <HStack
-                    shadow={9}
                     borderWidth={0}
                     bg="white"
-                    shadow="9"
                     px={6}
-                    py={6}
+                    py={5}
                     mb={2}
                     borderRadius={20}
                     justifyContent="space-between"

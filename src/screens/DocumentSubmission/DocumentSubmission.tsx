@@ -29,7 +29,6 @@ export default function DocumentSubmission() {
                     }}
                     borderWidth={3}
                     borderColor="white"
-                    mt="4"
                 >
                     SS
                     <Avatar.Badge bg="green.500" />

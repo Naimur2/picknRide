@@ -44,3 +44,7 @@ export const CloseIcon = Factory((props) => (
 export const Plus = Factory((props) => (
     <Fontisto name="plus-a" size={24} color="black" {...props} />
 ));
+
+export const ChevronLeft = Factory((props) => (
+    <Entypo name="chevron-left" size={24} color="black" {...props} />
+));

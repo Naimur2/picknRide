@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { HStack, Text, useColorMode, VStack } from "native-base";
 import React from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import ImageBg from "../../components/ImageBg/ImageBg";
 import Scroller from "../../components/Scroller/Scroller";
 import InputForm from "./components/InputForm/InputForm";
@@ -8,6 +9,7 @@ import InputForm from "./components/InputForm/InputForm";
 export default function Register() {
     const { colorMode } = useColorMode();
     const navigation = useNavigation();
+    const insets = useSafeAreaInsets();
 
     return (
         <ImageBg type={colorMode}>
@@ -15,7 +17,8 @@ export default function Register() {
                 contentStyle={{
                     flexGrow: 1,
                     paddingHorizontal: 40,
-                    paddingVertical: 20,
+                    paddingTop: 20 + insets.top,
+                    paddingBottom: 20,
                 }}
             >
                 <VStack alignItems={"center"} space="4">

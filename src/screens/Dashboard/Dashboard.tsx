@@ -21,7 +21,6 @@ export default function Dashboard() {
             headerLeft: () => (
                 <Toggler
                     mx={4}
-                    mt="4"
                     onPress={() => navigation.openDrawer()}
                     _dark={{
                         color: "#000",
@@ -35,7 +34,6 @@ export default function Dashboard() {
                     }}
                     borderWidth={3}
                     borderColor="white"
-                    mt="4"
                 >
                     SS
                     <Avatar.Badge bg="green.500" />

@@ -9,6 +9,7 @@ import OtpScreen from "../screens/OtpScreen/OtpScreen";
 import SelectCitizenShip from "../screens/SelectCitizenShip/SelectCitizenShip";
 import SelectArrivalDate from "../screens/SelectArrivalDate/SelectArrivalDate";
 import AddCards from "../screens/AddCards/AddCards";
+import BackButton from "../components/BackButton/BackButton";
 
 
 export default function AuthRoute() {
@@ -22,6 +23,9 @@ export default function AuthRoute() {
                 headerTitleStyle: { color: "white" },
                 headerTintColor: colorMode === "light" ? "black" : "white",
                 headerTransparent: true,
+                headerLeft: () => (
+                    <BackButton />
+                 ),
             }}
         >
             <Stack.Screen
