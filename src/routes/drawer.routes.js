@@ -8,7 +8,7 @@ export default function DrawerRoute() {
     return (
         <Drawer.Navigator
             screenOptions={{
-                headerTransparent: true,
+                headerShown: false,
             }}
         >
             <Drawer.Screen name="UserRoute" component={UserRoute} />

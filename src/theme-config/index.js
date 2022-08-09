@@ -41,7 +41,7 @@ export default function ThemeConFig({ children }) {
 
     if (!fontsLoaded) {
         return (
-            <NativeBaseProvider theme={theme}>
+            <NativeBaseProvider theme={theme} config={config}>
                 <Center flex={1} px="3">
                     <StatusBar hidden />
                     <Spinner size={"lg"} />

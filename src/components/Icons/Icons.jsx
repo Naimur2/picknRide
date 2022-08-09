@@ -1,4 +1,10 @@
-import { Octicons, MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
+import {
+    Octicons,
+    MaterialIcons,
+    Ionicons,
+    Entypo,
+    MaterialCommunityIcons,
+} from "@expo/vector-icons";
 
 import { Factory } from "native-base";
 
@@ -28,4 +34,8 @@ export const ChevronDownFill = Factory((props) => (
 
 export const Circle = Factory((props) => (
     <Entypo name="circle" size={24} color="black" {...props} />
+));
+
+export const CloseIcon = Factory((props) => (
+    <MaterialCommunityIcons name="close" size={24} color="black" {...props} />
 ));

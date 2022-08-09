@@ -44,10 +44,9 @@ export default function AddCards() {
     }, [navigation]);
 
     return (
-        <Scroller>
+        <Scroller bg="#fff">
             <VStack
                 py={50}
-                bg="#fff"
                 flex="1"
                 alignItems={"center"}
                 _dark={{
