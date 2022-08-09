@@ -13,6 +13,7 @@ import React from "react";
 import { TouchableHighlight } from "react-native";
 import { Tick } from "../../components/Icons/Icons";
 import ImageBg from "../../components/ImageBg/ImageBg";
+import CheckBoxGroup from "./components/CheckBoxGroup";
 
 export default function SelectCitizenShip() {
     const { colorMode } = useColorMode();
@@ -24,21 +25,6 @@ export default function SelectCitizenShip() {
             headerTintColor: colorMode === "light" ? "white" : "black",
         });
     }, [navigation, colorMode]);
-
-    const items = [
-        {
-            id: 1,
-            type: "Qatar Citizen / Resident",
-        },
-        {
-            id: 2,
-            type: "GCC Resident",
-        },
-        {
-            id: 3,
-            type: "Visitor / Tourist",
-        },
-    ];
 
     const bgType = colorMode === "dark" ? "dark" : "";
 
@@ -56,61 +42,10 @@ export default function SelectCitizenShip() {
                     Select one from below to proceed.
                 </Text>
 
-                <VStack
-                    mt={8}
-                    bg="#fff"
-                    px="6"
-                    py={6}
-                    w={[320, 360, 500]}
-                    borderRadius={26}
-                    space={4}
-                    _dark={{
-                        bg: "primary.100",
-                    }}
-                >
-                    {items.map((item, index) => (
-                        <Pressable
-                            key={index}
-                            onPress={() => setSelected(item.id)}
-                        >
-                            <HStack
-                                justifyContent={"space-between"}
-                                alignItems="center"
-                                py={2}
-                            >
-                                <Text
-                                    color={"#000"}
-                                    fontWeight={600}
-                                    fontSize={15}
-                                    _dark={{
-                                        color: "white",
-                                    }}
-                                >
-                                    {item.type}
-                                </Text>
-                                {selected === item.id ? (
-                                    <Tick
-                                        color={"primary.100"}
-                                        _dark={{
-                                            color: "white",
-                                        }}
-                                    />
-                                ) : (
-                                    <Box
-                                        borderColor={"primary.100"}
-                                        borderWidth={"2"}
-                                        h="24px"
-                                        w="24px"
-                                        borderRadius={100}
-                                        _dark={{
-                                            borderColor: "white",
-                                        }}
-                                    />
-                                )}
-                            </HStack>
-                        </Pressable>
-                    ))}
-                </VStack>
+                <CheckBoxGroup
+                    onSelect={(it) => setSelected(it)}
+                    selected={selected}
+                />
 
                 <Button
                     onPress={() => navigation.navigate("SelectArrivalDate")}

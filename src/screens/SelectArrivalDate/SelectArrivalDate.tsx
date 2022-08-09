@@ -1,10 +1,7 @@
-import DateTimePicker, {
-    DateTimePickerAndroid,
-} from "@react-native-community/datetimepicker";
 import { useNavigation } from "@react-navigation/native";
 import { Button, Pressable, Text, useColorMode, VStack } from "native-base";
 import React from "react";
-import { Platform } from "react-native";
+import DatePickerModal from "../../components/DatePickerModal/DatePickerModal";
 import ImageBg from "../../components/ImageBg/ImageBg";
 
 export default function SelectArrivalDate() {
@@ -26,7 +23,7 @@ export default function SelectArrivalDate() {
     ];
 
     const [date, setDate] = React.useState(new Date());
-    const [mode, setMode] = React.useState("date");
+
     const [show, setShow] = React.useState(false);
 
     const currentDate = date.getDate();
@@ -40,30 +37,6 @@ export default function SelectArrivalDate() {
     }, [navigation, colorMode]);
 
     const bgType = colorMode === "dark" ? "dark" : "";
-
-    const onChange = (event, selectedDate) => {
-        const currDate = selectedDate;
-        setShow(false);
-        setDate(currDate);
-    };
-
-    const showMode = (currentMode) => {
-        if (Platform.OS === "android") {
-            DateTimePickerAndroid.open({
-                value: date,
-                onChange,
-                mode: currentMode,
-                is24Hour: true,
-            });
-            setShow(false);
-            // for iOS, add a button that closes the picker
-        }
-        setMode(currentMode);
-    };
-
-    const showDatepicker = () => {
-        showMode("date");
-    };
 
     return (
         <ImageBg type={bgType}>
@@ -91,7 +64,7 @@ export default function SelectArrivalDate() {
                         bg: "primary.100",
                     }}
                 >
-                    <Pressable py={4} onPress={showDatepicker}>
+                    <Pressable py={4} onPress={() => setShow(true)}>
                         <VStack
                             justifyContent={"space-between"}
                             borderBottomColor="light.200"
@@ -156,16 +129,12 @@ export default function SelectArrivalDate() {
                 >
                     Continue
                 </Button>
-            </VStack>
-            {show && (
-                <DateTimePicker
-                    testID="dateTimePicker"
-                    value={date}
-                    mode={mode}
-                    is24Hour={true}
-                    onChange={onChange}
+                <DatePickerModal
+                    isOpen={show}
+                    onClose={() => setShow(false)}
+                    setDate={(dt) => setDate(dt)}
                 />
-            )}
+            </VStack>
         </ImageBg>
     );
 }
