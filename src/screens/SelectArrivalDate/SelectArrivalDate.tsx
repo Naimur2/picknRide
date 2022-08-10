@@ -3,32 +3,15 @@ import { Button, Pressable, Text, useColorMode, VStack } from "native-base";
 import React from "react";
 import DatePickerModal from "../../components/DatePickerModal/DatePickerModal";
 import ImageBg from "../../components/ImageBg/ImageBg";
+import { getTextDate } from "../../helper/date.helper";
 
 export default function SelectArrivalDate() {
     const { colorMode } = useColorMode();
     const navigation = useNavigation();
-    const monthNames = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-    ];
 
     const [date, setDate] = React.useState(new Date());
 
     const [show, setShow] = React.useState(false);
-
-    const currentDate = date.getDate();
-    const currentMonth = monthNames[date.getMonth()];
-    const currentYear = date.getFullYear();
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -91,8 +74,7 @@ export default function SelectArrivalDate() {
                                     color: "white",
                                 }}
                             >
-                                {currentDate < 10 ? "0" : ""}
-                                {currentDate} - {currentMonth} - {currentYear}{" "}
+                                {getTextDate(date)}
                             </Text>
                         </VStack>
                     </Pressable>

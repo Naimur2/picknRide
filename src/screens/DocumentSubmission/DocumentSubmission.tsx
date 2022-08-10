@@ -5,7 +5,7 @@ import { TouchableOpacity } from "react-native";
 import ImageBg from "../../components/ImageBg/ImageBg";
 import Scroller from "../../components/Scroller/Scroller";
 import TopSection from "../../components/TopSection/TopSection";
-import Form from "./components/Form/Form";
+import DocumentForm from "./components/DocumentForm/DocumentForm";
 
 export default function DocumentSubmission() {
     const navigation = useNavigation();
@@ -49,7 +49,7 @@ export default function DocumentSubmission() {
                     title="Document Submission"
                     subtitle="Please submit documents below to unlock Car rental option"
                 />
-                <Form />
+                <DocumentForm />
             </Scroller>
         </ImageBg>
     );
