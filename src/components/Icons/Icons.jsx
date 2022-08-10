@@ -5,6 +5,8 @@ import {
     Entypo,
     MaterialCommunityIcons,
     Fontisto,
+    FontAwesome,
+    Foundation,
 } from "@expo/vector-icons";
 
 import { Factory } from "native-base";
@@ -52,4 +54,12 @@ export const ChevronLeft = Factory((props) => (
         color="black"
         {...props}
     />
+));
+
+export const Whatsapp = Factory((props) => (
+    <FontAwesome name="whatsapp" size={24} color="black" {...props} />
+));
+
+export const Telephone = Factory((props) => (
+    <Foundation name="telephone" size={24} color="black" {...props} />
 ));

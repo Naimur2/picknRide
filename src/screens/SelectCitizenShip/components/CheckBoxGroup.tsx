@@ -1,4 +1,4 @@
-import { VStack, Pressable, Text, Box, HStack } from "native-base";
+import { Box, HStack, Pressable, Text, VStack } from "native-base";
 import React from "react";
 import { Tick } from "../../../components/Icons/Icons";
 
