@@ -63,3 +63,7 @@ export const Whatsapp = Factory((props) => (
 export const Telephone = Factory((props) => (
     <Foundation name="telephone" size={24} color="black" {...props} />
 ));
+
+export const PlayBtn = Factory((props) => (
+    <Octicons name="play" size={30} color="black" {...props} />
+));

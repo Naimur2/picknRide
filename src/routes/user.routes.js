@@ -1,10 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Factory, Pressable, useColorMode } from "native-base";
+import { useColorMode } from "native-base";
 import React from "react";
-import { TouchableOpacity } from "react-native";
 import BackButton from "../components/BackButton/BackButton";
-import { ChevronLeft } from "../components/Icons/Icons";
+import CameraView from "../screens/CameraView/CameraView";
 import Dashboard from "../screens/Dashboard/Dashboard";
 import DocumentSubmission from "../screens/DocumentSubmission/DocumentSubmission";
 
@@ -30,6 +29,10 @@ export default function UserRoute() {
             <Stack.Screen
                 name="DocumentSubmission"
                 component={DocumentSubmission}
+            />
+            <Stack.Screen
+                name="CameraView"
+                component={CameraView}
             />
         </Stack.Navigator>
     );

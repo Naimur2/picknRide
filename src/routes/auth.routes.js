@@ -1,19 +1,21 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useColorMode } from "native-base";
 import React from "react";
+import BackButton from "../components/BackButton/BackButton";
+import AddCards from "../screens/AddCards/AddCards";
+import Login from "../screens/Login/Login";
+import OtpScreen from "../screens/OtpScreen/OtpScreen";
+import Register from "../screens/Register/Register";
+import SelectArrivalDate from "../screens/SelectArrivalDate/SelectArrivalDate";
+import SelectCitizenShip from "../screens/SelectCitizenShip/SelectCitizenShip";
 import SplashSecond from "../screens/SplashSecond/SplashSecond";
 import SplashThird from "../screens/SplashThird/SplashThird";
-import Login from "../screens/Login/Login";
-import Register from "../screens/Register/Register";
-import { useColorMode } from "native-base";
-import OtpScreen from "../screens/OtpScreen/OtpScreen";
-import SelectCitizenShip from "../screens/SelectCitizenShip/SelectCitizenShip";
-import SelectArrivalDate from "../screens/SelectArrivalDate/SelectArrivalDate";
-import AddCards from "../screens/AddCards/AddCards";
-import BackButton from "../components/BackButton/BackButton";
 
 export default function AuthRoute() {
     const Stack = createNativeStackNavigator();
     const { colorMode } = useColorMode();
+
+
 
     return (
         <Stack.Navigator

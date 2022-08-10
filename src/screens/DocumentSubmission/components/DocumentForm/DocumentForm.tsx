@@ -151,6 +151,7 @@ export default function DocumentForm() {
                     mx: "auto",
                 }}
                 mx="auto"
+                onPress={() => navigation.navigate("CameraView")}
             />
 
             {showSignature && <Signature />}

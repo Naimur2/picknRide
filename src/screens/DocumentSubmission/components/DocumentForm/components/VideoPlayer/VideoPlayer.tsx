@@ -1,15 +1,16 @@
 import { Video } from "expo-av";
-import { Factory, VStack, Text } from "native-base";
+import { Factory, VStack, Text, Pressable } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
+import { PlayBtn } from "../../../../../../components/Icons/Icons";
 
-export default function VideoPlayer() {
+export default function VideoPlayer({ uri }: { uri: string }) {
     const video = React.useRef(null);
     const Player = Factory(Video);
     const [status, setStatus] = React.useState({});
 
     return (
-        <VStack my={4} space={4}>
+        <VStack mt={4} space={4}>
             <Text
                 mt={2}
                 w="280px"
@@ -21,28 +22,47 @@ export default function VideoPlayer() {
             >
                 International License
             </Text>
-
-            <VStack
-                w={"full"}
-                h={"180px"}
-                bg="#000"
-                borderRadius={20}
-                _dark={{
-                    bg: "gray.200",
-                }}
-            >
-                <Video
-                    ref={video}
-                    style={styles.video}
-                    source={{
-                        uri: "https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+            <Pressable onPress={() => setStatus({ paused: !status.paused })}>
+                <VStack
+                    w={"full"}
+                    h={"190px"}
+                    py={2}
+                    px={4}
+                    bg="#000"
+                    borderRadius={20}
+                    _dark={{
+                        bg: "gray.200",
                     }}
-                    useNativeControls
-                    resizeMode="contain"
-                    onPlaybackStatusUpdate={(stat) => setStatus(() => stat)}
-                    onPress={() => console.log("onPress")}
-                />
-            </VStack>
+                    position={"relative"}
+                >
+                    {uri ? (
+                        <Video
+                            ref={video}
+                            style={styles.video}
+                            source={{
+                                uri: "https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+                            }}
+                            useNativeControls
+                            resizeMode="cover"
+                            onPlaybackStatusUpdate={(stat) =>
+                                setStatus(() => stat)
+                            }
+                            onPress={() => console.log("onPress")}
+                        />
+                    ) : null}
+
+                    {!null ? (
+                        <PlayBtn
+                            color={"#fff"}
+                            _dark={{ color: "gray.100" }}
+                            position={"absolute"}
+                            top={"50%"}
+                            left={"50%"}
+                            size="40"
+                        />
+                    ) : null}
+                </VStack>
+            </Pressable>
         </VStack>
     );
 }
@@ -51,6 +71,5 @@ const styles = StyleSheet.create({
     video: {
         width: "100%",
         height: "100%",
-        borderRadius: 20,
     },
 });

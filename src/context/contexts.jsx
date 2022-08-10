@@ -7,3 +7,8 @@ export const AuthContext = React.createContext({
     logout: () => {},
     register: () => {},
 });
+
+export const UIContext = React.createContext({
+    backButtonColor: "#000",
+    setBackButtonColor: () => {},
+});
