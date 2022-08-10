@@ -29,10 +29,18 @@ export default function PickerButton({
                     fontWeight={600}
                     fontSize={17}
                     p={0}
+                    _dark={{
+                        color: "#fff",
+                    }}
                 >
                     {value}
                 </Text>
-                <ChevronDownFill color={"gray.100"} />
+                <ChevronDownFill
+                    color={"gray.100"}
+                    _dark={{
+                        color: "#fff",
+                    }}
+                />
             </HStack>
             {divider && <Divider bg="light.200" />}
         </Touchable>

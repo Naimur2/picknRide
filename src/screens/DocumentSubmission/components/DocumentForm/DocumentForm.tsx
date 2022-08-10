@@ -1,18 +1,49 @@
-import { FormControl, Input, Text, VStack } from "native-base";
+import {
+    Box,
+    Center,
+    Factory,
+    FormControl,
+    HStack,
+    Input,
+    Text,
+    VStack,
+} from "native-base";
 import React from "react";
+import { TouchableOpacity } from "react-native";
+import CountryPicker from "react-native-country-picker-modal";
 import { scale } from "react-native-size-matters";
+import GradientBtn from "../../../../components/GradientBtn/GradientBtn";
+import { Tick } from "../../../../components/Icons/Icons";
+import OutlineButton from "../../../../components/OutlineButton/OutlineButton";
 import AddImage from "../AddImage/AddImage";
-import YesNo from "../YesNo/YesNo";
+import YesNo from "./components/YesNo/YesNo";
 import ExpiryDate from "./components/ExpiryDate/ExpiryDate";
 import PickerButton from "./components/PickerButton/PickerButton";
-import CountryPicker from "react-native-country-picker-modal";
-import OutlineButton from "../../../../components/OutlineButton/OutlineButton";
 import Signature from "./components/Signature/Signature";
+import { useNavigation } from "@react-navigation/native";
+import VideoPlayer from "./components/VideoPlayer/VideoPlayer";
+import { useColorMode } from "native-base";
 
 export default function DocumentForm() {
     const [hasIntlLicense, setHasIntlLicense] = React.useState("yes");
     const [country, setCountry] = React.useState("");
     const [show, setShow] = React.useState(false);
+    const [termAccept, setTermAccept] = React.useState(false);
+    const Touchable = Factory(TouchableOpacity);
+    const [showSignature, setShowSignature] = React.useState(false);
+    const navigation = useNavigation();
+    const { toggleColorMode } = useColorMode();
+
+    React.useLayoutEffect(() => {
+        const timeout = setTimeout(() => {
+            setShowSignature(true);
+        }, 1000);
+        return () => {
+            setShow(false);
+            setShowSignature(false);
+            clearTimeout(timeout);
+        };
+    }, [navigation]);
 
     const FormLabel = ({ title }: { title: string }) => (
         <FormControl.Label
@@ -26,8 +57,15 @@ export default function DocumentForm() {
     );
 
     return (
-        <VStack w={scale(300) + "px"} py={4}>
-            <Text mt={4} fontSize={20} fontWeight={600}>
+        <VStack w={scale(300) + "px"} mx="auto" py={4}>
+            <Text
+                mt={4}
+                fontSize={20}
+                fontWeight={600}
+                _dark={{
+                    color: "#fff",
+                }}
+            >
                 Documents
             </Text>
 
@@ -48,17 +86,22 @@ export default function DocumentForm() {
 
             <ExpiryDate />
 
-            <AddImage title="Upload both sides of your ID Card" />
-
-            <YesNo
-                selected={hasIntlLicense}
-                setSelected={(data) => {
-                    setHasIntlLicense(data);
-                }}
+            <AddImage
+                getImages={(img) => console.log(img)}
+                title="Upload both sides of your ID Card"
             />
+            <VStack>
+                <YesNo
+                    selected={hasIntlLicense}
+                    setSelected={(data) => {
+                        setHasIntlLicense(data);
+                    }}
+                />
+            </VStack>
 
             <FormControl mt={2}>
                 <FormLabel title="License Issue Country" />
+
                 <PickerButton
                     onPress={() => setShow(true)}
                     pt={0}
@@ -66,6 +109,7 @@ export default function DocumentForm() {
                     value={country.name || "Select Country"}
                     divider
                 />
+
                 {show && (
                     <CountryPicker
                         onClose={() => setShow(false)}
@@ -94,15 +138,53 @@ export default function DocumentForm() {
             </FormControl>
             <ExpiryDate />
 
-            <AddImage title="Upload both sides of your ID Card" />
+            <AddImage
+                getImages={(img) => console.log(img)}
+                title="Upload both sides of your ID Card"
+            />
+
+            <VideoPlayer />
 
             <OutlineButton
                 title="Take a selfie"
                 titleStyle={{
                     mx: "auto",
                 }}
+                mx="auto"
             />
-            <Signature />
+
+            {showSignature && <Signature />}
+
+            <Center>
+                <HStack space="2" mt={12}>
+                    <Touchable onPress={() => setTermAccept((prev) => !prev)}>
+                        {termAccept ? (
+                            <Tick color="primary.100" />
+                        ) : (
+                            <Box
+                                borderColor={"primary.100"}
+                                borderWidth={"2"}
+                                h="24px"
+                                w="24px"
+                                borderRadius={100}
+                            />
+                        )}
+                    </Touchable>
+                    <Text
+                        _dark={{
+                            color: "#fff",
+                        }}
+                    >
+                        Agree terms and condition
+                    </Text>
+                </HStack>
+                <GradientBtn
+                    onPress={toggleColorMode}
+                    mt="5"
+                    mb={8}
+                    title="Continue"
+                />
+            </Center>
         </VStack>
     );
 }

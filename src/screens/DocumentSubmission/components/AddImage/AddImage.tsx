@@ -1,50 +1,60 @@
+import { HStack, Text, VStack } from "native-base";
 import React from "react";
-import { VStack, Text, HStack, Pressable } from "native-base";
-import { Plus } from "../../../../components/Icons/Icons";
+import ImageCard from "./ImageCard/ImageCard";
+
+interface Images {
+    [key: string]: string;
+}
 
 export default function AddImage({
     title,
-    onLeftPress,
-    onRightPress,
+    getImages,
 }: {
     title: string;
+    getImages: (image: string) => void;
 }) {
+    const [images, setImages] = React.useState<Images>({
+        1: "",
+        2: "",
+    });
+
+    const handleAddImage = (image: string, id: string) => {
+        setImages({
+            ...images,
+            [id]: image,
+        });
+    };
+
+    React.useEffect(() => {
+        if (Object.keys(images).length >= 1) {
+            getImages?.(images);
+        }
+    }, [images]);
+
     return (
         <VStack my={4} space={4}>
-            <Text mt={2} w="280px" fontSize={20} fontWeight={600}>
+            <Text
+                mt={2}
+                w="280px"
+                fontSize={20}
+                fontWeight={600}
+                _dark={{
+                    color: "#fff",
+                }}
+            >
                 {title}
             </Text>
             <HStack justifyContent={"space-between"}>
-                <VStack space="2" w={"48%"}>
-                    <Pressable
-                        h={"90px"}
-                        w="full"
-                        borderRadius={35}
-                        bg="#fff"
-                        shadow="9"
-                        alignItems={"center"}
-                        justifyContent={"center"}
-                        onPress={onLeftPress}
-                    >
-                        <Plus color={"light.200"} />
-                    </Pressable>
-                    <Text textAlign={"center"}>Back Side</Text>
-                </VStack>
-                <VStack space="2" w={"48%"}>
-                    <Pressable
-                        h={"90px"}
-                        w="full"
-                        borderRadius={35}
-                        bg="#fff"
-                        shadow="9"
-                        alignItems={"center"}
-                        justifyContent={"center"}
-                        onPress={onRightPress}
-                    >
-                        <Plus color={"light.200"} />
-                    </Pressable>
-                    <Text textAlign={"center"}>Back Side</Text>
-                </VStack>
+                <ImageCard
+                    setImage={(img) => handleAddImage(img, "1")}
+                    image={images["1"]}
+                    title={"Front Side"}
+                />
+                <ImageCard
+                    setImage={(img) => handleAddImage(img, "2")}
+                    image={images["2"]}
+                    title={"Back Side"}
+                />
             </HStack>
         </VStack>
     );

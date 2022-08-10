@@ -1,6 +1,6 @@
-import React from "react";
-import { VStack, Text, HStack, Pressable } from "native-base";
 import { Octicons } from "@expo/vector-icons";
+import { HStack, Text, VStack, Pressable } from "native-base";
+import React from "react";
 import { TouchableOpacity } from "react-native";
 
 export default function YesNo({
@@ -28,13 +28,13 @@ export default function YesNo({
                     alignItems="center"
                     h={isSelected ? "34px" : "32px"}
                     borderWidth={isSelected ? 0 : 1}
-                    borderColor={isSelected ? "#329D9C" : ""}
+                    borderColor={isSelected ? "" : "#329D9C"}
                     w="full"
+                    position={"relative"}
                 >
                     <Text
                         fontSize={"13"}
-                        ml={"auto"}
-                        mr={isSelected ? 0 : "auto"}
+                        mx={"auto"}
                         textAlign={"center"}
                         color={isSelected ? "white" : "gray.100"}
                         textTransform={"uppercase"}
@@ -49,6 +49,8 @@ export default function YesNo({
                             color="#fff"
                             style={{
                                 marginLeft: "auto",
+                                position: "absolute",
+                                right: 6,
                             }}
                         />
                     ) : null}
@@ -63,16 +65,24 @@ export default function YesNo({
 
     return (
         <VStack my={4} space={4}>
-            <Text mt={2} w="280px" fontSize={20} fontWeight={600}>
+            <Text
+                mt={2}
+                w="280px"
+                fontSize={20}
+                fontWeight={600}
+                _dark={{
+                    color: "#fff",
+                }}
+            >
                 International License
             </Text>
             <HStack space={4}>
-                <TouchableOpacity onPress={() => setValue?.("yes")}>
+                <Pressable onPress={() => setValue?.("yes")}>
                     <YesNoBtn title="Yes" isSelected={value === "yes"} />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => setValue?.("no")}>
+                </Pressable>
+                <Pressable onPress={() => setValue?.("no")}>
                     <YesNoBtn title="No" isSelected={value === "no"} />
-                </TouchableOpacity>
+                </Pressable>
             </HStack>
         </VStack>
     );

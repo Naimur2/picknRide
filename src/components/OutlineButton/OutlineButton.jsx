@@ -1,4 +1,4 @@
-import { Factory, HStack, Text } from "native-base";
+import { Factory, HStack, Pressable, Text } from "native-base";
 import React from "react";
 import { TouchableOpacity } from "react-native";
 
@@ -10,9 +10,8 @@ export default function OutlineButton({
     onPress,
     ...rest
 }) {
-    const Touchable = Factory(TouchableOpacity);
     return (
-        <Touchable onPress={onPress} {...rest}>
+        <Pressable onPress={onPress} {...rest}>
             <HStack
                 w="330"
                 mt={6}
@@ -35,6 +34,6 @@ export default function OutlineButton({
                 </Text>
                 {rightIcon && rightIcon()}
             </HStack>
-        </Touchable>
+        </Pressable>
     );
 }
