@@ -7,6 +7,7 @@ export default function Scroller({ children, contentStyle, ...rest }) {
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={contentStyle}
+            nestedScrollEnabled={true}
             {...rest}
         >
             {children}

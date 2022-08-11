@@ -4,9 +4,9 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { PlayBtn } from "../../../../../../components/Icons/Icons";
 
-export default function VideoPlayer({ uri }: { uri: string }) {
+export default function VideoPlayer({ vdo }: { vdo: { uri: string } }) {
     const video = React.useRef(null);
-    const Player = Factory(Video);
+
     const [status, setStatus] = React.useState({});
 
     return (
@@ -35,12 +35,12 @@ export default function VideoPlayer({ uri }: { uri: string }) {
                     }}
                     position={"relative"}
                 >
-                    {uri ? (
+                    {vdo?.uri ? (
                         <Video
                             ref={video}
                             style={styles.video}
                             source={{
-                                uri: "https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+                                uri: vdo.uri,
                             }}
                             useNativeControls
                             resizeMode="cover"

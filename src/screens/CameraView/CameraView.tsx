@@ -1,26 +1,22 @@
-// The following packages need to be installed using the following commands:
-// expo install expo-camera
-// expo install expo-media-library
-// expo install expo-sharing
-// expo install expo-av
-
-import { StyleSheet, Text, View, Button, SafeAreaView } from "react-native";
-import { useEffect, useState, useRef } from "react";
+import { useNavigation } from "@react-navigation/native";
 import { Camera } from "expo-camera";
-import { Video } from "expo-av";
-import { shareAsync } from "expo-sharing";
 import * as MediaLibrary from "expo-media-library";
+import { Text } from "native-base";
+import React, { useEffect, useState } from "react";
+import { StyleSheet } from "react-native";
+import BackButton from "../../components/BackButton/BackButton";
+import CameraComp from "./components/CameraComp/CameraComp";
 
 export default function CameraView() {
-    let cameraRef = useRef();
-    const [hasCameraPermission, setHasCameraPermission] = useState();
-    const [hasMicrophonePermission, setHasMicrophonePermission] = useState();
-    const [hasMediaLibraryPermission, setHasMediaLibraryPermission] =
-        useState();
-    const [isRecording, setIsRecording] = useState(false);
-    const [video, setVideo] = useState();
+    const navigation = useNavigation();
 
-    useEffect(() => {
+    const [hasCameraPermission, setHasCameraPermission] = React.useState();
+    const [hasMicrophonePermission, setHasMicrophonePermission] =
+        React.useState();
+    const [hasMediaLibraryPermission, setHasMediaLibraryPermission] =
+        React.useState();
+
+    React.useEffect(() => {
         (async () => {
             const cameraPermission =
                 await Camera.requestCameraPermissionsAsync();
@@ -30,98 +26,30 @@ export default function CameraView() {
                 await MediaLibrary.requestPermissionsAsync();
 
             setHasCameraPermission(cameraPermission.status === "granted");
-            setHasMicrophonePermission(
+            setHasMicrophonePermission?.(
                 microphonePermission.status === "granted"
             );
-            setHasMediaLibraryPermission(
+            setHasMediaLibraryPermission?.(
                 mediaLibraryPermission.status === "granted"
             );
         })();
     }, []);
 
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerLeft: () => <BackButton color={"#fff"} />,
+        });
+    }, [navigation]);
+
     if (
-        hasCameraPermission === undefined ||
-        hasMicrophonePermission === undefined
+        !hasCameraPermission ||
+        !hasMicrophonePermission ||
+        !hasMediaLibraryPermission
     ) {
         return <Text>Requestion permissions...</Text>;
     } else if (!hasCameraPermission) {
         return <Text>Permission for camera not granted.</Text>;
     }
 
-    let recordVideo = () => {
-        setIsRecording(true);
-        let options = {
-            quality: "1080p",
-            maxDuration: 60,
-            mute: false,
-        };
-
-        cameraRef.current.recordAsync(options).then((recordedVideo) => {
-            setVideo(recordedVideo);
-            setIsRecording(false);
-        });
-    };
-
-    let stopRecording = () => {
-        setIsRecording(false);
-        cameraRef.current.stopRecording();
-    };
-
-    if (video) {
-        let shareVideo = () => {
-            shareAsync(video.uri).then(() => {
-                setVideo(undefined);
-            });
-        };
-
-        let saveVideo = () => {
-            MediaLibrary.saveToLibraryAsync(video.uri).then(() => {
-                setVideo(undefined);
-            });
-        };
-
-        return (
-            <SafeAreaView style={styles.container}>
-                <Video
-                    style={styles.video}
-                    source={{ uri: video.uri }}
-                    useNativeControls
-                    resizeMode="contain"
-                    isLooping
-                />
-                <Button title="Share" onPress={shareVideo} />
-                {hasMediaLibraryPermission ? (
-                    <Button title="Save" onPress={saveVideo} />
-                ) : undefined}
-                <Button title="Discard" onPress={() => setVideo(undefined)} />
-            </SafeAreaView>
-        );
-    }
-
-    return (
-        <Camera style={styles.container} ref={cameraRef}>
-            <View style={styles.buttonContainer}>
-                <Button
-                    title={isRecording ? "Stop Recording" : "Record Video"}
-                    onPress={isRecording ? stopRecording : recordVideo}
-                />
-            </View>
-        </Camera>
-    );
+    return <CameraComp />;
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    buttonContainer: {
-        backgroundColor: "#fff",
-        alignSelf: "flex-end",
-    },
-    video: {
-        flex: 1,
-        alignSelf: "stretch",
-    },
-});

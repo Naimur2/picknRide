@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { Avatar, Factory, useColorMode } from "native-base";
 import React from "react";
 import { TouchableOpacity } from "react-native";
@@ -12,16 +12,16 @@ export default function DocumentSubmission() {
     const { colorMode } = useColorMode();
     const Touchable = Factory(TouchableOpacity);
     let [service, setService] = React.useState("yes");
+    const parmas = useRoute().params;
 
     const [hasIntlLicense, setHasIntlLicense] = React.useState(false);
 
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: "",
             headerStyle: {
                 alignItems: "center",
             },
-
             headerRight: () => (
                 <Avatar
                     source={{
@@ -36,6 +36,7 @@ export default function DocumentSubmission() {
             ),
         });
     }, [navigation]);
+
     return (
         <ImageBg type={colorMode}>
             <Scroller
@@ -49,7 +50,7 @@ export default function DocumentSubmission() {
                     title="Document Submission"
                     subtitle="Please submit documents below to unlock Car rental option"
                 />
-                <DocumentForm />
+                <DocumentForm routeParams={parmas} />
             </Scroller>
         </ImageBg>
     );

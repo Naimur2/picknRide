@@ -20,7 +20,7 @@ export default function LocationSheetContent({
                 {locations?.map((item, index) => {
                     return (
                         <SelectedItem
-                            key={item?.id + index}
+                            key={`${item?.id + index} ${item?.name}`}
                             title={item?.name}
                             isSelected={item?.id === selected?.id}
                             onPress={() => {

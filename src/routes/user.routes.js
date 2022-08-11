@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useColorMode } from "native-base";
 import React from "react";
 import BackButton from "../components/BackButton/BackButton";
+import useUI from "../hooks/useUI";
 import CameraView from "../screens/CameraView/CameraView";
 import Dashboard from "../screens/Dashboard/Dashboard";
 import DocumentSubmission from "../screens/DocumentSubmission/DocumentSubmission";
@@ -11,6 +12,7 @@ export default function UserRoute() {
     const Stack = createNativeStackNavigator();
     const { colorMode } = useColorMode();
     const navigation = useNavigation();
+    
 
     return (
         <Stack.Navigator

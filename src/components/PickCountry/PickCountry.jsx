@@ -72,6 +72,7 @@ function PickCountry({
                         setShow(false);
                         setCountryCode(country.callingCode);
                     }}
+                    onClose={() => setShow(false)}
                 />
             )}
         </>
