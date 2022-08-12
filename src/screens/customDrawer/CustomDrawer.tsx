@@ -34,6 +34,10 @@ export default function CustomDrawer() {
             onPress: () => {},
         },
         {
+            title: "Cars",
+            onPress: () => {},
+        },
+        {
             title: "Notifications",
             onPress: () => {},
         },
