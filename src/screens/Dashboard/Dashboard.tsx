@@ -4,6 +4,7 @@ import React from "react";
 import ImageBg from "../../components/ImageBg/ImageBg";
 import Scroller from "../../components/Scroller/Scroller";
 import TopSection from "../../components/TopSection/TopSection";
+import UserAvatar from "../../components/UserAvatar/UserAvatar";
 import Toggler from "../../svgs/Toggler";
 import DashModal from "./component/DashModal/DashModal";
 import VeichleCards from "./component/VeichleCards/VeichleCards";
@@ -27,18 +28,7 @@ export default function Dashboard() {
                     }}
                 />
             ),
-            headerRight: () => (
-                <Avatar
-                    source={{
-                        uri: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-                    }}
-                    borderWidth={3}
-                    borderColor="white"
-                >
-                    SS
-                    <Avatar.Badge bg="green.500" />
-                </Avatar>
-            ),
+            headerRight: () => <UserAvatar />,
         });
     }, [navigation]);
 
