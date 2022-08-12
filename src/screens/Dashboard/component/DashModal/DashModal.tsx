@@ -25,13 +25,14 @@ export default function DashModal() {
             isOpen={isVisible}
             onClose={() => setIsVisible(false)}
             _backdrop={{
-                bg: "#ffffff50",
-                opacity: 0.1,
+                bg: "#ffffff90",
+                opacity: 0.8,
             }}
             closeOnOverlayClick={false}
             _dark={{
                 _backdrop: {
-                    bg: "#00000050",
+                    bg: "#000000",
+                    opacity: 0.8,
                 },
             }}
         >
@@ -41,6 +42,7 @@ export default function DashModal() {
                 h="460px"
                 borderRadius={20}
                 overflow={"hidden"}
+                shadow="lg"
             >
                 <VStack
                     alignItems={"center"}
@@ -120,7 +122,7 @@ export default function DashModal() {
                     <CloseIcon
                         color="#fff"
                         _dark={{
-                            color: "#fff",
+                            color: "#000",
                         }}
                     />
                 </Center>

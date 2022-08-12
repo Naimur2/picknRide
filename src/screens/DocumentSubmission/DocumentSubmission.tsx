@@ -1,7 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { Avatar, Factory, useColorMode } from "native-base";
+import { Avatar, useColorMode } from "native-base";
 import React from "react";
-import { TouchableOpacity } from "react-native";
 import ImageBg from "../../components/ImageBg/ImageBg";
 import Scroller from "../../components/Scroller/Scroller";
 import TopSection from "../../components/TopSection/TopSection";
@@ -10,11 +9,7 @@ import DocumentForm from "./components/DocumentForm/DocumentForm";
 export default function DocumentSubmission() {
     const navigation = useNavigation();
     const { colorMode } = useColorMode();
-    const Touchable = Factory(TouchableOpacity);
-    let [service, setService] = React.useState("yes");
     const parmas = useRoute().params;
-
-    const [hasIntlLicense, setHasIntlLicense] = React.useState(false);
 
     React.useLayoutEffect(() => {
         navigation.setOptions({

@@ -94,6 +94,9 @@ const ThreeSwitch = ({
                 onLayout={containerLayoutHandler}
                 borderRadius={20}
                 justifyContent={"space-between"}
+                _dark={{
+                    bg: "gray.400",
+                }}
             >
                 <SwitchButton
                     onPress={() => handlePress(1)}

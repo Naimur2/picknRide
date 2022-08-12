@@ -18,6 +18,7 @@ import GradientBtn from "../../../../components/GradientBtn/GradientBtn";
 import { Tick } from "../../../../components/Icons/Icons";
 import OutlineButton from "../../../../components/OutlineButton/OutlineButton";
 import AddImage from "../AddImage/AddImage";
+import WarningModal from "../WarningModal/WarningModal";
 import ExpiryDate from "./components/ExpiryDate/ExpiryDate";
 import PickerButton from "./components/PickerButton/PickerButton";
 import Signature from "./components/Signature/Signature";
@@ -37,9 +38,18 @@ export default function DocumentForm({
     const [show, setShow] = React.useState(false);
     const [termAccept, setTermAccept] = React.useState(false);
     const Touchable = Factory(TouchableOpacity);
+    const [isOpen, setIsOpen] = React.useState(false);
+    const [modalType, setModalType] = React.useState("");
 
     const navigation = useNavigation();
     const { toggleColorMode } = useColorMode();
+
+    React.useLayoutEffect(() => {
+        const modalVarients = ["approved", "pending", "rejected", "expired"];
+        const randomValue = Math.floor(Math.random() * modalVarients.length);
+        setModalType(modalVarients[randomValue]);
+        setIsOpen(true);
+    }, [navigation]);
 
     const FormLabel = ({ title }: { title: string }) => (
         <FormControl.Label
@@ -51,6 +61,10 @@ export default function DocumentForm({
             {title}
         </FormControl.Label>
     );
+
+    const handleNavigation = () => {
+        setIsOpen(true);
+    };
 
     return (
         <VStack w={scale(300) + "px"} mx="auto" py={4}>
@@ -95,7 +109,7 @@ export default function DocumentForm({
                 />
             </VStack>
 
-            <FormControl mt={2}>
+            <FormControl mb={2} mt={2}>
                 <FormLabel title="License Issue Country" />
 
                 <PickerButton
@@ -118,7 +132,7 @@ export default function DocumentForm({
                 )}
             </FormControl>
 
-            <FormControl mt={3}>
+            <FormControl mb={2} mt={3}>
                 <FormLabel title="License Number" />
                 <Input
                     fontSize={17}
@@ -176,12 +190,17 @@ export default function DocumentForm({
                     </Text>
                 </HStack>
                 <GradientBtn
-                    onPress={toggleColorMode}
+                    onPress={handleNavigation}
                     mt="5"
                     mb={8}
                     title="Continue"
                 />
             </Center>
+            <WarningModal
+                isVisible={isOpen}
+                setIsVisible={(visiblity) => setIsOpen(visiblity)}
+                variant={modalType}
+            />
         </VStack>
     );
 }
