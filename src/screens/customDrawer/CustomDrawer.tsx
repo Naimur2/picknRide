@@ -7,6 +7,7 @@ import { Instagram, Whatsapp } from "../../components/Icons/Icons";
 import Scroller from "../../components/Scroller/Scroller";
 import UserAvatar from "../../components/UserAvatar/UserAvatar";
 import DrawerBtn from "./components/DraweBtn/DrawerBtn";
+import { useNavigation } from "@react-navigation/native";
 
 interface IDrawerMenuItem {
     title: string;
@@ -15,6 +16,7 @@ interface IDrawerMenuItem {
 
 export default function CustomDrawer() {
     const Lg = Factory(LinearGradient);
+    const navigation = useNavigation();
 
     const drawermenu: IDrawerMenuItem[] = [
         {
@@ -27,7 +29,7 @@ export default function CustomDrawer() {
         },
         {
             title: "Ride History",
-            onPress: () => {},
+            onPress: () => navigation.navigate("RideHistory"),
         },
         {
             title: "Wallet",
@@ -35,7 +37,7 @@ export default function CustomDrawer() {
         },
         {
             title: "Cars",
-            onPress: () => {},
+            onPress: () => navigation.navigate("Cars"),
         },
         {
             title: "Notifications",

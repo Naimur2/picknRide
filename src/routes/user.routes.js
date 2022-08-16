@@ -5,13 +5,15 @@ import React from "react";
 import BackButton from "../components/BackButton/BackButton";
 import useUI from "../hooks/useUI";
 import CameraView from "../screens/CameraView/CameraView";
+import Cars from "../screens/Cars/Cars";
 import Dashboard from "../screens/Dashboard/Dashboard";
 import DocumentSubmission from "../screens/DocumentSubmission/DocumentSubmission";
+import RideHistory from "../screens/RideHistory/RideHistory";
 
 export default function UserRoute() {
     const Stack = createNativeStackNavigator();
     const { colorMode } = useColorMode();
-    const navigation = useNavigation();
+    
     
 
     return (
@@ -35,6 +37,14 @@ export default function UserRoute() {
             <Stack.Screen
                 name="CameraView"
                 component={CameraView}
+            />
+            <Stack.Screen
+                name="Cars"
+                component={Cars}
+            />
+            <Stack.Screen
+                name="RideHistory"
+                component={RideHistory}
             />
         </Stack.Navigator>
     );

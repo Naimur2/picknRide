@@ -5,19 +5,21 @@ import Wallet from "../../svgs/Wallet";
 export default function Balance({
     balance,
     onPress,
-    color,
+    iconColor,
+    textColor,
     currency,
 }: {
     onPress?: () => void;
     balance?: number;
-    color: string;
-    currency: string;
+    iconColor?: string;
+    textColor?: string;
+    currency?: string;
 }) {
     return (
         <Pressable onPress={onPress}>
             <HStack alignItems={"center"} space={2}>
-                <Wallet color={color || "white"} />
-                <Text fontWeight={500} color={color || "white"}>
+                <Wallet color={iconColor || "white"} />
+                <Text fontWeight={500} color={textColor || "white"}>
                     {balance || 50} {currency || "QAR"}
                 </Text>
             </HStack>
