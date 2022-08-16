@@ -9,12 +9,14 @@ import Scroller from "./../../components/Scroller/Scroller";
 export default function SplashSecond() {
     const navigation = useNavigation();
     return (
-        <Scroller
-            contentContainerStyle={{
-                flexGrow: 1,
-            }}
-        >
-            <ImageBg justifyContent={"center"} alignItems={"center"}>
+        <ImageBg>
+            <Scroller
+                contentContainerStyle={{
+                    flexGrow: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                }}
+            >
                 <Logo />
                 <Text
                     mt={"30%"}
@@ -35,7 +37,7 @@ export default function SplashSecond() {
                 >
                     <Next />
                 </Pressable>
-            </ImageBg>
-        </Scroller>
+            </Scroller>
+        </ImageBg>
     );
 }

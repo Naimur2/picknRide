@@ -3,6 +3,14 @@ import React from "react";
 import CountryPicker from "react-native-country-picker-modal";
 import { ChevronDownFill } from "../Icons/Icons";
 
+interface IPickCountry {
+    onSelect: (country: any) => void;
+    onChangeText: (text: string) => void;
+    value: string;
+    onFocus: () => void;
+    onBlur: () => void;
+}
+
 function PickCountry({
     onSelect,
     onChangeText,
@@ -10,7 +18,7 @@ function PickCountry({
     onFocus,
     onBlur,
     ...rest
-}) {
+}: IPickCountry) {
     const [show, setShow] = React.useState(false);
     const [countryCode, setCountryCode] = React.useState("974");
 
@@ -73,6 +81,8 @@ function PickCountry({
                         setCountryCode(country.callingCode);
                     }}
                     onClose={() => setShow(false)}
+                    withFilter={true}
+                    keyboardShouldPersistTaps="handled"
                 />
             )}
         </>
