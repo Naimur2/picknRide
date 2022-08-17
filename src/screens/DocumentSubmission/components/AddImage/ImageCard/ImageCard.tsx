@@ -60,22 +60,14 @@ export default function ImageCard({
                 </Text>
             </VStack>
 
-            <Actionsheet isOpen={isOpen} onClose={() => setIsOpen(false)}>
-                <Actionsheet.Content
-                    _dragIndicator={{
-                        bg: "light.200",
-                        borderRadius: 20,
-                    }}
-                    bg="#fff"
-                >
-                    <ImagePickerSheet
-                        setImage={(image) => {
-                            setIsOpen(false);
-                            setImage(image);
-                        }}
-                    />
-                </Actionsheet.Content>
-            </Actionsheet>
+            <ImagePickerSheet
+                setImage={(image) => {
+                    setIsOpen(false);
+                    setImage(image);
+                }}
+                isOpen={isOpen}
+                onClose={() => setIsOpen(false)}
+            />
         </>
     );
 }

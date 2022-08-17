@@ -14,6 +14,7 @@ import React from "react";
 import { TouchableOpacity } from "react-native";
 import CountryPicker from "react-native-country-picker-modal";
 import { scale } from "react-native-size-matters";
+import CheckBox from "../../../../components/CheckBox/CheckBox";
 import GradientBtn from "../../../../components/GradientBtn/GradientBtn";
 import { Tick } from "../../../../components/Icons/Icons";
 import OutlineButton from "../../../../components/OutlineButton/OutlineButton";
@@ -128,6 +129,7 @@ export default function DocumentForm({
                             setShow(false);
                             setCountry(dt);
                         }}
+                        withFilter
                     />
                 )}
             </FormControl>
@@ -169,17 +171,7 @@ export default function DocumentForm({
             <Center>
                 <HStack space="2" mt={12}>
                     <Touchable onPress={() => setTermAccept((prev) => !prev)}>
-                        {termAccept ? (
-                            <Tick color="primary.100" />
-                        ) : (
-                            <Box
-                                borderColor={"primary.100"}
-                                borderWidth={"2"}
-                                h="24px"
-                                w="24px"
-                                borderRadius={100}
-                            />
-                        )}
+                        <CheckBox isChecked={termAccept} />
                     </Touchable>
                     <Text
                         _dark={{

@@ -1,16 +1,17 @@
-import { useNavigation } from "@react-navigation/native";
 import { HStack, Image, Text, useColorMode, VStack } from "native-base";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { scale } from "react-native-size-matters";
 import { Telephone, Whatsapp } from "../../components/Icons/Icons";
 import Scroller from "../../components/Scroller/Scroller";
 import InputForm from "./components/InputForm/InputForm";
-const dark = require("../../../assets/images/background-map-dark.png");
-const light = require("../../../assets/images/background-map-light.png");
+
+import dark from "../../../assets/images/background-map-dark.png";
+import light from "../../../assets/images/background-map-light.png";
 
 export default function Register() {
     const { colorMode } = useColorMode();
-    const navigation = useNavigation();
+
     const insets = useSafeAreaInsets();
 
     return (
@@ -34,7 +35,7 @@ export default function Register() {
 
             <VStack
                 pt={20 + insets.top + "px"}
-                maxW={[370, 400]}
+                maxW={scale(320) + "px"}
                 w="full"
                 px={4}
                 pb={5}

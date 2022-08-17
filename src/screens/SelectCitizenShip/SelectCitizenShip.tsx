@@ -1,19 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
-import {
-    Box,
-    Button,
-    Factory,
-    HStack,
-    Pressable,
-    Text,
-    useColorMode,
-    VStack,
-} from "native-base";
+import { Button, Text, useColorMode, VStack } from "native-base";
 import React from "react";
-import { TouchableHighlight } from "react-native";
-import { Tick } from "../../components/Icons/Icons";
 import ImageBg from "../../components/ImageBg/ImageBg";
-import CheckBoxGroup from "./components/CheckBoxGroup";
+import CheckBoxGroup from "./components/CheckBoxGroup/CheckBoxGroup";
 
 export default function SelectCitizenShip() {
     const { colorMode } = useColorMode();

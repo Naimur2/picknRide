@@ -96,20 +96,27 @@ export default function CameraComp() {
     }, []);
 
     const handleFacesDetected = ({ faces }) => {
-        const winking =
-            !eyesShut &&
-            (face.rightEyeOpenProbability < 0.4 ||
-                face.leftEyeOpenProbability < 0.4);
-
         if (faces.length > 1 || faces.length === 0) {
             setWarning("Please only take one face");
             setFaceData(null);
             return;
-        }
-        if (!winking) {
-            setWarning("Please keep your face straight and blink your eyes");
-            setFaceData(null);
-            return;
+        } else {
+            const eyesShut =
+                faces?.[0].rightEyeOpenProbability < 0.4 &&
+                faces?.[0].leftEyeOpenProbability < 0.4;
+
+            const winking =
+                !eyesShut &&
+                (faces?.[0].rightEyeOpenProbability < 0.4 ||
+                    face.leftEyeOpenProbability < 0.4);
+
+            if (!winking) {
+                setWarning(
+                    "Please keep your face straight and blink your eyes"
+                );
+                setFaceData(null);
+                return;
+            }
         }
         setWarning(null);
         setFaceData(faces[0]);
@@ -144,7 +151,7 @@ export default function CameraComp() {
                         alignItems="center"
                         justifyContent="center"
                     >
-                        <Text fontSize={16} fontWeight={600}>
+                        <Text fontSize={16} color={"#fff"} fontWeight={600}>
                             00:{timer < 10 ? "0" + timer : timer}
                         </Text>
                     </HStack>
@@ -160,7 +167,7 @@ export default function CameraComp() {
                         bg={"transparent"}
                         onPress={!isRecording ? recordVideo : null}
                         borderWidth={2}
-                        borderColor={"gray.100"}
+                        borderColor={"#fff"}
                         borderRadius={40}
                         overflow="hidden"
                         padding={1}
