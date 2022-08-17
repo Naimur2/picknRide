@@ -1,18 +1,36 @@
 import { Avatar, Pressable } from "native-base";
 import React from "react";
 
-export default function UserAvatar() {
+export default function UserAvatar({
+    isActive = true,
+    onPress,
+    image,
+    uname,
+    ...rest
+}: {
+    isActive: boolean;
+    image: string;
+    onPress: () => void;
+    uname;
+}) {
     return (
-        <Pressable>
+        <Pressable onPress={onPress} {...rest}>
             <Avatar
                 source={{
-                    uri: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                    uri: image,
                 }}
                 borderWidth={3}
                 borderColor="white"
             >
-                SS
-                <Avatar.Badge bg="green.500" />
+                {uname || "NA"}
+                {isActive ? (
+                    <Avatar.Badge
+                        right={0}
+                        bottom={-4}
+                        borderColor={"#fff"}
+                        bg="green.500"
+                    />
+                ) : null}
             </Avatar>
         </Pressable>
     );

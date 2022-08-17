@@ -8,10 +8,12 @@ import UserAvatar from "../../components/UserAvatar/UserAvatar";
 import Toggler from "../../svgs/Toggler";
 import DashModal from "./component/DashModal/DashModal";
 import VeichleCards from "./component/VeichleCards/VeichleCards";
+import useAuth from "../../hooks/useAuth";
 
 export default function Dashboard() {
     const navigation = useNavigation();
     const { colorMode } = useColorMode();
+    const { user } = useAuth();
 
     React.useEffect(() => {
         navigation.setOptions({
@@ -28,7 +30,12 @@ export default function Dashboard() {
                     }}
                 />
             ),
-            headerRight: () => <UserAvatar />,
+            headerRight: () => (
+                <UserAvatar
+                    image={user?.image}
+                    uname={user?.name?.slice(0, 1)}
+                />
+            ),
         });
     }, [navigation]);
 

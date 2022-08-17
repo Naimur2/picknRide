@@ -12,9 +12,10 @@ export default function CheckBoxWithText({
     isChecked,
     onPress,
     text,
+    ...rest
 }: ITextCheckboxProps) {
     return (
-        <Pressable onPress={onPress}>
+        <Pressable onPress={onPress} {...rest}>
             <HStack justifyContent={"space-between"} alignItems="center" py={2}>
                 <Text
                     color={"#000"}

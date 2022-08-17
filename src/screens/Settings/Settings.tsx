@@ -15,37 +15,37 @@ import SettingsMenu, {
 import ThemeToggler from "./components/ThemeToggler/ThemeToggler";
 import HeaderTitle from "../../components/HeaderTitle/HeaderTitle";
 
-const settingsMenus: ISettingsMenu[] = [
-    {
-        title: "Notifications",
-        onPress: () => {},
-    },
-    {
-        title: "Account Verification Status",
-        onPress: () => {},
-    },
-    {
-        title: "Change Password",
-        onPress: () => {},
-    },
-    {
-        title: "Privacy Policy",
-        onPress: () => {},
-    },
-    {
-        title: "Terms & Conditions",
-        onPress: () => {},
-    },
-    {
-        title: "Report An Issue",
-        onPress: () => {},
-    },
-];
-
 export default function RideHistory() {
     const navigation = useNavigation();
     const { colorMode } = useColorMode();
     const insets = useSafeAreaInsets();
+
+    const settingsMenus: ISettingsMenu[] = [
+        {
+            title: "Notifications",
+            onPress: () => navigation.navigate("Notifications"),
+        },
+        {
+            title: "Account Verification Status",
+            onPress: () => {},
+        },
+        {
+            title: "Change Password",
+            onPress: () => {},
+        },
+        {
+            title: "Privacy Policy",
+            onPress: () => {},
+        },
+        {
+            title: "Terms & Conditions",
+            onPress: () => {},
+        },
+        {
+            title: "Report An Issue",
+            onPress: () => {},
+        },
+    ];
 
     React.useLayoutEffect(() => {
         navigation.setOptions({

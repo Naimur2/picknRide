@@ -34,3 +34,10 @@ export interface ILinearProps {
     flexDirection?: "row" | "column" | "row-reverse" | "column-reverse";
     flexWrap?: "wrap" | "nowrap" | "wrap-reverse";
 }
+
+export interface IUser {
+    _id: string;
+    name: string;
+    email?: string;
+    image?: string;
+}

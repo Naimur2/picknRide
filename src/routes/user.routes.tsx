@@ -8,6 +8,7 @@ import CameraView from "../screens/CameraView/CameraView";
 import Cars from "../screens/Cars/Cars";
 import Dashboard from "../screens/Dashboard/Dashboard";
 import DocumentSubmission from "../screens/DocumentSubmission/DocumentSubmission";
+import Notifications from "../screens/Notifications/Notifications";
 import RideHistory from "../screens/RideHistory/RideHistory";
 import Settings from "../screens/Settings/Settings";
 
@@ -52,6 +53,10 @@ export default function UserRoute() {
             <Stack.Screen
                 name="Settings"
                 component={Settings}
+            />
+            <Stack.Screen
+                name="Notifications"
+                component={Notifications}
             />
         </Stack.Navigator>
     );

@@ -2,14 +2,6 @@ import React from "react";
 import { AuthContext } from "../context/contexts";
 import { IAuthProviderProps } from "../interfaces/context";
 
-interface AuthProviderProps {
-    isAuthenciated: boolean;
-    user: any;
-    login: (user: any) => void;
-    logout: () => void;
-    register: (user: any) => void;
-}
-
 export default function useAuth() {
     const authCtx = React.useContext(AuthContext);
 
@@ -21,11 +13,13 @@ export default function useAuth() {
         register,
     }: IAuthProviderProps = authCtx;
 
-    return {
+    const authProps: IAuthProviderProps = {
         isAuthenciated,
         user,
         login,
         logout,
         register,
     };
+
+    return authProps;
 }

@@ -8,6 +8,7 @@ import Scroller from "../../components/Scroller/Scroller";
 import UserAvatar from "../../components/UserAvatar/UserAvatar";
 import DrawerBtn from "./components/DraweBtn/DrawerBtn";
 import { useNavigation } from "@react-navigation/native";
+import useAuth from "../../hooks/useAuth";
 
 interface IDrawerMenuItem {
     title: string;
@@ -17,6 +18,7 @@ interface IDrawerMenuItem {
 export default function CustomDrawer() {
     const Lg = Factory(LinearGradient);
     const navigation = useNavigation();
+    const { user } = useAuth();
 
     const drawermenu: IDrawerMenuItem[] = [
         {
@@ -76,7 +78,10 @@ export default function CustomDrawer() {
                     alignItems="center"
                     justifyContent={"space-between"}
                 >
-                    <UserAvatar />
+                    <UserAvatar
+                        image={user?.image}
+                        uname={user?.name?.slice(0, 1)}
+                    />
                     <Balance balance={50} currency={"QAR"} />
                 </HStack>
                 <VStack mt={10}>

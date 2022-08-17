@@ -1,6 +1,7 @@
+import { IUser } from "./index";
 export interface IAuthProviderProps {
     isAuthenciated: boolean;
-    user: any;
+    user: IUser;
     login: (user: any) => void;
     logout: () => void;
     register: (user: any) => void;
