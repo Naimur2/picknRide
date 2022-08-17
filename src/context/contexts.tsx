@@ -1,7 +1,8 @@
 import React from "react";
+import { IAuthProviderProps } from "../interfaces/context";
 
-export const AuthContext = React.createContext({
-    isLoggedIn: false,
+export const AuthContext = React.createContext<IAuthProviderProps>({
+    isAuthenciated: true,
     user: null,
     login: () => {},
     logout: () => {},

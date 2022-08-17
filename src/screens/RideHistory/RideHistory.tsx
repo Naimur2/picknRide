@@ -6,6 +6,7 @@ import Balance from "../../components/Balance/Balance";
 import CarCard from "../../components/CarCard/CarCard";
 import ImageBg from "../../components/ImageBg/ImageBg";
 import Scroller from "../../components/Scroller/Scroller";
+import { TOP_PADDING } from "../../helper/final";
 
 export default function RideHistory() {
     const navigation = useNavigation();
@@ -78,7 +79,7 @@ export default function RideHistory() {
             >
                 <VStack
                     space={4}
-                    mt={80 + insets.top + "px"}
+                    mt={TOP_PADDING + insets.top + "px"}
                     px="4"
                     pb={8}
                     h="full"

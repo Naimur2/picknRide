@@ -9,9 +9,12 @@ import Cars from "../screens/Cars/Cars";
 import Dashboard from "../screens/Dashboard/Dashboard";
 import DocumentSubmission from "../screens/DocumentSubmission/DocumentSubmission";
 import RideHistory from "../screens/RideHistory/RideHistory";
+import Settings from "../screens/Settings/Settings";
+
+const Stack = createNativeStackNavigator();
+
 
 export default function UserRoute() {
-    const Stack = createNativeStackNavigator();
     const { colorMode } = useColorMode();
     
     
@@ -45,6 +48,10 @@ export default function UserRoute() {
             <Stack.Screen
                 name="RideHistory"
                 component={RideHistory}
+            />
+            <Stack.Screen
+                name="Settings"
+                component={Settings}
             />
         </Stack.Navigator>
     );

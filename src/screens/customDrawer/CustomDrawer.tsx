@@ -45,7 +45,7 @@ export default function CustomDrawer() {
         },
         {
             title: "Settings",
-            onPress: () => {},
+            onPress: () => navigation.navigate("Settings"),
         },
         {
             title: "Report An Issue",

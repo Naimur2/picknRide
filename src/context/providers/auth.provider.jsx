@@ -2,7 +2,7 @@ import React from "react";
 import { AuthContext } from "../contexts";
 
 const defaultState = {
-    isLoggedIn: false,
+    isAuthenciated: true,
     user: null,
 };
 
@@ -11,13 +11,13 @@ const reducer = (state, action) => {
         case "LOGIN":
             return {
                 ...state,
-                isLoggedIn: true,
+                isAuthenciated: true,
                 user: action.payload,
             };
         case "LOGOUT":
             return {
                 ...state,
-                isLoggedIn: false,
+                isAuthenciated: false,
                 user: null,
             };
         default:
@@ -41,7 +41,7 @@ export default function AuthProvider({ children }) {
             dispatch({ type: "LOGIN", payload: user });
         };
         return {
-            isLoggedIn: state.isLoggedIn,
+            isAuthenciated: state.isAuthenciated,
             user: state.user,
             login,
             logout,
