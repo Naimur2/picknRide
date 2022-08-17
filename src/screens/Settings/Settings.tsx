@@ -1,12 +1,46 @@
 import { useNavigation } from "@react-navigation/native";
-import { Text, useColorMode, VStack, HStack } from "native-base";
+import { Image, Text, useColorMode, VStack } from "native-base";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import scooterBoy from "../../../assets/images/scooter-boy.png";
+import scooterBoyDark from "../../../assets/images/scooter-boy-dark.png";
 import Balance from "../../components/Balance/Balance";
 import Card from "../../components/Card/Card";
 import ImageBg from "../../components/ImageBg/ImageBg";
 import Scroller from "../../components/Scroller/Scroller";
 import { TOP_PADDING } from "../../helper/final";
+import SettingsMenu, {
+    ISettingsMenu,
+} from "./components/SettingsMenu/SettingsMenu";
+import ThemeToggler from "./components/ThemeToggler/ThemeToggler";
+import HeaderTitle from "../../components/HeaderTitle/HeaderTitle";
+
+const settingsMenus: ISettingsMenu[] = [
+    {
+        title: "Notifications",
+        onPress: () => {},
+    },
+    {
+        title: "Account Verification Status",
+        onPress: () => {},
+    },
+    {
+        title: "Change Password",
+        onPress: () => {},
+    },
+    {
+        title: "Privacy Policy",
+        onPress: () => {},
+    },
+    {
+        title: "Terms & Conditions",
+        onPress: () => {},
+    },
+    {
+        title: "Report An Issue",
+        onPress: () => {},
+    },
+];
 
 export default function RideHistory() {
     const navigation = useNavigation();
@@ -15,16 +49,7 @@ export default function RideHistory() {
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
-            headerTitle: () => (
-                <Text
-                    textTransform={"uppercase"}
-                    color={"#000"}
-                    fontSize={17}
-                    fontWeight={700}
-                >
-                    Settings
-                </Text>
-            ),
+            headerTitle: () => <HeaderTitle title="Settings" />,
             headerTitleAlign: "center",
             headerLeft: null,
             headerRight: () => (
@@ -41,19 +66,27 @@ export default function RideHistory() {
                 }}
             >
                 <VStack
-                    space={4}
+                    space={6}
                     mt={TOP_PADDING + insets.top + "px"}
-                    px="4"
+                    px="6"
                     pb={8}
                     h="full"
                 >
+                    <ThemeToggler />
                     <Card>
-                        <HStack>
-                            <Text fontWeight={600} fontSize={15}>
-                                Dark Mode
-                            </Text>
-                        </HStack>
+                        {settingsMenus.map((menu, index) => (
+                            <SettingsMenu key={index} {...menu} />
+                        ))}
                     </Card>
+
+                    <Image
+                        alt="a boy with scotter"
+                        source={scooterBoy}
+                        _dark={{
+                            source: scooterBoyDark,
+                        }}
+                        mx="auto"
+                    />
                 </VStack>
             </Scroller>
         </ImageBg>

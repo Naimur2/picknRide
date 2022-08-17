@@ -19,7 +19,13 @@ export default function Balance({
         <Pressable onPress={onPress}>
             <HStack alignItems={"center"} space={2}>
                 <Wallet color={iconColor || "white"} />
-                <Text fontWeight={500} color={textColor || "white"}>
+                <Text
+                    fontWeight={500}
+                    color={textColor || "white"}
+                    _dark={{
+                        color: "#fff",
+                    }}
+                >
                     {balance || 50} {currency || "QAR"}
                 </Text>
             </HStack>

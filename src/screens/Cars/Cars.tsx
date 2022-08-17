@@ -15,16 +15,7 @@ export default function Cars() {
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
-            headerTitle: () => (
-                <Text
-                    textTransform={"uppercase"}
-                    color={"#000"}
-                    fontSize={17}
-                    fontWeight={700}
-                >
-                    Cars
-                </Text>
-            ),
+            headerTitle: () => <HeaderTitle title="Cars" />,
             headerTitleAlign: "center",
             headerLeft: null,
             headerRight: () => (
@@ -88,7 +79,7 @@ export default function Cars() {
                 <VStack
                     space={4}
                     mt={TOP_PADDING + insets.top + "px"}
-                    px="4"
+                    px="6"
                     pb={8}
                     h="full"
                 >
