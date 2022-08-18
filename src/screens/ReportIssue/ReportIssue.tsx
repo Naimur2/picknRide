@@ -1,19 +1,51 @@
 import { useNavigation } from "@react-navigation/native";
-import { HStack, useColorMode, VStack, Text } from "native-base";
+import { HStack, useColorMode, VStack, Text, Input } from "native-base";
 import React from "react";
-import Animated from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import HeaderTitle from "../../components/HeaderTitle/HeaderTitle";
 import ImageBg from "../../components/ImageBg/ImageBg";
 import Scroller from "../../components/Scroller/Scroller";
 import { TOP_PADDING } from "../../helper/final";
-import Veichle from "../../svgs/Veichle";
-import colors from "../../theme-config/colors";
+import TopSelection from "./components/TopSelection/TopSelection";
+import Card from "../../components/Card/Card";
+import { UploadIcon } from "../../components/Icons/Icons";
+import GradientBtn from "../../components/GradientBtn/GradientBtn";
+import ImagePickerSheet from "../../components/ImagePickerSheet/ImagePickerSheet";
+import CModal from "../../components/CModal/CModal";
+import ReportContent from "./components/ReportContent/ReportContent";
+
+export interface ISelection {
+    _id: string;
+    icon: string;
+    title: string;
+}
+
+const selections: ISelection[] = [
+    {
+        _id: 1,
+        title: "Veichle",
+        icon: "veichle",
+    },
+    {
+        _id: 2,
+        title: "Lock",
+        icon: "lock",
+    },
+    {
+        _id: 3,
+        title: "Mobile App",
+        icon: "mobileApp",
+    },
+    {
+        _id: 4,
+        title: "Other",
+        icon: "search",
+    },
+];
 
 export default function ReportIssue() {
     const navigation = useNavigation();
     const { colorMode } = useColorMode();
-    const insets = useSafeAreaInsets();
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -24,33 +56,16 @@ export default function ReportIssue() {
     }, [navigation]);
 
     return (
-        <ImageBg flex={1} type={colorMode}>
-            <Scroller
-                contentStyle={{
-                    flexGrow: 1,
-                }}
-            >
-                <VStack
-                    space={6}
-                    mt={TOP_PADDING + insets.top + "px"}
-                    px="6"
-                    pb={8}
-                    h="full"
-                >
-                    <HStack>
-                        <Animated.View
-                            style={{
-                                width: "25%",
-                                backgroundColor: colors.primary[100],
-                                padding: 10,
-                            }}
-                        >
-                            <Veichle color={"#fff"} />
-                            <Text>Vehicle</Text>
-                        </Animated.View>
-                    </HStack>
-                </VStack>
-            </Scroller>
-        </ImageBg>
+        <Scroller
+            contentStyle={{
+                flexGrow: 1,
+            }}
+            bg="light.300"
+            _dark={{
+                bg: "dark.100",
+            }}
+        >
+            <ReportContent selections={selections} />
+        </Scroller>
     );
 }

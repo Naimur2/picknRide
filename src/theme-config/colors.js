@@ -18,13 +18,16 @@ const colors = {
     light: {
         100: "#D0D0D0",
         200: "#E3E3E3",
+        300: "#F5F5F5",
     },
     green: {
         100: "#CBE6B850",
         200: "#52BF0416",
         300: "#A9C198",
-       
     },
+    dark:{
+        100: "#000000",
+    }
 };
 
 export const gradient = {

@@ -85,37 +85,39 @@ export default function Notifications() {
     }, [navigation]);
 
     return (
-        <ImageBg flex={1} type={colorMode}>
-            <Scroller
-                contentStyle={{
-                    flexGrow: 1,
-                }}
+        <Scroller
+            contentStyle={{
+                flexGrow: 1,
+            }}
+            bg="light.300"
+            _dark={{
+                bg: "dark.100",
+            }}
+        >
+            <VStack
+                space={12}
+                mt={TOP_PADDING + insets.top + "px"}
+                px="6"
+                pb={8}
+                h="full"
             >
-                <VStack
-                    space={12}
-                    mt={TOP_PADDING + insets.top + "px"}
-                    px="6"
-                    pb={8}
-                    h="full"
-                >
-                    <VStack>
-                        <H3>General Setings</H3>
-                        <SwitchNotifications />
-                    </VStack>
-                    <VStack>
-                        <H3>Notify About</H3>
-                        <NotifyAbout />
-                    </VStack>
-
-                    {natifications?.map((item, index) => (
-                        <NewNotification
-                            key={item?.title + index}
-                            data={item?.data}
-                            title={item?.title}
-                        />
-                    ))}
+                <VStack>
+                    <H3>General Setings</H3>
+                    <SwitchNotifications />
                 </VStack>
-            </Scroller>
-        </ImageBg>
+                <VStack>
+                    <H3>Notify About</H3>
+                    <NotifyAbout />
+                </VStack>
+
+                {natifications?.map((item, index) => (
+                    <NewNotification
+                        key={item?.title + index.toString()}
+                        data={item?.data}
+                        title={item?.title}
+                    />
+                ))}
+            </VStack>
+        </Scroller>
     );
 }

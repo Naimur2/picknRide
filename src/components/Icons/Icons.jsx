@@ -139,6 +139,7 @@ export const UploadIcon = Factory((props) => {
         />
     );
 });
+
 export const Instagram = Factory((props) => {
     return (
         <Feather

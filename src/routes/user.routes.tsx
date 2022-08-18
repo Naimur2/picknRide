@@ -10,6 +10,7 @@ import DocumentSubmission from "../screens/DocumentSubmission/DocumentSubmission
 import Notifications from "../screens/Notifications/Notifications";
 import RideHistory from "../screens/RideHistory/RideHistory";
 import Settings from "../screens/Settings/Settings";
+import VarificationStatus from "../screens/VarificationStatus/VarificationStatus";
 
 const Stack = createNativeStackNavigator();
 
@@ -40,6 +41,10 @@ export default function UserRoutes() {
             <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="Notifications" component={Notifications} />
             <Stack.Screen name="ReportIssue" component={ReportIssue} />
+            <Stack.Screen
+                name="VarificationStatus"
+                component={VarificationStatus}
+            />
         </Stack.Navigator>
     );
 }

@@ -12,6 +12,12 @@ export default function GradientBtn({
     gradientStyle,
     titleStyle,
     ...rest
+}: {
+    title: string,
+    onPress: () => void,
+    children?: any,
+    gradientStyle?: any,
+    titleStyle?: any,
 }) {
     const LinearGard = Factory(LinearGradient);
     const Touchable = Factory(TouchableOpacity);

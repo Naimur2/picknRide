@@ -17,8 +17,13 @@ const NewNotification = (props: INotification) => {
                 {props?.title ? moment(props?.title).format("MMM Do YY") : ""}
             </H3>
             <VStack space={4}>
-                {props?.data?.map((item) => (
+                {props?.data?.map((item, index) => (
                     <NotificationsCard
+                        key={
+                            item?.title +
+                            item?.data?.length.toString() +
+                            index.toString()
+                        }
                         user={item?.user}
                         description={item?.description}
                         dateTime={

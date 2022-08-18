@@ -27,7 +27,7 @@ export default function Settings() {
         },
         {
             title: "Account Verification Status",
-            onPress: () => {},
+            onPress: () => navigation.navigate("VarificationStatus"),
         },
         {
             title: "Change Password",
@@ -59,36 +59,38 @@ export default function Settings() {
     }, [navigation]);
 
     return (
-        <ImageBg flex={1} type={colorMode}>
-            <Scroller
-                contentStyle={{
-                    flexGrow: 1,
-                }}
+        <Scroller
+            contentStyle={{
+                flexGrow: 1,
+            }}
+            bg="light.300"
+            _dark={{
+                bg: "dark.100",
+            }}
+        >
+            <VStack
+                space={6}
+                mt={TOP_PADDING + insets.top + "px"}
+                px="6"
+                pb={8}
+                h="full"
             >
-                <VStack
-                    space={6}
-                    mt={TOP_PADDING + insets.top + "px"}
-                    px="6"
-                    pb={8}
-                    h="full"
-                >
-                    <ThemeToggler />
-                    <Card>
-                        {settingsMenus.map((menu, index) => (
-                            <SettingsMenu key={index} {...menu} />
-                        ))}
-                    </Card>
+                <ThemeToggler />
+                <Card>
+                    {settingsMenus.map((menu, index) => (
+                        <SettingsMenu key={index} {...menu} />
+                    ))}
+                </Card>
 
-                    <Image
-                        alt="a boy with scotter"
-                        source={scooterBoy}
-                        _dark={{
-                            source: scooterBoyDark,
-                        }}
-                        mx="auto"
-                    />
-                </VStack>
-            </Scroller>
-        </ImageBg>
+                <Image
+                    alt="a boy with scotter"
+                    source={scooterBoy}
+                    _dark={{
+                        source: scooterBoyDark,
+                    }}
+                    mx="auto"
+                />
+            </VStack>
+        </Scroller>
     );
 }
