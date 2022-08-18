@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Button, Factory, HStack, Text, VStack } from "native-base";
 import React from "react";
@@ -6,9 +7,8 @@ import Balance from "../../components/Balance/Balance";
 import { Instagram, Whatsapp } from "../../components/Icons/Icons";
 import Scroller from "../../components/Scroller/Scroller";
 import UserAvatar from "../../components/UserAvatar/UserAvatar";
-import DrawerBtn from "./components/DraweBtn/DrawerBtn";
-import { useNavigation } from "@react-navigation/native";
 import useAuth from "../../hooks/useAuth";
+import DrawerBtn from "./components/DraweBtn/DrawerBtn";
 
 interface IDrawerMenuItem {
     title: string;
@@ -79,7 +79,7 @@ export default function CustomDrawer() {
                     justifyContent={"space-between"}
                 >
                     <UserAvatar
-                        image={user?.image}
+                        image={user?.avatar}
                         uname={user?.name?.slice(0, 1)}
                     />
                     <Balance balance={50} currency={"QAR"} />

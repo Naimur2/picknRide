@@ -7,14 +7,14 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function App() {
     return (
-        <AuthProvider>
-            <SafeAreaProvider>
-                <NavigationContainer>
+        <SafeAreaProvider>
+            <NavigationContainer>
+                <AuthProvider>
                     <ThemeConFig>
                         <Main />
                     </ThemeConFig>
-                </NavigationContainer>
-            </SafeAreaProvider>
-        </AuthProvider>
+                </AuthProvider>
+            </NavigationContainer>
+        </SafeAreaProvider>
     );
 }
