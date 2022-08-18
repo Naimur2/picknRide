@@ -43,7 +43,7 @@ export default function Settings() {
         },
         {
             title: "Report An Issue",
-            onPress: () => {},
+            onPress: () => navigation.navigate("ReportIssue"),
         },
     ];
 
