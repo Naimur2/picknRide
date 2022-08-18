@@ -8,17 +8,12 @@ import HeaderTitle from "../../components/HeaderTitle/HeaderTitle";
 import ImageBg from "../../components/ImageBg/ImageBg";
 import Scroller from "../../components/Scroller/Scroller";
 import { TOP_PADDING } from "../../helper/final";
-import NotificationsCard, {
-    INotificationsCard,
-} from "./components/NotificationsCard/NotificationsCard";
+import H3 from "./components/H3/H3";
+import NewNotification, {
+    INotification,
+} from "./components/NewNotification/NewNotification";
 import NotifyAbout from "./components/NotifyAbout/NotifyAbout";
 import SwitchNotifications from "./components/SwitchNotifications/SwitchNotifications";
-import moment from "moment";
-
-interface INotification {
-    title: string | Date;
-    data: INotificationsCard[];
-}
 
 const natifications: INotification[] = [
     {
@@ -89,46 +84,6 @@ export default function Notifications() {
         });
     }, [navigation]);
 
-    const H3 = ({ children }: { children: React.ReactNode }) => (
-        <Text
-            fontWeight={600}
-            fontSize={scale(20)}
-            _dark={{
-                color: "#fff",
-            }}
-            mb={4}
-            color="#000"
-        >
-            {children}
-        </Text>
-    );
-
-    const Notification = (props: INotification) => {
-        console.log(props);
-        return (
-            <VStack>
-                <H3>
-                    {props?.title
-                        ? moment(props?.title).format("MMM Do YY")
-                        : ""}
-                </H3>
-                <VStack space={4}>
-                    {props?.data?.map((item) => (
-                        <NotificationsCard
-                            user={item?.user}
-                            description={item?.description}
-                            dateTime={
-                                item?.dateTime
-                                    ? moment(item?.dateTime).fromNow()
-                                    : ""
-                            }
-                        />
-                    ))}
-                </VStack>
-            </VStack>
-        );
-    };
-
     return (
         <ImageBg flex={1} type={colorMode}>
             <Scroller
@@ -153,10 +108,10 @@ export default function Notifications() {
                     </VStack>
 
                     {natifications?.map((item, index) => (
-                        <Notification
-                            key={item.title + index}
-                            data={item.data}
-                            title={item.title}
+                        <NewNotification
+                            key={item?.title + index}
+                            data={item?.data}
+                            title={item?.title}
                         />
                     ))}
                 </VStack>

@@ -4,6 +4,7 @@ import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Balance from "../../components/Balance/Balance";
 import CarCard from "../../components/CarCard/CarCard";
+import HeaderTitle from "../../components/HeaderTitle/HeaderTitle";
 import ImageBg from "../../components/ImageBg/ImageBg";
 import Scroller from "../../components/Scroller/Scroller";
 import { TOP_PADDING } from "../../helper/final";

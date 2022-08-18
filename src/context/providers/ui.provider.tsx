@@ -21,7 +21,7 @@ const reducer = (state, action) => {
     }
 };
 
-export default function AuthProvider({ children }) {
+export default function UIProvider({ children }) {
     const [state, dispatch] = React.useReducer(reducer, defaultState);
 
     const value = React.useMemo(() => {

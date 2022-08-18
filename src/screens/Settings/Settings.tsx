@@ -15,7 +15,7 @@ import SettingsMenu, {
 import ThemeToggler from "./components/ThemeToggler/ThemeToggler";
 import HeaderTitle from "../../components/HeaderTitle/HeaderTitle";
 
-export default function RideHistory() {
+export default function Settings() {
     const navigation = useNavigation();
     const { colorMode } = useColorMode();
     const insets = useSafeAreaInsets();
