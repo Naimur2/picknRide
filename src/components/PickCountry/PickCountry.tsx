@@ -83,6 +83,7 @@ function PickCountry({
                     onClose={() => setShow(false)}
                     withFilter={true}
                     keyboardShouldPersistTaps="handled"
+                    key={countryCode}
                 />
             )}
         </>
