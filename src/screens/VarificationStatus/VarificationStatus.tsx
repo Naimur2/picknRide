@@ -7,6 +7,7 @@ import HeaderTitle from "../../components/HeaderTitle/HeaderTitle";
 import Scroller from "../../components/Scroller/Scroller";
 import { TOP_PADDING } from "../../helper/final";
 import VerifyStatusCard from "./components/VerifyStatusCard/VerifyStatusCard";
+import { scale } from "react-native-size-matters";
 
 export interface INotificationsList {
     _id?: string;
@@ -73,6 +74,8 @@ export default function VarificationStatus() {
                 px="6"
                 pb={8}
                 h="full"
+                maxWidth={scale(500)}
+                mx="auto"
             >
                 {varifyStatusList?.map((item) => (
                     <VerifyStatusCard

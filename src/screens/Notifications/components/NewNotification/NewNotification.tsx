@@ -1,9 +1,9 @@
+import moment from "moment";
+import { VStack } from "native-base";
+import H3 from "../../../../components/H3/H3";
 import NotificationsCard, {
     INotificationsCard,
 } from "../NotificationsCard/NotificationsCard";
-import { VStack } from "native-base";
-import H3 from "../H3/H3";
-import moment from "moment";
 
 export interface INotification {
     title: string | Date;

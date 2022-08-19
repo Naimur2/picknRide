@@ -84,6 +84,7 @@ export default function AddCards() {
                             fontSize={17}
                             fontWeight={600}
                             variant="underlined"
+                            borderBottomColor={"light.200"}
                             placeholder="Enter name"
                             placeholderTextColor="gray.300"
                             _dark={{
@@ -109,6 +110,7 @@ export default function AddCards() {
                             fontSize={17}
                             fontWeight={600}
                             variant="underlined"
+                            borderBottomColor={"light.200"}
                             placeholder="0000 0000 0000 0000"
                             placeholderTextColor="gray.300"
                             _dark={{
@@ -136,6 +138,7 @@ export default function AddCards() {
                                 fontSize={17}
                                 fontWeight={600}
                                 variant="underlined"
+                                borderBottomColor={"light.200"}
                                 placeholder="01/2020"
                                 placeholderTextColor="gray.300"
                                 _dark={{
@@ -164,6 +167,7 @@ export default function AddCards() {
                                 fontSize={17}
                                 fontWeight={600}
                                 variant="underlined"
+                                borderBottomColor={"light.200"}
                                 placeholder="000"
                                 placeholderTextColor="gray.300"
                                 _dark={{

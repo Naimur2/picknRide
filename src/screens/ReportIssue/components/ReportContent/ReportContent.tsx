@@ -9,6 +9,7 @@ import { ISelection } from "../../ReportIssue";
 import { TOP_PADDING } from "../../../../helper/final";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CModal from "../../../../components/CModal/CModal";
+import { scale } from "react-native-size-matters";
 
 export default function ReportContent({
     selections,
@@ -25,7 +26,15 @@ export default function ReportContent({
     const selectedImage = image?.split("/").pop();
 
     return (
-        <VStack space={6} mt={TOP_PADDING + "px"} px="6" pb={8} h="full">
+        <VStack
+            space={6}
+            mt={TOP_PADDING + "px"}
+            px="6"
+            pb={8}
+            h="full"
+            maxWidth={scale(500)}
+            mx="auto"
+        >
             <HStack justifyContent={"space-between"}>
                 {selections?.map((selection, id) => (
                     <TopSelection

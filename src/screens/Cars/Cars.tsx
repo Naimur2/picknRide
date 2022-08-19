@@ -8,6 +8,7 @@ import HeaderTitle from "../../components/HeaderTitle/HeaderTitle";
 import ImageBg from "../../components/ImageBg/ImageBg";
 import Scroller from "../../components/Scroller/Scroller";
 import { TOP_PADDING } from "../../helper/final";
+import { scale } from "react-native-size-matters";
 
 export default function Cars() {
     const navigation = useNavigation();
@@ -83,6 +84,8 @@ export default function Cars() {
                     px="6"
                     pb={8}
                     h="full"
+                    maxWidth={scale(500)}
+                    mx="auto"
                 >
                     {cars.map((car, index) => (
                         <CarCard

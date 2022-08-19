@@ -22,13 +22,17 @@ import {
 
 import * as SplashScreen from "expo-splash-screen";
 
-import { Center, NativeBaseProvider, Spinner, StatusBar } from "native-base";
+import { NativeBaseProvider, StatusBar } from "native-base";
 import React from "react";
 import theme from "./config";
 
 SplashScreen.preventAutoHideAsync();
 
-export default function ThemeConFig({ children }) {
+export default function ThemeConFig({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
     let [fontsLoaded] = useFonts({
         Montserrat_100Thin,
         Montserrat_200ExtraLight,

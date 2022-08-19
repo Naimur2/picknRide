@@ -86,6 +86,7 @@ export default function DocumentForm({
                     fontSize={17}
                     fontWeight={600}
                     variant="underlined"
+                    borderBottomColor={"light.200"}
                     placeholder="Enter Id"
                     placeholderTextColor="gray.300"
                     _dark={{
@@ -141,6 +142,7 @@ export default function DocumentForm({
                     fontWeight={600}
                     variant="underlined"
                     placeholder="Enter Id"
+                    borderBottomColor={"light.200"}
                     placeholderTextColor="gray.300"
                     _dark={{
                         color: "#fff",

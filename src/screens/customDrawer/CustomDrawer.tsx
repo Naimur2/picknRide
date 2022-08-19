@@ -35,7 +35,7 @@ export default function CustomDrawer() {
         },
         {
             title: "Wallet",
-            onPress: () => {},
+            onPress: () => navigation.navigate("Wallet"),
         },
         {
             title: "Cars",
@@ -43,7 +43,7 @@ export default function CustomDrawer() {
         },
         {
             title: "Notifications",
-            onPress: () => {},
+            onPress: () => navigation.navigate("Notifications"),
         },
         {
             title: "Settings",
@@ -51,7 +51,7 @@ export default function CustomDrawer() {
         },
         {
             title: "Report An Issue",
-            onPress: () => {},
+            onPress: () => navigation.navigate("ReportIssue"),
         },
         {
             title: "Special Rate",

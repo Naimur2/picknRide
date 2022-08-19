@@ -14,10 +14,10 @@ import SettingsMenu, {
 } from "./components/SettingsMenu/SettingsMenu";
 import ThemeToggler from "./components/ThemeToggler/ThemeToggler";
 import HeaderTitle from "../../components/HeaderTitle/HeaderTitle";
+import { scale } from "react-native-size-matters";
 
 export default function Settings() {
     const navigation = useNavigation();
-    const { colorMode } = useColorMode();
     const insets = useSafeAreaInsets();
 
     const settingsMenus: ISettingsMenu[] = [
@@ -74,6 +74,8 @@ export default function Settings() {
                 px="6"
                 pb={8}
                 h="full"
+                maxWidth={scale(500)}
+                mx="auto"
             >
                 <ThemeToggler />
                 <Card>

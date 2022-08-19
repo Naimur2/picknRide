@@ -1,19 +1,19 @@
 import { useNavigation } from "@react-navigation/native";
-import { Text, useColorMode, VStack } from "native-base";
+import { useColorMode, VStack } from "native-base";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { scale } from "react-native-size-matters";
 import Balance from "../../components/Balance/Balance";
+import H3 from "../../components/H3/H3";
+
 import HeaderTitle from "../../components/HeaderTitle/HeaderTitle";
-import ImageBg from "../../components/ImageBg/ImageBg";
 import Scroller from "../../components/Scroller/Scroller";
 import { TOP_PADDING } from "../../helper/final";
-import H3 from "./components/H3/H3";
 import NewNotification, {
     INotification,
 } from "./components/NewNotification/NewNotification";
 import NotifyAbout from "./components/NotifyAbout/NotifyAbout";
 import SwitchNotifications from "./components/SwitchNotifications/SwitchNotifications";
+import { scale } from "react-native-size-matters";
 
 const natifications: INotification[] = [
     {
@@ -100,6 +100,8 @@ export default function Notifications() {
                 px="6"
                 pb={8}
                 h="full"
+                maxWidth={scale(500)}
+                mx="auto"
             >
                 <VStack>
                     <H3>General Setings</H3>
