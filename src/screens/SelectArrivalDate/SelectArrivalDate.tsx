@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { Button, Pressable, Text, useColorMode, VStack } from "native-base";
 import React from "react";
 import DatePickerModal from "../../components/DatePickerModal/DatePickerModal";
@@ -8,6 +8,7 @@ import { getTextDate } from "../../helper/date.helper";
 export default function SelectArrivalDate() {
     const { colorMode } = useColorMode();
     const navigation = useNavigation();
+    const params = useRoute().params;
 
     const [date, setDate] = React.useState(new Date());
 
@@ -81,7 +82,12 @@ export default function SelectArrivalDate() {
                 </VStack>
 
                 <Button
-                    onPress={() => navigation.navigate("AddCards")}
+                    onPress={() =>
+                        navigation.navigate("AddCards", {
+                            ...params,
+                            arrivalDate: date.toLocaleString(),
+                        })
+                    }
                     mt={"80%"}
                     title="Continue"
                     w={[250, 280, 310]}

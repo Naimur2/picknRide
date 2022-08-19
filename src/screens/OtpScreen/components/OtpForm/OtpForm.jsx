@@ -56,7 +56,7 @@ export default function OtpForm() {
     return (
         <VStack
             flex="1"
-            justifyContent={"center"}
+            
             px={4}
             space="3"
             alignItems={"center"}

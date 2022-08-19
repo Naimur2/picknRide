@@ -16,9 +16,9 @@ import Google from "../../../../svgs/Google";
 import Message from "../../../../svgs/Message";
 const megaSell = require("../../../../../assets/images/mega-sell.png");
 
-export default function DashModal() {
+export default function DashModal({}) {
     const Touchable = Factory(TouchableOpacity);
-    const [isVisible, setIsVisible] = React.useState(false);
+    const [isVisible, setIsVisible] = React.useState(true);
 
     return (
         <Modal

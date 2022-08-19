@@ -4,10 +4,30 @@ import React from "react";
 import ImageBg from "../../components/ImageBg/ImageBg";
 import CheckBoxGroup from "./components/CheckBoxGroup/CheckBoxGroup";
 
+export interface ICitizenship {
+    id: number;
+    type: string;
+}
+
+const items: ICitizenship[] = [
+    {
+        id: 1,
+        type: "Qatar Citizen / Resident",
+    },
+    {
+        id: 2,
+        type: "GCC Resident",
+    },
+    {
+        id: 3,
+        type: "Visitor / Tourist",
+    },
+];
+
 export default function SelectCitizenShip() {
     const { colorMode } = useColorMode();
     const navigation = useNavigation();
-    const [selected, setSelected] = React.useState(1);
+    const [selected, setSelected] = React.useState(items[0]);
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -16,6 +36,18 @@ export default function SelectCitizenShip() {
     }, [navigation, colorMode]);
 
     const bgType = colorMode === "dark" ? "dark" : "";
+
+    const handleNavigation = () => {
+        if (selected.id !== 1) {
+            navigation.navigate("SelectArrivalDate", {
+                citizenShip: selected,
+            });
+        } else {
+            navigation.navigate("AddCards", {
+                citizenShip: selected,
+            });
+        }
+    };
 
     return (
         <ImageBg type={bgType}>
@@ -34,10 +66,11 @@ export default function SelectCitizenShip() {
                 <CheckBoxGroup
                     onSelect={(it) => setSelected(it)}
                     selected={selected}
+                    items={items}
                 />
 
                 <Button
-                    onPress={() => navigation.navigate("SelectArrivalDate")}
+                    onPress={handleNavigation}
                     mt={"60%"}
                     title="Continue"
                     w={[250, 280, 310]}

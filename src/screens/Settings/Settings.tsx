@@ -1,20 +1,19 @@
 import { useNavigation } from "@react-navigation/native";
-import { Image, Text, useColorMode, VStack } from "native-base";
+import { Image, VStack } from "native-base";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import scooterBoy from "../../../assets/images/scooter-boy.png";
+import { scale } from "react-native-size-matters";
 import scooterBoyDark from "../../../assets/images/scooter-boy-dark.png";
+import scooterBoy from "../../../assets/images/scooter-boy.png";
 import Balance from "../../components/Balance/Balance";
 import Card from "../../components/Card/Card";
-import ImageBg from "../../components/ImageBg/ImageBg";
+import HeaderTitle from "../../components/HeaderTitle/HeaderTitle";
 import Scroller from "../../components/Scroller/Scroller";
 import { TOP_PADDING } from "../../helper/final";
 import SettingsMenu, {
     ISettingsMenu,
 } from "./components/SettingsMenu/SettingsMenu";
 import ThemeToggler from "./components/ThemeToggler/ThemeToggler";
-import HeaderTitle from "../../components/HeaderTitle/HeaderTitle";
-import { scale } from "react-native-size-matters";
 
 export default function Settings() {
     const navigation = useNavigation();

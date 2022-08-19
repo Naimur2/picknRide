@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import {
     FormControl,
     HStack,
@@ -15,15 +15,36 @@ import GradientBtn from "../../components/GradientBtn/GradientBtn";
 import OutlineButton from "../../components/OutlineButton/OutlineButton";
 import Scroller from "../../components/Scroller/Scroller";
 import Camera from "../../svgs/Camera";
-import useAuth from "./../../hooks/useAuth";
-import Pen from "./../../svgs/Pen";
+import useAuth from "../../hooks/useAuth";
+import Pen from "../../svgs/Pen";
 const creditCardImage = require("../../../assets/images/credit-card.png");
+
+interface IRouteProps {
+    arrivalDate: string;
+    citizenShip: {
+        id: string;
+        type: string;
+    };
+}
 
 export default function AddCards() {
     const navigation = useNavigation();
     const insets = useSafeAreaInsets();
+    const params = useRoute().params as IRouteProps;
 
     const auth = useAuth();
+
+    const handleLogin = () => {
+        const user = {
+            name: "JhonDoe",
+            email: "jhondoe@email.com",
+            avatar: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+            isActive: true,
+            arrivalDate: params.arrivalDate,
+            citizenShip: params.citizenShip,
+        };
+        auth?.login?.(user);
+    };
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -210,9 +231,7 @@ export default function AddCards() {
                         width: scale(250) + "px",
                     }}
                     title={"Continue"}
-                    onPress={() =>
-                        auth.login({ email: "test@test.gg", uname: "Naimur" })
-                    }
+                    onPress={handleLogin}
                 />
             </VStack>
         </Scroller>

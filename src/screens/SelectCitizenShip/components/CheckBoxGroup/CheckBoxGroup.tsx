@@ -2,25 +2,7 @@ import { VStack } from "native-base";
 import React from "react";
 import CheckBoxWithText from "../../../../components/CheckBoxWithText/CheckBoxWithText";
 
-const items: {
-    id: number;
-    name: string;
-}[] = [
-    {
-        id: 1,
-        type: "Qatar Citizen / Resident",
-    },
-    {
-        id: 2,
-        type: "GCC Resident",
-    },
-    {
-        id: 3,
-        type: "Visitor / Tourist",
-    },
-];
-
-function CheckBoxGroup({ onSelect, selected }) {
+function CheckBoxGroup({ onSelect, selected, items }) {
     return (
         <VStack
             mt={8}
@@ -38,8 +20,8 @@ function CheckBoxGroup({ onSelect, selected }) {
                 <CheckBoxWithText
                     text={item.type}
                     key={index}
-                    onPress={() => onSelect(item.id)}
-                    isChecked={selected === item.id}
+                    onPress={() => onSelect(item)}
+                    isChecked={selected.id === item.id}
                 />
             ))}
         </VStack>

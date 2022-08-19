@@ -9,7 +9,11 @@ export default function OtpScreen({}) {
     const { colorMode } = useColorMode();
 
     return (
-        <Scroller>
+        <Scroller
+            contentStyle={{
+                flexGrow: 1,
+            }}
+        >
             <ImageBg type={colorMode}>
                 <OtpForm />
             </ImageBg>

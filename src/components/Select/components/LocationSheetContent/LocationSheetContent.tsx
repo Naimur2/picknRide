@@ -18,6 +18,7 @@ export default function LocationSheetContent({
         <VStack h={"full"} w="full">
             <Scroller nestedScrollEnabled={true}>
                 {locations?.map((item, index) => {
+                    console.log(item);
                     return (
                         <SelectedItem
                             key={`${item.id}-${index}`}

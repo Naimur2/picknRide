@@ -1,3 +1,4 @@
+import { ICitizenship } from "../screens/SelectCitizenShip/SelectCitizenShip";
 export interface ILinearProps {
     colors?: string[];
     start?: number[];
@@ -41,4 +42,7 @@ export interface IUser {
     email?: string;
     avatar?: string;
     isActive?: boolean;
+    arrivalDate?: Date;
+    citizenShip?: ICitizenship;
+    hasVerifiedDoc?: boolean;
 }

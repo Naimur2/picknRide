@@ -6,8 +6,6 @@ import DrawerRoute from "./routes/drawer.routes";
 export default function Main() {
     const auth = useAuth();
 
-    console.log(auth);
-
     if (auth?.isAuthenciated) {
         return <DrawerRoute />;
     }

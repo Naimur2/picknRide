@@ -12,6 +12,7 @@ import VeichleCard, { IVeichleCardProps } from "../VeichleCard/VeichleCard";
 import { VStack } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { scale } from "react-native-size-matters";
+import useAuth from "../../../../hooks/useAuth";
 
 const veichels: IVeichleCardProps[] = [
     {
@@ -41,17 +42,30 @@ export default function VeichleCards() {
     const [selectedVeichle, setSelectedVeichle] = React.useState("1");
     const VCard = Animated.createAnimatedComponent(VeichleCard);
     const navigation = useNavigation();
+    const { user } = useAuth();
 
     const currentVeichle = veichels.find(
         (veichle) => veichle.id === selectedVeichle
     );
+
+    const handleNavigation = () => {
+        if (selectedVeichle === "3" && !user.hasVerifiedDoc) {
+            navigation.navigate("DocumentSubmission", {
+                veichle: currentVeichle,
+            });
+        } else {
+            navigation.navigate("MapScreen", {
+                veichle: currentVeichle,
+            });
+        }
+    };
 
     return (
         <VStack w={scale(310)} px={2} alignItems="center">
             <ThreeSwitch
                 leftTitle="Scooter"
                 rightTitle="Car"
-                middleTitle="Bicycle"
+                centerTitle="Cycle"
                 onPress={(current) => setSelectedVeichle(current)}
             />
 
@@ -69,11 +83,7 @@ export default function VeichleCards() {
                 mt={4}
                 title={"Select"}
                 titleStyle={{ mx: "auto" }}
-                onPress={() =>
-                    navigation.navigate("DocumentSubmission", {
-                        veichle: currentVeichle,
-                    })
-                }
+                onPress={handleNavigation}
             />
         </VStack>
     );
