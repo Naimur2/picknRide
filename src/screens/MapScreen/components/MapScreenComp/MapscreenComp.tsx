@@ -9,10 +9,10 @@ import VeichleTemp from "../VeichleTemp/VeichleTemp";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import car from "../../../../../assets/images/car-small.png";
 import cycle from "../../../../../assets/images/cycle-small.png";
+import scooter from "../../../../../assets/images/veichle.png";
 import locate from "../../../../../assets/images/locate.png";
 import speedMeter from "../../../../../assets/images/progress.png";
 import scan from "../../../../../assets/images/scan.png";
-import scooter from "../../../../../assets/images/veichle.png";
 import config from "../../../../../config";
 import MapBox from "../MapBox/MapBox";
 

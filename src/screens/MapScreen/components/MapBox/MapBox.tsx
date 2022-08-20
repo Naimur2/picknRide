@@ -4,7 +4,7 @@ import React from "react";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import MapLoc from "../MapLoc/MapLoc";
 
-function MapBox({ markers, currentLocation, destinationLocation }) {
+function MapBox({ markers, currentLocation, destinationLocation, children }) {
     const Map = Factory(MapView);
     const mapRef = React.useRef<MapView>(null);
     const navigation = useNavigation();
@@ -30,14 +30,13 @@ function MapBox({ markers, currentLocation, destinationLocation }) {
             initialRegion={initialRegion}
             flex={1}
             provider={PROVIDER_GOOGLE}
-            zIndex={-1}
-            position="absolute"
             w="full"
             h="full"
         >
-            {markers?.map((car) => (
-                <MapLoc key={car._id} car={car} />
+            {markers?.map((car, index) => (
+                <MapLoc key={car._id.toString() + index.toString()} car={car} />
             ))}
+            {children}
         </Map>
     );
 }
