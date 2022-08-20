@@ -23,11 +23,11 @@ export default function CustomDrawer() {
     const drawermenu: IDrawerMenuItem[] = [
         {
             title: "Account",
-            onPress: () => {},
+            onPress: () => navigation.navigate("Account"),
         },
         {
             title: "Pricing",
-            onPress: () => {},
+            onPress: () => navigation.navigate("Pricing"),
         },
         {
             title: "Ride History",

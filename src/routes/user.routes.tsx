@@ -13,6 +13,8 @@ import Settings from "../screens/Settings/Settings";
 import VarificationStatus from "../screens/VarificationStatus/VarificationStatus";
 import Wallet from "../screens/Wallet/Wallet";
 import MapScreen from "../screens/MapScreen/MapScreen";
+import Pricing from "../screens/Pricing/Pricing";
+import Account from "../screens/Account/Account";
 
 const Stack = createNativeStackNavigator();
 
@@ -49,6 +51,8 @@ export default function UserRoutes() {
             />
             <Stack.Screen name="Wallet" component={Wallet} />
             <Stack.Screen name="MapScreen" component={MapScreen} />
+            <Stack.Screen name="Pricing" component={Pricing} />
+            <Stack.Screen name="Account" component={Account} />
         </Stack.Navigator>
     );
 }

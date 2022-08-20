@@ -150,3 +150,18 @@ export const Instagram = Factory((props) => {
         />
     );
 });
+
+export const Sun = Factory((props) => {
+    return <Feather name="sun" size={24} color="black" {...props} />;
+});
+
+export const ErrorOutline = Factory((props) => {
+    return (
+        <MaterialIcons
+            name="error-outline"
+            size={28}
+            color="black"
+            {...props}
+        />
+    );
+});
