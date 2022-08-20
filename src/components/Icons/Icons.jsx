@@ -1,5 +1,6 @@
 import {
     Entypo,
+    EvilIcons,
     Feather,
     FontAwesome,
     Fontisto,
@@ -164,4 +165,8 @@ export const ErrorOutline = Factory((props) => {
             {...props}
         />
     );
+});
+
+export const Search = Factory((props) => {
+    return <EvilIcons name="search" size={24} color="black" {...props} />;
 });

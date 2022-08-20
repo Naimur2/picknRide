@@ -26,25 +26,53 @@ export default function MapScreen() {
     const navigation = useNavigation();
 
     const [cars, setCars] = React.useState<IVeichle[]>([]);
-    const [location, setLocation] = React.useState<ILatLng | null>(null);
+    const [currentLocation, setCurrentLocation] =
+        React.useState<ILatLng | null>(null);
 
     const [selectedType, setSelectedType] = React.useState<ICAR>("cycle");
 
-    useEffect(() => {
+    const getUserLocation = async () => {
+        try {
+            const current = await Location.getCurrentPositionAsync({
+                accuracy: Location.Accuracy.Highest,
+                maximumAge: 10000,
+            });
+
+            const locationCurr = {
+                latitude: current.coords.latitude,
+                longitude: current.coords.longitude,
+            };
+
+            setCars(carsData);
+
+            console.log("sdfdsfdsf", locationCurr);
+
+            setCurrentLocation(locationCurr);
+        } catch (error) {
+            console.log("error 300", error);
+        }
+    };
+
+    React.useEffect(() => {
         (async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== "granted") {
+            let forePermission =
+                await Location.requestForegroundPermissionsAsync();
+            let backPermission =
+                await Location.requestBackgroundPermissionsAsync();
+
+            if (
+                forePermission.status !== "granted" ||
+                backPermission.status !== "granted"
+            ) {
                 alert("Permission to access location was denied");
                 return;
             }
 
-            let location = await Location.getCurrentPositionAsync({});
-            setLocation(location);
-            setCars(carsData);
+            await getUserLocation();
         })();
     }, []);
 
-    console.log(location);
+    console.log("currentLocation", currentLocation);
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -58,7 +86,11 @@ export default function MapScreen() {
 
     return (
         <VStack flex={1} position="relative">
-            <MapscreenComp selectedType={"cycle"} filteredCars={cars} />
+            <MapscreenComp
+                currentLocation={currentLocation}
+                selectedType={"cycle"}
+                filteredCars={cars}
+            />
         </VStack>
     );
 }

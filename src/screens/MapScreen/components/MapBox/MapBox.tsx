@@ -4,7 +4,7 @@ import React from "react";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import MapLoc from "../MapLoc/MapLoc";
 
-function MapBox({ markers }) {
+function MapBox({ markers, currentLocation, destinationLocation }) {
     const Map = Factory(MapView);
     const mapRef = React.useRef<MapView>(null);
     const navigation = useNavigation();
