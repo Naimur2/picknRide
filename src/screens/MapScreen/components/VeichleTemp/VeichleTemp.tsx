@@ -3,9 +3,9 @@ import { HStack, VStack, Box, Text } from "native-base";
 import VeichleSelector from "../VeichleSelector/VeichleSelector";
 import { Sun } from "../../../../components/Icons/Icons";
 
-const VeichleTemp = ({ selected, setSelected }) => {
+const VeichleTemp = ({ selected, setSelected, ...rest }) => {
     return (
-        <HStack alignItems="center" justifyContent="space-between">
+        <HStack alignItems="center" justifyContent="space-between" {...rest}>
             <HStack space={2}>
                 <VeichleSelector
                     type="cycle"

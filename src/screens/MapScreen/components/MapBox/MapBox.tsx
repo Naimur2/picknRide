@@ -18,10 +18,6 @@ function MapBox({ markers, currentLocation, destinationLocation, children }) {
 
     React.useEffect(() => {
         mapRef.current?.animateToRegion(initialRegion, 300);
-        mapRef.current?.fitToCoordinates(markers, {
-            edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
-            animated: true,
-        });
     }, [navigation]);
 
     return (
@@ -32,6 +28,8 @@ function MapBox({ markers, currentLocation, destinationLocation, children }) {
             provider={PROVIDER_GOOGLE}
             w="full"
             h="full"
+            position={"absolute"}
+            zIndex={-10}
         >
             {markers?.map((car, index) => (
                 <MapLoc key={car._id.toString() + index.toString()} car={car} />

@@ -1,5 +1,6 @@
+import { Box, Pressable, VStack, Factory } from "native-base";
 import React from "react";
-import { Pressable, Image, HStack, Box, VStack } from "native-base";
+import { Image } from "react-native";
 import car from "../../../../../assets/images/car-small.png";
 import cycle from "../../../../../assets/images/cycle-small.png";
 import scooter from "../../../../../assets/images/veichle.png";
@@ -10,7 +11,7 @@ const images = {
     scooter,
 };
 
-export default function VeichleSelector({
+function VeichleSelector({
     type,
     onPress,
     isActive,
@@ -19,6 +20,8 @@ export default function VeichleSelector({
     isActive: boolean;
     onPress: () => void;
 }) {
+    const RNImage = Factory(Image);
+
     return (
         <VStack alignItems={"center"} space="1.5">
             <Pressable
@@ -29,11 +32,11 @@ export default function VeichleSelector({
                 borderRadius={50}
                 onPress={onPress}
             >
-                <Image
+                <RNImage
                     w="18px"
                     h="18px"
                     resizeMode="contain"
-                    source={images[type] || scooter}
+                    source={images?.[type] || scooter}
                     alt="cycle"
                     tintColor={"#fff"}
                 />
@@ -44,3 +47,5 @@ export default function VeichleSelector({
         </VStack>
     );
 }
+
+export default React.memo(VeichleSelector);
