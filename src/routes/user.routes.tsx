@@ -15,6 +15,7 @@ import Wallet from "../screens/Wallet/Wallet";
 import MapScreen from "../screens/MapScreen/MapScreen";
 import Pricing from "../screens/Pricing/Pricing";
 import Account from "../screens/Account/Account";
+import ScanQrCode from "../screens/ScanQrCode/ScanQrCode";
 
 const Stack = createNativeStackNavigator();
 
@@ -53,6 +54,7 @@ export default function UserRoutes() {
             <Stack.Screen name="MapScreen" component={MapScreen} />
             <Stack.Screen name="Pricing" component={Pricing} />
             <Stack.Screen name="Account" component={Account} />
+            <Stack.Screen name="ScanQrCode" component={ScanQrCode} />
         </Stack.Navigator>
     );
 }

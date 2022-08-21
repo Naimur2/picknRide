@@ -9,6 +9,7 @@ import {
     MaterialCommunityIcons,
     MaterialIcons,
     Octicons,
+    SimpleLineIcons,
 } from "@expo/vector-icons";
 
 import { Factory } from "native-base";
@@ -169,4 +170,30 @@ export const ErrorOutline = Factory((props) => {
 
 export const Search = Factory((props) => {
     return <EvilIcons name="search" size={24} color="black" {...props} />;
+});
+
+export const Ban = Factory((props) => {
+    return <SimpleLineIcons name="ban" size={24} color="black" {...props} />;
+});
+
+export const Bell = Factory((props) => {
+    return (
+        <MaterialCommunityIcons
+            name="bell-ring-outline"
+            size={props?.iconSize || 24}
+            color="black"
+            {...props}
+        />
+    );
+});
+export const Location = Factory((props) => {
+    return (
+        <Ionicons
+            name="md-location"
+            size={24}
+            color="black"
+            size={props?.iconSize || 24}
+            {...props}
+        />
+    );
 });

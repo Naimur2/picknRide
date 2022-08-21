@@ -1,5 +1,5 @@
 import React from "react";
-import { HStack, Image } from "native-base";
+import { HStack, Factory } from "native-base";
 import Toggler from "../../../../svgs/Toggler";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import config from "../../../../../config";
@@ -9,6 +9,8 @@ import car from "../../../../../assets/images/car-small.png";
 import cycle from "../../../../../assets/images/cycle-small.png";
 import scooter from "../../../../../assets/images/veichle.png";
 import { Search } from "../../../../components/Icons/Icons";
+import { Image } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const images = {
     car,
@@ -23,6 +25,8 @@ export default function LocationSearch({
     setDestinationLocation: (destinationLocation: ILatLng) => void;
     selectedType: "car" | "cycle" | "scooter";
 }) {
+    const navigation = useNavigation();
+
     const handleSearchSelector = (d, details) => {
         const { lat, lng } = details.geometry.location;
         setDestinationLocation?.({
@@ -31,7 +35,7 @@ export default function LocationSearch({
         });
     };
 
-    console.log("selectedType", images[selectedType]);
+    const RNImage = Factory(Image);
 
     return (
         <HStack
@@ -41,9 +45,9 @@ export default function LocationSearch({
             alignItems={"flex-start"}
         >
             <HStack width={"20%"} mt={6} mr={2} space={4} alignItems="center">
-                <Toggler />
+                <Toggler onPress={() => navigation.openDrawer()} />
                 {selectedType ? (
-                    <Image
+                    <RNImage
                         h="25px"
                         w="25px"
                         source={images[selectedType]}

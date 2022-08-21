@@ -1,6 +1,7 @@
 import { Factory, HStack, Pressable, Text } from "native-base";
 import React from "react";
 import { TouchableOpacity } from "react-native";
+import { scale } from "react-native-size-matters";
 
 export default function OutlineButton({
     title,
@@ -13,7 +14,7 @@ export default function OutlineButton({
     return (
         <Pressable onPress={onPress} {...rest}>
             <HStack
-                w="330"
+                w={scale(300) + "px"}
                 mt={6}
                 mb={8}
                 px={6}

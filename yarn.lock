@@ -5796,6 +5796,14 @@ expo-av@~11.2.3:
   dependencies:
     "@expo/config-plugins" "^4.0.14"
 
+expo-barcode-scanner@~11.3.0:
+  version "11.3.0"
+  resolved "https://registry.yarnpkg.com/expo-barcode-scanner/-/expo-barcode-scanner-11.3.0.tgz#0f23d748dcc04feb03f3978713eff6c7a5e7e11b"
+  integrity sha512-UZMZ4t/Q0P0nbpD2qCehpZ350zP8YIO1T1Mk3HgeT1gu/T2kRhwaVjI3oxxD33h3uPyXjYGd/RFvRqUEgHfd0A==
+  dependencies:
+    "@expo/config-plugins" "^4.0.14"
+    expo-image-loader "~3.2.0"
+
 expo-camera@~12.2.0:
   version "12.2.0"
   resolved "https://registry.yarnpkg.com/expo-camera/-/expo-camera-12.2.0.tgz#22c01a917e2a753b09bd28c0fdb2385f2444abf8"
@@ -11193,6 +11201,11 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
   dependencies:
     hash-base "^3.0.0"
     inherits "^2.0.1"
+
+rn-swipe-unlock-button@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/rn-swipe-unlock-button/-/rn-swipe-unlock-button-1.0.0.tgz#a63cff3f867ec16baceb0913981447b0d2f27c0f"
+  integrity sha512-s0QJDGXY0rzaRYopG+tnWvSCOlzMC+Ee1bfsWViflvV/B11opsOtvfMKsT9ejvUhJDzfFU+uWNqqAHVPQhFYBg==
 
 router-ips@^1.0.0:
   version "1.0.0"
