@@ -3,18 +3,12 @@ import React from "react";
 
 import { useNavigation } from "@react-navigation/native";
 
-import { LinearGradient } from "expo-linear-gradient";
 import * as Location from "expo-location";
-import { ImageBackground } from "react-native";
+import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import speedMeter from "../../../assets/images/progress.png";
-import BottomScan from "./components/BottomScan/BottomScan";
-import LocationSearch from "./components/LocationSearch/LocationSearch";
-import VeichleTemp from "./components/VeichleTemp/VeichleTemp";
-import { carsData } from "./data";
-import SpeedMeter from "./components/SpeedMeter/SpeedMeter";
 import MapBox from "./components/MapBox/MapBox";
 import MapscreenComp from "./components/MapScreenComp/MapscreenComp";
+import { carsData } from "./data";
 
 export interface ILatLng {
     latitude: number;
@@ -36,6 +30,7 @@ export default function MapScreen() {
     const insets = useSafeAreaInsets();
     const [isLoading, setIsLoading] = React.useState(true);
     const [error, setError] = React.useState<string | undefined>(undefined);
+    const NoFeedback = Factory(TouchableWithoutFeedback);
 
     const [cars, setCars] = React.useState<IVeichle[] | null>(null);
     const [currentLocation, setCurrentLocation] =
@@ -126,18 +121,35 @@ export default function MapScreen() {
         );
     }
 
+    const handleDismiss = () => {
+        Keyboard.dismiss();
+    };
+
+    console.log("desti", destinationLocation);
+
     return (
         <VStack
             flex={1}
             position="relative"
             pt={insets.top + 15 + "px"}
             justifyContent="space-between"
+            h="full"
+            w="full"
+            onPress={handleDismiss}
         >
-            <MapscreenComp
-                type={selectedType}
-                setType={(type) => setSelectedType(type)}
-            />
-            <MapBox markers={cars} />
+            <VStack flex="1">
+                <MapscreenComp
+                    type={selectedType}
+                    setType={(type) => setSelectedType(type)}
+                    setDestination={(destination) =>
+                        setDestinationLocation(destination)
+                    }
+                />
+                <MapBox
+                    markers={cars}
+                    destinationLocation={destinationLocation}
+                />
+            </VStack>
         </VStack>
     );
 }

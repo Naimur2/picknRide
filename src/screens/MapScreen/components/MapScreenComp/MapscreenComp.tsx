@@ -1,16 +1,12 @@
-import { View, Text } from "react-native";
-import React from "react";
-import LocationSearch from "../LocationSearch/LocationSearch";
-import VeichleTemp from "../VeichleTemp/VeichleTemp";
-import SpeedMeter from "../SpeedMeter/SpeedMeter";
-import BottomScan from "../BottomScan/BottomScan";
-import MapBox from "../MapBox/MapBox";
 import { VStack } from "native-base";
+import React from "react";
 import { ICAR } from "../../MapScreen";
+import BottomScan from "../BottomScan/BottomScan";
+import LocationSearch from "../LocationSearch/LocationSearch";
+import SpeedMeter from "../SpeedMeter/SpeedMeter";
+import MapTopDetails from "../MapTopDetails/MapTopDetails";
 
-function MapscreenComp({ type, setType }) {
-    const [destinationLocation, setDestinationLocation] = React.useState(null);
-
+function MapscreenComp({ type, setType, setDestination }) {
     const updateType = React.useMemo(() => {
         return (carType: ICAR) => {
             setType(carType);
@@ -19,11 +15,17 @@ function MapscreenComp({ type, setType }) {
 
     return (
         <VStack flex="1">
-            <LocationSearch
-                setDestinationLocation={(dest) => setDestinationLocation(dest)}
-                selectedType={type}
-            />
-            <VeichleTemp selected={type} px="6" setSelected={updateType} />
+            <VStack>
+                <LocationSearch
+                    setDestinationLocation={setDestination}
+                    selectedType={type}
+                />
+                <MapTopDetails
+                    selected={type}
+                    px="6"
+                    setSelected={updateType}
+                />
+            </VStack>
             <SpeedMeter />
             <BottomScan />
         </VStack>

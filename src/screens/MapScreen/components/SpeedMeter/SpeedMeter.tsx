@@ -3,7 +3,7 @@ import React from "react";
 import { ImageBackground } from "react-native";
 import speedMeter from "../../../../../assets/images/progress.png";
 
-function SpeedMeter() {
+function SpeedMeter({ ...rest }) {
     const ImageBg = Factory(ImageBackground);
 
     return (
@@ -13,8 +13,10 @@ function SpeedMeter() {
             width={"70px"}
             alignItems={"center"}
             justifyContent={"center"}
-            my="auto"
+            mt="auto"
+            mb="400px"
             ml={6}
+            {...rest}
         >
             <Text lineHeight={24} color="#000" fontSize={"24"} fontWeight={700}>
                 50

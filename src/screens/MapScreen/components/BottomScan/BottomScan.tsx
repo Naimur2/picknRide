@@ -17,6 +17,8 @@ function BottomScan() {
     const [isOpenGeoFencingSheet, setIsOpenGeoFencingSheet] =
         React.useState(false);
 
+    const [showCarDetails, setShowCarDetails] = React.useState(false);
+
     return (
         <VStack
             space="6"
@@ -65,13 +67,15 @@ function BottomScan() {
                 />
             ) : null}
 
-            <CarDetails
-                isOpen={true}
-                avaiableDistance={"3.2 km"}
-                availeTime={"1 hour"}
-                availableBattery={"100%"}
-                id={"10545"}
-            />
+            {showCarDetails ? (
+                <CarDetails
+                    isOpen={true}
+                    avaiableDistance={"3.2 km"}
+                    availeTime={"1 hour"}
+                    availableBattery={"100%"}
+                    id={"10545"}
+                />
+            ) : null}
         </VStack>
     );
 }

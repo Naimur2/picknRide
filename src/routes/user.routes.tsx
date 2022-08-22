@@ -16,6 +16,10 @@ import MapScreen from "../screens/MapScreen/MapScreen";
 import Pricing from "../screens/Pricing/Pricing";
 import Account from "../screens/Account/Account";
 import ScanQrCode from "../screens/ScanQrCode/ScanQrCode";
+import CarRideHistory from "../screens/CarRideHistory/CarRideHistory";
+import TripDetails from "../screens/TripDetails/TripDetails";
+import Receipt from "../screens/Receipt/Receipt";
+import StartEndRide from "../screens/StartEndRide/StartEndRide";
 
 const Stack = createNativeStackNavigator();
 
@@ -23,7 +27,7 @@ export default function UserRoutes() {
     const { colorMode } = useColorMode();
     return (
         <Stack.Navigator
-            initialRouteName="Dashboard"
+            initialRouteName="StartEndRide"
             screenOptions={{
                 headerTitle: "",
                 headerTitleStyle: { color: "white" },
@@ -55,6 +59,10 @@ export default function UserRoutes() {
             <Stack.Screen name="Pricing" component={Pricing} />
             <Stack.Screen name="Account" component={Account} />
             <Stack.Screen name="ScanQrCode" component={ScanQrCode} />
+            <Stack.Screen name="CarRideHistory" component={CarRideHistory} />
+            <Stack.Screen name="TripDetails" component={TripDetails} />
+            <Stack.Screen name="Receipt" component={Receipt} />
+            <Stack.Screen name="StartEndRide" component={StartEndRide} />
         </Stack.Navigator>
     );
 }

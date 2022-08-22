@@ -62,6 +62,7 @@ export default function LocationSearch({
                 placeholder="Search"
                 fetchDetails={true}
                 onPress={handleSearchSelector}
+                keepResultsAfterBlur={true}
                 renderLeftButton={() => (
                     <Search
                         position="absolute"

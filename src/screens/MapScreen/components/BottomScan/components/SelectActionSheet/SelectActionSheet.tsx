@@ -3,13 +3,7 @@ import React from "react";
 import GradientBtn from "../../../../../../components/GradientBtn/GradientBtn";
 import OutlineButton from "../../../../../../components/OutlineButton/OutlineButton";
 import { scale } from "react-native-size-matters";
-
-export default function SelectActionSheet({
-    isOpen,
-    onClose,
-    onBtn1Press,
-    onBtn2Press,
-}) {
+function SelectActionSheet({ isOpen, onClose, onBtn1Press, onBtn2Press }) {
     return (
         <Actionsheet isOpen={isOpen} onClose={onClose}>
             <Actionsheet.Content
@@ -41,3 +35,5 @@ export default function SelectActionSheet({
         </Actionsheet>
     );
 }
+
+export default React.memo(SelectActionSheet);

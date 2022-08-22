@@ -1,29 +1,13 @@
 import React from "react";
 import { HStack, VStack, Box, Text } from "native-base";
-import VeichleSelector from "../VeichleSelector/VeichleSelector";
+
+import VeichleSelector from "../../../../components/VeichleSelector/VeichleSelector";
 import { Sun } from "../../../../components/Icons/Icons";
 
-const VeichleTemp = ({ selected, setSelected, ...rest }) => {
+const MapTopDetails = ({ selected, setSelected, ...rest }) => {
     return (
         <HStack alignItems="center" justifyContent="space-between" {...rest}>
-            <HStack space={2}>
-                <VeichleSelector
-                    type="cycle"
-                    isActive={selected === "cycle"}
-                    onPress={() => setSelected?.("cycle")}
-                />
-                <VeichleSelector
-                    type="car"
-                    isActive={selected === "car"}
-                    onPress={() => setSelected?.("car")}
-                />
-                <VeichleSelector
-                    type="scooter"
-                    isActive={selected === "scooter"}
-                    onPress={() => setSelected?.("scooter")}
-                />
-            </HStack>
-
+            <VeichleSelector selected={selected} setSelected={setSelected} />
             <HStack alignItems={"center"} space="2">
                 <Sun color="primary.100" />
                 <VStack>
@@ -43,4 +27,4 @@ const VeichleTemp = ({ selected, setSelected, ...rest }) => {
     );
 };
 
-export default VeichleTemp;
+export default MapTopDetails;

@@ -1,5 +1,5 @@
+import { Box, Image, Pressable, VStack } from "native-base";
 import React from "react";
-import { Pressable, Image, HStack, Box, VStack } from "native-base";
 import car from "../../../../../assets/images/car-small.png";
 import cycle from "../../../../../assets/images/cycle-small.png";
 import scooter from "../../../../../assets/images/veichle.png";
@@ -10,7 +10,7 @@ const images = {
     scooter,
 };
 
-function VeichleSelector({
+function ViichleCircle({
     type,
     onPress,
     isActive,
@@ -45,4 +45,4 @@ function VeichleSelector({
     );
 }
 
-export default React.memo(VeichleSelector);
+export default React.memo(ViichleCircle);
