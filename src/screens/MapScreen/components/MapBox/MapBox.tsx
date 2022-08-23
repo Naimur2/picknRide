@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { Factory } from "native-base";
 import React from "react";
-import { Dimensions } from "react-native";
+import { Dimensions, Keyboard } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import config from "../../../../../config";
@@ -73,21 +73,26 @@ function MapBox({ markers, currentLocation, destinationLocation, children }) {
         }
     }, [markers]);
 
+    const hasInitialRegion =
+        initialRegion.latitude !== 0 && initialRegion.longitude !== 0;
+    const hasDestinationLocation =
+        destinationLocation?.latitude !== 0 &&
+        destinationLocation?.longitude !== 0;
+
     return (
         <Map
             ref={mapRef}
             initialRegion={initialRegion}
             flex={1}
             provider={PROVIDER_GOOGLE}
-            w="full"
-            h="full"
-            position={"absolute"}
-            zIndex={-10}
+            w={width}
+            h={height}
+            onPress={() => Keyboard.dismiss()}
         >
             {markers?.map((car, index) => (
                 <MapLoc key={car._id.toString() + index.toString()} car={car} />
             ))}
-            {initialRegion && destinationLocation ? (
+            {hasDestinationLocation && hasInitialRegion ? (
                 <MapViewDirections
                     origin={initialRegion}
                     destination={destinationLocation}

@@ -9,23 +9,26 @@ import GeoSheet from "./components/GeoSheet/GeoSheet";
 import SelectActionSheet from "./components/SelectActionSheet/SelectActionSheet";
 
 import CarDetails from "./components/CarDetails/CarDetails";
+import { Dimensions } from "react-native";
 
 function BottomScan() {
     const LinearGrad = Factory(LinearGradient);
+    const { height } = Dimensions.get("window");
+
     const navigation = useNavigation();
     const [isOpenActionSheet, setIsOpenActionSheet] = React.useState(false);
     const [isOpenGeoFencingSheet, setIsOpenGeoFencingSheet] =
         React.useState(false);
 
-    const [showCarDetails, setShowCarDetails] = React.useState(false);
+    const [showCarDetails, setShowCarDetails] = React.useState(true);
+    const [stackHeight, setStackHeight] = React.useState(0);
 
     return (
         <VStack
+            onLayout={(e) => setStackHeight(e.nativeEvent.layout.height)}
             space="6"
-            position={"absolute"}
-            zIndex={10000}
             w="full"
-            bottom={0}
+            mt={height / 3.5 + "px"}
         >
             <LinearGrad
                 colors={["#ffffff", "#ffffff50"]}

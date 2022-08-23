@@ -18,9 +18,10 @@ const images = {
     scooter,
 };
 
-export default function LocationSearch({
+function LocationSearch({
     setDestinationLocation,
     selectedType,
+    ...rest
 }: {
     setDestinationLocation: (destinationLocation: ILatLng) => void;
     selectedType: "car" | "cycle" | "scooter";
@@ -43,6 +44,7 @@ export default function LocationSearch({
             space={4}
             justifyContent="center"
             alignItems={"flex-start"}
+            {...rest}
         >
             <HStack width={"20%"} mt={6} mr={2} space={4} alignItems="center">
                 <Toggler onPress={() => navigation.openDrawer()} />
@@ -98,3 +100,5 @@ export default function LocationSearch({
         </HStack>
     );
 }
+
+export default React.memo(LocationSearch);

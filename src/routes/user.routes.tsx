@@ -27,7 +27,7 @@ export default function UserRoutes() {
     const { colorMode } = useColorMode();
     return (
         <Stack.Navigator
-            initialRouteName="StartEndRide"
+            initialRouteName="Dashboard"
             screenOptions={{
                 headerTitle: "",
                 headerTitleStyle: { color: "white" },
@@ -46,7 +46,7 @@ export default function UserRoutes() {
             />
             <Stack.Screen name="CameraView" component={CameraView} />
             <Stack.Screen name="Cars" component={Cars} />
-            <Stack.Screen name="RideHistory" component={RideHistory} />
+            <Stack.Screen name="RideHistory" component={CarRideHistory} />
             <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="Notifications" component={Notifications} />
             <Stack.Screen name="ReportIssue" component={ReportIssue} />
@@ -59,7 +59,7 @@ export default function UserRoutes() {
             <Stack.Screen name="Pricing" component={Pricing} />
             <Stack.Screen name="Account" component={Account} />
             <Stack.Screen name="ScanQrCode" component={ScanQrCode} />
-            <Stack.Screen name="CarRideHistory" component={CarRideHistory} />
+            {/* <Stack.Screen name="CarRideHistory" component={CarRideHistory} /> */}
             <Stack.Screen name="TripDetails" component={TripDetails} />
             <Stack.Screen name="Receipt" component={Receipt} />
             <Stack.Screen name="StartEndRide" component={StartEndRide} />

@@ -25,7 +25,7 @@ export interface IVeichle {
 
 export type ICAR = "scooter" | "park" | "cycle" | "car";
 
-export default function MapScreen() {
+function MapScreen() {
     const navigation = useNavigation();
     const insets = useSafeAreaInsets();
     const [isLoading, setIsLoading] = React.useState(true);
@@ -38,7 +38,10 @@ export default function MapScreen() {
 
     const [selectedType, setSelectedType] = React.useState<ICAR>("cycle");
 
-    const [destinationLocation, setDestinationLocation] = React.useState(null);
+    const [destinationLocation, setDestinationLocation] = React.useState({
+        latitude: 0,
+        longitude: 0,
+    });
 
     React.useEffect(() => {
         let clear = true;
@@ -125,7 +128,13 @@ export default function MapScreen() {
         Keyboard.dismiss();
     };
 
-    console.log("desti", destinationLocation);
+    const handleAddDestination = (location: ILatLng) => {
+        setDestinationLocation((prev) => ({
+            ...prev,
+            latitude: location.latitude,
+            longitude: location.longitude,
+        }));
+    };
 
     return (
         <VStack
@@ -135,15 +144,12 @@ export default function MapScreen() {
             justifyContent="space-between"
             h="full"
             w="full"
-            onPress={handleDismiss}
         >
             <VStack flex="1">
                 <MapscreenComp
                     type={selectedType}
                     setType={(type) => setSelectedType(type)}
-                    setDestination={(destination) =>
-                        setDestinationLocation(destination)
-                    }
+                    setDestination={handleAddDestination}
                 />
                 <MapBox
                     markers={cars}
@@ -153,3 +159,5 @@ export default function MapScreen() {
         </VStack>
     );
 }
+
+export default React.memo(MapScreen);
