@@ -1,17 +1,17 @@
-import { VStack, Pressable } from "native-base";
+import { VStack } from "native-base";
 import React from "react";
+import { Dimensions } from "react-native";
+import { SheetManager } from "react-native-actions-sheet";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ICAR } from "../../MapScreen";
 import BottomScan from "../BottomScan/BottomScan";
-import LocationSearch from "../LocationSearch/LocationSearch";
-import MapTopDetails from "../MapTopDetails/MapTopDetails";
-import SpeedMeter from "../SpeedMeter/SpeedMeter";
-import { Dimensions } from "react-native";
-import SpeedSheet from "../BottomScan/components/SpeedSheet/SpeedSheet";
-import { SheetManager } from "react-native-actions-sheet";
 import CarDetailsSheet from "../BottomScan/components/CarDetailsSheet/CarDetailsSheet";
 import GeoSheet from "../BottomScan/components/GeoSheet/GeoSheet";
 import SelectActionSheet from "../BottomScan/components/SelectActionSheet/SelectActionSheet";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import SpeedSheet from "../BottomScan/components/SpeedSheet/SpeedSheet";
+import LocationSearch from "../LocationSearch/LocationSearch";
+import MapTopDetails from "../MapTopDetails/MapTopDetails";
+import SpeedMeter from "../SpeedMeter/SpeedMeter";
 
 function MapscreenComp({ type, setType, setDestination }) {
     const { height, width } = Dimensions.get("window");
@@ -23,10 +23,10 @@ function MapscreenComp({ type, setType, setDestination }) {
     }, []);
 
     React.useEffect(() => {
-        SheetManager.show("carDetailsSheet");
-        return () => {
-            SheetManager.hide("carDetailsSheet");
-        };
+        // SheetManager.show("carDetailsSheet");
+        // return () => {
+        //     SheetManager.hide("carDetailsSheet");
+        // };
     }, []);
 
     const insets = useSafeAreaInsets();
@@ -40,6 +40,8 @@ function MapscreenComp({ type, setType, setDestination }) {
             bg={"transparent"}
             pointerEvents="box-none"
             pt={insets.top + 15 + "px"}
+            justifyContent="space-between"
+            h={height}
         >
             <VStack>
                 <LocationSearch

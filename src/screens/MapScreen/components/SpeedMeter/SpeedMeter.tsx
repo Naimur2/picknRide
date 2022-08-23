@@ -14,7 +14,7 @@ function SpeedMeter({ ...rest }) {
             width={"70px"}
             alignItems={"center"}
             justifyContent={"center"}
-            mt={scale(180) + "px"}
+            mt={scale(200) + "px"}
             ml={6}
             {...rest}
         >
