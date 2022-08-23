@@ -23,10 +23,10 @@ function MapscreenComp({ type, setType, setDestination }) {
     }, []);
 
     React.useEffect(() => {
-        // SheetManager.show("speedSheet");
-        // return () => {
-        //     SheetManager.hide("speedSheet");
-        // };
+        SheetManager.show("carDetailsSheet");
+        return () => {
+            SheetManager.hide("carDetailsSheet");
+        };
     }, []);
 
     const insets = useSafeAreaInsets();
@@ -60,10 +60,7 @@ function MapscreenComp({ type, setType, setDestination }) {
                 onLeftPress={() => SheetManager.show("selectionSheet")}
             />
 
-            <SpeedSheet
-                sheetId="speedSheet"
-                onBtnPress={() => console.log("end")}
-            />
+            <SpeedSheet sheetId="speedSheet" onBtnPress={() => {}} />
 
             <CarDetailsSheet
                 sheetId="carDetailsSheet"

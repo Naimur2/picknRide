@@ -27,7 +27,7 @@ const veichels: IVeichleCardProps[] = [
         title: "Lusail Marina, Lusail",
         availableNumber: "4",
         distance: "150m",
-        image: require("../../../../../assets/images/bicycle.png"),
+        image: require("../../../../../assets/images/bi-cycle.png"),
     },
     {
         id: "3",

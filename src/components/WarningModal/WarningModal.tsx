@@ -2,12 +2,13 @@ import { Center, Factory, Modal, Text, VStack } from "native-base";
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import { scale } from "react-native-size-matters";
-import { CloseIcon } from "../../../../components/Icons/Icons";
-import Approved from "../../../../svgs/Approved";
-import Expired from "../../../../svgs/Expired";
-import Pending from "../../../../svgs/Pending";
-import Rejected from "../../../../svgs/Rejected";
-const megaSell = require("../../../../../assets/images/mega-sell.png");
+import Approved from "../../svgs/Approved";
+import Expired from "../../svgs/Expired";
+import Locked from "../../svgs/Locked";
+import Pending from "../../svgs/Pending";
+import Rejected from "../../svgs/Rejected";
+import Unlocked from "../../svgs/Unlocked";
+import { CloseIcon } from "../Icons/Icons";
 
 export default function WarningModal({
     isVisible,
@@ -41,6 +42,16 @@ export default function WarningModal({
             icon: <Expired />,
             text: "Your documents has been rejected please submit again.",
             title: "Expired",
+        },
+        unlocked: {
+            icon: <Unlocked />,
+            text: "Your ride has been unlocked",
+            title: "Unlocked",
+        },
+        locked: {
+            icon: <Locked />,
+            text: "Your ride has been locked",
+            title: "Locked",
         },
     };
 

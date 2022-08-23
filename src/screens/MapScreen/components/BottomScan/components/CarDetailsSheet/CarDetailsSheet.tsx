@@ -8,6 +8,8 @@ import CarDescriptionCard from "../../../common/CarDescriptionCard/CarDescriptio
 
 import { Image } from "react-native";
 import ActionSheet, { SheetProps } from "react-native-actions-sheet";
+import SwitchToUnlock from "../../../../../../components/SwitchToUnlock/SwitchToUnlock";
+import WarningModal from "../../../../../../components/WarningModal/WarningModal";
 
 const images = {
     carSmall,
@@ -33,6 +35,15 @@ function CarDetailsSheet({
     ...rest
 }: ICarDetails) {
     const RnImage = Factory(Image);
+    const [isModalVisible, setIsModalVisible] = React.useState(false);
+    const [isLocked, setIsLocked] = React.useState(false);
+
+    const handleShowModal = (status) => {
+        if (status !== isLocked) {
+            setIsModalVisible(true);
+            setIsLocked(status);
+        }
+    };
 
     return (
         <ActionSheet
@@ -41,14 +52,7 @@ function CarDetailsSheet({
             backgroundInteractionEnabled={true}
             {...rest}
         >
-            <VStack
-                bg={"#fff"}
-                position="absolute"
-                bottom={0}
-                w="full"
-                p="4"
-                borderTopRadius={20}
-            >
+            <VStack w="full" p="4">
                 <HStack space="6" w="full" p={4} alignItems="flex-end">
                     <RnImage
                         source={images[type] || carSmall}
@@ -88,6 +92,7 @@ function CarDetailsSheet({
                 >
                     3 km 5 QAR
                 </Text>
+                <SwitchToUnlock setStatus={handleShowModal} />
                 <VStack mt={4} mb={5} w={"full"} space="4">
                     <Button
                         bg="red.100"
@@ -107,6 +112,13 @@ function CarDetailsSheet({
                     </Button>
                 </VStack>
             </VStack>
+            {isModalVisible ? (
+                <WarningModal
+                    setIsVisible={() => setIsModalVisible(false)}
+                    isVisible={isModalVisible}
+                    variant={isLocked ? "locked" : "unlocked"}
+                />
+            ) : null}
         </ActionSheet>
     );
 }

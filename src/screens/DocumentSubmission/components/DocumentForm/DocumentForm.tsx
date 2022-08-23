@@ -19,7 +19,7 @@ import GradientBtn from "../../../../components/GradientBtn/GradientBtn";
 import { Tick } from "../../../../components/Icons/Icons";
 import OutlineButton from "../../../../components/OutlineButton/OutlineButton";
 import AddImage from "../AddImage/AddImage";
-import WarningModal from "../WarningModal/WarningModal";
+import WarningModal from "../../../../components/WarningModal/WarningModal";
 import ExpiryDate from "./components/ExpiryDate/ExpiryDate";
 import PickerButton from "./components/PickerButton/PickerButton";
 import Signature from "./components/Signature/Signature";

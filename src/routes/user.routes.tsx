@@ -55,7 +55,13 @@ export default function UserRoutes() {
                 component={VarificationStatus}
             />
             <Stack.Screen name="Wallet" component={Wallet} />
-            <Stack.Screen name="MapScreen" component={MapScreen} />
+            <Stack.Screen
+                name="MapScreen"
+                component={MapScreen}
+                options={{
+                    gestureEnabled: false,
+                }}
+            />
             <Stack.Screen name="Pricing" component={Pricing} />
             <Stack.Screen name="Account" component={Account} />
             <Stack.Screen name="ScanQrCode" component={ScanQrCode} />
