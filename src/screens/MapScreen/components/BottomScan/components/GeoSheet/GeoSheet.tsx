@@ -1,18 +1,30 @@
 import React from "react";
-import { Actionsheet, HStack, VStack, Text } from "native-base";
-import { ErrorOutline } from "../../../../../../components/Icons/Icons";
+import ActionSheet, { SheetProps } from "react-native-actions-sheet";
 import GeoButton from "./components/GeoButton/GeoButton";
+import { VStack } from "native-base";
 
-export default function GeoSheet({ isOpen, onClose }) {
+interface IGeoSheet extends SheetProps {
+    sheetId: string;
+}
+
+export default function GeoSheet({ sheetId, ...rest }: IGeoSheet) {
     return (
-        <Actionsheet onClose={onClose} isOpen={isOpen}>
-            <Actionsheet.Content
-                _dragIndicator={{
-                    bg: "light.100",
-                    borderRadius: 8,
-                }}
-                py={4}
-            >
+        <ActionSheet
+            // closable={false}
+            indicatorStyle={{
+                width: 50,
+                height: 5,
+                borderRadius: 10,
+                backgroundColor: "#E3E3E3",
+                marginTop: 15,
+            }}
+            gestureEnabled={true}
+            closeOnPressBack={true}
+            backgroundInteractionEnabled={true}
+            id={sheetId}
+            {...rest}
+        >
+            <VStack w={"full"} p="6">
                 <GeoButton
                     title="Restricted Area"
                     subTitle="Riders cannot ride in this zone"
@@ -33,7 +45,7 @@ export default function GeoSheet({ isOpen, onClose }) {
                     subTitle="Riders can park their vehicle in this zone"
                     variant="park"
                 />
-            </Actionsheet.Content>
-        </Actionsheet>
+            </VStack>
+        </ActionSheet>
     );
 }

@@ -133,6 +133,8 @@ function MapScreen() {
             ...prev,
             latitude: location.latitude,
             longitude: location.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
         }));
     };
 
@@ -140,7 +142,6 @@ function MapScreen() {
         <VStack
             flex={1}
             position="relative"
-            pt={insets.top + 15 + "px"}
             justifyContent="space-between"
             h="full"
             w="full"

@@ -27,4 +27,4 @@ const MapTopDetails = ({ selected, setSelected, ...rest }) => {
     );
 };
 
-export default MapTopDetails;
+export default React.memo(MapTopDetails);

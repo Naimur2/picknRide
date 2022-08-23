@@ -27,7 +27,7 @@ function MapBox({ markers, currentLocation, destinationLocation, children }) {
 
     const fitToCoordinatesHandler = (coordinates: ILatLng[]) => {
         if (mapRef.current) {
-            mapRef.current.fitToCoordinates(coordinates, {
+            mapRef.current.fitToSuppliedMarkers(coordinates, {
                 edgePadding: {
                     right: (width / 20) * 1.2,
                     left: (width / 20) * 1.2,

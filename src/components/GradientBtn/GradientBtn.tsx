@@ -5,6 +5,14 @@ import { LinearGradient } from "expo-linear-gradient";
 import { gradient } from "../../theme-config/colors";
 import { scale } from "react-native-size-matters";
 
+interface IProps {
+    title: string;
+    onPress: () => void;
+    children?: any;
+    gradientStyle?: any;
+    titleStyle?: any;
+}
+
 export default function GradientBtn({
     title,
     onPress,
@@ -12,13 +20,7 @@ export default function GradientBtn({
     gradientStyle,
     titleStyle,
     ...rest
-}: {
-    title: string,
-    onPress: () => void,
-    children?: any,
-    gradientStyle?: any,
-    titleStyle?: any,
-}) {
+}: IProps) {
     const LinearGard = Factory(LinearGradient);
     const Touchable = Factory(TouchableOpacity);
 

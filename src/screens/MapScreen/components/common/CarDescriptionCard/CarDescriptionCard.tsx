@@ -17,6 +17,7 @@ interface ICDesc {
     locationDescription?: string;
     timeTitle: string;
     timeDescription?: string;
+    cardStyle?: any;
 }
 
 interface ICardDesc {
@@ -25,8 +26,8 @@ interface ICardDesc {
     description?: string;
 }
 
-const CarDescription = ({ type, title, description }: ICardDesc) => (
-    <Stack space="2" w="full" px={4} alignItems="center" w="30%">
+const CarDescription = ({ type, title, description, ...rest }: ICardDesc) => (
+    <Stack space="2" px={4} alignItems="center" w="30%" {...rest}>
         <VStack space="1">
             <HStack space="1.5" alignItems={"center"}>
                 <Image
@@ -56,6 +57,7 @@ export default function CarDescriptionCard({
     locationDescription,
     timeTitle,
     timeDescription,
+    cardStyle,
     ...rest
 }: ICDesc) {
     return (
@@ -71,16 +73,19 @@ export default function CarDescriptionCard({
                 type="location"
                 title={locationTitle}
                 description={locationDescription}
+                {...cardStyle}
             />
             <CarDescription
                 type="battery"
                 title={bettaryTitle}
                 description={bettaryDescription}
+                {...cardStyle}
             />
             <CarDescription
                 type="clockFill"
                 title={timeTitle}
                 description={timeDescription}
+                {...cardStyle}
             />
         </Stack>
     );

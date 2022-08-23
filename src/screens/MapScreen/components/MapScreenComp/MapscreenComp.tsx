@@ -6,6 +6,12 @@ import LocationSearch from "../LocationSearch/LocationSearch";
 import MapTopDetails from "../MapTopDetails/MapTopDetails";
 import SpeedMeter from "../SpeedMeter/SpeedMeter";
 import { Dimensions } from "react-native";
+import SpeedSheet from "../BottomScan/components/SpeedSheet/SpeedSheet";
+import { SheetManager } from "react-native-actions-sheet";
+import CarDetailsSheet from "../BottomScan/components/CarDetailsSheet/CarDetailsSheet";
+import GeoSheet from "../BottomScan/components/GeoSheet/GeoSheet";
+import SelectActionSheet from "../BottomScan/components/SelectActionSheet/SelectActionSheet";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 function MapscreenComp({ type, setType, setDestination }) {
     const { height, width } = Dimensions.get("window");
@@ -16,6 +22,15 @@ function MapscreenComp({ type, setType, setDestination }) {
         };
     }, []);
 
+    React.useEffect(() => {
+        // SheetManager.show("speedSheet");
+        // return () => {
+        //     SheetManager.hide("speedSheet");
+        // };
+    }, []);
+
+    const insets = useSafeAreaInsets();
+
     return (
         <VStack
             flex={1}
@@ -24,13 +39,14 @@ function MapscreenComp({ type, setType, setDestination }) {
             w={width}
             bg={"transparent"}
             pointerEvents="box-none"
+            pt={insets.top + 15 + "px"}
         >
             <VStack>
                 <LocationSearch
                     setDestinationLocation={setDestination}
                     selectedType={type}
                     position="absolute"
-                    zIndex={1}
+                    zIndex={100000}
                 />
                 <MapTopDetails
                     selected={type}
@@ -40,7 +56,32 @@ function MapscreenComp({ type, setType, setDestination }) {
                 />
             </VStack>
             <SpeedMeter />
-            <BottomScan />
+            <BottomScan
+                onLeftPress={() => SheetManager.show("selectionSheet")}
+            />
+
+            <SpeedSheet
+                sheetId="speedSheet"
+                onBtnPress={() => console.log("end")}
+            />
+
+            <CarDetailsSheet
+                sheetId="carDetailsSheet"
+                avaiableDistance={"3.2 km"}
+                availeTime={"1 hour"}
+                availableBattery={"100%"}
+                carId={"10545"}
+            />
+
+            <GeoSheet sheetId={"geoSheet"} />
+
+            <SelectActionSheet
+                sheetId="selectionSheet"
+                onBtn2Press={() => {
+                    SheetManager.hide("selectionSheet");
+                    SheetManager.show("geoSheet");
+                }}
+            />
         </VStack>
     );
 }
