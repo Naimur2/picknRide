@@ -35,6 +35,7 @@ export default function DashModal({ isOpen, onClose, ...rest }) {
                 borderRadius={20}
                 overflow={"hidden"}
                 shadow="lg"
+                mx={"auto"}
             >
                 <VStack
                     alignItems={"center"}

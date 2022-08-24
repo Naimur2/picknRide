@@ -9,6 +9,7 @@ import { ErrorOutline } from "../../../../components/Icons/Icons";
 import { Dimensions } from "react-native";
 
 import { SheetManager } from "react-native-actions-sheet";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 function BottomScan({ onLeftPress }: { onLeftPress: () => void }) {
     const LinearGrad = Factory(LinearGradient);
@@ -16,20 +17,21 @@ function BottomScan({ onLeftPress }: { onLeftPress: () => void }) {
 
     const navigation = useNavigation();
 
-    React.useEffect(() => {
-        SheetManager.show("speedSheet");
-        return () => {
-            SheetManager.hide("speedSheet");
-        };
-    }, []);
-
+    // React.useEffect(() => {
+    //     SheetManager.show("speedSheet");
+    //     return () => {
+    //         SheetManager.hide("speedSheet");
+    //     };
+    // }, []);
+    const insets = useSafeAreaInsets();
     return (
-        <VStack space="6" w="full" mt={height / 3.5 + "px"}>
+        <VStack space="6" w="full" mt={height / 3.5 - insets.bottom + "px"}>
             <LinearGrad
-                colors={["#ffffff", "#ffffff50"]}
+                colors={["#ffffff", "#ffffff40"]}
                 start={[0, 1]}
                 end={[0, 0]}
-                py={6}
+                pt={6}
+                pb={24 + insets.bottom + "px"}
             >
                 <HStack alignItems="flex-end" px={4}>
                     <ErrorOutline onPress={onLeftPress} />
