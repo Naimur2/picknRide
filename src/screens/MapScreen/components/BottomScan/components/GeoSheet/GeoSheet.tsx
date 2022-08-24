@@ -1,13 +1,15 @@
 import React from "react";
 import ActionSheet, { SheetProps } from "react-native-actions-sheet";
 import GeoButton from "./components/GeoButton/GeoButton";
-import { VStack } from "native-base";
+import { VStack, useColorMode } from "native-base";
 
 interface IGeoSheet extends SheetProps {
     sheetId: string;
 }
 
 export default function GeoSheet({ sheetId, ...rest }: IGeoSheet) {
+    const { colorMode } = useColorMode();
+
     return (
         <ActionSheet
             // closable={false}
@@ -22,6 +24,9 @@ export default function GeoSheet({ sheetId, ...rest }: IGeoSheet) {
             closeOnPressBack={true}
             backgroundInteractionEnabled={true}
             id={sheetId}
+            containerStyle={{
+                backgroundColor: colorMode === "dark" ? "#000" : "#fff",
+            }}
             {...rest}
         >
             <VStack w={"full"} p="6">

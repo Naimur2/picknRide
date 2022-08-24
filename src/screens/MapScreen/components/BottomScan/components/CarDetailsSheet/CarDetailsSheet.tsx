@@ -1,4 +1,11 @@
-import { Button, Factory, HStack, Text, VStack } from "native-base";
+import {
+    Button,
+    Factory,
+    HStack,
+    Text,
+    useColorMode,
+    VStack,
+} from "native-base";
 import React from "react";
 
 import carSmall from "../../../../../../../assets/images/car-small.png";
@@ -38,6 +45,8 @@ function CarDetailsSheet({
     const [isModalVisible, setIsModalVisible] = React.useState(false);
     const [isLocked, setIsLocked] = React.useState(false);
 
+    const { colorMode } = useColorMode();
+
     const handleShowModal = (status) => {
         if (status !== isLocked) {
             setIsModalVisible(true);
@@ -50,6 +59,9 @@ function CarDetailsSheet({
             id={sheetId}
             closable={false}
             backgroundInteractionEnabled={true}
+            containerStyle={{
+                backgroundColor: colorMode === "light" ? "#fff" : "#000",
+            }}
             {...rest}
         >
             <VStack w="full" p="4">
@@ -60,6 +72,8 @@ function CarDetailsSheet({
                         resizeMode="contain"
                         w="120px"
                         h="80px"
+                        tintColor={"#000"}
+                        _dark={{ tintColor: "primary.100" }}
                     />
                     <Text fontWeight={600} fontSize={13}>
                         ID: {carId}
@@ -89,6 +103,9 @@ function CarDetailsSheet({
                     color={"gray.100"}
                     fontWeight={700}
                     fontSize={13}
+                    _dark={{
+                        color: "#fff",
+                    }}
                 >
                     3 km 5 QAR
                 </Text>

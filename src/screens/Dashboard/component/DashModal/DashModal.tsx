@@ -1,40 +1,32 @@
 import {
-    Center,
     Factory,
     HStack,
     Image,
-    Modal,
     Pressable,
     Text,
+    useColorMode,
     VStack,
 } from "native-base";
 import React from "react";
-import { TouchableOpacity } from "react-native";
-import { CloseIcon } from "../../../../components/Icons/Icons";
 import Facebook from "../../../../svgs/Facebook";
 import Google from "../../../../svgs/Google";
 import Message from "../../../../svgs/Message";
 const megaSell = require("../../../../../assets/images/mega-sell.png");
+import Modal from "react-native-modal";
 
-export default function DashModal({}) {
-    const Touchable = Factory(TouchableOpacity);
-    const [isVisible, setIsVisible] = React.useState(true);
+export default function DashModal({ isOpen, onClose, ...rest }) {
+    const UModal = Factory(Modal);
+
+    const { colorMode } = useColorMode();
 
     return (
-        <Modal
-            isOpen={isVisible}
-            onClose={() => setIsVisible(false)}
-            _backdrop={{
-                bg: "#ffffff90",
-                opacity: 0.8,
-            }}
-            closeOnOverlayClick={false}
-            _dark={{
-                _backdrop: {
-                    bg: "#000000",
-                    opacity: 0.8,
-                },
-            }}
+        <UModal
+            isVisible={isOpen}
+            backdropColor={colorMode === "dark" ? "#000" : "#fff"}
+            propagateSwipe={true}
+            onSwipeComplete={onClose}
+            swipeDirection={["left", "right"]}
+            {...rest}
         >
             <VStack
                 bg="#fff"
@@ -110,7 +102,7 @@ export default function DashModal({}) {
                     </Pressable>
                 </HStack>
             </VStack>
-            <Touchable onPress={() => setIsVisible(false)}>
+            {/* <Touchable onPress={() => setIsVisible(false)}>
                 <Center
                     _dark={{ bg: "#fff" }}
                     mt={20}
@@ -126,7 +118,7 @@ export default function DashModal({}) {
                         }}
                     />
                 </Center>
-            </Touchable>
-        </Modal>
+            </Touchable> */}
+        </UModal>
     );
 }

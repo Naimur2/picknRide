@@ -15,7 +15,7 @@ export default function ThemeToggler() {
                     fontWeight={600}
                     fontSize={15}
                 >
-                    Dark Mode
+                    {colorMode === "light" ? "Dark Mode" : "Light Mode"}
                 </Text>
                 <ToggleSwitch
                     isOn={colorMode === "dark"}

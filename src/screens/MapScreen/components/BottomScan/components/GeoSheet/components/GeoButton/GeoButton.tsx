@@ -18,19 +18,35 @@ export default function GeoButton({
     variant: "park" | "warning" | "banned" | "veichle";
 }) {
     const icons = {
-        warning: <ErrorOutline color={"red"} />,
+        warning: (
+            <ErrorOutline
+                _dark={{
+                    color: "red.100",
+                }}
+                color={"red.100"}
+            />
+        ),
         veichle: (
             <Image
                 w="24px"
                 h="24px"
                 tintColor={"#000"}
+                _dark={{
+                    tintColor: "#fff",
+                }}
                 source={scooter}
                 alt="park"
-                bg="#fff"
                 resizeMode="contain"
             />
         ),
-        banned: <Ban color={"red"} />,
+        banned: (
+            <Ban
+                _dark={{
+                    color: "red.100",
+                }}
+                color={"red.100"}
+            />
+        ),
         park: <Image source={park} alt="park" />,
     };
 
@@ -44,10 +60,24 @@ export default function GeoButton({
         >
             {icons?.[variant]}
             <VStack>
-                <Text fontWeight={600} fontSize={17} color={"#000"}>
+                <Text
+                    fontWeight={600}
+                    fontSize={17}
+                    color={"#000"}
+                    _dark={{
+                        color: "#fff",
+                    }}
+                >
                     {title}
                 </Text>
-                <Text fontWeight={500} fontSize={12} color={"#000"}>
+                <Text
+                    fontWeight={500}
+                    fontSize={12}
+                    color={"#000"}
+                    _dark={{
+                        color: "#fff",
+                    }}
+                >
                     {subTitle}
                 </Text>
             </VStack>

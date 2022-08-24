@@ -193,7 +193,7 @@ export default function DocumentForm({
 
             <WarningModal
                 isVisible={isOpen}
-                setIsVisible={(visiblity) => setIsOpen(visiblity)}
+                setIsVisible={() => setIsOpen((prev) => !prev)}
                 variant={modalType}
             />
         </VStack>

@@ -1,4 +1,4 @@
-import { Button, HStack, Text, VStack } from "native-base";
+import { Button, HStack, Text, VStack, useColorMode } from "native-base";
 import React from "react";
 import ActionSheet, { SheetProps } from "react-native-actions-sheet";
 import GradientBtn from "../../../../../../components/GradientBtn/GradientBtn";
@@ -11,11 +11,16 @@ interface ISpeedSheet extends SheetProps {
 }
 
 function SpeedSheet({ sheetId, onBtnPress }: ISpeedSheet) {
+    const { colorMode } = useColorMode();
+
     return (
         <ActionSheet
             id={sheetId}
             closable={false}
             backgroundInteractionEnabled={true}
+            containerStyle={{
+                backgroundColor: colorMode === "dark" ? "#000" : "#fff",
+            }}
         >
             <VStack w={"full"} alignItems="center" px="4" py={6} space={4}>
                 <Text
@@ -25,6 +30,9 @@ function SpeedSheet({ sheetId, onBtnPress }: ISpeedSheet) {
                     flexShrink={1}
                     fontSize={scale(16)}
                     mb={4}
+                    _dark={{
+                        color: "#fff",
+                    }}
                 >
                     Speed{" "}
                 </Text>
@@ -62,7 +70,7 @@ function SpeedSheet({ sheetId, onBtnPress }: ISpeedSheet) {
                             bg: "#ffffff80",
                         }}
                     >
-                        Low
+                        Medium
                     </Button>
 
                     <Button
@@ -79,7 +87,7 @@ function SpeedSheet({ sheetId, onBtnPress }: ISpeedSheet) {
                             bg: "primary.200",
                         }}
                     >
-                        Low
+                        High
                     </Button>
                 </HStack>
 

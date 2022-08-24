@@ -1,6 +1,7 @@
-import { Center, Factory, Modal, Text, VStack } from "native-base";
+import { Factory, Text, useColorMode, VStack } from "native-base";
 import React from "react";
 import { TouchableOpacity } from "react-native";
+import Modal from "react-native-modal";
 import { scale } from "react-native-size-matters";
 import Approved from "../../svgs/Approved";
 import Expired from "../../svgs/Expired";
@@ -8,7 +9,6 @@ import Locked from "../../svgs/Locked";
 import Pending from "../../svgs/Pending";
 import Rejected from "../../svgs/Rejected";
 import Unlocked from "../../svgs/Unlocked";
-import { CloseIcon } from "../Icons/Icons";
 
 export default function WarningModal({
     isVisible,
@@ -55,20 +55,16 @@ export default function WarningModal({
         },
     };
 
+    const { colorMode } = useColorMode();
+    const UModal = Factory(Modal);
+
     return (
-        <Modal
-            isOpen={isVisible}
-            onClose={() => setIsVisible(false)}
-            _backdrop={{
-                bg: "#ffffff",
-                opacity: 0.8,
-            }}
-            _dark={{
-                _backdrop: {
-                    bg: "#000000",
-                    opacity: 0.8,
-                },
-            }}
+        <UModal
+            isVisible={isVisible}
+            backdropColor={colorMode === "dark" ? "#000" : "#fff"}
+            propagateSwipe={true}
+            onSwipeComplete={setIsVisible}
+            swipeDirection={["left", "right"]}
             {...rest}
         >
             <VStack
@@ -80,6 +76,7 @@ export default function WarningModal({
                 shadow="lg"
                 alignItems={"center"}
                 justifyContent={"center"}
+                mx={"auto"}
             >
                 <VStack space="2" justifyContent={"center"} alignItems="center">
                     {variants?.[variant]?.icon || variants["pending"].icon}
@@ -99,7 +96,7 @@ export default function WarningModal({
                 </VStack>
             </VStack>
 
-            <Touchable onPress={() => setIsVisible(false)}>
+            {/* <Touchable onPress={() => setIsVisible(false)}>
                 <Center
                     _dark={{ bg: "#fff" }}
                     mt={20}
@@ -115,7 +112,7 @@ export default function WarningModal({
                         }}
                     />
                 </Center>
-            </Touchable>
-        </Modal>
+            </Touchable> */}
+        </UModal>
     );
 }

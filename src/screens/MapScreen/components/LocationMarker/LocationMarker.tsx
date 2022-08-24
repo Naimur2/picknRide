@@ -8,9 +8,10 @@ import ParkMarker from "../../../../svgs/ParkMarker";
 interface IMarker {
     fuelPercentage: number;
     type: "scooter" | "park" | "cycle" | "car";
+    imageStyle?: any;
 }
 
-const MarkerBar = ({ fuelPercentage, type }: IMarker) => {
+const MarkerBar = ({ fuelPercentage, type, imageStyle, ...rest }: IMarker) => {
     if (type === "park") {
         return <ParkMarker />;
     }
@@ -30,7 +31,7 @@ const MarkerBar = ({ fuelPercentage, type }: IMarker) => {
 
     if (type === "car") {
         return (
-            <VStack position={"relative"}>
+            <VStack position={"relative"} {...rest}>
                 <MapMarker
                     percentage={fuelPercentage || 100}
                     fill={fuelColor()}
@@ -44,6 +45,7 @@ const MarkerBar = ({ fuelPercentage, type }: IMarker) => {
                     resizeMode={"contain"}
                     left={"27px"}
                     top={"-9px"}
+                    {...imageStyle}
                 />
             </VStack>
         );
@@ -51,7 +53,7 @@ const MarkerBar = ({ fuelPercentage, type }: IMarker) => {
 
     if (type === "cycle") {
         return (
-            <VStack position={"relative"}>
+            <VStack position={"relative"} {...rest}>
                 <MapMarker
                     percentage={fuelPercentage || 100}
                     fill={fuelColor()}
@@ -65,13 +67,14 @@ const MarkerBar = ({ fuelPercentage, type }: IMarker) => {
                     resizeMode={"contain"}
                     left={"28px"}
                     bottom={"28px"}
+                    {...imageStyle}
                 />
             </VStack>
         );
     }
 
     return (
-        <VStack position={"relative"}>
+        <VStack position={"relative"} {...rest}>
             <MapMarker percentage={fuelPercentage || 100} fill={fuelColor()} />
             <Image
                 tintColor={"#000"}
@@ -82,6 +85,7 @@ const MarkerBar = ({ fuelPercentage, type }: IMarker) => {
                 resizeMode={"contain"}
                 left={"26px"}
                 top={"9px"}
+                {...imageStyle}
             />
         </VStack>
     );

@@ -1,7 +1,11 @@
-import { Center, Factory, Modal, VStack } from "native-base";
+import { Factory, useColorMode, VStack } from "native-base";
 import React from "react";
-import { TouchableOpacity } from "react-native";
-import { CloseIcon } from "../Icons/Icons";
+import Modal from "react-native-modal";
+
+interface IContext {
+    translateX: number;
+    translateY: number;
+}
 
 export default function CModal({
     isOpen,
@@ -15,22 +19,17 @@ export default function CModal({
     children: React.ReactNode;
     modalStyle?: any;
 }) {
-    const Touchable = Factory(TouchableOpacity);
+    const UModal = Factory(Modal);
+
+    const { colorMode } = useColorMode();
 
     return (
-        <Modal
-            isOpen={isOpen}
-            onClose={onClose}
-            _backdrop={{
-                bg: "#ffffff",
-                opacity: 0.8,
-            }}
-            _dark={{
-                _backdrop: {
-                    bg: "#000000",
-                    opacity: 0.8,
-                },
-            }}
+        <UModal
+            isVisible={isOpen}
+            backdropColor={colorMode === "dark" ? "#000" : "#fff"}
+            propagateSwipe={true}
+            onSwipeComplete={onClose}
+            swipeDirection={["left", "right"]}
             {...modalStyle}
         >
             <VStack
@@ -42,12 +41,13 @@ export default function CModal({
                 alignItems={"center"}
                 justifyContent={"center"}
                 p="4"
+                mx={"auto"}
                 {...rest}
             >
                 {children}
             </VStack>
 
-            <Touchable onPress={onClose}>
+            {/* <Touchable onPress={onClose}>
                 <Center
                     _dark={{ bg: "#fff" }}
                     mt={20}
@@ -63,7 +63,7 @@ export default function CModal({
                         }}
                     />
                 </Center>
-            </Touchable>
-        </Modal>
+            </Touchable> */}
+        </UModal>
     );
 }

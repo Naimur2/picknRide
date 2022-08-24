@@ -37,12 +37,26 @@ const CarDescription = ({ type, title, description, ...rest }: ICardDesc) => (
                     source={imagetype[type]}
                     alt="ring bell"
                 />
-                <Text color={"black"} fontWeight={700} fontSize={13}>
+                <Text
+                    _dark={{
+                        color: "#fff",
+                    }}
+                    color={"black"}
+                    fontWeight={700}
+                    fontSize={13}
+                >
                     {title}
                 </Text>
             </HStack>
             {description ? (
-                <Text fontWeight={500} color="gray.100" fontSize={13}>
+                <Text
+                    fontWeight={500}
+                    _dark={{
+                        color: "#fff",
+                    }}
+                    color="gray.100"
+                    fontSize={13}
+                >
                     Distance
                 </Text>
             ) : null}

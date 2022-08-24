@@ -76,6 +76,7 @@ export default function VarificationStatus() {
                 h="full"
                 maxWidth={scale(500)}
                 mx="auto"
+                w="full"
             >
                 {varifyStatusList?.map((item) => (
                     <VerifyStatusCard
