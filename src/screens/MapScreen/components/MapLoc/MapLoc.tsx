@@ -1,11 +1,6 @@
 import React from "react";
 import { Marker } from "react-native-maps";
-import Animated, {
-    ZoomIn,
-    ZoomInDown,
-    ZoomInUp,
-    ZoomOutUp,
-} from "react-native-reanimated";
+import Animated, { ZoomInDown, ZoomOutUp } from "react-native-reanimated";
 import MarkerBar from "../LocationMarker/LocationMarker";
 
 function MapLoc({ car, onPress }) {

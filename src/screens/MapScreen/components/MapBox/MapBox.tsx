@@ -4,15 +4,18 @@ import React from "react";
 import { Dimensions, Keyboard } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
-import config from "../../../../../config";
+
 import { ILatLng } from "../../MapScreen";
 import MapLoc from "../MapLoc/MapLoc";
+import Constants from "expo-constants";
 
 function MapBox({ markers, currentLocation, destinationLocation, children }) {
     const Map = Factory(MapView);
     const mapRef = React.useRef<MapView>(null);
     const navigation = useNavigation();
     const { height, width } = Dimensions.get("window");
+
+    const config = Constants?.manifest?.extra as { [key: string]: any };
 
     const [initialRegion, setInitialRegion] = React.useState({
         latitude: 25.286106,
@@ -96,7 +99,7 @@ function MapBox({ markers, currentLocation, destinationLocation, children }) {
                 <MapViewDirections
                     origin={initialRegion}
                     destination={destinationLocation}
-                    apikey={config.GOOGLE_MAP_KEY}
+                    apikey={config?.GOOGLE_MAP_KEY ?? ""}
                     strokeWidth={3}
                     strokeColor="hotpink"
                 />

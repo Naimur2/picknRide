@@ -1,16 +1,16 @@
+import { Factory, HStack } from "native-base";
 import React from "react";
-import { HStack, Factory } from "native-base";
-import Toggler from "../../../../svgs/Toggler";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import config from "../../../../../config";
+import Toggler from "../../../../svgs/Toggler";
 import { ILatLng } from "../../MapScreen";
 
+import { useNavigation } from "@react-navigation/native";
+import { Image } from "react-native";
 import car from "../../../../../assets/images/car-small.png";
 import cycle from "../../../../../assets/images/cycle-small.png";
 import scooter from "../../../../../assets/images/veichle.png";
 import { Search } from "../../../../components/Icons/Icons";
-import { Image } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import Constants from "expo-constants";
 
 const images = {
     car,
@@ -35,6 +35,8 @@ function LocationSearch({
             longitude: lng,
         });
     };
+
+    const config = Constants?.manifest?.extra as { [key: string]: any };
 
     const RNImage = Factory(Image);
 
@@ -74,7 +76,7 @@ function LocationSearch({
                     />
                 )}
                 query={{
-                    key: config.GOOGLE_MAP_KEY,
+                    key: config?.GOOGLE_MAP_KEY ?? "",
                     language: "en",
                 }}
                 styles={{
