@@ -2,8 +2,9 @@ import React from "react";
 import { Marker } from "react-native-maps";
 import Animated, { ZoomInDown, ZoomOutUp } from "react-native-reanimated";
 import MarkerBar from "../LocationMarker/LocationMarker";
+import { ICAR } from "../../MapScreen";
 
-function MapLoc({ car, onPress }) {
+function MapLoc({ car, onPress }: { car: ICAR; onPress?: () => void }) {
     return (
         <Marker
             onPress={onPress}

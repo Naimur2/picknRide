@@ -5,24 +5,34 @@ import { Dimensions, Keyboard } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 
-import { ILatLng } from "../../MapScreen";
-import MapLoc from "../MapLoc/MapLoc";
 import Constants from "expo-constants";
+import { ILatLng, IVeichle } from "../../MapScreen";
+import MapLoc from "../MapLoc/MapLoc";
 
-function MapBox({ markers, currentLocation, destinationLocation, children }) {
+export interface IMapScreenProps {
+    markers: IVeichle[];
+    destinationLocation: ILatLng;
+    currentLocation: ILatLng;
+    children?: any;
+    initialRegion: ILatLng;
+}
+const { height, width } = Dimensions.get("window");
+
+function MapBox(
+    {
+        markers,
+        currentLocation,
+        destinationLocation,
+        children,
+        initialRegion,
+    }: IMapScreenProps,
+    ref
+) {
     const Map = Factory(MapView);
     const mapRef = React.useRef<MapView>(null);
     const navigation = useNavigation();
-    const { height, width } = Dimensions.get("window");
 
     const config = Constants?.manifest?.extra as { [key: string]: any };
-
-    const [initialRegion, setInitialRegion] = React.useState({
-        latitude: 25.286106,
-        longitude: 51.534817,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-    });
 
     React.useEffect(() => {
         mapRef.current?.animateToRegion(initialRegion, 300);
@@ -61,7 +71,7 @@ function MapBox({ markers, currentLocation, destinationLocation, children }) {
 
     React.useEffect(() => {
         if (mapRef.current && markers) {
-            const markersCoords = markers.map((marker) => {
+            const markersCoords: ILatLng[] = markers?.map((marker) => {
                 return {
                     latitude: marker?.coordinates?.latitude,
                     longitude: marker?.coordinates?.longitude,
@@ -77,10 +87,37 @@ function MapBox({ markers, currentLocation, destinationLocation, children }) {
     }, [markers]);
 
     const hasInitialRegion =
-        initialRegion.latitude !== 0 && initialRegion.longitude !== 0;
+        initialRegion?.latitude !== 0 && initialRegion?.longitude !== 0;
+
     const hasDestinationLocation =
         destinationLocation?.latitude !== 0 &&
         destinationLocation?.longitude !== 0;
+
+    const renderMap = hasDestinationLocation && hasInitialRegion;
+
+    React.useImperativeHandle(ref, () => ({
+        fitToCoordinatesHandler,
+        get map() {
+            return mapRef.current;
+        },
+    }));
+
+    const allMarkers = (): JSX.Element | null => {
+        if (!markers && markers?.length === 0) {
+            return null;
+        } else {
+            return (
+                <>
+                    {markers?.map((car, index) => (
+                        <MapLoc
+                            key={car._id.toString() + index.toString()}
+                            car={car}
+                        />
+                    ))}
+                </>
+            );
+        }
+    };
 
     return (
         <Map
@@ -92,21 +129,22 @@ function MapBox({ markers, currentLocation, destinationLocation, children }) {
             h={height}
             onPress={() => Keyboard.dismiss()}
         >
-            {markers?.map((car, index) => (
-                <MapLoc key={car._id.toString() + index.toString()} car={car} />
-            ))}
-            {hasDestinationLocation && hasInitialRegion ? (
+            {allMarkers() || <></>}
+
+            {renderMap ? (
                 <MapViewDirections
                     origin={initialRegion}
                     destination={destinationLocation}
-                    apikey={config?.GOOGLE_MAP_KEY ?? ""}
+                    apikey={config?.GOOGLE_MAP_KEY || null}
                     strokeWidth={3}
                     strokeColor="hotpink"
                 />
-            ) : null}
+            ) : (
+                <></>
+            )}
             {children}
         </Map>
     );
 }
 
-export default React.memo(MapBox);
+export default React.memo(React.forwardRef(MapBox));

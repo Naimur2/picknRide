@@ -21,13 +21,23 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.PickNRide",
       "backgroundColor": "#ffffff",
+      "buildNumber": "1",
+      "config": {
+        "googleMapsApiKey": "AIzaSyDS-lAgjgs0rT8FzzB9woxe8sTPPh6v7F4"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.PickNRide"
+      "package": "com.PickNRide",
+      "versionCode": 1,
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDS-lAgjgs0rT8FzzB9woxe8sTPPh6v7F4"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -36,7 +46,9 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "The app accesses your photos to let you share them with your friends."
+          "photosPermission": "The app accesses your photos to let you share them with your friends.",
+          "cameraPermission": "The app accesses your camera to let you share photos with your friends.",
+          "microphonePermission": "The app accesses your microphone to let you share audio with your friends."
         }
       ]
     ]

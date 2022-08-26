@@ -1,11 +1,11 @@
-import { VStack, HStack, Button } from "native-base";
+import { Button, HStack, VStack } from "native-base";
 import React from "react";
 import { Dimensions } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CModal from "../../../../components/CModal/CModal";
 import H3 from "../../../../components/H3/H3";
-import { ICAR } from "../../MapScreen";
+import { ICAR, ILatLng } from "../../MapScreen";
 import BottomScan from "../BottomScan/BottomScan";
 import CarDetailsSheet from "../BottomScan/components/CarDetailsSheet/CarDetailsSheet";
 import GeoSheet from "../BottomScan/components/GeoSheet/GeoSheet";
@@ -15,11 +15,16 @@ import LocationSearch from "../LocationSearch/LocationSearch";
 import MapTopDetails from "../MapTopDetails/MapTopDetails";
 import SpeedMeter from "../SpeedMeter/SpeedMeter";
 
-import RideCompleteModal from "./components/RideCompleteModal/RideCompleteModal";
-import { fontSizes } from "../../../../theme-config/typography";
 import { scale } from "react-native-size-matters";
+import { fontSizes } from "../../../../theme-config/typography";
 
-function MapscreenComp({ type, setType, setDestination }) {
+export interface IMapTopDetailsProps {
+    setDestination: (destination: ILatLng) => void;
+    type: ICAR;
+    setType: (type: ICAR) => void;
+}
+
+function MapscreenComp({ type, setType, setDestination }: IMapTopDetailsProps) {
     const { height, width } = Dimensions.get("window");
 
     const updateType = React.useMemo(() => {

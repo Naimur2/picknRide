@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Button, Factory, HStack, Text, VStack } from "native-base";
 import React from "react";
+import { useWindowDimensions } from "react-native";
 import { scale } from "react-native-size-matters";
 import Balance from "../../components/Balance/Balance";
 import { Instagram, Whatsapp } from "../../components/Icons/Icons";
@@ -19,6 +20,8 @@ export default function CustomDrawer() {
     const Lg = Factory(LinearGradient);
     const navigation = useNavigation();
     const { user } = useAuth();
+
+    const { height } = useWindowDimensions();
 
     const drawermenu: IDrawerMenuItem[] = [
         {
@@ -72,6 +75,7 @@ export default function CustomDrawer() {
                 flex="1"
                 py="4"
                 px={7}
+                height={height}
             >
                 <HStack
                     mt={4}
