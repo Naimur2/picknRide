@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
-import { Spinner, Text, useColorMode } from "native-base";
+import { Factory, useColorMode } from "native-base";
 import React from "react";
+import { TouchableOpacity } from "react-native";
 import ImageBg from "../../components/ImageBg/ImageBg";
 import Scroller from "../../components/Scroller/Scroller";
 import TopSection from "../../components/TopSection/TopSection";
@@ -9,11 +10,11 @@ import useAuth from "../../hooks/useAuth";
 import Toggler from "../../svgs/Toggler";
 import DashModal from "./component/DashModal/DashModal";
 import VeichleCards from "./component/VeichleCards/VeichleCards";
-import * as Location from "expo-location";
 
 export default function Dashboard() {
     const navigation = useNavigation();
     const { colorMode } = useColorMode();
+    const Touchable = Factory(TouchableOpacity);
 
     const auth = useAuth();
     const user = auth?.user;
@@ -25,13 +26,14 @@ export default function Dashboard() {
                 alignItems: "center",
             },
             headerLeft: () => (
-                <Toggler
-                    mx={4}
-                    onPress={() => navigation.openDrawer()}
-                    _dark={{
-                        color: "#000",
-                    }}
-                />
+                <Touchable onPress={() => navigation.openDrawer()}>
+                    <Toggler
+                        mx={4}
+                        _dark={{
+                            color: "#000",
+                        }}
+                    />
+                </Touchable>
             ),
             headerRight: () => (
                 <UserAvatar

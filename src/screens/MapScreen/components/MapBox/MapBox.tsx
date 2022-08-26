@@ -23,7 +23,6 @@ function MapBox(
         markers,
         currentLocation,
         destinationLocation,
-        children,
         initialRegion,
     }: IMapScreenProps,
     ref
@@ -142,7 +141,6 @@ function MapBox(
             ) : (
                 <></>
             )}
-            {children}
         </Map>
     );
 }

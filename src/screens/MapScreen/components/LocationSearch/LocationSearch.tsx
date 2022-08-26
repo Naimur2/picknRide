@@ -5,7 +5,7 @@ import Toggler from "../../../../svgs/Toggler";
 import { ILatLng } from "../../MapScreen";
 
 import { useNavigation } from "@react-navigation/native";
-import { Image } from "react-native";
+import { Image, TouchableOpacity } from "react-native";
 import car from "../../../../../assets/images/car-small.png";
 import cycle from "../../../../../assets/images/cycle-small.png";
 import scooter from "../../../../../assets/images/veichle.png";
@@ -39,6 +39,7 @@ function LocationSearch({
     const config = Constants?.manifest?.extra as { [key: string]: any };
 
     const RNImage = Factory(Image);
+    const Touchable = Factory(TouchableOpacity);
 
     return (
         <HStack
@@ -49,7 +50,9 @@ function LocationSearch({
             {...rest}
         >
             <HStack width={"20%"} mt={6} mr={2} space={4} alignItems="center">
-                <Toggler onPress={() => navigation.openDrawer()} />
+                <Touchable onPress={() => navigation.openDrawer()}>
+                    <Toggler />
+                </Touchable>
                 {selectedType ? (
                     <RNImage
                         h="25px"

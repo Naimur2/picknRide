@@ -1,12 +1,12 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 import { Camera } from "expo-camera";
-import { Box, HStack, Modal, Pressable, Text, VStack } from "native-base";
+import * as FaceDetector from "expo-face-detector";
+import { Button, HStack, Modal, Text, VStack } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CameraModalComp from "../CameraModalComp/CameraModalComp";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
-import * as FaceDetector from "expo-face-detector";
 
 export default function CameraComp() {
     const inset = useSafeAreaInsets();
@@ -161,37 +161,26 @@ export default function CameraComp() {
                         </Text>
                     ) : null}
 
-                    <Pressable
-                        h="80px"
-                        w="80px"
-                        bg={"transparent"}
-                        onPress={!isRecording ? recordVideo : null}
-                        borderWidth={2}
-                        borderColor={"#fff"}
-                        borderRadius={40}
-                        overflow="hidden"
-                        padding={1}
+                    <VStack
+                        h="100px"
+                        w="100px"
+                        p="2"
                         mt="auto"
                         mb={100}
                         alignItems="center"
                         justifyContent="center"
+                        borderWidth={2}
+                        borderColor={"#fff"}
+                        borderRadius="120"
                     >
-                        {!isRecording ? (
-                            <Box
-                                bg={"#fff"}
-                                w="full"
-                                h="full"
-                                borderRadius={50}
-                            />
-                        ) : (
-                            <Box
-                                bg={"red.100"}
-                                w="30px"
-                                h="30px"
-                                borderRadius={20}
-                            />
-                        )}
-                    </Pressable>
+                        <Button
+                            h="100%"
+                            w="100%"
+                            bg={isRecording ? "red.500" : "#fff"}
+                            onPress={!isRecording ? recordVideo : null}
+                            borderRadius={50}
+                        />
+                    </VStack>
                 </VStack>
             </Camera>
         </VStack>

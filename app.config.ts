@@ -1,4 +1,4 @@
-import { ExpoConfig, ConfigContext } from "@expo/config";
+import { ConfigContext, ExpoConfig } from "@expo/config";
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
     ...config,
@@ -12,6 +12,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     },
     jsEngine: "hermes",
     android: {
+        package: "com.picknride",
         permissions: [
             "ACCESS_BACKGROUND_LOCATION",
             "ACCESS_FINE_LOCATION",
@@ -21,5 +22,11 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
             "READ_EXTERNAL_STORAGE",
             "WRITE_EXTERNAL_STORAGE",
         ],
+        versionCode: 1,
+        config: {
+            googleMaps: {
+                apiKey: "AIzaSyDS-lAgjgs0rT8FzzB9woxe8sTPPh6v7F4",
+            },
+        },
     },
 });

@@ -1,6 +1,13 @@
-import { ChevronRightIcon, HStack, Pressable, Text } from "native-base";
+import {
+    ChevronRightIcon,
+    HStack,
+    Pressable,
+    Text,
+    Factory,
+} from "native-base";
 import React from "react";
 import { scale } from "react-native-size-matters";
+import { TouchableOpacity } from "react-native";
 
 interface Props {
     onPress: () => void;
@@ -8,8 +15,9 @@ interface Props {
 }
 
 export default function DrawerBtn({ onPress, title }: Props) {
+    const Touchable = Factory(TouchableOpacity);
     return (
-        <Pressable onPress={onPress}>
+        <Touchable onPress={onPress}>
             <HStack
                 justifyContent={"space-between"}
                 alignItems="center"
@@ -25,6 +33,6 @@ export default function DrawerBtn({ onPress, title }: Props) {
                 </Text>
                 <ChevronRightIcon color={"#fff"} />
             </HStack>
-        </Pressable>
+        </Touchable>
     );
 }

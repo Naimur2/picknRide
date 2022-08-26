@@ -9,20 +9,6 @@ import Main from "./src/Main";
 import ThemeConFig from "./src/theme-config/index";
 
 export default function App() {
-    const [status, requestPermission] =
-        ImagePicker.useMediaLibraryPermissions();
-    const [foreLocationStatus, requestForeLocationPermission] =
-        Location.useForegroundPermissions();
-
-    React.useEffect(() => {
-        requestPermission();
-        requestForeLocationPermission();
-    }, []);
-
-    if (status !== "granted" || foreLocationStatus !== "granted") {
-        return <Text>Access to media library is denied.</Text>;
-    }
-
     return (
         <SafeAreaProvider>
             <ThemeConFig>

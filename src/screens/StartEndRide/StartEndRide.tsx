@@ -1,30 +1,31 @@
 import { useNavigation } from "@react-navigation/native";
 import {
-    HStack,
-    useColorMode,
-    VStack,
     Center,
+    Factory,
+    HStack,
     Pressable,
     Text,
+    useColorMode,
+    VStack,
 } from "native-base";
 import React from "react";
+import { TouchableOpacity } from "react-native";
+import CheckBox from "../../components/CheckBox/CheckBox";
+import GradientBtn from "../../components/GradientBtn/GradientBtn";
 import ImageBg from "../../components/ImageBg/ImageBg";
 import Scroller from "../../components/Scroller/Scroller";
 import TopSection from "../../components/TopSection/TopSection";
 import UserAvatar from "../../components/UserAvatar/UserAvatar";
 import useAuth from "../../hooks/useAuth";
 import Toggler from "../../svgs/Toggler";
-import DashModal from "./component/DashModal/DashModal";
-import VeichleCards from "./component/VeichleCards/VeichleCards";
 import UploadImg from "./components/UploadImg/UploadImg";
-import GradientBtn from "../../components/GradientBtn/GradientBtn";
-import CheckBox from "../../components/CheckBox/CheckBox";
 
 export default function StartEndRide() {
     const navigation = useNavigation();
     const { colorMode } = useColorMode();
     const { user } = useAuth();
     const [isChecked, setIsChecked] = React.useState(false);
+    const Touchable = Factory(TouchableOpacity);
 
     React.useEffect(() => {
         navigation.setOptions({
@@ -33,13 +34,14 @@ export default function StartEndRide() {
                 alignItems: "center",
             },
             headerLeft: () => (
-                <Toggler
-                    mx={4}
-                    onPress={() => navigation.openDrawer()}
-                    _dark={{
-                        color: "#000",
-                    }}
-                />
+                <Touchable onPress={() => navigation.openDrawer()}>
+                    <Toggler
+                        mx={4}
+                        _dark={{
+                            color: "#000",
+                        }}
+                    />
+                </Touchable>
             ),
             headerRight: () => (
                 <UserAvatar
