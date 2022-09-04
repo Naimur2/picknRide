@@ -41,8 +41,8 @@ function MapScreen() {
         setCars(carsData);
 
         if (clear) {
-            return () => (clear = false);
             setCars(null);
+            return () => (clear = false);
         }
     }, [navigation]);
 

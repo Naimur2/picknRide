@@ -130,7 +130,7 @@ function MapBox(
         >
             {allMarkers() || <></>}
 
-            {renderMap ? (
+            {/* {renderMap ? (
                 <MapViewDirections
                     origin={initialRegion}
                     destination={destinationLocation}
@@ -140,7 +140,7 @@ function MapBox(
                 />
             ) : (
                 <></>
-            )}
+            )} */}
         </Map>
     );
 }
