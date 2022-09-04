@@ -1,30 +1,14 @@
 import { Input, Text, VStack } from "native-base";
 import React from "react";
 import GradientBtn from "../../../../components/GradientBtn/GradientBtn";
+import PickCountry from "../../../../components/PickCountry/PickCountry";
 import { EyeClose, EyeOpen, Tick } from "./../../../../components/Icons/Icons";
 
-export default function InputForm() {
+function InputForm() {
     const [showPassword, setShowPassword] = React.useState(false);
     return (
         <VStack mt={10} space={2} shadow="7">
-            <Input
-                borderWidth={0}
-                bg="white"
-                shadow="9"
-                px={6}
-                py={6}
-                borderRadius={20}
-                placeholder="Email"
-                _focus={{
-                    bg: "white",
-                }}
-                color="gray.200"
-                fontSize={14}
-                fontWeight="500"
-                placeholderTextColor="gray.300"
-                mb={2}
-                rightElement={<Tick color="primary.100" mx="4" />}
-            />
+            <PickCountry />
             <Input
                 borderWidth={0}
                 bg="white"
@@ -93,3 +77,5 @@ export default function InputForm() {
         </VStack>
     );
 }
+
+export default React.memo(InputForm);

@@ -17,7 +17,7 @@ export default function Login() {
             <Scroller
                 contentStyle={{
                     flexGrow: 1,
-                    paddingHorizontal: 40,
+                    paddingHorizontal: 30,
                     paddingTop: 20 + insets.top,
                     paddingBottom: 20,
                 }}

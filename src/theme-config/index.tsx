@@ -84,7 +84,7 @@ export default function ThemeConFig({
 
     return (
         <NativeBaseProvider theme={theme}>
-            <StatusBar hidden />
+            <StatusBar backgroundColor={"#fff"} />
             {children}
         </NativeBaseProvider>
     );
