@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { Factory, useColorMode } from "native-base";
+import { Factory, useColorMode, Spinner, Text } from "native-base";
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import ImageBg from "../../components/ImageBg/ImageBg";
@@ -10,6 +10,7 @@ import useAuth from "../../hooks/useAuth";
 import Toggler from "../../svgs/Toggler";
 import DashModal from "./component/DashModal/DashModal";
 import VeichleCards from "./component/VeichleCards/VeichleCards";
+import * as Location from "expo-location";
 
 export default function Dashboard() {
     const navigation = useNavigation();
@@ -56,68 +57,68 @@ export default function Dashboard() {
     //     );
     // };
 
-    // React.useEffect(() => {
-    //     auth.setLoading(true);
-    //     const getUserLocation = async () => {
-    //         let clear = true;
-    //         try {
-    //             const hasPermission = await getPermission();
+    React.useEffect(() => {
+        auth.setLoading(true);
+        let clear = true;
+        const getUserLocation = async () => {
+            try {
+                // const hasPermission = await getPermission();
 
-    //             if (!hasPermission) {
-    //                 auth.setError("Permission denied");
-    //                 auth.setLoading(false);
-    //                 return;
-    //             }
+                // if (!hasPermission) {
+                //     auth.setError("Permission denied");
+                //     auth.setLoading(false);
+                //     return;
+                // }
 
-    //             const current = await Location.getCurrentPositionAsync({
-    //                 accuracy: Location.Accuracy.Highest,
-    //             });
+                const current = await Location.getCurrentPositionAsync({
+                    accuracy: Location.Accuracy.Highest,
+                });
 
-    //             const locationCurr: ILatLng = {
-    //                 latitude: current.coords.latitude,
-    //                 longitude: current.coords.longitude,
-    //             };
+                const locationCurr: ILatLng = {
+                    latitude: current.coords.latitude,
+                    longitude: current.coords.longitude,
+                };
 
-    //             auth.setCurrentLocation(locationCurr);
-    //             auth.setLoading(false);
-    //             auth.setError(null);
-    //         } catch (err) {
-    //             auth.setLoading(false);
-    //             auth.setError(err as any);
-    //         }
-    //     };
-    //     getUserLocation();
+                auth.setCurrentLocation(locationCurr);
+                auth.setLoading(false);
+                auth.setError(null);
+            } catch (err) {
+                auth.setLoading(false);
+                auth.setError("Could not get location");
+            }
+        };
+        getUserLocation();
 
-    //     if (clear) {
-    //         return () => (clear = false);
-    //     }
-    // }, []);
+        if (clear) {
+            return () => (clear = false);
+        }
+    }, []);
 
-    // if (auth.isLoading) {
-    //     return (
-    //         <ImageBg
-    //             type={colorMode}
-    //             flex={1}
-    //             alignItems="center"
-    //             justifyContent={"center"}
-    //         >
-    //             <Spinner color="blue" size={"lg"} />
-    //         </ImageBg>
-    //     );
-    // }
+    if (auth.isLoading) {
+        return (
+            <ImageBg
+                type={colorMode}
+                flex={1}
+                alignItems="center"
+                justifyContent={"center"}
+            >
+                <Spinner color="blue" size={"lg"} />
+            </ImageBg>
+        );
+    }
 
-    // if (auth.error) {
-    //     return (
-    //         <ImageBg
-    //             type={colorMode}
-    //             flex={1}
-    //             alignItems="center"
-    //             justifyContent={"center"}
-    //         >
-    //             <Text fontWeight={700}>{error}</Text>
-    //         </ImageBg>
-    //     );
-    // }
+    if (auth?.error) {
+        return (
+            <ImageBg
+                type={colorMode}
+                flex={1}
+                alignItems="center"
+                justifyContent={"center"}
+            >
+                <Text fontWeight={700}>{auth?.error}</Text>
+            </ImageBg>
+        );
+    }
 
     return (
         <ImageBg type={colorMode}>

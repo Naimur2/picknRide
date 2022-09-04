@@ -18,6 +18,7 @@ export default function DrawerRoute() {
                     borderBottomRightRadius: 30,
                     overflow: "hidden",
                 },
+                unmountOnBlur: true,
             }}
             drawerContent={(props) => <CustomDrawer {...props} />}
         >

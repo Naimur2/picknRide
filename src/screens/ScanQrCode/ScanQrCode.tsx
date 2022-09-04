@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { Camera } from "expo-camera";
 import { LinearGradient } from "expo-linear-gradient";
@@ -23,6 +23,7 @@ export default function ScanQrCode() {
     const [scanned, setScanned] = React.useState(false);
     const [scannedData, setScannedData] = React.useState("");
     const ImageBg = Factory(ImageBackground);
+    const isFocused = useIsFocused();
 
     const LinGrad = Factory(LinearGradient);
 

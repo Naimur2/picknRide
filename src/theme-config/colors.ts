@@ -25,9 +25,9 @@ const colors = {
         200: "#52BF0416",
         300: "#A9C198",
     },
-    dark:{
+    dark: {
         100: "#000000",
-    }
+    },
 };
 
 export const gradient = {
