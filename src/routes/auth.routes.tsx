@@ -15,15 +15,13 @@ export default function AuthRoute() {
     const Stack = createNativeStackNavigator();
     const { colorMode } = useColorMode();
 
-
-
     return (
         <Stack.Navigator
             screenOptions={{
                 headerTitle: "",
                 headerTitleStyle: { color: "white" },
                 headerTintColor: colorMode === "light" ? "black" : "white",
-                headerTransparent: true,
+
                 headerLeft: () => <BackButton />,
             }}
         >
@@ -49,7 +47,7 @@ export default function AuthRoute() {
             <Stack.Screen
                 options={{
                     headerShadowVisible: false,
-                    headerTransparent: true,
+
                     headerBackTitleVisible: false,
                 }}
                 name="Register"

@@ -1,6 +1,7 @@
 import React from "react";
 import { Input } from "native-base";
 import { EyeClose, EyeOpen } from "../Icons/Icons";
+import { scale } from "react-native-size-matters";
 
 export default function PasswordInput({
     onChangeText,
@@ -20,14 +21,13 @@ export default function PasswordInput({
             bg="white"
             shadow="9"
             px={6}
-            py={6}
+            py={4}
             borderRadius={20}
-            placeholder="Password"
             _focus={{
                 bg: "white",
             }}
             color="gray.200"
-            fontSize={14}
+            fontSize={scale(12)}
             fontWeight="500"
             placeholderTextColor="gray.300"
             mb={2}

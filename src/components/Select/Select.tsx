@@ -3,6 +3,7 @@ import React from "react";
 
 import { ChevronDown } from "../Icons/Icons";
 import LocationSheetContent from "./components/LocationSheetContent/LocationSheetContent";
+import { scale } from "react-native-size-matters";
 
 export interface Ilocations {
     id: number;
@@ -62,14 +63,19 @@ export default function Select({
                 overflow="hidden"
                 borderWidth={0}
                 bg="white"
-                p={6}
+                px={6}
+                py={4}
                 mb={2}
                 flexDir="row"
                 justifyContent="space-between"
                 alignItems={"center"}
                 onPress={() => setIsOpen(true)}
             >
-                <Text py={1} color={selected ? "gray.200" : "gray.300"}>
+                <Text
+                    fontSize={scale(12)}
+                    py={1}
+                    color={selected ? "gray.200" : "gray.300"}
+                >
                     {selected?.name || "Location"}
                 </Text>
                 <ChevronDown color={selected ? "gray.200" : "gray.300"} />

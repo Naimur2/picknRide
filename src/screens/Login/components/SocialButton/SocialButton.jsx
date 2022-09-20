@@ -25,6 +25,8 @@ export default function SocialButton({ type, onPress, ...rest }) {
                 <Image
                     source={type === "facebook" ? fb : google}
                     alt="facebook"
+                    height={"30px"}
+                    width={"30px"}
                 />
                 <Text fontWeight={500} fontSize={15} mr={"auto"} color="#fff">
                     Continue with {type === "facebook" ? "Facebook" : "Google"}

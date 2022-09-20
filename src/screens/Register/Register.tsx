@@ -33,20 +33,9 @@ export default function Register() {
                 bottom={0}
             />
 
-            <VStack
-                pt={20 + insets.top + "px"}
-                maxW={scale(320) + "px"}
-                w="full"
-                px={4}
-                pb={5}
-            >
+            <VStack pt={"px"} maxW={scale(320) + "px"} w="full" px={4} pb={5}>
                 <VStack alignItems={"center"} space="4">
-                    <Text
-                        mt={"30px"}
-                        color="primary.200"
-                        fontSize={17}
-                        fontWeight="bold"
-                    >
+                    <Text color="primary.200" fontSize={17} fontWeight="bold">
                         Sign Up
                     </Text>
                     <Text

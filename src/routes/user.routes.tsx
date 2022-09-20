@@ -32,7 +32,7 @@ export default function UserRoutes() {
                 headerTitle: "",
                 headerTitleStyle: { color: "white" },
                 headerTintColor: colorMode === "light" ? "black" : "white",
-                headerTransparent: true,
+
                 headerStyle: {
                     height: "100",
                 },

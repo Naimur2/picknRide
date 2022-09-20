@@ -1,12 +1,11 @@
-import { Input, Text, VStack } from "native-base";
+import { useNavigation } from "@react-navigation/native";
+import { VStack } from "native-base";
 import React from "react";
 import GradientBtn from "../../../../components/GradientBtn/GradientBtn";
-import { EyeClose, EyeOpen } from "../../../../components/Icons/Icons";
-import Select from "../../../../components/Select/Select";
-import PickCountry from "../../../../components/PickCountry/PickCountry";
-import { useNavigation } from "@react-navigation/native";
-import TextInput from "../../../../components/TextInput/TextInput";
 import PasswordInput from "../../../../components/PasswordInput/PasswordInput";
+import PickCountry from "../../../../components/PickCountry/PickCountry";
+import Select from "../../../../components/Select/Select";
+import TextInput from "../../../../components/TextInput/TextInput";
 
 function InputForm() {
     const [showPassword, setShowPassword] = React.useState(false);

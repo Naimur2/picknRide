@@ -1,5 +1,6 @@
 import React from "react";
 import { Input } from "native-base";
+import { scale } from "react-native-size-matters";
 
 export default function TextInput({
     onChangeText,
@@ -17,14 +18,13 @@ export default function TextInput({
             bg="white"
             shadow="9"
             px={6}
-            py={6}
+            py={4}
             borderRadius={20}
-            placeholder="Email"
             _focus={{
                 bg: "white",
             }}
             color="gray.200"
-            fontSize={14}
+            fontSize={scale(12)}
             fontWeight="500"
             placeholderTextColor="gray.300"
             mb={2}
