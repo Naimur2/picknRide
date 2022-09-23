@@ -1,6 +1,5 @@
-import { View, Text } from "react-native";
-import React from "react";
 import { VStack } from "native-base";
+import React from "react";
 import Scroller from "../../../Scroller/Scroller";
 import { Ilocations } from "../../Select";
 import SelectedItem from "../SelectedItem/SelectedItem";

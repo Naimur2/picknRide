@@ -1,10 +1,11 @@
 import { Actionsheet, Pressable, Text } from "native-base";
 import React from "react";
 
+import axios from "axios";
+import { scale } from "react-native-size-matters";
+import apiConfig from "../../api_config/ApiConfig";
 import { ChevronDown } from "../Icons/Icons";
 import LocationSheetContent from "./components/LocationSheetContent/LocationSheetContent";
-import { scale } from "react-native-size-matters";
-
 export interface Ilocations {
     id: number;
     name: string;
@@ -54,6 +55,20 @@ export default function Select({
 }) {
     const [isOpen, setIsOpen] = React.useState(false);
 
+    // get locations from api
+    const [locations, setLocations] = React.useState([]);
+    React.useEffect(() => {
+        axios
+            .get(`${apiConfig.apiUrl}/getLocation`)
+            .then((res) => {
+                // console.log(res.data);
+                setLocations(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }, []);
+
     return (
         <>
             <Pressable
@@ -62,7 +77,6 @@ export default function Select({
                 borderRadius={20}
                 overflow="hidden"
                 borderWidth={0}
-                bg="white"
                 px={6}
                 py={4}
                 mb={2}
