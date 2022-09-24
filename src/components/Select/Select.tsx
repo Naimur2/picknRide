@@ -9,6 +9,14 @@ import LocationSheetContent from "./components/LocationSheetContent/LocationShee
 export interface Ilocations {
     id: number;
     name: string;
+    location: string;
+    location_ar: string;
+    latitude: string;
+    longitude: string;
+    status: string;
+    created_at: string;
+    update: string;
+
 }
 
 const data: Ilocations[] = [
@@ -56,13 +64,13 @@ export default function Select({
     const [isOpen, setIsOpen] = React.useState(false);
 
     // get locations from api
-    const [locations, setLocations] = React.useState([]);
+    const [locations, setLocations] = React.useState<Ilocations[]>([]);
     React.useEffect(() => {
         axios
             .get(`${apiConfig.apiUrl}/getLocation`)
             .then((res) => {
                 // console.log(res.data);
-                setLocations(res.data);
+                setLocations(res.data.data);
             })
             .catch((err) => {
                 console.log(err);
@@ -90,7 +98,7 @@ export default function Select({
                     py={1}
                     color={selected ? "gray.200" : "gray.300"}
                 >
-                    {selected?.name || "Location"}
+                    {selected?.location || "Location"}
                 </Text>
                 <ChevronDown color={selected ? "gray.200" : "gray.300"} />
             </Pressable>
@@ -98,7 +106,7 @@ export default function Select({
             <Actionsheet isOpen={isOpen} onClose={() => setIsOpen(false)}>
                 <Actionsheet.Content>
                     <LocationSheetContent
-                        locations={data}
+                        locations={locations}
                         onSelect={(item) => {
                             onSelect?.(item);
                             setIsOpen(false);

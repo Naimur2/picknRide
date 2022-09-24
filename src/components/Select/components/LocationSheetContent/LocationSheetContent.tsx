@@ -17,11 +17,11 @@ export default function LocationSheetContent({
         <VStack h={"full"} w="full">
             <Scroller nestedScrollEnabled={true}>
                 {locations?.map((item, index) => {
-                    console.log(item);
+                    // console.log(item);
                     return (
                         <SelectedItem
                             key={`${item.id}-${index}`}
-                            title={item?.name}
+                            title={item?.location}
                             isSelected={item?.id === selected?.id}
                             onPress={() => {
                                 onSelect?.(item);
