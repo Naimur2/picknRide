@@ -35,6 +35,7 @@ export default function OtpForm() {
             "phone": phone,
             "otp": OTP
         }
+        // otp verification api
         axios.post(`${apiConfig.apiUrl}/otp_verify`, submitFromData)
             .then(res => {
                 console.log(res.data);
@@ -53,6 +54,25 @@ export default function OtpForm() {
 
 
     };
+
+    // Resend Otp api call
+    const handelResendOtp = () => {
+        const resendOtpData = {
+            "dialing_code": dialing_code,
+            "phone": phone
+        }
+        axios.post(`${apiConfig.apiUrl}/resend_otp`, resendOtpData)
+            .then(res => {
+                console.log(res.data);
+                setOtp({ 0: "", 1: "", 2: "", 3: "" });
+                setNextInputIndex(0);
+                // alert("OTP Resend");
+            })
+            .catch(err => {
+                console.log(err);
+                alert("Opps! Something went wrong");
+            })
+    }
 
     const textChangeHandler = (text, index) => {
         // TODO: add only number
@@ -150,7 +170,7 @@ export default function OtpForm() {
                     I didn’t receive the code,
                 </Text>
                 <Text
-                    onPress={() => navigation.navigate("Register")}
+                    onPress={() => handelResendOtp()}
                     color={"gray.200"}
                     fontWeight={500}
                     fontSize={13}
