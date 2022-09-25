@@ -18,7 +18,7 @@ function InputForm() {
         f_name: "",
         l_name: "",
         email: "",
-        dialing_code: "",
+        dialing_code: "+794",
         phone: "",
         password_1: "",
         password_2: "",
@@ -32,17 +32,23 @@ function InputForm() {
             f_name: formData.f_name,
             l_name: formData.l_name,
             email: formData.email,
-            dialing_code: "+794",
+            dialing_code: formData.dialing_code,
             phone: formData.phone,
             password: formData.password_1,
         }
         // post form data to api
         axios.post(`${apiConfig.apiUrl}/sign_up`, submitFromData)
             .then(res => {
-                console.log(res.data);
+                // console.log(res.data);
+                alert(res.data.message);
+                navigation.navigate("OtpScreen", {
+                    dialing_code: formData.dialing_code,
+                    phone: formData.phone,
+                })
             })
             .catch(err => {
                 console.log(err);
+                alert(err);
             })
     };
 

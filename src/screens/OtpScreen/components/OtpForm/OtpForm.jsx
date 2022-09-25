@@ -1,8 +1,10 @@
-import { useNavigation } from "@react-navigation/native";
-import { Box, HStack, Input, Text, useColorMode, VStack } from "native-base";
-import React, { useEffect, useRef, useState } from "react";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import axios from "axios";
+import { Box, HStack, Input, Text, VStack } from "native-base";
+import React, { useRef, useState } from "react";
 
 import { Alert, useWindowDimensions } from "react-native";
+import apiConfig from "../../../../api_config/ApiConfig";
 
 import GradientBtn from "../../../../components/GradientBtn/GradientBtn";
 
@@ -11,6 +13,7 @@ let newInputIndex = 0;
 
 export default function OtpForm() {
     const navigation = useNavigation();
+    const { dialing_code, phone } = useRoute().params;
 
     const { width } = useWindowDimensions();
 
@@ -27,8 +30,28 @@ export default function OtpForm() {
 
             return;
         }
+        const submitFromData = {
+            "dialing_code": dialing_code,
+            "phone": phone,
+            "otp": OTP
+        }
+        axios.post(`${apiConfig.apiUrl}/otp_verify`, submitFromData)
+            .then(res => {
+                console.log(res.data);
+                // if (res.data.status === "success") {
+                // alert("OTP Verified");
+                //     navigation.navigate("SelectCitizenShip", { OTP });
+                // }
+                alert("OTP Verified");
+                navigation.navigate("SelectCitizenShip", { OTP });
 
-        navigation.navigate("SelectCitizenShip", { OTP });
+            })
+            .catch(err => {
+                console.log(err);
+                alert("Opps! Something went wrong");
+            })
+
+
     };
 
     const textChangeHandler = (text, index) => {
@@ -56,7 +79,7 @@ export default function OtpForm() {
     return (
         <VStack
             flex="1"
-            
+
             px={4}
             space="3"
             alignItems={"center"}
