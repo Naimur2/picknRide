@@ -6,11 +6,21 @@ import ImageBg from "../../components/ImageBg/ImageBg";
 import Scroller from "./../../components/Scroller/Scroller";
 import InputForm from "./components/InputForm/InputForm";
 import SocialButton from "./components/SocialButton/SocialButton";
+import { AsyncStorage } from 'react-native';
 
 export default function Login() {
     const { colorMode } = useColorMode();
     const navigation = useNavigation();
     const insets = useSafeAreaInsets();
+
+    // store data in async storage
+    const storeData = async (value) => {
+        try {
+            await AsyncStorage.setItem('user', value)
+        } catch (e) {
+            // saving error
+        }
+    }
 
     return (
         <ImageBg type={colorMode}>

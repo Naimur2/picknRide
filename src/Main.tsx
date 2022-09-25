@@ -1,12 +1,12 @@
+import { Camera } from "expo-camera";
+import * as ImagePicker from "expo-image-picker";
+import * as Location from "expo-location";
+import * as MediaLibrary from "expo-media-library";
+import { Spinner, Text, VStack } from "native-base";
 import React from "react";
 import useAuth from "./hooks/useAuth";
 import AuthRoute from "./routes/auth.routes";
 import DrawerRoute from "./routes/drawer.routes";
-import * as ImagePicker from "expo-image-picker";
-import * as Location from "expo-location";
-import { Text, VStack, Spinner } from "native-base";
-import { Camera } from "expo-camera";
-import * as MediaLibrary from "expo-media-library";
 
 export default function Main() {
     const auth = useAuth();
@@ -38,7 +38,6 @@ export default function Main() {
             setError(err);
         }
     };
-
     React.useEffect(() => {
         requestPermission();
         requestForeLocationPermission();

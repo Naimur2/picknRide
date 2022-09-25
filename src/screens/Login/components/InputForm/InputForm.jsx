@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from "axios";
 import { Text, VStack } from "native-base";
 import React from "react";
@@ -20,12 +21,13 @@ function InputForm() {
             .then(res => {
                 // console.log(res.data.status);
                 if (res.data.status === 400) {
-                    console.log(res.data);
+                    // console.log(res.data);
                     alert("Invalid Number or Password");
                 }
                 if (res.data.status === 200) {
+                    storeData(res.data.data);
                     alert("Login Success");
-                    console.log(res.data.data);
+                    //  console.log(res.data.data);
                 }
             })
             .catch(err => {
@@ -33,6 +35,21 @@ function InputForm() {
                 alert(err);
             })
     }
+
+    // store data in async storage
+    const storeData = async (value) => {
+        try {
+            // await AsyncStorage.setItem('user', JSON.stringify(value))
+            await AsyncStorage.setItem('user', value)
+
+        } catch (e) {
+            // saving error
+            console.log("cont save data in async storage", e);
+        }
+    }
+    // console.log(AsyncStorage.getItem('user').then((value) => {
+    //     console.log(value);
+    // }));
     return (
         <VStack mt={10} space={2} shadow="7">
             <PickCountry />

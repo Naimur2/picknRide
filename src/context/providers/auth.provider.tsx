@@ -1,6 +1,12 @@
 import React from "react";
-import { AuthContext } from "../contexts";
 import { IAuthProviderProps } from "../../interfaces/context";
+import { AuthContext } from "../contexts";
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// let users = AsyncStorage.getItem('user').then((value) => {
+//     setUser(value);
+// })
+// console.log(user);
 
 const defaultState = {
     isAuthenciated: false,
