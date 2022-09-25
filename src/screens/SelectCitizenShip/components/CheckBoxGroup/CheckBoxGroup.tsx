@@ -18,7 +18,7 @@ function CheckBoxGroup({ onSelect, selected, items }) {
         >
             {items?.map((item, index) => (
                 <CheckBoxWithText
-                    text={item.type}
+                    text={item.resident}
                     key={index}
                     onPress={() => onSelect(item)}
                     isChecked={selected.id === item.id}

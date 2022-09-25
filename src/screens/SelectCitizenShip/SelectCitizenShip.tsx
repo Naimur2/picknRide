@@ -1,26 +1,45 @@
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 import { Button, Text, useColorMode, VStack } from "native-base";
 import React from "react";
+import apiConfig from "../../api_config/ApiConfig";
 import ImageBg from "../../components/ImageBg/ImageBg";
 import CheckBoxGroup from "./components/CheckBoxGroup/CheckBoxGroup";
 
 export interface ICitizenship {
     id: number;
-    type: string;
+    resident: string;
+    resident_name: string;
+    status: string;
+    created_at: string;
+    updated_at: string;
 }
 
 const items: ICitizenship[] = [
     {
         id: 1,
-        type: "Qatar Citizen / Resident",
+        resident: "Demo-1",//"Qatar Citizen / Resident",
+        resident_name: "Qatar Citizen / Resident",
+        status: "1",
+        created_at: "2021-05-25T11:30:00.000000Z",
+        updated_at: "2021-05-25T11:30:00.000000Z",
     },
     {
         id: 2,
-        type: "GCC Resident",
+        resident: "GCC Resident",
+        resident_name: "GCC Resident",
+        status: "1",
+        created_at: "2021-05-25T11:30:00.000000Z",
+        updated_at: "2021-05-25T11:30:00.000000Z",
+
     },
     {
         id: 3,
-        type: "Visitor / Tourist",
+        resident: "Visitor / Tourist",
+        resident_name: "Visitor / Tourist",
+        status: "1",
+        created_at: "2021-05-25T11:30:00.000000Z",
+        updated_at: "2021-05-25T11:30:00.000000Z",
     },
 ];
 
@@ -49,6 +68,16 @@ export default function SelectCitizenShip() {
         }
     };
 
+    // get Residency from api
+    const [residency, setResidency] = React.useState<ICitizenship[]>([]);
+    React.useEffect(() => {
+        const getResidency = async () => {
+            const res = await axios.get(`${apiConfig.apiUrl}/getResidency`);
+            setResidency(res?.data?.data);
+        }
+        getResidency();
+    }, [navigation]);
+
     return (
         <ImageBg type={bgType}>
             <VStack alignItems={"center"}>
@@ -66,7 +95,7 @@ export default function SelectCitizenShip() {
                 <CheckBoxGroup
                     onSelect={(it) => setSelected(it)}
                     selected={selected}
-                    items={items}
+                    items={residency}
                 />
 
                 <Button
