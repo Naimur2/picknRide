@@ -66,16 +66,21 @@ export default function Select({
     // get locations from api
     const [locations, setLocations] = React.useState<Ilocations[]>([]);
     React.useEffect(() => {
-        axios
-            .get(`${apiConfig.apiUrl}/getLocation`)
-            .then((res) => {
-                // console.log(res.data);
-                setLocations(res.data.data);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }, []);
+        const getLocations = async () => {
+            const res = await axios.get(`${apiConfig.apiUrl}/getLocation`);
+            setLocations(res?.data?.data);
+        }
+        getLocations();
+        // axios
+        //     .get(`${apiConfig.apiUrl}/getLocation`)
+        //     .then((res) => {
+        //         // console.log(res.data);
+        //         setLocations(res.data.data);
+        //     })
+        //     .catch((err) => {
+        //         console.log(err);
+        //     });
+    }, [isOpen]);
 
     return (
         <>
