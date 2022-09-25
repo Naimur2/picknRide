@@ -36,7 +36,6 @@ function InputForm() {
             phone: formData.phone,
             password: formData.password_1,
         }
-        //console.log(submitFromData);
         // post form data to api
         axios.post(`${apiConfig.apiUrl}/sign_up`, submitFromData)
             .then(res => {
@@ -45,12 +44,6 @@ function InputForm() {
             .catch(err => {
                 console.log(err);
             })
-        // const postRegFrom = async () => {
-        //     const res = await axios.post(`${apiConfig.apiUrl}/sign_up`, submitFromData);
-        //     console.log(res.data);
-        //     //  setResidency(res?.data?.data);
-        // }
-        // postRegFrom();
     };
 
     return (
