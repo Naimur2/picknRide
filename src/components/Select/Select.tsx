@@ -16,43 +16,7 @@ export interface Ilocations {
     status: string;
     created_at: string;
     update: string;
-
 }
-
-const data: Ilocations[] = [
-    {
-        id: 1,
-        name: "Chittagong",
-    },
-    {
-        id: 2,
-        name: "Dhaka",
-    },
-    {
-        id: 3,
-        name: "Khulna",
-    },
-    {
-        id: 4,
-        name: "Rajshahi",
-    },
-    {
-        id: 5,
-        name: "Rangpur",
-    },
-    {
-        id: 6,
-        name: "Sylhet",
-    },
-    {
-        id: 7,
-        name: "Barisal",
-    },
-    {
-        id: 8,
-        name: "Mymensingh",
-    },
-];
 
 export default function Select({
     onSelect,
@@ -65,21 +29,16 @@ export default function Select({
 
     // get locations from api
     const [locations, setLocations] = React.useState<Ilocations[]>([]);
+
+    const selectLocation =
+        selected && locations.find((item) => item.id === selected);
+
     React.useEffect(() => {
         const getLocations = async () => {
             const res = await axios.get(`${apiConfig.apiUrl}/getLocation`);
             setLocations(res?.data?.data);
-        }
+        };
         getLocations();
-        // axios
-        //     .get(`${apiConfig.apiUrl}/getLocation`)
-        //     .then((res) => {
-        //         // console.log(res.data);
-        //         setLocations(res.data.data);
-        //     })
-        //     .catch((err) => {
-        //         console.log(err);
-        //     });
     }, [isOpen]);
 
     return (
@@ -91,7 +50,7 @@ export default function Select({
                 overflow="hidden"
                 borderWidth={0}
                 px={6}
-                py={4}
+                py={3}
                 mb={2}
                 flexDir="row"
                 justifyContent="space-between"
@@ -101,9 +60,9 @@ export default function Select({
                 <Text
                     fontSize={scale(12)}
                     py={1}
-                    color={selected ? "gray.200" : "gray.300"}
+                    color={selectLocation ? "gray.200" : "gray.300"}
                 >
-                    {selected?.location || "Location"}
+                    {selectLocation?.location || "Location"}
                 </Text>
                 <ChevronDown color={selected ? "gray.200" : "gray.300"} />
             </Pressable>
@@ -116,7 +75,7 @@ export default function Select({
                             onSelect?.(item);
                             setIsOpen(false);
                         }}
-                        selected={selected}
+                        selected={selectLocation}
                     />
                 </Actionsheet.Content>
             </Actionsheet>

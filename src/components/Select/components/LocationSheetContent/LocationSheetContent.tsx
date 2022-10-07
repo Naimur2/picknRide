@@ -24,7 +24,7 @@ export default function LocationSheetContent({
                             title={item?.location}
                             isSelected={item?.id === selected?.id}
                             onPress={() => {
-                                onSelect?.(item);
+                                onSelect?.(item.id);
                             }}
                         />
                     );

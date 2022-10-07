@@ -1,9 +1,9 @@
+import { LinearGradient } from "expo-linear-gradient";
 import { Factory, Text } from "native-base";
 import React from "react";
 import { TouchableOpacity } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { gradient } from "../../theme-config/colors";
 import { scale } from "react-native-size-matters";
+import { gradient } from "../../theme-config/colors";
 
 interface IProps {
     title: string;
@@ -28,7 +28,7 @@ export default function GradientBtn({
         <Touchable onPress={onPress} shadow="7" {...rest}>
             <LinearGard
                 w={scale(265) + "px"}
-                h={55 + "px"}
+                h={45 + "px"}
                 colors={gradient[100]}
                 start={[1, 0]}
                 end={[1, 1]}

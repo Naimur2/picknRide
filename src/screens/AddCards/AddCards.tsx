@@ -17,7 +17,11 @@ import Scroller from "../../components/Scroller/Scroller";
 import Camera from "../../svgs/Camera";
 import useAuth from "../../hooks/useAuth";
 import Pen from "../../svgs/Pen";
+import { Dimensions } from "react-native";
+import { fontSizes } from "../../theme-config/typography";
 const creditCardImage = require("../../../assets/images/credit-card.png");
+
+const WINDOW_HEIGHT = Dimensions.get("window").height;
 
 interface IRouteProps {
     arrivalDate: string;
@@ -29,7 +33,7 @@ interface IRouteProps {
 
 export default function AddCards() {
     const navigation = useNavigation();
-    const insets = useSafeAreaInsets();
+
     const params = useRoute().params as IRouteProps;
 
     const auth = useAuth();
@@ -70,7 +74,6 @@ export default function AddCards() {
     return (
         <Scroller bg="#fff">
             <VStack
-                pt={50 + insets.top + "px"}
                 pb={"50px"}
                 flex="1"
                 alignItems={"center"}
@@ -78,31 +81,37 @@ export default function AddCards() {
                     bg: "#000",
                 }}
             >
-                <Image
-                    width={scale(350) + "px"}
-                    height={scale(300) + "px"}
-                    resizeMode="contain"
-                    source={creditCardImage}
-                    alt="credit-card"
-                />
-                <VStack width={scale(300) + "px"}>
+                <HStack
+                    mt={5}
+                    width={"full"}
+                    height={WINDOW_HEIGHT * 0.29 + "px"}
+                >
+                    <Image
+                        width={"full"}
+                        height={"full"}
+                        resizeMode="contain"
+                        source={creditCardImage}
+                        alt="credit-card"
+                    />
+                </HStack>
+                <VStack width={scale(300) + "px"} space="4">
                     <Text
                         fontWeight={600}
-                        fontSize={20}
+                        fontSize={fontSizes.md}
                         _dark={{ color: "#fff" }}
                     >
                         Card Details
                     </Text>
-                    <FormControl mt={5}>
+                    <FormControl>
                         <FormControl.Label
-                            fontSize={12}
+                            fontSize={fontSizes.xs}
                             color="gray.400"
                             _dark={{ color: "#fff" }}
                         >
                             Name
                         </FormControl.Label>
                         <Input
-                            fontSize={17}
+                            fontSize={fontSizes.sm}
                             fontWeight={600}
                             variant="underlined"
                             borderBottomColor={"light.200"}
@@ -114,21 +123,21 @@ export default function AddCards() {
                             }}
                             rightElement={
                                 <Pressable>
-                                    <Pen width={scale(20)} height={scale(20)} />
+                                    <Pen width={scale(18)} height={scale(18)} />
                                 </Pressable>
                             }
                         />
                     </FormControl>
-                    <FormControl mt={5}>
+                    <FormControl>
                         <FormControl.Label
-                            fontSize={12}
+                            fontSize={fontSizes.xs}
                             color="gray.400"
                             _dark={{ color: "#fff" }}
                         >
                             Card Number
                         </FormControl.Label>
                         <Input
-                            fontSize={17}
+                            fontSize={fontSizes.sm}
                             fontWeight={600}
                             variant="underlined"
                             borderBottomColor={"light.200"}
@@ -140,23 +149,23 @@ export default function AddCards() {
                             }}
                             rightElement={
                                 <Pressable>
-                                    <Pen width={scale(20)} height={scale(20)} />
+                                    <Pen width={scale(18)} height={scale(18)} />
                                 </Pressable>
                             }
                         />
                     </FormControl>
 
-                    <HStack mt={5} justifyContent="space-between">
+                    <HStack justifyContent="space-between">
                         <FormControl w={"48%"}>
                             <FormControl.Label
-                                fontSize={12}
+                                fontSize={fontSizes.xs}
                                 color="gray.400"
                                 _dark={{ color: "#fff" }}
                             >
                                 Expiry Date
                             </FormControl.Label>
                             <Input
-                                fontSize={17}
+                                fontSize={fontSizes.sm}
                                 fontWeight={600}
                                 variant="underlined"
                                 borderBottomColor={"light.200"}
@@ -169,8 +178,8 @@ export default function AddCards() {
                                 rightElement={
                                     <Pressable>
                                         <Pen
-                                            width={scale(20)}
-                                            height={scale(20)}
+                                            width={scale(18)}
+                                            height={scale(18)}
                                         />
                                     </Pressable>
                                 }
@@ -178,14 +187,14 @@ export default function AddCards() {
                         </FormControl>
                         <FormControl w={"48%"}>
                             <FormControl.Label
-                                fontSize={12}
+                                fontSize={fontSizes.xs}
                                 color="gray.400"
                                 _dark={{ color: "#fff" }}
                             >
                                 CVV
                             </FormControl.Label>
                             <Input
-                                fontSize={17}
+                                fontSize={fontSizes.sm}
                                 fontWeight={600}
                                 variant="underlined"
                                 borderBottomColor={"light.200"}
@@ -198,8 +207,8 @@ export default function AddCards() {
                                 rightElement={
                                     <Pressable>
                                         <Pen
-                                            width={scale(20)}
-                                            height={scale(20)}
+                                            width={scale(18)}
+                                            height={scale(18)}
                                         />
                                     </Pressable>
                                 }
@@ -208,9 +217,9 @@ export default function AddCards() {
                     </HStack>
                 </VStack>
                 <Text
-                    mt={8}
-                    mb={4}
-                    fontSize={20}
+                    mt={4}
+                    mb={2}
+                    fontSize={fontSizes.md}
                     fontWeight={500}
                     color={"gray.100"}
                     _dark={{ color: "#fff" }}
@@ -222,8 +231,10 @@ export default function AddCards() {
                     titleStyle={{ mr: "auto" }}
                     title={"SCAN YOUR CARD"}
                     rightIcon={() => (
-                        <Camera width={scale(20)} height={scale(20)} />
+                        <Camera width={scale(16)} height={scale(16)} />
                     )}
+                    mt={2}
+                    mb={4}
                 />
 
                 <GradientBtn

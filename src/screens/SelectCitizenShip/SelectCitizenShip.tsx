@@ -1,10 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import { Button, Text, useColorMode, VStack } from "native-base";
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import apiConfig from "../../api_config/ApiConfig";
 import ImageBg from "../../components/ImageBg/ImageBg";
 import CheckBoxGroup from "./components/CheckBoxGroup/CheckBoxGroup";
+import { NavigationStackOptions } from "react-navigation-stack";
+import colors from "../../theme-config/colors";
 
 export interface ICitizenship {
     id: number;
@@ -15,38 +17,10 @@ export interface ICitizenship {
     updated_at: string;
 }
 
-const items: ICitizenship[] = [
-    {
-        id: 1,
-        resident: "Demo-1",//"Qatar Citizen / Resident",
-        resident_name: "Qatar Citizen / Resident",
-        status: "1",
-        created_at: "2021-05-25T11:30:00.000000Z",
-        updated_at: "2021-05-25T11:30:00.000000Z",
-    },
-    {
-        id: 2,
-        resident: "GCC Resident",
-        resident_name: "GCC Resident",
-        status: "1",
-        created_at: "2021-05-25T11:30:00.000000Z",
-        updated_at: "2021-05-25T11:30:00.000000Z",
-
-    },
-    {
-        id: 3,
-        resident: "Visitor / Tourist",
-        resident_name: "Visitor / Tourist",
-        status: "1",
-        created_at: "2021-05-25T11:30:00.000000Z",
-        updated_at: "2021-05-25T11:30:00.000000Z",
-    },
-];
-
 export default function SelectCitizenShip() {
     const { colorMode } = useColorMode();
     const navigation = useNavigation();
-    const [selected, setSelected] = React.useState(items[0]);
+    const selected = React.useRef(null);
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -57,25 +31,39 @@ export default function SelectCitizenShip() {
     const bgType = colorMode === "dark" ? "dark" : "";
 
     const handleNavigation = () => {
-        if (selected.id !== 1) {
+        if (selected.current?.id !== 1) {
             navigation.navigate("SelectArrivalDate", {
-                citizenShip: selected,
+                citizenShip: selected?.current,
             });
         } else {
             navigation.navigate("AddCards", {
-                citizenShip: selected,
+                citizenShip: selected?.current,
             });
         }
     };
 
     // get Residency from api
     const [residency, setResidency] = React.useState<ICitizenship[]>([]);
+
     React.useEffect(() => {
         const getResidency = async () => {
             const res = await axios.get(`${apiConfig.apiUrl}/getResidency`);
             setResidency(res?.data?.data);
-        }
+        };
         getResidency();
+    }, [navigation]);
+
+    useLayoutEffect(() => {
+        const navigationoptions: NavigationStackOptions = {
+            headerBackgrounColor: "#ccc",
+            style: {
+                backgroundColor: "#ccc",
+            },
+            headerStyle: {
+                backgroundColor: colors.primary[100],
+            },
+        };
+        navigation.setOptions(navigationoptions);
     }, [navigation]);
 
     return (
@@ -93,8 +81,7 @@ export default function SelectCitizenShip() {
                 </Text>
 
                 <CheckBoxGroup
-                    onSelect={(it) => setSelected(it)}
-                    selected={selected}
+                    onSelect={(it) => (selected.current = it)}
                     items={residency}
                 />
 

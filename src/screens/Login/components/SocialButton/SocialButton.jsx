@@ -1,5 +1,7 @@
 import { HStack, Image, Pressable, Text } from "native-base";
 import React from "react";
+import { scale } from "react-native-size-matters";
+import { fontSizes } from "../../../../theme-config/typography";
 const fb = require("../../../../../assets/images/facebook.png");
 const google = require("../../../../../assets/images/google.png");
 
@@ -16,7 +18,7 @@ export default function SocialButton({ type, onPress, ...rest }) {
                 alignItems="center"
                 bg={type === "facebook" ? "blue.100" : "red.100"}
                 px={6}
-                py={5}
+                py={4}
                 borderRadius={20}
                 space="6"
                 width={"100%"}
@@ -25,10 +27,15 @@ export default function SocialButton({ type, onPress, ...rest }) {
                 <Image
                     source={type === "facebook" ? fb : google}
                     alt="facebook"
-                    height={"30px"}
-                    width={"30px"}
+                    height={scale(20) + "px"}
+                    width={scale(20) + "px"}
                 />
-                <Text fontWeight={500} fontSize={15} mr={"auto"} color="#fff">
+                <Text
+                    fontWeight={500}
+                    fontSize={scale(13) + "px"}
+                    mx={"auto"}
+                    color="#fff"
+                >
                     Continue with {type === "facebook" ? "Facebook" : "Google"}
                 </Text>
             </HStack>

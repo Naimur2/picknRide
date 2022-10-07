@@ -8,6 +8,7 @@ import InputForm from "./components/InputForm/InputForm";
 
 import dark from "../../../assets/images/background-map-dark.png";
 import light from "../../../assets/images/background-map-light.png";
+import { fontSizes } from "../../theme-config/typography";
 
 export default function Register() {
     const { colorMode } = useColorMode();
@@ -62,14 +63,22 @@ export default function Register() {
                 >
                     <HStack alignItems={"center"} space="2">
                         <Whatsapp color="primary.100" />
-                        <Text fontSize={15} fontWeight={500} color={"gray.100"}>
+                        <Text
+                            fontSize={fontSizes.xs}
+                            fontWeight={500}
+                            color={"gray.100"}
+                        >
                             Whatsapp
                         </Text>
                     </HStack>
 
                     <HStack alignItems={"center"} space="2">
                         <Telephone color="primary.100" />
-                        <Text fontSize={15} fontWeight={500} color={"gray.100"}>
+                        <Text
+                            fontSize={fontSizes.xs}
+                            fontWeight={500}
+                            color={"gray.100"}
+                        >
                             +974 0000 0000
                         </Text>
                     </HStack>

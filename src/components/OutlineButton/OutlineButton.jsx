@@ -1,7 +1,8 @@
 import { Factory, HStack, Pressable, Text } from "native-base";
 import React from "react";
-import { TouchableOpacity } from "react-native";
+import { Touchable, TouchableOpacity } from "react-native";
 import { scale } from "react-native-size-matters";
+import { fontSizes } from "../../theme-config/typography";
 
 export default function OutlineButton({
     title,
@@ -11,30 +12,35 @@ export default function OutlineButton({
     onPress,
     ...rest
 }) {
+    const Touchable = Factory(TouchableOpacity);
+
     return (
-        <Pressable onPress={onPress} {...rest}>
-            <HStack
-                w={scale(300) + "px"}
-                mt={6}
-                mb={8}
-                px={6}
-                py={3}
-                borderWidth={2}
-                borderColor="primary.100"
-                borderRadius={20}
-                {...buttonStyle}
+        <Touchable
+            w={scale(300) + "px"}
+            mt={6}
+            mb={8}
+            px={6}
+            borderWidth={2}
+            borderColor="primary.100"
+            borderRadius={20}
+            onPress={onPress}
+            display="flex"
+            flexDir={"row"}
+            alignItems="center"
+            py={2}
+            {...rest}
+        >
+            <Text
+                fontWeight={700}
+                color={"primary.100"}
+                textTransform={"uppercase"}
+                ml={"auto"}
+                fontSize={fontSizes.xs}
+                {...titleStyle}
             >
-                <Text
-                    fontWeight={700}
-                    color={"primary.100"}
-                    textTransform={"uppercase"}
-                    ml={"auto"}
-                    {...titleStyle}
-                >
-                    {title}
-                </Text>
-                {rightIcon && rightIcon()}
-            </HStack>
-        </Pressable>
+                {title}
+            </Text>
+            {rightIcon && rightIcon()}
+        </Touchable>
     );
 }

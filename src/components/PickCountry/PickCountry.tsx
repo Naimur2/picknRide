@@ -1,8 +1,8 @@
 import { HStack, Input, Pressable, Text } from "native-base";
 import React from "react";
 import CountryPicker from "react-native-country-picker-modal";
-import { ChevronDownFill } from "../Icons/Icons";
 import { scale } from "react-native-size-matters";
+import { ChevronDownFill } from "../Icons/Icons";
 
 interface IPickCountry {
     onSelect: (country: any) => void;
@@ -10,6 +10,7 @@ interface IPickCountry {
     value: string;
     onFocus: () => void;
     onBlur: () => void;
+    setCountryCCA2: (code: string) => void;
 }
 
 function PickCountry({
@@ -18,10 +19,11 @@ function PickCountry({
     value,
     onFocus,
     onBlur,
+    setCountryCCA2,
     ...rest
 }: IPickCountry) {
     const [show, setShow] = React.useState(false);
-    const [countryCode, setCountryCode] = React.useState("974");
+    const [countryCode, setCountryCode] = React.useState(["974"]);
 
     React.useEffect(() => {
         if (countryCode) {
@@ -47,17 +49,9 @@ function PickCountry({
                 fontWeight="500"
                 placeholderTextColor="gray.300"
                 mb={2}
-                onChangeText={(text) => {
-                    onChangeText?.(text);
-                }}
-                onFocus={() => {
-                    onFocus?.();
-                }}
-                onBlur={() => {
-                    onBlur?.();
-                }}
-                value={value}
-                {...rest}
+                onChangeText={onChangeText}
+                onFocus={onFocus}
+                onBlur={onBlur}
                 leftElement={
                     <Pressable onPress={() => setShow(true)}>
                         <HStack space={1} pl={5} alignItems={"center"}>
@@ -72,6 +66,7 @@ function PickCountry({
                         </HStack>
                     </Pressable>
                 }
+                {...rest}
             />
             {show && (
                 <CountryPicker
@@ -79,6 +74,7 @@ function PickCountry({
                     visible={show}
                     onSelect={(country) => {
                         setShow(false);
+                        setCountryCCA2?.(country?.cca2);
                         setCountryCode(country.callingCode);
                     }}
                     onClose={() => setShow(false)}

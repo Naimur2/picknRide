@@ -1,15 +1,22 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { Box, HStack, Input, Text, VStack } from "native-base";
 import React, { useRef, useState } from "react";
 
 import { Alert, useWindowDimensions } from "react-native";
+import { scale } from "react-native-size-matters";
 import apiConfig from "../../../../api_config/ApiConfig";
 
 import GradientBtn from "../../../../components/GradientBtn/GradientBtn";
+import { fontSizes } from "../../../../theme-config/typography";
 
-const inputs = Array(4).fill("");
+const inputs = Array(6).fill("");
 let newInputIndex = 0;
+const INPUT_WIDTH = scale(45) + "px";
+const INPUT_HEIGHT = scale(50) + "px";
+
+const INPUT_BORDER_RADIUS = 10;
+const INPUT_FONT_SIZE = fontSizes.xs;
 
 export default function OtpForm() {
     const navigation = useNavigation();
@@ -20,59 +27,66 @@ export default function OtpForm() {
     const input = useRef();
     const [nextInputIndex, setNextInputIndex] = useState(0);
 
-    const [otp, setOtp] = useState({ 0: "", 1: "", 2: "", 3: "" });
+    const [otp, setOtp] = useState({
+        0: "",
+        1: "",
+        2: "",
+        3: "",
+        4: "",
+        5: "",
+    });
 
-    const submitOtpHander = () => {
+    const submitOtpHander = async () => {
         const OTP = Object.values(otp).join("");
 
-        if (OTP.length < 4) {
+        if (OTP.length < 4 && typeof OTP !== "number") {
             Alert.alert("Invalid OTP", "Please enter a valid OTP");
 
             return;
         }
         const submitFromData = {
-            "dialing_code": dialing_code,
-            "phone": phone,
-            "otp": OTP
-        }
+            dialing_code: dialing_code,
+            phone: phone,
+            otp: OTP,
+        };
         // otp verification api
-        axios.post(`${apiConfig.apiUrl}/otp_verify`, submitFromData)
-            .then(res => {
+        try {
+            const res: AxiosResponse = axios.post(
+                `${apiConfig.apiUrl}/otp_verify`,
+                submitFromData
+            );
+            if (res.data && res.status === 200) {
                 console.log(res.data);
-                // if (res.data.status === "success") {
-                // alert("OTP Verified");
-                //     navigation.navigate("SelectCitizenShip", { OTP });
-                // }
-                alert("OTP Verified");
                 navigation.navigate("SelectCitizenShip", { OTP });
-
-            })
-            .catch(err => {
-                console.log(err);
-                alert("Opps! Something went wrong");
-            })
-
-
+            } else {
+                console.log(res.data);
+                Alert.alert("Error", "Invalid OTP");
+                navigation.navigate("SelectCitizenShip", { OTP });
+            }
+        } catch (error) {
+            alert(error);
+        }
     };
 
     // Resend Otp api call
     const handelResendOtp = () => {
         const resendOtpData = {
-            "dialing_code": dialing_code,
-            "phone": phone
-        }
-        axios.post(`${apiConfig.apiUrl}/resend_otp`, resendOtpData)
-            .then(res => {
+            dialing_code: dialing_code,
+            phone: phone,
+        };
+        axios
+            .post(`${apiConfig.apiUrl}/resend_otp`, resendOtpData)
+            .then((res) => {
                 console.log(res.data);
-                setOtp({ 0: "", 1: "", 2: "", 3: "" });
+                setOtp({ 0: "", 1: "", 2: "", 3: "", 4: "", 5: "" });
                 setNextInputIndex(0);
                 // alert("OTP Resend");
             })
-            .catch(err => {
+            .catch((err) => {
                 console.log(err);
                 alert("Opps! Something went wrong");
-            })
-    }
+            });
+    };
 
     const textChangeHandler = (text, index) => {
         // TODO: add only number
@@ -97,15 +111,9 @@ export default function OtpForm() {
     }, []);
 
     return (
-        <VStack
-            flex="1"
-
-            px={4}
-            space="3"
-            alignItems={"center"}
-        >
+        <VStack flex="1" px={4} space="3" alignItems={"center"}>
             <Text
-                fontSize={"17"}
+                fontSize={fontSizes.md}
                 color="primary.200"
                 mt={Math.round(width / 2.5)}
                 mx="auto"
@@ -116,17 +124,17 @@ export default function OtpForm() {
                 Verify your number with codes sent to you
             </Text>
             <Text fontSize={"sm"} color="blue" mb="4" mx="auto"></Text>
-            <HStack mb={4} justifyContent="space-around" space="4">
+            <HStack mb={4} justifyContent="space-around" space="2">
                 {inputs.map((val, index) => (
                     <Box
-                        shadow={9}
-                        w={"70px"}
+                        shadow={5}
+                        w={INPUT_WIDTH}
                         key={index.toString()}
                         bg={otp[index] ? "primary.100" : "white"}
-                        h={"70px"}
+                        h={INPUT_HEIGHT}
                         alignItems={"center"}
                         justifyContent={"center"}
-                        borderRadius={"20px"}
+                        borderRadius={INPUT_BORDER_RADIUS}
                     >
                         <Input
                             maxLength={1}
@@ -145,7 +153,7 @@ export default function OtpForm() {
                             keyboardType="numeric"
                             ref={nextInputIndex === index ? input : null}
                             type="number"
-                            fontSize={17}
+                            fontSize={INPUT_FONT_SIZE}
                             fontWeight={700}
                             color={otp[index] ? "white" : "black"}
                         />

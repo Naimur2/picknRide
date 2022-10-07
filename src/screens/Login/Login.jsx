@@ -1,12 +1,14 @@
 import { useNavigation } from "@react-navigation/native";
 import { HStack, Text, useColorMode, VStack } from "native-base";
 import React from "react";
+import { AsyncStorage } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { scale } from "react-native-size-matters";
 import ImageBg from "../../components/ImageBg/ImageBg";
-import Scroller from "./../../components/Scroller/Scroller";
+import Scroller from "../../components/Scroller/Scroller";
+import { fontSizes } from "../../theme-config/typography";
 import InputForm from "./components/InputForm/InputForm";
 import SocialButton from "./components/SocialButton/SocialButton";
-import { AsyncStorage } from 'react-native';
 
 export default function Login() {
     const { colorMode } = useColorMode();
@@ -16,11 +18,11 @@ export default function Login() {
     // store data in async storage
     const storeData = async (value) => {
         try {
-            await AsyncStorage.setItem('user', value)
+            await AsyncStorage.setItem("user", value);
         } catch (e) {
             // saving error
         }
-    }
+    };
 
     return (
         <ImageBg type={colorMode}>
@@ -34,18 +36,18 @@ export default function Login() {
             >
                 <VStack alignItems={"center"} space="4">
                     <Text
-                        mt={"30px"}
+                        mt={scale(30) + "px"}
                         color="primary.200"
-                        fontSize={17}
+                        fontSize={fontSizes.md}
                         fontWeight="bold"
                     >
                         Login
                     </Text>
                     <Text
                         color="gray.100"
-                        fontSize={13}
+                        fontSize={scale(13) + "px"}
                         fontWeight="500"
-                        w="170"
+                        w={scale(170) + "px"}
                         textAlign={"center"}
                         _dark={{
                             color: "light.200",
@@ -77,7 +79,7 @@ export default function Login() {
                     <Text
                         color={"gray.100"}
                         fontWeight={500}
-                        fontSize={13}
+                        fontSize={scale(13) + "px"}
                         _dark={{
                             color: "light.100",
                         }}
@@ -88,7 +90,7 @@ export default function Login() {
                         onPress={() => navigation.navigate("Register")}
                         color={"gray.200"}
                         fontWeight={500}
-                        fontSize={13}
+                        fontSize={scale(13) + "px"}
                         _dark={{
                             color: "light.100",
                         }}
