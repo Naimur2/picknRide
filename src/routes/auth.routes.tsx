@@ -26,12 +26,14 @@ export default function AuthRoute() {
                     backgroundColor: colorMode === "light" ? "white" : "black",
                 },
                 headerShadowVisible: false,
+                animation: "slide_from_left",
                 // statusBarHidden: true,
             }}
         >
             <Stack.Screen
                 options={{
                     headerShown: false,
+                    headerTransparent: true,
                 }}
                 name="SplashSecond"
                 component={SplashSecond}

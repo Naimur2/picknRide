@@ -38,7 +38,7 @@ function PickCountry({
                 bg="white"
                 shadow="9"
                 px={6}
-                py={4}
+                py={3}
                 borderRadius={20}
                 placeholder="Phone Number"
                 _focus={{

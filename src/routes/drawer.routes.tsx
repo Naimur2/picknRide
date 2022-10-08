@@ -13,9 +13,6 @@ export default function DrawerRoute() {
                 headerShown: false,
                 overlayColor: colorMode === "dark" ? "#00000080" : "#ffffff80",
 
-                drawerStyle: {
-                    overflow: "hidden",
-                },
                 unmountOnBlur: true,
             }}
             drawerContent={(props) => <CustomDrawer {...props} />}

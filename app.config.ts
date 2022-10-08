@@ -12,7 +12,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     },
     jsEngine: "hermes",
     android: {
+        ...config.android,
+        softwareKeyboardLayoutMode: "pan",
         package: "com.picknride",
+
         permissions: [
             "ACCESS_BACKGROUND_LOCATION",
             "ACCESS_FINE_LOCATION",

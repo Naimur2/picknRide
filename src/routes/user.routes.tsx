@@ -49,9 +49,7 @@ export default function UserRoutes() {
                             : colors.light[300],
                 },
                 // statusBarHidden: true,
-                contentStyle: {
-                    marginTop: insets.top,
-                },
+
                 headerBackTitleVisible: false,
                 headerBackVisible: false,
                 animation: "slide_from_left",
