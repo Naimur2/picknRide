@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Center, HStack, Image, VStack, Text } from "native-base";
 import { scale } from "react-native-size-matters";
+import { fontSizes } from "../../../../theme-config/typography";
 
 export interface IVeichleCardProps {
     id?: string | number;
@@ -14,7 +15,7 @@ function VCard({ image, title, distance, availableNumber }: IVeichleCardProps) {
     return (
         <VStack
             bg={"#fff"}
-            shadow="lg"
+            shadow="7"
             mt={4}
             alignItems="center"
             py="4"
@@ -39,7 +40,11 @@ function VCard({ image, title, distance, availableNumber }: IVeichleCardProps) {
                     >
                         {title}
                     </Text>
-                    <Text color={"primary.200"} fontWeight={700} fontSize={17}>
+                    <Text
+                        color={"primary.200"}
+                        fontWeight={700}
+                        fontSize={fontSizes.md}
+                    >
                         {availableNumber} available
                     </Text>
                 </VStack>

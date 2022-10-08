@@ -1,17 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
-import { HStack, useColorMode, VStack, Text, Input } from "native-base";
+import { useColorMode } from "native-base";
 import React from "react";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import BackButton from "../../components/BackButton/BackButton";
 import HeaderTitle from "../../components/HeaderTitle/HeaderTitle";
-import ImageBg from "../../components/ImageBg/ImageBg";
 import Scroller from "../../components/Scroller/Scroller";
-import { TOP_PADDING } from "../../helper/final";
-import TopSelection from "./components/TopSelection/TopSelection";
-import Card from "../../components/Card/Card";
-import { UploadIcon } from "../../components/Icons/Icons";
-import GradientBtn from "../../components/GradientBtn/GradientBtn";
-import ImagePickerSheet from "../../components/ImagePickerSheet/ImagePickerSheet";
-import CModal from "../../components/CModal/CModal";
+import colors from "../../theme-config/colors";
 import ReportContent from "./components/ReportContent/ReportContent";
 
 export interface ISelection {
@@ -51,7 +44,14 @@ export default function ReportIssue() {
         navigation.setOptions({
             headerTitle: () => <HeaderTitle title="Report An Issue" />,
             headerTitleAlign: "center",
-            headerLeft: null,
+            headerLeft: () => (
+                <BackButton color={colorMode === "dark" ? "white" : "black"} />
+            ),
+            headerShadowVisible: false,
+            headerStyle: {
+                backgroundColor:
+                    colorMode === "dark" ? colors.dark[100] : colors.light[300],
+            },
         });
     }, [navigation]);
 

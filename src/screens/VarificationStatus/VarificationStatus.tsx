@@ -8,6 +8,8 @@ import Scroller from "../../components/Scroller/Scroller";
 import { TOP_PADDING } from "../../helper/final";
 import VerifyStatusCard from "./components/VerifyStatusCard/VerifyStatusCard";
 import { scale } from "react-native-size-matters";
+import BackButton from "../../components/BackButton/BackButton";
+import colors from "../../theme-config/colors";
 
 export interface INotificationsList {
     _id?: string;
@@ -46,6 +48,7 @@ const varificationList: INotificationsList[] = [
 export default function VarificationStatus() {
     const navigation = useNavigation();
     const insets = useSafeAreaInsets();
+    const colormode = useColorMode();
 
     const [varifyStatusList, setVarifyStatusList] =
         React.useState(varificationList);
@@ -54,7 +57,18 @@ export default function VarificationStatus() {
         navigation.setOptions({
             headerTitle: () => <HeaderTitle title="Varification Status" />,
             headerTitleAlign: "center",
-            headerLeft: null,
+            headerLeft: () => (
+                <BackButton
+                    color={colormode.colorMode === "dark" ? "white" : "black"}
+                />
+            ),
+            headerShadowVisible: false,
+            headerStyle: {
+                backgroundColor:
+                    colormode.colorMode === "dark"
+                        ? colors.dark[100]
+                        : colors.light[300],
+            },
         });
     }, [navigation]);
 
@@ -70,7 +84,7 @@ export default function VarificationStatus() {
         >
             <VStack
                 space={6}
-                mt={TOP_PADDING + insets.top + "px"}
+                mt={4}
                 px="6"
                 pb={8}
                 h="full"

@@ -1,30 +1,32 @@
 import { useNavigation } from "@react-navigation/native";
 import {
+    FormControl,
     HStack,
     Image,
-    Text,
-    VStack,
-    FormControl,
     Input,
     Pressable,
+    Text,
+    useColorMode,
+    VStack,
 } from "native-base";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import Scroller from "../../components/Scroller/Scroller";
-import { TOP_PADDING } from "../../helper/final";
 
 import { scale } from "react-native-size-matters";
+import scooterBoy1Dark from "../../../assets/images/scooter-boy1-dark.png";
+import scooterBoy1 from "../../../assets/images/scooter-boy1.png";
 import wallet from "../../../assets/images/wallet.png";
 import Balance from "../../components/Balance/Balance";
 import Card from "../../components/Card/Card";
+import GradientBtn from "../../components/GradientBtn/GradientBtn";
 import H3 from "../../components/H3/H3";
 import HeaderTitle from "../../components/HeaderTitle/HeaderTitle";
-import WalletTab from "./components/WalletTab/WalletTab";
 import Pen from "../../svgs/Pen";
-import GradientBtn from "../../components/GradientBtn/GradientBtn";
-import scooterBoy1 from "../../../assets/images/scooter-boy1.png";
-import scooterBoy1Dark from "../../../assets/images/scooter-boy1-dark.png";
+import colors from "../../theme-config/colors";
+import WalletTab from "./components/WalletTab/WalletTab";
+import BackButton from "../../components/BackButton/BackButton";
 
 export interface IAmount {
     _id?: string;
@@ -58,17 +60,30 @@ const amounts: IAmount[] = [
 export default function Wallet() {
     const navigation = useNavigation();
     const insets = useSafeAreaInsets();
+    const colormode = useColorMode();
+    console.log(colormode);
 
     const [selected, setSelected] = React.useState(amounts[0]);
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
-            headerTitle: () => <HeaderTitle title="Settings" />,
+            headerTitle: () => <HeaderTitle title="Wallet" />,
             headerTitleAlign: "center",
-            headerLeft: null,
+            headerLeft: () => (
+                <BackButton
+                    color={colormode.colorMode === "dark" ? "white" : "black"}
+                />
+            ),
             headerRight: () => (
                 <Balance iconColor="primary.100" textColor="gray.100" />
             ),
+            headerShadowVisible: false,
+            headerStyle: {
+                backgroundColor:
+                    colormode.colorMode === "dark"
+                        ? colors.dark[100]
+                        : colors.light[300],
+            },
         });
     }, [navigation]);
 
@@ -84,7 +99,7 @@ export default function Wallet() {
         >
             <VStack
                 space={6}
-                mt={TOP_PADDING + insets.top + "px"}
+                mt={4}
                 pb={8}
                 h="full"
                 maxWidth={scale(500)}
@@ -93,7 +108,7 @@ export default function Wallet() {
                 <VStack px="6">
                     <Card
                         w="full"
-                        h="250px"
+                        h={scale(200) + "px"}
                         position={"relative"}
                         p="0"
                         m="0"
@@ -165,7 +180,7 @@ export default function Wallet() {
                             source: scooterBoy1Dark,
                         }}
                     />
-                    <GradientBtn title="ADD TO WALLET" mx="auto" mt="-70" />
+                    <GradientBtn title="ADD TO WALLET" mx="auto" mt="-200" />
                 </VStack>
             </VStack>
         </Scroller>

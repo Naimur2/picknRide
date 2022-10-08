@@ -10,6 +10,7 @@ import { TOP_PADDING } from "../../../../helper/final";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CModal from "../../../../components/CModal/CModal";
 import { scale } from "react-native-size-matters";
+import * as ImagePicker from "expo-image-picker";
 
 export default function ReportContent({
     selections,
@@ -25,10 +26,20 @@ export default function ReportContent({
     const [isOpen, setIsOpen] = React.useState(false);
     const selectedImage = image?.split("/").pop();
 
+    const checkImagePermission = async () => {
+        const { status } =
+            await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+            alert("Sorry, we need camera roll permissions to make this work!");
+        } else {
+            setIsOpenImagePickerSheet(true);
+        }
+    };
+
     return (
         <VStack
             space={6}
-            mt={TOP_PADDING + "px"}
+            mt={4}
             px="6"
             pb={8}
             h="full"
@@ -47,7 +58,7 @@ export default function ReportContent({
                 ))}
             </HStack>
 
-            <Card onPress={() => setIsOpenImagePickerSheet(true)}>
+            <Card onPress={checkImagePermission} shadow={5}>
                 <HStack justifyContent={"space-between"}>
                     <Text
                         color="gray.100"
@@ -61,7 +72,7 @@ export default function ReportContent({
                     <UploadIcon fontSize={18} color="gray.100" />
                 </HStack>
             </Card>
-            <Card px="3" shadow="lg">
+            <Card px="3" shadow="5">
                 <Input
                     _focus={{
                         bg: "transparent",

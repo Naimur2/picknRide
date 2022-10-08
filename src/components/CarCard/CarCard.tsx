@@ -21,23 +21,24 @@ export default function CarCard({
     onSelect,
 }: ICarCardProp) {
     return (
-        <Pressable onPress={onPress}>
+        <Pressable onPress={onPress} w="full">
             <HStack
-                py={5}
+                py={3}
                 pr={4}
                 bg="#fff"
-                shadow="9"
+                shadow="6"
                 overflow="hidden"
                 borderRadius={25}
                 alignItems="center"
+                w="full"
             >
                 <Image
                     source={{
                         uri: image,
                     }}
                     alt="Renault"
-                    h="100px"
-                    w="250px"
+                    h={scale(100) + "px"}
+                    w={scale(250) + "px"}
                     resizeMode="contain"
                     ml={-20}
                 />
@@ -74,7 +75,7 @@ export default function CarCard({
                         }}
                         _text={{
                             color: "#fff",
-                            fontSize: 10,
+                            fontSize: scale(12),
                             fontWeight: 700,
                             textTransform: "uppercase",
                         }}

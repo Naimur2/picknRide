@@ -10,10 +10,9 @@ function Signature() {
 
     return (
         <VStack mt={2} space={2}>
-            <Pressable onPress={() => setShow(true)}>
+            <Pressable onPress={() => setShow(true)} shadow={5}>
                 <VStack
                     borderRadius={20}
-                    shadow="7"
                     h={"200px"}
                     w={scale(300) + "px"}
                     mt="2"

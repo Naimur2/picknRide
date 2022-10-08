@@ -34,7 +34,7 @@ export default function Register() {
                 bottom={0}
             />
 
-            <VStack pt={"px"} maxW={scale(320) + "px"} w="full" px={4} pb={5}>
+            <VStack maxW={scale(320) + "px"} w="full" px={4} py={5}>
                 <VStack alignItems={"center"} space="4">
                     <Text color="primary.200" fontSize={17} fontWeight="bold">
                         Sign Up

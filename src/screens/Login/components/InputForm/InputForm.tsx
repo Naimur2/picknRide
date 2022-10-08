@@ -10,6 +10,8 @@ import PasswordInput from "../../../../components/PasswordInput/PasswordInput";
 import PickCountry from "../../../../components/PickCountry/PickCountry";
 import { fontSizes } from "../../../../theme-config/typography";
 import * as Yup from "yup";
+import { isValidPhoneNumber, parsePhoneNumber } from "libphonenumber-js";
+import ErrorMessage from "../../../../components/ErrorMessage/ErrorMessage";
 
 function InputForm() {
     const [phoneError, setPhoneError] = React.useState("");
@@ -23,6 +25,7 @@ function InputForm() {
             dialing_code: "+974",
             phone: "",
             password: "", //"password",
+            country: "QA",
         },
         validationSchema: schema,
         onSubmit: (values) => {},

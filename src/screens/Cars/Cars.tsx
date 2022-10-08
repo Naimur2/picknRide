@@ -9,6 +9,8 @@ import ImageBg from "../../components/ImageBg/ImageBg";
 import Scroller from "../../components/Scroller/Scroller";
 import { TOP_PADDING } from "../../helper/final";
 import { scale } from "react-native-size-matters";
+import BackButton from "../../components/BackButton/BackButton";
+import colors from "../../theme-config/colors";
 
 export default function Cars() {
     const navigation = useNavigation();
@@ -19,10 +21,17 @@ export default function Cars() {
         navigation.setOptions({
             headerTitle: () => <HeaderTitle title="Cars" />,
             headerTitleAlign: "center",
-            headerLeft: null,
+            headerLeft: () => (
+                <BackButton color={colorMode === "dark" ? "white" : "black"} />
+            ),
             headerRight: () => (
                 <Balance iconColor="primary.100" textColor="gray.100" />
             ),
+            headerShadowVisible: false,
+            headerStyle: {
+                backgroundColor:
+                    colorMode === "dark" ? colors.dark[100] : colors.light[300],
+            },
         });
     }, [navigation]);
 
@@ -78,15 +87,7 @@ export default function Cars() {
                     flexGrow: 1,
                 }}
             >
-                <VStack
-                    space={4}
-                    mt={TOP_PADDING + insets.top + "px"}
-                    px="6"
-                    pb={8}
-                    h="full"
-                    maxWidth={scale(500)}
-                    mx="auto"
-                >
+                <VStack space={4} mt={4} px="6" pb={8} h="full" mx="auto">
                     {cars.map((car, index) => (
                         <CarCard
                             key={car.id + index}

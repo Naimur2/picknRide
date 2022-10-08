@@ -12,7 +12,7 @@ export interface INotification {
 
 const NewNotification = (props: INotification) => {
     return (
-        <VStack>
+        <VStack w={"full"}>
             <H3>
                 {props?.title ? moment(props?.title).format("MMM Do YY") : ""}
             </H3>

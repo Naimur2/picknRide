@@ -4,16 +4,18 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import AuthProvider from "./src/context/providers/auth.provider";
 import Main from "./src/Main";
 import ThemeConFig from "./src/theme-config/index";
+// import "react-native-reanimated";
+// import "react-native-gesture-handler";
 
 export default function App() {
     return (
         <SafeAreaProvider>
             <ThemeConFig>
-                <NavigationContainer>
-                    <AuthProvider>
+                <AuthProvider>
+                    <NavigationContainer>
                         <Main />
-                    </AuthProvider>
-                </NavigationContainer>
+                    </NavigationContainer>
+                </AuthProvider>
             </ThemeConFig>
         </SafeAreaProvider>
     );

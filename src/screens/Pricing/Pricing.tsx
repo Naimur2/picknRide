@@ -1,28 +1,43 @@
 import { useNavigation } from "@react-navigation/native";
-import { HStack, Image, VStack } from "native-base";
+import { HStack, Image, useColorMode, VStack } from "native-base";
 import React from "react";
+import { useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
+import boyWithSooterDark from "../../../assets/images/boy-with-scooter-dark.png";
+import boyWithSooter from "../../../assets/images/boy-with-scooter.png";
+import BackButton from "../../components/BackButton/BackButton";
 import Balance from "../../components/Balance/Balance";
+import GradientBtn from "../../components/GradientBtn/GradientBtn";
 import HeaderTitle from "../../components/HeaderTitle/HeaderTitle";
 import Scroller from "../../components/Scroller/Scroller";
-import { TOP_PADDING } from "../../helper/final";
+import colors from "../../theme-config/colors";
 import PriceCard from "./components/PriceCard/PriceCard";
-import boyWithSooter from "../../../assets/images/boy-with-scooter.png";
-import boyWithSooterDark from "../../../assets/images/boy-with-scooter-dark.png";
-import GradientBtn from "../../components/GradientBtn/GradientBtn";
 
 export default function Pricing() {
     const navigation = useNavigation();
     const insets = useSafeAreaInsets();
+    const colormode = useColorMode();
+    const windowHeight = useWindowDimensions().height;
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => <HeaderTitle title="Pricing" />,
             headerTitleAlign: "center",
-            headerLeft: null,
             headerRight: () => (
                 <Balance iconColor="primary.100" textColor="gray.100" />
+            ),
+            headerShadowVisible: false,
+            headerStyle: {
+                backgroundColor:
+                    colormode.colorMode === "dark"
+                        ? colors.dark[100]
+                        : colors.light[300],
+            },
+            headerLeft: () => (
+                <BackButton
+                    color={colormode.colorMode === "dark" ? "white" : "black"}
+                />
             ),
         });
     }, [navigation]);
@@ -39,7 +54,7 @@ export default function Pricing() {
         >
             <VStack
                 space={6}
-                mt={TOP_PADDING + insets.top + "px"}
+                mt={4}
                 px="6"
                 pb={8}
                 h="full"
@@ -65,6 +80,8 @@ export default function Pricing() {
                     _dark={{
                         source: boyWithSooterDark,
                     }}
+                    height={windowHeight * 0.4}
+                    resizeMode="cover"
                 />
                 <GradientBtn title="UPDATE PROFILE" mx="auto" />
             </VStack>

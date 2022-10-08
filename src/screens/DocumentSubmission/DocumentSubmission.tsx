@@ -1,9 +1,11 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Avatar, useColorMode } from "native-base";
 import React from "react";
+import { scale } from "react-native-size-matters";
 import ImageBg from "../../components/ImageBg/ImageBg";
 import Scroller from "../../components/Scroller/Scroller";
 import TopSection from "../../components/TopSection/TopSection";
+import colors from "../../theme-config/colors";
 import DocumentForm from "./components/DocumentForm/DocumentForm";
 
 export default function DocumentSubmission() {
@@ -16,7 +18,12 @@ export default function DocumentSubmission() {
             headerTitle: "",
             headerStyle: {
                 alignItems: "center",
+                backgroundColor:
+                    colorMode === "dark"
+                        ? colors.primary[100]
+                        : colors.green[200],
             },
+            headerShadowVisible: false,
             headerRight: () => (
                 <Avatar
                     source={{
@@ -24,6 +31,7 @@ export default function DocumentSubmission() {
                     }}
                     borderWidth={3}
                     borderColor="white"
+                    size={scale(35) + "px"}
                 >
                     SS
                     <Avatar.Badge bg="green.500" />

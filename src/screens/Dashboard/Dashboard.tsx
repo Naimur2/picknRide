@@ -1,16 +1,18 @@
 import { useNavigation } from "@react-navigation/native";
-import { Factory, useColorMode, Spinner, Text } from "native-base";
+import { Factory, Text, useColorMode } from "native-base";
 import React from "react";
 import { TouchableOpacity } from "react-native";
+import { scale } from "react-native-size-matters";
+import { NavigationStackOptions } from "react-navigation-stack";
 import ImageBg from "../../components/ImageBg/ImageBg";
 import Scroller from "../../components/Scroller/Scroller";
 import TopSection from "../../components/TopSection/TopSection";
 import UserAvatar from "../../components/UserAvatar/UserAvatar";
 import useAuth from "../../hooks/useAuth";
 import Toggler from "../../svgs/Toggler";
+import colors from "../../theme-config/colors";
 import DashModal from "./component/DashModal/DashModal";
 import VeichleCards from "./component/VeichleCards/VeichleCards";
-import * as Location from "expo-location";
 
 export default function Dashboard() {
     const navigation = useNavigation();
@@ -21,10 +23,14 @@ export default function Dashboard() {
     const user = auth?.user;
 
     React.useEffect(() => {
-        navigation.setOptions({
+        const navigationOptions: NavigationStackOptions = {
             headerTitle: "",
             headerStyle: {
                 alignItems: "center",
+                backgroundColor:
+                    colorMode === "dark"
+                        ? colors.primary[100]
+                        : colors.green[200],
             },
             headerLeft: () => (
                 <Touchable onPress={() => navigation.openDrawer()}>
@@ -40,10 +46,15 @@ export default function Dashboard() {
                 <UserAvatar
                     image={user?.avatar}
                     uname={user?.name?.slice(0, 1)}
+                    avatarStyle={{
+                        size: scale(35) + "px",
+                    }}
                 />
             ),
-        });
-    }, [navigation]);
+            headerShadowVisible: false,
+        };
+        navigation.setOptions(navigationOptions);
+    }, [navigation, colorMode]);
 
     // const getPermission = async () => {
     //     const forePermission =
@@ -57,55 +68,55 @@ export default function Dashboard() {
     //     );
     // };
 
-    React.useEffect(() => {
-        auth.setLoading(true);
-        let clear = true;
-        const getUserLocation = async () => {
-            try {
-                // const hasPermission = await getPermission();
+    // React.useEffect(() => {
+    //     auth.setLoading(true);
+    //     let clear = true;
+    //     const getUserLocation = async () => {
+    //         try {
+    //             // const hasPermission = await getPermission();
 
-                // if (!hasPermission) {
-                //     auth.setError("Permission denied");
-                //     auth.setLoading(false);
-                //     return;
-                // }
+    //             // if (!hasPermission) {
+    //             //     auth.setError("Permission denied");
+    //             //     auth.setLoading(false);
+    //             //     return;
+    //             // }
 
-                const current = await Location.getCurrentPositionAsync({
-                    accuracy: Location.Accuracy.Highest,
-                });
+    //             const current = await Location.getCurrentPositionAsync({
+    //                 accuracy: Location.Accuracy.Highest,
+    //             });
 
-                const locationCurr: ILatLng = {
-                    latitude: current.coords.latitude,
-                    longitude: current.coords.longitude,
-                };
+    //             const locationCurr: ILatLng = {
+    //                 latitude: current.coords.latitude,
+    //                 longitude: current.coords.longitude,
+    //             };
 
-                auth.setCurrentLocation(locationCurr);
-                auth.setLoading(false);
-                auth.setError(null);
-            } catch (err) {
-                auth.setLoading(false);
-                auth.setError("Could not get location");
-            }
-        };
-        getUserLocation();
+    //             auth.setCurrentLocation(locationCurr);
+    //             auth.setLoading(false);
+    //             auth.setError(null);
+    //         } catch (err) {
+    //             auth.setLoading(false);
+    //             auth.setError("Could not get location");
+    //         }
+    //     };
+    //     getUserLocation();
 
-        if (clear) {
-            return () => (clear = false);
-        }
-    }, []);
+    //     if (clear) {
+    //         return () => (clear = false);
+    //     }
+    // }, []);
 
-    if (auth.isLoading) {
-        return (
-            <ImageBg
-                type={colorMode}
-                flex={1}
-                alignItems="center"
-                justifyContent={"center"}
-            >
-                <Spinner color="blue" size={"lg"} />
-            </ImageBg>
-        );
-    }
+    // if (auth.isLoading) {
+    //     return (
+    //         <ImageBg
+    //             type={colorMode}
+    //             flex={1}
+    //             alignItems="center"
+    //             justifyContent={"center"}
+    //         >
+    //             <Spinner color="blue" size={"lg"} />
+    //         </ImageBg>
+    //     );
+    // }
 
     if (auth?.error) {
         return (

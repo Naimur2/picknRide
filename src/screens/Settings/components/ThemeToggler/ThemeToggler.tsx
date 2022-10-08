@@ -7,7 +7,7 @@ import colors from "../../../../theme-config/colors";
 export default function ThemeToggler() {
     const { colorMode, toggleColorMode } = useColorMode();
     return (
-        <Card>
+        <Card py={3}>
             <HStack justifyContent={"space-between"}>
                 <Text
                     color="#000"

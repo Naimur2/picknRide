@@ -20,8 +20,6 @@ export default function WarningModal({
     setIsVisible: (isVisible: boolean) => void;
     variant: "approved" | "pending" | "rejected" | "expired";
 }) {
-    const Touchable = Factory(TouchableOpacity);
-
     const variants = {
         approved: {
             icon: <Approved />,
@@ -65,6 +63,9 @@ export default function WarningModal({
             propagateSwipe={true}
             onSwipeComplete={setIsVisible}
             swipeDirection={["left", "right"]}
+            onBackdropPress={setIsVisible}
+            onDismiss={setIsVisible}
+            shouldRasterizeIOS
             {...rest}
         >
             <VStack

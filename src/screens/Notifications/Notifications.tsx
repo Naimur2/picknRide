@@ -14,6 +14,8 @@ import NewNotification, {
 import NotifyAbout from "./components/NotifyAbout/NotifyAbout";
 import SwitchNotifications from "./components/SwitchNotifications/SwitchNotifications";
 import { scale } from "react-native-size-matters";
+import BackButton from "../../components/BackButton/BackButton";
+import colors from "../../theme-config/colors";
 
 const natifications: INotification[] = [
     {
@@ -77,10 +79,17 @@ export default function Notifications() {
         navigation.setOptions({
             headerTitle: () => <HeaderTitle title="Notifications" />,
             headerTitleAlign: "center",
-            headerLeft: null,
+            headerLeft: () => (
+                <BackButton color={colorMode === "dark" ? "white" : "black"} />
+            ),
             headerRight: () => (
                 <Balance iconColor="primary.100" textColor="gray.100" />
             ),
+            headerShadowVisible: false,
+            headerStyle: {
+                backgroundColor:
+                    colorMode === "dark" ? colors.dark[100] : colors.light[300],
+            },
         });
     }, [navigation]);
 
@@ -96,7 +105,7 @@ export default function Notifications() {
         >
             <VStack
                 space={12}
-                mt={TOP_PADDING + insets.top + "px"}
+                mt={4}
                 px="6"
                 pb={8}
                 h="full"

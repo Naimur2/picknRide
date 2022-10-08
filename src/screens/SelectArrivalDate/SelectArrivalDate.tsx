@@ -1,14 +1,29 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Button, Pressable, Text, useColorMode, VStack } from "native-base";
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import DatePickerModal from "../../components/DatePickerModal/DatePickerModal";
 import ImageBg from "../../components/ImageBg/ImageBg";
 import { getTextDate } from "../../helper/date.helper";
+import { NavigationStackOptions } from "react-navigation-stack";
+import colors from "../../theme-config/colors";
 
 export default function SelectArrivalDate() {
     const { colorMode } = useColorMode();
     const navigation = useNavigation();
     const params = useRoute().params;
+
+    useLayoutEffect(() => {
+        const navigationoptions: NavigationStackOptions = {
+            headerBackgrounColor: "#ccc",
+            style: {
+                backgroundColor: "#ccc",
+            },
+            headerStyle: {
+                backgroundColor: colors.primary[100],
+            },
+        };
+        navigation.setOptions(navigationoptions);
+    }, [navigation]);
 
     const [date, setDate] = React.useState(new Date());
 

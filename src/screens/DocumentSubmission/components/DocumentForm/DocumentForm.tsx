@@ -25,6 +25,9 @@ import PickerButton from "./components/PickerButton/PickerButton";
 import Signature from "./components/Signature/Signature";
 import VideoPlayer from "./components/VideoPlayer/VideoPlayer";
 import YesNo from "./components/YesNo/YesNo";
+import H3 from "../../../../components/H3/H3";
+import { Camera } from "expo-camera";
+import * as MediaLibrary from "expo-media-library";
 
 export default function DocumentForm({
     routeParams,
@@ -65,6 +68,28 @@ export default function DocumentForm({
 
     const handleNavigation = () => {
         setIsOpen(true);
+    };
+
+    const handleRecoder = async () => {
+        try {
+            const cameraPermission =
+                await Camera.requestCameraPermissionsAsync();
+            const microphonePermission =
+                await Camera.requestMicrophonePermissionsAsync();
+            const mediaLibraryPermission =
+                await MediaLibrary.requestPermissionsAsync();
+            if (
+                cameraPermission.status === "granted" &&
+                microphonePermission.status === "granted" &&
+                mediaLibraryPermission.status === "granted"
+            ) {
+                navigation.navigate("CameraView");
+            } else {
+                alert("Permission not granted");
+            }
+        } catch (err) {
+            setError(err);
+        }
     };
 
     return (
@@ -165,10 +190,13 @@ export default function DocumentForm({
                     mx: "auto",
                 }}
                 mx="auto"
-                onPress={() => navigation.navigate("CameraView")}
+                onPress={handleRecoder}
             />
 
-            <Signature />
+            <VStack>
+                <H3>Signature</H3>
+                <Signature />
+            </VStack>
 
             <Center>
                 <HStack space="2" mt={12}>

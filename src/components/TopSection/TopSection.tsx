@@ -16,7 +16,6 @@ export default function TopSection({ title, subtitle }: ITopSection) {
             borderBottomRadius={40}
             bg="green.200"
             w="full"
-            pt={60 + insets.top + "px"}
             pb={10}
             px={8}
             _dark={{

@@ -9,6 +9,7 @@ import ImageBg from "../../components/ImageBg/ImageBg";
 import Scroller from "../../components/Scroller/Scroller";
 import { TOP_PADDING } from "../../helper/final";
 import { scale } from "react-native-size-matters";
+import BackButton from "../../components/BackButton/BackButton";
 
 export default function RideHistory() {
     const navigation = useNavigation();
@@ -19,7 +20,7 @@ export default function RideHistory() {
         navigation.setOptions({
             headerTitle: () => <HeaderTitle title="Ride History" />,
             headerTitleAlign: "center",
-            headerLeft: null,
+            headerLeft: () => <BackButton />,
             headerRight: () => (
                 <Balance iconColor="primary.100" textColor="gray.100" />
             ),

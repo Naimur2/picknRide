@@ -3,6 +3,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Button, Factory, HStack, Text, VStack } from "native-base";
 import React from "react";
 import { useWindowDimensions } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
 import Balance from "../../components/Balance/Balance";
 import { Instagram, Whatsapp } from "../../components/Icons/Icons";
@@ -20,10 +21,15 @@ export default function CustomDrawer() {
     const Lg = Factory(LinearGradient);
     const navigation = useNavigation();
     const { user } = useAuth();
+    const insets = useSafeAreaInsets();
 
     const { height } = useWindowDimensions();
 
     const drawermenu: IDrawerMenuItem[] = [
+        {
+            title: "Home",
+            onPress: () => navigation.navigate("Dashboard"),
+        },
         {
             title: "Account",
             onPress: () => navigation.navigate("Account"),
@@ -44,94 +50,93 @@ export default function CustomDrawer() {
             title: "Cars",
             onPress: () => navigation.navigate("Cars"),
         },
-        {
-            title: "Notifications",
-            onPress: () => navigation.navigate("Notifications"),
-        },
+
         {
             title: "Settings",
             onPress: () => navigation.navigate("Settings"),
         },
-        {
-            title: "Report An Issue",
-            onPress: () => navigation.navigate("ReportIssue"),
-        },
-        {
-            title: "Special Rate",
-            onPress: () => {},
-        },
-        {
-            title: "Feedback",
-            onPress: () => {},
-        },
+
+        // {
+        //     title: "Special Rate",
+        //     onPress: () => {},
+        // },
+        // {
+        //     title: "Feedback",
+        //     onPress: () => {},
+        // },
     ];
 
     return (
-        <Scroller flexGrow={1} borderRightRadius={30}>
-            <Lg
-                colors={["#52BF04", "#52BE04", "#038C0C"]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                flex="1"
-                py="4"
-                px={7}
-                height={height}
-            >
-                <HStack
-                    mt={4}
-                    alignItems="center"
-                    justifyContent={"space-between"}
+        <>
+            <Scroller flexGrow={1}>
+                <Lg
+                    colors={["#52BF04", "#52BE04", "#038C0C"]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    flex="1"
+                    py="4"
+                    px={7}
+                    height={height}
                 >
-                    <UserAvatar
-                        image={user?.avatar}
-                        uname={user?.name?.slice(0, 1)}
-                    />
-                    <Balance balance={50} currency={"QAR"} />
-                </HStack>
-                <VStack mt={10}>
-                    <Text color={"#fff"} fontSize={scale(13)} fontWeight={600}>
-                        Welcome Back
-                    </Text>
-
-                    <Text
-                        lineHeight={45}
-                        color={"#fff"}
-                        fontSize={scale(35)}
-                        fontWeight={700}
+                    <HStack
+                        mt={4 + insets.top + "px"}
+                        alignItems="center"
+                        justifyContent={"space-between"}
                     >
-                        Alex Doe
-                    </Text>
-                </VStack>
-                <VStack mt={3}>
-                    {drawermenu.map((item, index) => (
-                        <DrawerBtn
-                            title={item.title}
-                            onPress={item.onPress}
-                            key={index}
+                        <UserAvatar
+                            image={user?.avatar}
+                            uname={user?.name?.slice(0, 1)}
                         />
-                    ))}
-                </VStack>
-                <VStack mt={4}>
-                    <Button
-                        variant={"outline"}
-                        _text={{
-                            color: "#fff",
-                            fontSize: scale(13),
-                            fontWeight: 700,
-                            textTransform: "uppercase",
-                        }}
-                        borderWidth={3}
-                        borderRadius={16}
-                        borderColor={"#fff"}
-                    >
-                        SIGN OUT
-                    </Button>
-                </VStack>
-                <HStack space={4} mt={6} mb={4}>
-                    <Whatsapp color={"#fff"} />
-                    <Instagram color={"#fff"} />
-                </HStack>
-            </Lg>
-        </Scroller>
+                        <Balance balance={50} currency={"QAR"} />
+                    </HStack>
+                    <VStack mt={10}>
+                        <Text
+                            color={"#fff"}
+                            fontSize={scale(13)}
+                            fontWeight={600}
+                        >
+                            Welcome Back
+                        </Text>
+                        <Text
+                            lineHeight={45}
+                            color={"#fff"}
+                            fontSize={scale(34)}
+                            fontWeight={700}
+                        >
+                            Alex Doe
+                        </Text>
+                    </VStack>
+                    <VStack mt={3}>
+                        {drawermenu.map((item, index) => (
+                            <DrawerBtn
+                                title={item.title}
+                                onPress={item.onPress}
+                                key={index}
+                            />
+                        ))}
+                    </VStack>
+                    <VStack mt={4}>
+                        <Button
+                            variant={"outline"}
+                            _text={{
+                                color: "#fff",
+                                fontSize: scale(13),
+                                fontWeight: 700,
+                                textTransform: "uppercase",
+                            }}
+                            borderWidth={3}
+                            borderRadius={16}
+                            borderColor={"#fff"}
+                        >
+                            SIGN OUT
+                        </Button>
+                    </VStack>
+                    <HStack space={4} mt={6} mb={4}>
+                        <Whatsapp color={"#fff"} />
+                        <Instagram color={"#fff"} />
+                    </HStack>
+                </Lg>
+            </Scroller>
+        </>
     );
 }

@@ -3,6 +3,7 @@ import { VStack, Text, Image } from "native-base";
 import Card from "../../../../components/Card/Card";
 import lock from "../../../../../assets/images/lock-unlock.png";
 import clock from "../../../../../assets/images/clock.png";
+import { scale } from "react-native-size-matters";
 
 export default function PriceCard({
     type,
@@ -21,10 +22,10 @@ export default function PriceCard({
             bg="primary.100"
             w="48%"
         >
-            <Text pt={2} color={"#fff"} fontWeight={700} fontSize={28}>
+            <Text pt={2} color={"#fff"} fontWeight={700} fontSize={scale(26)}>
                 {header}
             </Text>
-            <Text pb={4} color={"#fff"} fontWeight={500} fontSize={14}>
+            <Text pb={4} color={"#fff"} fontWeight={500} fontSize={scale(12)}>
                 {subtitle}
             </Text>
             <Card mb="-48px" px="9" borderRadius={16} alignItems="center">

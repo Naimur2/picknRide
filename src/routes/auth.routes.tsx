@@ -21,24 +21,26 @@ export default function AuthRoute() {
                 headerTitle: "",
                 headerTitleStyle: { color: "white" },
                 headerTintColor: colorMode === "light" ? "black" : "white",
-
                 headerLeft: () => <BackButton />,
+                headerStyle: {
+                    backgroundColor: colorMode === "light" ? "white" : "black",
+                },
+                headerShadowVisible: false,
+                // statusBarHidden: true,
             }}
         >
             <Stack.Screen
-                options={{ headerShown: false }}
+                options={{
+                    headerShown: false,
+                }}
                 name="SplashSecond"
                 component={SplashSecond}
             />
-            <Stack.Screen
-                options={{ headerShown: false }}
-                name="SplashThird"
-                component={SplashThird}
-            />
+            <Stack.Screen name="SplashThird" component={SplashThird} />
             <Stack.Screen
                 options={{
                     headerShadowVisible: false,
-                    headerTransparent: true,
+
                     headerBackTitleVisible: false,
                 }}
                 name="Login"

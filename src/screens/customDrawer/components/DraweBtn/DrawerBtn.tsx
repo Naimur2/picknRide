@@ -21,7 +21,7 @@ export default function DrawerBtn({ onPress, title }: Props) {
             <HStack
                 justifyContent={"space-between"}
                 alignItems="center"
-                py={"14px"}
+                py={"10px"}
             >
                 <Text
                     color={"#fff"}

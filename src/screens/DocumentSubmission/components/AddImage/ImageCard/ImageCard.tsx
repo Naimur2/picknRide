@@ -2,6 +2,7 @@ import { Pressable, Text, VStack, Actionsheet, Image } from "native-base";
 import React from "react";
 import { Plus } from "../../../../../components/Icons/Icons";
 import ImagePickerSheet from "../../../../../components/ImagePickerSheet/ImagePickerSheet";
+import * as ImagePicker from "expo-image-picker";
 
 export default function ImageCard({
     setImage,
@@ -13,6 +14,18 @@ export default function ImageCard({
     title: string;
 }) {
     const [isOpen, setIsOpen] = React.useState(false);
+    const [libraryStatus, requestPermission] =
+        ImagePicker.useMediaLibraryPermissions();
+
+    const checkImagePermission = async () => {
+        const { status } =
+            await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+            alert("Sorry, we need camera roll permissions to make this work!");
+        } else {
+            setIsOpen(true);
+        }
+    };
 
     return (
         <>
@@ -25,7 +38,7 @@ export default function ImageCard({
                     shadow="9"
                     alignItems={"center"}
                     justifyContent={"center"}
-                    onPress={() => setIsOpen(true)}
+                    onPress={checkImagePermission}
                     position="relative"
                     overflow={"hidden"}
                     _dark={{

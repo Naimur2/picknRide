@@ -14,8 +14,6 @@ export default function DrawerRoute() {
                 overlayColor: colorMode === "dark" ? "#00000080" : "#ffffff80",
 
                 drawerStyle: {
-                    borderTopRightRadius: 30,
-                    borderBottomRightRadius: 30,
                     overflow: "hidden",
                 },
                 unmountOnBlur: true,

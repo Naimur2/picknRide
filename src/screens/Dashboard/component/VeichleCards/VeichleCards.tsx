@@ -13,6 +13,8 @@ import { VStack } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { scale } from "react-native-size-matters";
 import useAuth from "../../../../hooks/useAuth";
+import * as Location from "expo-location";
+import { LocationPermissionResponse } from "expo-location";
 
 const veichels: IVeichleCardProps[] = [
     {
@@ -48,15 +50,24 @@ export default function VeichleCards() {
         (veichle) => veichle.id === selectedVeichle
     );
 
-    const handleNavigation = () => {
+    const handleNavigation = async () => {
         if (selectedVeichle === "3" && !user.hasVerifiedDoc) {
             navigation.navigate("DocumentSubmission", {
                 veichle: currentVeichle,
             });
         } else {
-            navigation.navigate("MapScreen", {
-                veichle: currentVeichle,
-            });
+            // ask for location permission
+            const locationStatus: LocationPermissionResponse =
+                await Location.requestForegroundPermissionsAsync();
+
+            if (locationStatus.granted && locationStatus.status === "granted") {
+                const currentPosition = await Location.getCurrentPositionAsync(
+                    {}
+                );
+                navigation.navigate("MapScreen", {
+                    veichle: currentVeichle,
+                });
+            }
         }
     };
 
@@ -75,12 +86,12 @@ export default function VeichleCards() {
                     availableNumber={currentVeichle?.availableNumber}
                     distance={currentVeichle?.distance}
                     image={currentVeichle?.image}
-                    entering={FlipInYRight}
-                    exiting={FlipOutYLeft}
+                    entering={FlipInYRight.duration(90)}
+                    exiting={FlipOutYLeft.duration(90)}
                 />
             )}
             <OutlineButton
-                mt={4}
+                mt={8}
                 title={"Select"}
                 titleStyle={{ mx: "auto" }}
                 onPress={handleNavigation}

@@ -4,7 +4,7 @@ import React from "react";
 import ImageBg from "../../components/ImageBg/ImageBg";
 import Logo from "../../svgs/Logo";
 import Next from "../../svgs/Next";
-import Scroller from "./../../components/Scroller/Scroller";
+import Scroller from "../../components/Scroller/Scroller";
 
 export default function SplashSecond() {
     const navigation = useNavigation();
@@ -33,7 +33,10 @@ export default function SplashSecond() {
                 </Text>
                 <Pressable
                     mt="30%"
-                    onPress={() => navigation.navigate("SplashThird")}
+                    onPress={() => {
+                        console.log("pressed");
+                        navigation.navigate("SplashThird");
+                    }}
                 >
                     <Next />
                 </Pressable>

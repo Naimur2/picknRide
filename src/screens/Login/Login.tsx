@@ -30,7 +30,7 @@ export default function Login() {
                 contentStyle={{
                     flexGrow: 1,
                     paddingHorizontal: 30,
-                    paddingTop: 20 + insets.top,
+
                     paddingBottom: 20,
                 }}
             >

@@ -1,12 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
-import { VStack } from "native-base";
+import { useColorMode, VStack } from "native-base";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
+import BackButton from "../../components/BackButton/BackButton";
 import Balance from "../../components/Balance/Balance";
 import HeaderTitle from "../../components/HeaderTitle/HeaderTitle";
 import Scroller from "../../components/Scroller/Scroller";
-import { TOP_PADDING } from "../../helper/final";
+import colors from "../../theme-config/colors";
 
 import HistoryCard, {
     IHistoryCard,
@@ -74,15 +75,27 @@ const historyCards: IHistoryCard[] = [
 export default function CarRideHistory() {
     const navigation = useNavigation();
     const insets = useSafeAreaInsets();
+    const colormode = useColorMode();
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => <HeaderTitle title="RIDE history" />,
             headerTitleAlign: "center",
-            headerLeft: null,
+            headerLeft: () => (
+                <BackButton
+                    color={colormode.colorMode === "dark" ? "white" : "black"}
+                />
+            ),
             headerRight: () => (
                 <Balance iconColor="primary.100" textColor="gray.100" />
             ),
+            headerShadowVisible: false,
+            headerStyle: {
+                backgroundColor:
+                    colormode.colorMode === "dark"
+                        ? colors.dark[100]
+                        : colors.light[300],
+            },
         });
     }, [navigation]);
 
@@ -100,7 +113,7 @@ export default function CarRideHistory() {
         >
             <VStack
                 space={6}
-                mt={TOP_PADDING + insets.top + "px"}
+                mt={4}
                 px="6"
                 pb={8}
                 h="full"

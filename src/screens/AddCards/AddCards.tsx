@@ -51,6 +51,7 @@ export default function AddCards() {
     };
 
     React.useLayoutEffect(() => {
+        let clear = true;
         navigation.setOptions({
             headerTitle: () => (
                 <Text
@@ -69,6 +70,11 @@ export default function AddCards() {
             headerTitleVisible: true,
             headerBackTitleVisible: false,
         });
+        if (clear) {
+            return () => {
+                clear = false;
+            };
+        }
     }, [navigation]);
 
     return (

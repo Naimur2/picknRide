@@ -33,7 +33,7 @@ const ThreeSwitch = ({
         "worklet";
         switch (swiitchPos) {
             case 1:
-                return withTiming(0, undefined, (isFinished) => {
+                return withTiming(0, { duration: 100 }, (isFinished) => {
                     if (isFinished && onPress) {
                         runOnJS(onPress)?.("1");
                     }
@@ -41,7 +41,7 @@ const ThreeSwitch = ({
             case 2:
                 return withTiming(
                     containerWidth.current / 3,
-                    undefined,
+                    { duration: 100 },
                     (isFinished) => {
                         if (isFinished && onPress) {
                             runOnJS(onPress)?.("2");
@@ -51,7 +51,7 @@ const ThreeSwitch = ({
             case 3:
                 return withTiming(
                     containerWidth.current - switchWidth.current,
-                    undefined,
+                    { duration: 100 },
                     (isFinished) => {
                         if (isFinished && onPress) {
                             runOnJS(onPress)?.("3");

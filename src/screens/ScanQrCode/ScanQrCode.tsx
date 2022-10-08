@@ -2,17 +2,27 @@ import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { Camera } from "expo-camera";
 import { LinearGradient } from "expo-linear-gradient";
-import { Factory, Image, Input, Text, VStack, Pressable } from "native-base";
+import {
+    Factory,
+    Image,
+    Input,
+    Text,
+    VStack,
+    Pressable,
+    useColorMode,
+} from "native-base";
 import React from "react";
 import { ImageBackground, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
 import scanBg from "../../../assets/images/scan-bg.png";
 import torch from "../../../assets/images/torch.png";
+import BackButton from "../../components/BackButton/BackButton";
 import Card from "../../components/Card/Card";
 import HeaderTitle from "../../components/HeaderTitle/HeaderTitle";
 import Scroller from "../../components/Scroller/Scroller";
 import { TOP_PADDING } from "../../helper/final";
+import colors from "../../theme-config/colors";
 
 export default function ScanQrCode() {
     const navigation = useNavigation();
@@ -25,6 +35,8 @@ export default function ScanQrCode() {
     const ImageBg = Factory(ImageBackground);
     const isFocused = useIsFocused();
 
+    const colormode = useColorMode();
+
     const LinGrad = Factory(LinearGradient);
 
     React.useLayoutEffect(() => {
@@ -33,7 +45,18 @@ export default function ScanQrCode() {
                 <HeaderTitle color="#fff" title="Scan qr code" />
             ),
             headerTitleAlign: "center",
-            headerLeft: null,
+            headerLeft: () => (
+                <BackButton
+                    color={colormode.colorMode === "dark" ? "white" : "black"}
+                />
+            ),
+            headerShadowVisible: false,
+            headerStyle: {
+                backgroundColor:
+                    colormode.colorMode === "dark"
+                        ? colors.dark[100]
+                        : colors.light[300],
+            },
         });
     }, [navigation]);
 
@@ -109,7 +132,7 @@ export default function ScanQrCode() {
             >
                 <VStack
                     space={6}
-                    mt={TOP_PADDING + insets.top + "px"}
+                    mt={4}
                     px="6"
                     pb={8}
                     h="full"

@@ -5,21 +5,24 @@ import {
     Image,
     Input,
     Pressable,
+    useColorMode,
     VStack,
 } from "native-base";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
+import camera from "../../../assets/images/camera.png";
+import BackButton from "../../components/BackButton/BackButton";
 import Balance from "../../components/Balance/Balance";
+import GradientBtn from "../../components/GradientBtn/GradientBtn";
 import HeaderTitle from "../../components/HeaderTitle/HeaderTitle";
 import Scroller from "../../components/Scroller/Scroller";
-import { TOP_PADDING } from "../../helper/final";
 import useAuth from "../../hooks/useAuth";
-import Camera from "../../svgs/Camera";
-import camera from "../../../assets/images/camera.png";
 import Pen from "../../svgs/Pen";
-import ImagePickerSheet from "./../../components/ImagePickerSheet/ImagePickerSheet";
-import GradientBtn from "../../components/GradientBtn/GradientBtn";
+import colors from "../../theme-config/colors";
+import { fontSizes } from "../../theme-config/typography";
+import ImagePickerSheet from "../../components/ImagePickerSheet/ImagePickerSheet";
+import * as ImagePicker from "expo-image-picker";
 
 export default function Account() {
     const navigation = useNavigation();
@@ -27,17 +30,39 @@ export default function Account() {
     const { user } = useAuth();
     const [image, setImage] = React.useState(null);
     const [isOpen, setIsOpen] = React.useState(false);
+    const colormode = useColorMode();
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => <HeaderTitle title="Account" />,
             headerTitleAlign: "center",
-            headerLeft: null,
             headerRight: () => (
                 <Balance iconColor="primary.100" textColor="gray.100" />
             ),
+            headerLeft: () => (
+                <BackButton
+                    color={colormode.colorMode === "dark" ? "white" : "black"}
+                />
+            ),
+            headerShadowVisible: false,
+            headerStyle: {
+                backgroundColor:
+                    colormode.colorMode === "dark"
+                        ? colors.dark[100]
+                        : colors.light[300],
+            },
         });
     }, [navigation]);
+
+    const checkImagePermission = async () => {
+        const { status } =
+            await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+            alert("Sorry, we need camera roll permissions to make this work!");
+        } else {
+            setIsOpen(true);
+        }
+    };
 
     return (
         <Scroller
@@ -49,20 +74,12 @@ export default function Account() {
                 bg: "dark.100",
             }}
         >
-            <VStack
-                space={6}
-                mt={TOP_PADDING + insets.top + "px"}
-                px="6"
-                pb={8}
-                h="full"
-                maxWidth={scale(500)}
-                mx="auto"
-            >
+            <VStack space={6} mt={4} px="6" pb={8} h="full" mx="auto">
                 <VStack alignItems={"center"} position="relative">
                     <Avatar
                         shadow="9"
                         source={{ uri: image ? image : user?.avatar }}
-                        size={"160px"}
+                        size={"120px"}
                         borderWidth={6}
                         borderColor="#fff"
                     >
@@ -77,7 +94,7 @@ export default function Account() {
                         borderRadius="50px"
                         position="absolute"
                         bottom={-22}
-                        onPress={() => setIsOpen(true)}
+                        onPress={checkImagePermission}
                     >
                         <Image source={camera} alt="camera" />
                     </Pressable>
@@ -89,9 +106,9 @@ export default function Account() {
                 />
 
                 <VStack w="full" mt={4}>
-                    <FormControl mt={5} w="full">
+                    <FormControl mt={3} w="full">
                         <FormControl.Label
-                            fontSize={12}
+                            fontSize={fontSizes.xs}
                             color="gray.400"
                             _dark={{ color: "#fff" }}
                         >
@@ -99,7 +116,7 @@ export default function Account() {
                         </FormControl.Label>
                         <Input
                             w="full"
-                            fontSize={17}
+                            fontSize={fontSizes.sm}
                             fontWeight={600}
                             variant="underlined"
                             borderBottomColor={"light.200"}
@@ -111,14 +128,14 @@ export default function Account() {
                             }}
                             rightElement={
                                 <Pressable>
-                                    <Pen width={scale(20)} height={scale(20)} />
+                                    <Pen width={scale(16)} height={scale(16)} />
                                 </Pressable>
                             }
                         />
                     </FormControl>
-                    <FormControl mt={5} w="full">
+                    <FormControl mt={3} w="full">
                         <FormControl.Label
-                            fontSize={12}
+                            fontSize={fontSizes.xs}
                             color="gray.400"
                             _dark={{ color: "#fff" }}
                         >
@@ -126,7 +143,7 @@ export default function Account() {
                         </FormControl.Label>
                         <Input
                             w="full"
-                            fontSize={17}
+                            fontSize={fontSizes.sm}
                             fontWeight={600}
                             variant="underlined"
                             borderBottomColor={"light.200"}
@@ -138,14 +155,14 @@ export default function Account() {
                             }}
                             rightElement={
                                 <Pressable>
-                                    <Pen width={scale(20)} height={scale(20)} />
+                                    <Pen width={scale(16)} height={scale(16)} />
                                 </Pressable>
                             }
                         />
                     </FormControl>
-                    <FormControl mt={5} w="full">
+                    <FormControl mt={3} w="full">
                         <FormControl.Label
-                            fontSize={12}
+                            fontSize={fontSizes.xs}
                             color="gray.400"
                             _dark={{ color: "#fff" }}
                         >
@@ -153,7 +170,7 @@ export default function Account() {
                         </FormControl.Label>
                         <Input
                             w="full"
-                            fontSize={17}
+                            fontSize={fontSizes.sm}
                             fontWeight={600}
                             variant="underlined"
                             borderBottomColor={"light.200"}
@@ -165,14 +182,14 @@ export default function Account() {
                             }}
                             rightElement={
                                 <Pressable>
-                                    <Pen width={scale(20)} height={scale(20)} />
+                                    <Pen width={scale(16)} height={scale(16)} />
                                 </Pressable>
                             }
                         />
                     </FormControl>
-                    <FormControl mt={5} w="full">
+                    <FormControl mt={3} w="full">
                         <FormControl.Label
-                            fontSize={12}
+                            fontSize={fontSizes.xs}
                             color="gray.400"
                             _dark={{ color: "#fff" }}
                         >
@@ -180,7 +197,7 @@ export default function Account() {
                         </FormControl.Label>
                         <Input
                             w="full"
-                            fontSize={17}
+                            fontSize={fontSizes.sm}
                             fontWeight={600}
                             variant="underlined"
                             borderBottomColor={"light.200"}
@@ -192,15 +209,15 @@ export default function Account() {
                             }}
                             rightElement={
                                 <Pressable>
-                                    <Pen width={scale(20)} height={scale(20)} />
+                                    <Pen width={scale(16)} height={scale(16)} />
                                 </Pressable>
                             }
                         />
                     </FormControl>
 
-                    <FormControl mt={5} w="full">
+                    <FormControl mt={3} w="full">
                         <FormControl.Label
-                            fontSize={12}
+                            fontSize={fontSizes.xs}
                             color="gray.400"
                             _dark={{ color: "#fff" }}
                         >
@@ -208,7 +225,7 @@ export default function Account() {
                         </FormControl.Label>
                         <Input
                             w="full"
-                            fontSize={17}
+                            fontSize={fontSizes.sm}
                             fontWeight={600}
                             variant="underlined"
                             borderBottomColor={"light.200"}
@@ -220,7 +237,7 @@ export default function Account() {
                             }}
                             rightElement={
                                 <Pressable>
-                                    <Pen width={scale(20)} height={scale(20)} />
+                                    <Pen width={scale(16)} height={scale(16)} />
                                 </Pressable>
                             }
                         />

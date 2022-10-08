@@ -20,11 +20,15 @@ import CarRideHistory from "../screens/CarRideHistory/CarRideHistory";
 import TripDetails from "../screens/TripDetails/TripDetails";
 import Receipt from "../screens/Receipt/Receipt";
 import StartEndRide from "../screens/StartEndRide/StartEndRide";
+import colors from "../theme-config/colors";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const Stack = createNativeStackNavigator();
 
 export default function UserRoutes() {
     const { colorMode } = useColorMode();
+    const insets = useSafeAreaInsets();
+
     return (
         <Stack.Navigator
             initialRouteName="Dashboard"
@@ -32,11 +36,25 @@ export default function UserRoutes() {
                 headerTitle: "",
                 headerTitleStyle: { color: "white" },
                 headerTintColor: colorMode === "light" ? "black" : "white",
-
+                headerLeft: () => (
+                    <BackButton
+                        color={colorMode === "dark" ? "white" : "black"}
+                    />
+                ),
+                headerShadowVisible: true,
                 headerStyle: {
-                    height: "100",
+                    backgroundColor:
+                        colorMode === "dark"
+                            ? colors.dark[100]
+                            : colors.light[300],
                 },
-                headerLeft: () => <BackButton />,
+                // statusBarHidden: true,
+                contentStyle: {
+                    marginTop: insets.top,
+                },
+                headerBackTitleVisible: false,
+                headerBackVisible: false,
+                animation: "slide_from_left",
             }}
         >
             <Stack.Screen name="Dashboard" component={Dashboard} />
