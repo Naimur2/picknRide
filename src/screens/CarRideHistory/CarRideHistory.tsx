@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { useColorMode, VStack } from "native-base";
 import React from "react";
+import { Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
 import BackButton from "../../components/BackButton/BackButton";
@@ -120,6 +121,7 @@ export default function CarRideHistory() {
                 maxWidth={scale(500)}
                 mx="auto"
                 w="full"
+                pt={Platform.OS === "android" ? 55 : 0}
             >
                 {historyCards.map((card, idx) => (
                     <HistoryCard

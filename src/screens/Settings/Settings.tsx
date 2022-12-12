@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { Image, useColorMode, VStack } from "native-base";
 import React from "react";
+import { Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
 import scooterBoyDark from "../../../assets/images/scooter-boy-dark.png";
@@ -87,6 +88,7 @@ export default function Settings() {
                 h="full"
                 maxWidth={scale(500)}
                 mx="auto"
+                pt={Platform.OS === "android" ? 55 : 0}
             >
                 <ThemeToggler />
                 <Card py={3}>

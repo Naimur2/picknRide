@@ -39,6 +39,8 @@ export default function Dashboard() {
                         _dark={{
                             color: "#000",
                         }}
+                        py={2}
+                        px={4}
                     />
                 </Touchable>
             ),

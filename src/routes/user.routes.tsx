@@ -1,27 +1,26 @@
-import ReportIssue from "../screens/ReportIssue/ReportIssue";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useColorMode } from "native-base";
 import React from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import BackButton from "../components/BackButton/BackButton";
+import Account from "../screens/Account/Account";
 import CameraView from "../screens/CameraView/CameraView";
+import CarRideHistory from "../screens/CarRideHistory/CarRideHistory";
 import Cars from "../screens/Cars/Cars";
 import Dashboard from "../screens/Dashboard/Dashboard";
 import DocumentSubmission from "../screens/DocumentSubmission/DocumentSubmission";
+import MapScreen from "../screens/MapScreen/MapScreen";
 import Notifications from "../screens/Notifications/Notifications";
-import RideHistory from "../screens/RideHistory/RideHistory";
+import Pricing from "../screens/Pricing/Pricing";
+import Receipt from "../screens/Receipt/Receipt";
+import ReportIssue from "../screens/ReportIssue/ReportIssue";
+import ScanQrCode from "../screens/ScanQrCode/ScanQrCode";
 import Settings from "../screens/Settings/Settings";
+import StartEndRide from "../screens/StartEndRide/StartEndRide";
+import TripDetails from "../screens/TripDetails/TripDetails";
 import VarificationStatus from "../screens/VarificationStatus/VarificationStatus";
 import Wallet from "../screens/Wallet/Wallet";
-import MapScreen from "../screens/MapScreen/MapScreen";
-import Pricing from "../screens/Pricing/Pricing";
-import Account from "../screens/Account/Account";
-import ScanQrCode from "../screens/ScanQrCode/ScanQrCode";
-import CarRideHistory from "../screens/CarRideHistory/CarRideHistory";
-import TripDetails from "../screens/TripDetails/TripDetails";
-import Receipt from "../screens/Receipt/Receipt";
-import StartEndRide from "../screens/StartEndRide/StartEndRide";
 import colors from "../theme-config/colors";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const Stack = createNativeStackNavigator();
 

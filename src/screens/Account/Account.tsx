@@ -23,6 +23,7 @@ import colors from "../../theme-config/colors";
 import { fontSizes } from "../../theme-config/typography";
 import ImagePickerSheet from "../../components/ImagePickerSheet/ImagePickerSheet";
 import * as ImagePicker from "expo-image-picker";
+import { Platform } from "react-native";
 
 export default function Account() {
     const navigation = useNavigation();
@@ -74,7 +75,15 @@ export default function Account() {
                 bg: "dark.100",
             }}
         >
-            <VStack space={6} mt={4} px="6" pb={8} h="full" mx="auto">
+            <VStack
+                space={6}
+                mt={4}
+                px="6"
+                pb={8}
+                h="full"
+                mx="auto"
+                pt={Platform.OS === "android" ? 55 : 0}
+            >
                 <VStack alignItems={"center"} position="relative">
                     <Avatar
                         shadow="9"

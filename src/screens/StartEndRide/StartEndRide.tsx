@@ -61,40 +61,42 @@ export default function StartEndRide() {
                     flexGrow: 1,
                 }}
             >
-                <TopSection
-                    title="Upload photos
-                    to end ride."
-                    subtitle="Please upload 4 photos to end ride"
-                />
-
-                <VStack mt={8} px={6} space={4} w="full">
-                    <HStack mt={4} justifyContent="space-between">
-                        <UploadImg />
-                        <UploadImg />
-                    </HStack>
-                    <HStack mt={4} justifyContent="space-between">
-                        <UploadImg />
-                        <UploadImg />
-                    </HStack>
-
-                    <Center>
-                        <HStack space="2" mt={12}>
-                            <Pressable
-                                onPress={() => setIsChecked((prev) => !prev)}
-                            >
-                                <CheckBox isChecked={isChecked} />
-                            </Pressable>
-                            <Text
-                                _dark={{
-                                    color: "#fff",
-                                }}
-                            >
-                                Agree terms and condition
-                            </Text>
+                <>
+                    <TopSection
+                        title="Upload photos
+                        to end ride."
+                        subtitle="Please upload 4 photos to end ride"
+                    />
+                    <VStack mt={8} px={6} space={4} w="full">
+                        <HStack mt={4} justifyContent="space-between">
+                            <UploadImg />
+                            <UploadImg />
                         </HStack>
-                        <GradientBtn mt="5" mb={8} title="START RIDE" />
-                    </Center>
-                </VStack>
+                        <HStack mt={4} justifyContent="space-between">
+                            <UploadImg />
+                            <UploadImg />
+                        </HStack>
+                        <Center>
+                            <HStack space="2" mt={12}>
+                                <Pressable
+                                    onPress={() =>
+                                        setIsChecked((prev) => !prev)
+                                    }
+                                >
+                                    <CheckBox isChecked={isChecked} />
+                                </Pressable>
+                                <Text
+                                    _dark={{
+                                        color: "#fff",
+                                    }}
+                                >
+                                    Agree terms and condition
+                                </Text>
+                            </HStack>
+                            <GradientBtn mt="5" mb={8} title="START RIDE" />
+                        </Center>
+                    </VStack>
+                </>
             </Scroller>
         </ImageBg>
     );

@@ -9,15 +9,14 @@ import {
     VStack,
 } from "native-base";
 import React from "react";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Dimensions, Platform } from "react-native";
 import { scale } from "react-native-size-matters";
 import GradientBtn from "../../components/GradientBtn/GradientBtn";
 import OutlineButton from "../../components/OutlineButton/OutlineButton";
 import Scroller from "../../components/Scroller/Scroller";
-import Camera from "../../svgs/Camera";
 import useAuth from "../../hooks/useAuth";
+import Camera from "../../svgs/Camera";
 import Pen from "../../svgs/Pen";
-import { Dimensions } from "react-native";
 import { fontSizes } from "../../theme-config/typography";
 const creditCardImage = require("../../../assets/images/credit-card.png");
 
@@ -86,6 +85,7 @@ export default function AddCards() {
                 _dark={{
                     bg: "#000",
                 }}
+                pt={Platform.OS === "android" ? 55 : 0}
             >
                 <HStack
                     mt={5}

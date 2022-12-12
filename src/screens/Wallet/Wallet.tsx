@@ -27,6 +27,7 @@ import Pen from "../../svgs/Pen";
 import colors from "../../theme-config/colors";
 import WalletTab from "./components/WalletTab/WalletTab";
 import BackButton from "../../components/BackButton/BackButton";
+import { Platform } from "react-native";
 
 export interface IAmount {
     _id?: string;
@@ -104,6 +105,7 @@ export default function Wallet() {
                 h="full"
                 maxWidth={scale(500)}
                 mx="auto"
+                pt={Platform.OS === "android" ? 55 : 0}
             >
                 <VStack px="6">
                     <Card

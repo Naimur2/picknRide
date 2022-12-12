@@ -1,5 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
-import { HStack, Text, VStack, Image, Divider } from "native-base";
+import {
+    HStack,
+    Text,
+    VStack,
+    Image,
+    Divider,
+    useColorMode,
+} from "native-base";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
@@ -8,6 +15,9 @@ import HeaderTitle from "../../components/HeaderTitle/HeaderTitle";
 import Scroller from "../../components/Scroller/Scroller";
 import boyWScooter from "../../../assets/images/boywscooter.png";
 import Card from "../../components/Card/Card";
+import BackButton from "../../components/BackButton/BackButton";
+import colors from "../../theme-config/colors";
+import { Platform } from "react-native";
 
 interface ITopSection {
     title: string;
@@ -17,12 +27,24 @@ interface ITopSection {
 export default function Receipt({ title, subtitle }: ITopSection) {
     const insets = useSafeAreaInsets();
     const navigation = useNavigation();
+    const colormode = useColorMode();
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => <HeaderTitle title="Trip details" />,
             headerTitleAlign: "center",
-            headerLeft: null,
+            headerLeft: () => (
+                <BackButton
+                    color={colormode.colorMode === "dark" ? "white" : "black"}
+                />
+            ),
+            headerShadowVisible: false,
+            headerStyle: {
+                backgroundColor:
+                    colormode.colorMode === "dark"
+                        ? colors.dark[100]
+                        : colors.light[300],
+            },
             headerRight: () => (
                 <Balance iconColor="primary.100" textColor="gray.100" />
             ),
@@ -44,7 +66,7 @@ export default function Receipt({ title, subtitle }: ITopSection) {
                     borderBottomRadius={40}
                     bg="green.200"
                     w="full"
-                    pt={60 + insets.top + "px"}
+                    pt={Platform.OS === "android" ? 55 : 0}
                     pb={10}
                     px={8}
                     _dark={{

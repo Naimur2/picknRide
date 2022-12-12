@@ -37,6 +37,7 @@ const SwitchButton = ({ onPress, title, isActive }: Switchprops) => {
 const styles = StyleSheet.create({
     text: {
         fontWeight: "500",
+        fontFamily: "Montserrat_300Light",
     },
 });
 

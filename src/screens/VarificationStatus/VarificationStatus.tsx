@@ -10,6 +10,7 @@ import VerifyStatusCard from "./components/VerifyStatusCard/VerifyStatusCard";
 import { scale } from "react-native-size-matters";
 import BackButton from "../../components/BackButton/BackButton";
 import colors from "../../theme-config/colors";
+import { Platform } from "react-native";
 
 export interface INotificationsList {
     _id?: string;
@@ -91,6 +92,7 @@ export default function VarificationStatus() {
                 maxWidth={scale(500)}
                 mx="auto"
                 w="full"
+                pt={Platform.OS === "android" ? 55 : 0}
             >
                 {varifyStatusList?.map((item) => (
                     <VerifyStatusCard

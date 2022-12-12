@@ -16,6 +16,7 @@ import SwitchNotifications from "./components/SwitchNotifications/SwitchNotifica
 import { scale } from "react-native-size-matters";
 import BackButton from "../../components/BackButton/BackButton";
 import colors from "../../theme-config/colors";
+import { Platform } from "react-native";
 
 const natifications: INotification[] = [
     {
@@ -111,6 +112,7 @@ export default function Notifications() {
                 h="full"
                 maxWidth={scale(500)}
                 mx="auto"
+                pt={Platform.OS === "android" ? 55 : 0}
             >
                 <VStack>
                     <H3>General Setings</H3>

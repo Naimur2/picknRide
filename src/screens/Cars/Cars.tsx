@@ -11,6 +11,7 @@ import { TOP_PADDING } from "../../helper/final";
 import { scale } from "react-native-size-matters";
 import BackButton from "../../components/BackButton/BackButton";
 import colors from "../../theme-config/colors";
+import { Platform } from "react-native";
 
 export default function Cars() {
     const navigation = useNavigation();
@@ -87,7 +88,15 @@ export default function Cars() {
                     flexGrow: 1,
                 }}
             >
-                <VStack space={4} mt={4} px="6" pb={8} h="full" mx="auto">
+                <VStack
+                    space={4}
+                    mt={4}
+                    px="6"
+                    pb={8}
+                    h="full"
+                    mx="auto"
+                    pt={Platform.OS === "android" ? 55 : 0}
+                >
                     {cars.map((car, index) => (
                         <CarCard
                             key={car.id + index}

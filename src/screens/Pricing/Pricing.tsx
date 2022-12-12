@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { HStack, Image, useColorMode, VStack } from "native-base";
 import React from "react";
-import { useWindowDimensions } from "react-native";
+import { Platform, useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
 import boyWithSooterDark from "../../../assets/images/boy-with-scooter-dark.png";
@@ -60,6 +60,7 @@ export default function Pricing() {
                 h="full"
                 maxWidth={scale(500)}
                 mx="auto"
+                pt={Platform.OS === "android" ? 55 : 0}
             >
                 <HStack my={8} w="full" justifyContent={"space-between"}>
                     <PriceCard

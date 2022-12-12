@@ -6,14 +6,17 @@ export default function Scroller({
     contentStyle,
     ...rest
 }: {
-    children: React.ReactNode,
-    contentStyle?: object,
+    children: React.ReactNode;
+    contentStyle?: object;
 }) {
     return (
         <ScrollView
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={contentStyle}
+            contentContainerStyle={{
+                ...contentStyle,
+                flexGrow: 1,
+            }}
             nestedScrollEnabled={true}
             keyboardShouldPersistTaps="handled"
             {...rest}

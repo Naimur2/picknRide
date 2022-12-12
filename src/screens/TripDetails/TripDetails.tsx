@@ -1,5 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
-import { Box, HStack, Image, Pressable, Text, VStack } from "native-base";
+import {
+    Box,
+    HStack,
+    Image,
+    Pressable,
+    Text,
+    useColorMode,
+    VStack,
+} from "native-base";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
@@ -11,10 +19,14 @@ import Scroller from "../../components/Scroller/Scroller";
 import { TOP_PADDING } from "../../helper/final";
 import key from "../../../assets/images/key.png";
 import secure from "../../../assets/images/secure.png";
+import { Platform } from "react-native";
+import colors from "../../theme-config/colors";
+import BackButton from "../../components/BackButton/BackButton";
 
 export default function TripDetails() {
     const navigation = useNavigation();
     const insets = useSafeAreaInsets();
+    const colormode = useColorMode();
 
     const Location = ({ name, time }) => (
         <VStack>
@@ -46,7 +58,18 @@ export default function TripDetails() {
         navigation.setOptions({
             headerTitle: () => <HeaderTitle title="Trip details" />,
             headerTitleAlign: "center",
-            headerLeft: null,
+            headerLeft: () => (
+                <BackButton
+                    color={colormode.colorMode === "dark" ? "white" : "black"}
+                />
+            ),
+            headerShadowVisible: false,
+            headerStyle: {
+                backgroundColor:
+                    colormode.colorMode === "dark"
+                        ? colors.dark[100]
+                        : colors.light[300],
+            },
             headerRight: () => (
                 <Balance iconColor="primary.100" textColor="gray.100" />
             ),
@@ -65,13 +88,13 @@ export default function TripDetails() {
         >
             <VStack
                 space={6}
-                mt={TOP_PADDING + insets.top + "px"}
                 px="6"
                 pb={8}
                 h="full"
                 maxWidth={scale(500)}
                 mx="auto"
                 w="full"
+                pt={Platform.OS === "android" ? 55 : 0}
             >
                 <VStack
                     w={scale(300) + "px"}

@@ -56,7 +56,14 @@
 
 import { Camera, CameraType } from "expo-camera";
 import { useState } from "react";
-import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+    Button,
+    Platform,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
 
 export default function App() {
     const [type, setType] = useState(CameraType.back);
@@ -86,7 +93,7 @@ export default function App() {
     }
 
     return (
-        <View style={styles.container}>
+        <View style={styles.container} pt={Platform.OS === "android" ? 55 : 0}>
             <Camera style={styles.camera} type={type}>
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity

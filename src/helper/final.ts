@@ -1,1 +1,1 @@
-export const TOP_PADDING = 80;
+export const TOP_PADDING = 55;

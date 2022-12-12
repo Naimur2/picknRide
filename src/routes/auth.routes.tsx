@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useColorMode } from "native-base";
 import React from "react";
+import { Platform } from "react-native";
 import BackButton from "../components/BackButton/BackButton";
 import AddCards from "../screens/AddCards/AddCards";
 import Login from "../screens/Login/Login";
@@ -27,6 +28,7 @@ export default function AuthRoute() {
                 },
                 headerShadowVisible: false,
                 animation: "slide_from_left",
+
                 // statusBarHidden: true,
             }}
         >

@@ -11,6 +11,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CModal from "../../../../components/CModal/CModal";
 import { scale } from "react-native-size-matters";
 import * as ImagePicker from "expo-image-picker";
+import { Platform } from "react-native";
 
 export default function ReportContent({
     selections,
@@ -45,6 +46,7 @@ export default function ReportContent({
             h="full"
             maxWidth={scale(500)}
             mx="auto"
+            pt={Platform.OS === "android" ? 55 : 0}
         >
             <HStack justifyContent={"space-between"}>
                 {selections?.map((selection, id) => (

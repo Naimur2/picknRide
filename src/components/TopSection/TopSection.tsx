@@ -1,5 +1,6 @@
 import { Text, VStack } from "native-base";
 import React from "react";
+import { Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
 
@@ -16,6 +17,7 @@ export default function TopSection({ title, subtitle }: ITopSection) {
             borderBottomRadius={40}
             bg="green.200"
             w="full"
+            pt={Platform.OS === "android" ? 55 : 0}
             pb={10}
             px={8}
             _dark={{

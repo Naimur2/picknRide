@@ -12,7 +12,7 @@ import {
     useColorMode,
 } from "native-base";
 import React from "react";
-import { ImageBackground, StyleSheet } from "react-native";
+import { ImageBackground, Platform, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
 import scanBg from "../../../assets/images/scan-bg.png";
@@ -139,6 +139,7 @@ export default function ScanQrCode() {
                     maxWidth={scale(500)}
                     mx="auto"
                     justifyContent={"center"}
+                    pt={Platform.OS === "android" ? 55 : 0}
                 >
                     <Text
                         fontSize={13}
