@@ -92,38 +92,6 @@ function InputForm() {
         handleSubmit,
     } = formik;
 
-    // custom phone validation function for yup
-
-    const getParsedPhoneNumber = (
-        phone: string,
-        dialingCode: string,
-        countryCode: string
-    ) => {
-        return parsePhoneNumber(dialingCode + phone, countryCode?.toUpperCase())
-            ?.formatNational()
-            .replace(" ", "-");
-    };
-
-    React.useEffect(() => {
-        if (values.phone) {
-            const phone = getParsedPhoneNumber(
-                values.phone,
-                values.dialing_code,
-                values.country
-            );
-
-            const isPhoneNumber = isValidPhoneNumber(
-                `(${values.dialing_code}) ${values.phone}`,
-                values.country
-            );
-            if (phone && isPhoneNumber) {
-                setPhoneError("");
-            } else {
-                setPhoneError("Invalid phone number");
-            }
-        }
-    }, [values.phone, values.dialing_code, values.country]);
-
     return (
         <VStack mt={10} space={3} shadow="7">
             <VStack>
@@ -178,22 +146,20 @@ function InputForm() {
 
             <VStack>
                 <PickCountry
-                    onSelect={(dialingCode) => {
-                        setFieldValue("dialing_code", `${dialingCode[0]}`);
-                        console.log(dialingCode);
-                    }}
                     onChangeText={handleChange("phone")}
                     onBlur={handleBlur("phone")}
-                    setCountryCCA2={(cca2) => {
-                        setFieldValue("country", cca2?.toUpperCase());
+                    errorMessage={
+                        touched.phone && errors.phone ? errors.phone : ""
+                    }
+                    setPhoneInfo={(phoneInfo) => {
+                        setFieldValue("phone", phoneInfo?.phoneNumber);
+                        setFieldValue("country", phoneInfo?.countryCode);
+                        setFieldValue(
+                            "dialing_code",
+                            phoneInfo?.dialingCode.slice(1)
+                        );
                     }}
                 />
-                {phoneError || (touched.phone && errors.phone) ? (
-                    <ErrorMessage>{phoneError || errors?.phone}</ErrorMessage>
-                ) : null}
-                {touched.dialing_code && errors.dialing_code ? (
-                    <ErrorMessage>{errors?.dialing_code}</ErrorMessage>
-                ) : null}
             </VStack>
 
             <GradientBtn

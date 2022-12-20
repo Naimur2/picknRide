@@ -15,6 +15,7 @@ import ErrorMessage from "../../../../components/ErrorMessage/ErrorMessage";
 
 function InputForm() {
     const [phoneError, setPhoneError] = React.useState("");
+
     const schema = Yup.object().shape({
         password: Yup.string().required("Password is required"),
         phone: Yup.number().required("Phone number is required"),
@@ -31,15 +32,6 @@ function InputForm() {
         onSubmit: (values) => {},
     });
 
-    const getParsedPhoneNumber = (
-        phone: string,
-        dialingCode: string,
-        countryCode: string
-    ) => {
-        return parsePhoneNumber(dialingCode + phone, countryCode?.toUpperCase())
-            ?.formatNational()
-            .replace(" ", "-");
-    };
     const {
         values,
         handleChange,
@@ -50,96 +42,30 @@ function InputForm() {
         handleSubmit,
     } = formik;
 
-    React.useEffect(() => {
-        if (values.phone) {
-            const phone = getParsedPhoneNumber(
-                values.phone,
-                values.dialing_code,
-                values.country
-            );
-
-            const isPhoneNumber = isValidPhoneNumber(
-                `(${values.dialing_code}) ${values.phone}`,
-                values.country
-            );
-            if (phone && isPhoneNumber) {
-                setPhoneError("");
-            } else {
-                setPhoneError("Invalid phone number");
-            }
-        }
-    }, [values.phone, values.dialing_code, values.country]);
-
-    const [fromData, setFromData] = React.useState({
-        dialing_code: "+974",
-        phone: "31404159",
-        password: "", //"password",
-        country: "QA",
-    });
-    // handleLogin
-    const handleLogin = () => {
-        // console.log(fromData);
-        axios
-            .post(`${apiConfig.apiUrl}/login`, fromData)
-            .then((res) => {
-                // console.log(res.data.status);
-                if (res.data.status === 400) {
-                    // console.log(res.data);
-                    alert("Invalid Number or Password");
-                }
-                if (res.data.status === 200) {
-                    storeData(res.data.data);
-                    alert("Login Success");
-                    //  console.log(res.data.data);
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-                alert(err);
-            });
-    };
-
-    // store data in async storage
-    const storeData = async (value) => {
-        try {
-            // await AsyncStorage.setItem('user', JSON.stringify(value))
-            await AsyncStorage.setItem("user", value);
-        } catch (e) {
-            // saving error
-            console.log("cont save data in async storage", e);
-        }
-    };
-    // console.log(AsyncStorage.getItem('user').then((value) => {
-    //     console.log(value);
-    // }));
     return (
         <VStack mt={10} space={2} shadow="7">
-            <VStack>
-                <PickCountry
-                    onSelect={(dialingCode) => {
-                        setFieldValue("dialing_code", `${dialingCode[0]}`);
-                        console.log(dialingCode);
-                    }}
-                    onChangeText={handleChange("phone")}
-                    onBlur={handleBlur("phone")}
-                    setCountryCCA2={(cca2) => {
-                        setFieldValue("country", cca2?.toUpperCase());
-                    }}
-                />
-                {phoneError || (touched.phone && errors.phone) ? (
-                    <ErrorMessage>{phoneError || errors?.phone}</ErrorMessage>
-                ) : null}
-                {touched.dialing_code && errors.dialing_code ? (
-                    <ErrorMessage>{errors?.dialing_code}</ErrorMessage>
-                ) : null}
-            </VStack>
+            <PickCountry
+                onChangeText={(txt) => {
+                    console.log("txt", txt);
+                }}
+                onBlur={handleBlur("phone")}
+                errorMessage={touched.phone && errors.phone ? errors.phone : ""}
+                setPhoneInfo={(phoneInfo) => {
+                    setFieldValue("phone", phoneInfo?.phoneNumber);
+                    setFieldValue("country", phoneInfo?.countryCode);
+                    setFieldValue(
+                        "dialing_code",
+                        phoneInfo?.dialingCode.slice(1)
+                    );
+                }}
+            />
 
             <PasswordInput
                 placeholder="Password"
                 value={values.password}
                 onChangeText={handleChange("password")}
                 onBlur={handleBlur("password")}
-                error={touched.password && errors.password}
+                error={touched.password ? errors.password : null}
             />
 
             <GradientBtn

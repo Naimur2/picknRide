@@ -1,38 +1,92 @@
-import { HStack, Input, Pressable, Text } from "native-base";
+import { HStack, Input, Pressable, Text, VStack } from "native-base";
 import React from "react";
-import CountryPicker from "react-native-country-picker-modal";
+import { CountryPicker } from "react-native-country-codes-picker";
 import { scale } from "react-native-size-matters";
 import { ChevronDownFill } from "../Icons/Icons";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import parsePhoneNumber, {
+    CountryCallingCode,
+    CountryCode,
+} from "libphonenumber-js";
+import { isValidPhoneNumber } from "libphonenumber-js";
+import { validatePhone } from "../../helper/validate-phone";
+import { NativeSyntheticEvent, TextInputFocusEventData } from "react-native";
 
-interface IPickCountry {
-    onSelect: (country: any) => void;
+type TInputProps = React.ComponentProps<typeof Input>;
+
+interface ICountryWithCode {
+    dialingCode: string;
+    countryCode: string;
+    phoneNumber: string;
+}
+
+interface IPickCountry extends TInputProps {
     onChangeText: (text: string) => void;
-    value: string;
-    onFocus: () => void;
-    onBlur: () => void;
-    setCountryCCA2: (code: string) => void;
+    value?: string;
+    errorMessage?: string;
+    setPhoneInfo: (info: ICountryWithCode) => void;
 }
 
 function PickCountry({
-    onSelect,
     onChangeText,
     value,
     onFocus,
     onBlur,
-    setCountryCCA2,
+    errorMessage,
+    setPhoneInfo,
     ...rest
 }: IPickCountry) {
     const [show, setShow] = React.useState(false);
-    const [countryCode, setCountryCode] = React.useState(["974"]);
+    const [error, setError] = React.useState(false);
+    const [isFocused, setIsFocused] = React.useState(false);
+
+    const [countryCode, setCountryCode] =
+        React.useState<CountryCallingCode>("+974");
+    const [country, setCountry] = React.useState<CountryCode>("QA");
+    const [phone, setPhone] = React.useState("");
 
     React.useEffect(() => {
-        if (countryCode) {
-            onSelect?.(countryCode);
-        }
-    }, [countryCode]);
+        const hasError = validatePhone(phone, countryCode, country);
+        setError(hasError);
+        setPhoneInfo?.({
+            dialingCode: countryCode,
+            countryCode: country,
+            phoneNumber: phone,
+        });
+    }, [countryCode, phone, country]);
+
+    const handleError = (text: string) => {
+        const hasError = validatePhone(text, countryCode, country);
+        setError(hasError);
+    };
+
+    const handleChangeText = (text: string) => {
+        setPhone(text);
+        onChangeText?.(text);
+    };
+
+    const handleBlur = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+        handleError(phone);
+        onBlur?.(e);
+    };
+
+    const handleFocus = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+        handleError(phone);
+        setIsFocused(true);
+        onFocus?.(e);
+    };
+
+    React.useEffect(() => {
+        handleError(phone);
+    }, [phone]);
+
+    const localErrorMessage =
+        isFocused && error ? "Invalid Phone Number" : undefined;
+
+    const phoneError = errorMessage || localErrorMessage;
 
     return (
-        <>
+        <VStack>
             <Input
                 borderWidth={0}
                 bg="white"
@@ -49,9 +103,10 @@ function PickCountry({
                 fontWeight="500"
                 placeholderTextColor="gray.300"
                 mb={2}
-                onChangeText={onChangeText}
-                onFocus={onFocus}
-                onBlur={onBlur}
+                onChangeText={handleChangeText}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                value={value}
                 leftElement={
                     <Pressable onPress={() => setShow(true)}>
                         <HStack space={1} pl={5} alignItems={"center"}>
@@ -60,7 +115,7 @@ function PickCountry({
                                 fontWeight={500}
                                 color={"gray.200"}
                             >
-                                + {countryCode || "974"}
+                                {countryCode || "+974"}
                             </Text>
                             <ChevronDownFill color="gray.200" />
                         </HStack>
@@ -68,22 +123,25 @@ function PickCountry({
                 }
                 {...rest}
             />
-            {show && (
-                <CountryPicker
-                    withCallingCode
-                    visible={show}
-                    onSelect={(country) => {
-                        setShow(false);
-                        setCountryCCA2?.(country?.cca2);
-                        setCountryCode(country.callingCode);
-                    }}
-                    onClose={() => setShow(false)}
-                    withFilter={true}
-                    keyboardShouldPersistTaps="handled"
-                    key={countryCode}
-                />
-            )}
-        </>
+
+            <CountryPicker
+                lang="en"
+                show={show}
+                onBackdropPress={() => setShow(false)}
+                // when picker button press you will get the country object with dial code
+                pickerButtonOnPress={(item) => {
+                    setCountry(item.code.toUpperCase() as CountryCode);
+                    setCountryCode(item.dial_code);
+                    setShow(false);
+                }}
+                style={{
+                    modal: {
+                        height: 400,
+                    },
+                }}
+            />
+            {phoneError ? <ErrorMessage>{phoneError}</ErrorMessage> : null}
+        </VStack>
     );
 }
 
