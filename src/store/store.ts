@@ -3,6 +3,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import { apiSlice } from "./api/apiSlice";
 import authReducer from "./features/auth/authSlice";
+import uiReducer from "./features/ui/uiSlice";
 
 const persistConfig = {
     key: "root",
@@ -14,6 +15,7 @@ const persistedAuthReducer = persistReducer(persistConfig, authReducer);
 const reducer = combineReducers({
     [apiSlice.reducerPath]: apiSlice.reducer,
     auth: persistedAuthReducer,
+    ui: uiReducer,
 });
 
 export const store = configureStore({
@@ -28,6 +30,7 @@ export const store = configureStore({
 export const persistor = persistStore(store);
 
 export const selectAuth = (state: any) => state.auth;
+export const selectLoading = (state: any) => state.ui.loading;
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

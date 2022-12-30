@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import config from "../../../config";
-import { IAuthState } from "../features/auth/authSlice.types";
+import { setLoading } from "../features/ui/uiSlice";
 import { RootState } from "../store";
 
 const baseQuery = fetchBaseQuery({
@@ -17,24 +17,16 @@ const baseQuery = fetchBaseQuery({
     },
 });
 
-// // base query with refresh token logic
-// export const baseQueryWithRefresh = async (
-//     args: any,
-//     api: any,
-//     extraOptions: any
-// ) => {
-//     const result = await baseQuery(args, api, extraOptions);
-//     if (result.error) {
-//         const { status } = result.error;
-//         if (status === 401) {
-//             // refresh token logic
-//         }
-//     }
-//     return result;
-// };
+const loadingBaseQuery = async (args: any, api: any, extraOptions: any) => {
+    const { dispatch } = api;
+    dispatch(setLoading(true));
+    const result = await baseQuery(args, api, extraOptions);
+    dispatch(setLoading(false));
+    return result;
+};
 
 export const apiSlice = createApi({
     reducerPath: "apiSlice",
-    baseQuery: baseQuery,
+    baseQuery: loadingBaseQuery,
     endpoints: (builder) => ({}),
 });

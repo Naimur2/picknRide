@@ -11,7 +11,7 @@ import { useLoginApiMutation } from "../../../../store/api/authApi/authApiSlice"
 import { fontSizes } from "../../../../theme-config/typography";
 import { ILoginProps } from "../../../../types/interfaces/index";
 
-function InputForm() {
+function SignInInputForm() {
     const schema = Yup.object().shape({
         password: Yup.string().required("Password is required"),
         phone: Yup.number().required("Phone number is required"),
@@ -116,4 +116,4 @@ function InputForm() {
     );
 }
 
-export default React.memo(InputForm);
+export default React.memo(SignInInputForm);

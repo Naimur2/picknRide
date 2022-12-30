@@ -1,22 +1,25 @@
 import { useNavigation } from "@react-navigation/native";
-import axios, { AxiosError, AxiosResponse } from "axios";
 import { useFormik } from "formik";
-import parsePhoneNumber, { isValidPhoneNumber } from "libphonenumber-js";
-import { VStack } from "native-base";
+import { VStack, Spinner } from "native-base";
 import React from "react";
-import { Alert } from "react-native";
 import * as Yup from "yup";
-import apiConfig from "../../../../api_config/ApiConfig";
 import ErrorMessage from "../../../../components/ErrorMessage/ErrorMessage";
 import GradientBtn from "../../../../components/GradientBtn/GradientBtn";
 import PasswordInput from "../../../../components/PasswordInput/PasswordInput";
 import PickCountry from "../../../../components/PickCountry/PickCountry";
 import Select from "../../../../components/Select/Select";
 import TextInput from "../../../../components/TextInput/TextInput";
+import { useRegisterApiMutation } from "../../../../store/api/authApi/authApiSlice";
 
-function InputForm() {
+function SignUpInputForm() {
     const navigation = useNavigation();
-    const [phoneError, setPhoneError] = React.useState("");
+    const [regster, result] = useRegisterApiMutation();
+
+    React.useEffect(() => {
+        if (result) {
+            console.log(result);
+        }
+    }, [result]);
 
     const schema = Yup.object().shape({
         f_name: Yup.string().required("First Name is required"),
@@ -27,7 +30,7 @@ function InputForm() {
         password_1: Yup.string()
             .required("Password is required")
             .matches(
-                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+                /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
                 "Password must be at least 8 characters, contain at least one uppercase letter, one lowercase letter and one number"
             ),
         password_2: Yup.string()
@@ -51,33 +54,27 @@ function InputForm() {
             country: "QA",
         },
         onSubmit: async (values) => {
-            if (!phoneError) {
-                try {
-                    delete values.password_2;
-                    delete values.country;
-                    const data = {
-                        ...values,
-                        dialing_code: "+" + values.dialing_code,
-                        password: values.password_1,
-                    };
-                    const res: AxiosResponse = await axios.post(
-                        `${apiConfig.apiUrl}/sign_up`,
-                        data
-                    );
+            const {
+                f_name,
+                l_name,
+                email,
+                password_1,
+                phone,
+                dialing_code,
+                location_id,
+            } = values;
 
-                    if (res.status === 200) {
-                        navigation.navigate("OtpScreen", {
-                            phone: values.phone,
-                            dialing_code: values.dialing_code,
-                        });
-                    } else {
-                        console.log(res);
-                        Alert.alert("Error", "Something went wrong");
-                    }
-                } catch (error: AxiosError) {
-                    alert(error);
-                }
-            }
+            const data = {
+                location_id,
+                f_name,
+                l_name,
+                email,
+                dialing_code: "+" + dialing_code,
+                phone: phone,
+                password: password_1,
+            };
+
+            await regster(data);
         },
         validationSchema: schema,
     });
@@ -169,9 +166,10 @@ function InputForm() {
                 mt={4}
                 // onPress={() => navigation.navigate("OtpScreen")}
                 onPress={handleSubmit}
+                disabled={result?.isLoading}
             />
         </VStack>
     );
 }
 
-export default React.memo(InputForm);
+export default React.memo(SignUpInputForm);

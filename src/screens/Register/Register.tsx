@@ -1,10 +1,10 @@
-import { HStack, Image, Text, useColorMode, VStack } from "native-base";
+import { HStack, Image, Text, VStack, useColorMode } from "native-base";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
 import { Telephone, Whatsapp } from "../../components/Icons/Icons";
 import Scroller from "../../components/Scroller/Scroller";
-import InputForm from "./components/InputForm/InputForm";
+import SignUpInputForm from "./components/SignUpInputForm/SignUpInputForm";
 
 import dark from "../../../assets/images/background-map-dark.png";
 import light from "../../../assets/images/background-map-light.png";
@@ -56,7 +56,7 @@ export default function Register() {
                             Enter your Sign Up details to Create your account
                         </Text>
                     </VStack>
-                    <InputForm />
+                    <SignUpInputForm />
                     <HStack
                         alignItems={"center"}
                         mt={4}

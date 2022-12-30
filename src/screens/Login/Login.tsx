@@ -1,28 +1,16 @@
 import { useNavigation } from "@react-navigation/native";
-import { HStack, Text, useColorMode, VStack } from "native-base";
+import { HStack, Text, VStack, useColorMode } from "native-base";
 import React from "react";
-import { AsyncStorage } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
 import ImageBg from "../../components/ImageBg/ImageBg";
 import Scroller from "../../components/Scroller/Scroller";
 import { fontSizes } from "../../theme-config/typography";
-import InputForm from "./components/InputForm/InputForm";
+import SignInInputForm from "./components/SignInInputForm/SignInInputForm";
 import SocialButton from "./components/SocialButton/SocialButton";
 
 export default function Login() {
     const { colorMode } = useColorMode();
     const navigation = useNavigation();
-    const insets = useSafeAreaInsets();
-
-    // store data in async storage
-    const storeData = async (value) => {
-        try {
-            await AsyncStorage.setItem("user", value);
-        } catch (e) {
-            // saving error
-        }
-    };
 
     return (
         <ImageBg type={colorMode}>
@@ -57,7 +45,7 @@ export default function Login() {
                     </Text>
                 </VStack>
 
-                <InputForm />
+                <SignInInputForm />
 
                 <VStack space={4} mt={6}>
                     <SocialButton

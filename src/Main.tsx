@@ -1,11 +1,11 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Text, View } from "native-base";
+import { Text, View, Spinner } from "native-base";
 import React from "react";
 import useAuth from "./hooks/useAuth";
 import AuthRoute from "./routes/auth.routes";
 import DrawerRoute from "./routes/drawer.routes";
 import { useSelector } from "react-redux";
-import { selectAuth } from "./store/store";
+import { selectAuth, selectLoading } from "./store/store";
 import { IAuthState } from "./store/features/auth/authSlice.types";
 
 function HomeScreen() {
@@ -26,14 +26,27 @@ const Stack = createNativeStackNavigator();
 
 export default function Main() {
     const auth = useSelector(selectAuth) as IAuthState;
+    const loading = useSelector(selectLoading);
 
-    console.log(auth);
+    const Content = auth?.token ? DrawerRoute : AuthRoute;
 
-    if (auth?.token) {
-        return <DrawerRoute />;
-    }
-
-    return <AuthRoute />;
+    return (
+        <>
+            {loading && (
+                <Spinner
+                    position={"absolute"}
+                    top={0}
+                    left={0}
+                    right={0}
+                    bottom={0}
+                    size={"lg"}
+                    color="blue"
+                    zIndex={1000}
+                />
+            )}
+            <Content />
+        </>
+    );
 
     // return (
     //     <Stack.Navigator>
