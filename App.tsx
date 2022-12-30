@@ -4,19 +4,27 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import AuthProvider from "./src/context/providers/auth.provider";
 import Main from "./src/Main";
 import ThemeConFig from "./src/theme-config/index";
-// import "react-native-reanimated";
-// import "react-native-gesture-handler";
+import { Provider } from "react-redux";
+import "react-native-reanimated";
+import "react-native-gesture-handler";
+import { PersistGate } from "redux-persist/integration/react";
+
+import { persistor, store } from "./src/store/store";
 
 export default function App() {
     return (
-        <SafeAreaProvider>
-            <ThemeConFig>
-                <AuthProvider>
-                    <NavigationContainer>
-                        <Main />
-                    </NavigationContainer>
-                </AuthProvider>
-            </ThemeConFig>
-        </SafeAreaProvider>
+        <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+                <SafeAreaProvider>
+                    <ThemeConFig>
+                        <AuthProvider>
+                            <NavigationContainer>
+                                <Main />
+                            </NavigationContainer>
+                        </AuthProvider>
+                    </ThemeConFig>
+                </SafeAreaProvider>
+            </PersistGate>
+        </Provider>
     );
 }

@@ -4,6 +4,9 @@ import React from "react";
 import useAuth from "./hooks/useAuth";
 import AuthRoute from "./routes/auth.routes";
 import DrawerRoute from "./routes/drawer.routes";
+import { useSelector } from "react-redux";
+import { selectAuth } from "./store/store";
+import { IAuthState } from "./store/features/auth/authSlice.types";
 
 function HomeScreen() {
     return (
@@ -22,9 +25,11 @@ function HomeScreen() {
 const Stack = createNativeStackNavigator();
 
 export default function Main() {
-    const auth = useAuth();
+    const auth = useSelector(selectAuth) as IAuthState;
 
-    if (auth?.isAuthenciated) {
+    console.log(auth);
+
+    if (auth?.token) {
         return <DrawerRoute />;
     }
 

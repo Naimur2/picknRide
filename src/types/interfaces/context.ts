@@ -1,5 +1,6 @@
+import { ILatLng } from "../../screens/MapScreen/MapScreen";
 import { IUser } from "./index";
-import { ILatLng } from "../screens/MapScreen/MapScreen";
+
 export interface IAuthProviderProps {
     isAuthenciated: boolean;
     user: IUser;

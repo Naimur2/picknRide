@@ -10,7 +10,9 @@ import { Instagram, Whatsapp } from "../../components/Icons/Icons";
 import Scroller from "../../components/Scroller/Scroller";
 import UserAvatar from "../../components/UserAvatar/UserAvatar";
 import useAuth from "../../hooks/useAuth";
+import { logout } from "../../store/features/auth/authSlice";
 import DrawerBtn from "./components/DraweBtn/DrawerBtn";
+import { useDispatch } from "react-redux";
 
 interface IDrawerMenuItem {
     title: string;
@@ -22,6 +24,7 @@ export default function CustomDrawer() {
     const navigation = useNavigation();
     const { user } = useAuth();
     const insets = useSafeAreaInsets();
+    const dispatch = useDispatch();
 
     const { height } = useWindowDimensions();
 
@@ -127,6 +130,7 @@ export default function CustomDrawer() {
                             borderWidth={3}
                             borderRadius={16}
                             borderColor={"#fff"}
+                            onPress={() => dispatch(logout())}
                         >
                             SIGN OUT
                         </Button>

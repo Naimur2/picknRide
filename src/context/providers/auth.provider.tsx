@@ -1,7 +1,8 @@
 import React from "react";
-import { IAuthProviderProps } from "../../interfaces/context";
+
 import { AuthContext } from "../contexts";
 // import AsyncStorage from '@react-native-async-storage/async-storage';
+import { IAuthProviderProps } from "../../types/interfaces/context";
 
 // let users = AsyncStorage.getItem('user').then((value) => {
 //     setUser(value);

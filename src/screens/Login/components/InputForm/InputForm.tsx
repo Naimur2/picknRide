@@ -1,36 +1,47 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
 import { useFormik } from "formik";
 import { Text, VStack } from "native-base";
 import React from "react";
 import { scale } from "react-native-size-matters";
-import apiConfig from "../../../../api_config/ApiConfig";
+import * as Yup from "yup";
 import GradientBtn from "../../../../components/GradientBtn/GradientBtn";
 import PasswordInput from "../../../../components/PasswordInput/PasswordInput";
 import PickCountry from "../../../../components/PickCountry/PickCountry";
+
+import { useLoginApiMutation } from "../../../../store/api/authApi/authApiSlice";
 import { fontSizes } from "../../../../theme-config/typography";
-import * as Yup from "yup";
-import { isValidPhoneNumber, parsePhoneNumber } from "libphonenumber-js";
-import ErrorMessage from "../../../../components/ErrorMessage/ErrorMessage";
+import { ILoginProps } from "../../../../types/interfaces/index";
 
 function InputForm() {
-    const [phoneError, setPhoneError] = React.useState("");
-
     const schema = Yup.object().shape({
         password: Yup.string().required("Password is required"),
         phone: Yup.number().required("Phone number is required"),
     });
 
+    const [login, { isError, isLoading, isSuccess, error }] =
+        useLoginApiMutation();
+
+    console.log("data", login);
+
     const formik = useFormik({
         initialValues: {
-            dialing_code: "+974",
+            dialing_code: "974",
             phone: "",
             password: "", //"password",
             country: "QA",
         },
         validationSchema: schema,
-        onSubmit: (values) => {},
+        onSubmit: async (values) => {
+            const { phone, password, dialing_code } = values;
+            const body: ILoginProps = {
+                phone: phone,
+                password: password,
+                dialing_code: "+" + dialing_code,
+            };
+            await login(body);
+        },
     });
+
+    console.log({ isError, isLoading, isSuccess });
 
     const {
         values,
@@ -73,6 +84,7 @@ function InputForm() {
                 title={"Log In"}
                 mx={"auto"}
                 mt={4}
+                disabled={isLoading}
                 onPress={handleSubmit}
             />
             <Text

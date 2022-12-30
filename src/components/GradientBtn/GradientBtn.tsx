@@ -4,13 +4,15 @@ import React from "react";
 import { TouchableOpacity } from "react-native";
 import { scale } from "react-native-size-matters";
 import { gradient } from "../../theme-config/colors";
+import { TTouchableOpactity, TBoxProps } from "../../types/types/index";
 
-interface IProps {
+interface IProps extends TTouchableOpactity, TBoxProps {
     title: string;
     onPress: () => void;
     children?: any;
     gradientStyle?: any;
     titleStyle?: any;
+    disabled?: boolean;
 }
 
 export default function GradientBtn({
@@ -19,17 +21,18 @@ export default function GradientBtn({
     children,
     gradientStyle,
     titleStyle,
+    disabled,
     ...rest
 }: IProps) {
     const LinearGard = Factory(LinearGradient);
     const Touchable = Factory(TouchableOpacity);
 
     return (
-        <Touchable onPress={onPress} shadow="7" {...rest}>
+        <Touchable disabled={disabled} onPress={onPress} shadow="7" {...rest}>
             <LinearGard
                 w={scale(265) + "px"}
                 h={45 + "px"}
-                colors={gradient[100]}
+                colors={disabled ? gradient[200] : gradient[100]}
                 start={[1, 0]}
                 end={[1, 1]}
                 alignItems="center"

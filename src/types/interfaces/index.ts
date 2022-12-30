@@ -1,4 +1,5 @@
-import { ICitizenship } from "../screens/SelectCitizenShip/SelectCitizenShip";
+import { ICitizenship } from "../../screens/SelectCitizenShip/SelectCitizenShip";
+
 export interface ILinearProps {
     colors?: string[];
     start?: number[];
@@ -37,12 +38,17 @@ export interface ILinearProps {
 }
 
 export interface IUser {
-    _id: string;
-    name: string;
-    email?: string;
-    avatar?: string;
-    isActive?: boolean;
-    arrivalDate?: Date;
-    citizenShip?: ICitizenship;
-    hasVerifiedDoc?: boolean;
+    f_name: string | null;
+    l_name: string | null;
+    location_id: string | null;
+    dialing_code: string | null;
+    phone: string | null;
+    email: string | null;
+    wallet: number | null;
+}
+
+export interface ILoginProps {
+    dialing_code: string;
+    phone: string;
+    password: string;
 }
