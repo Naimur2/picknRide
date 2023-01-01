@@ -6,8 +6,8 @@ import OtpScreen from "@screens/auth-screens/OtpScreen/OtpScreen";
 import Register from "@screens/auth-screens/Register/Register";
 import SplashSecond from "@screens/auth-screens/SplashSecond/SplashSecond";
 import SplashThird from "@screens/auth-screens/SplashThird/SplashThird";
-import SelectArrivalDate from "@screens/user-screens/SelectArrivalDate/SelectArrivalDate";
-import SelectCitizenShip from "@screens/user-screens/SelectCitizenShip/SelectCitizenShip";
+import SelectArrivalDate from "@screens/auth-screens/SelectArrivalDate/SelectArrivalDate";
+import SelectCitizenShip from "@screens/auth-screens/SelectCitizenShip/SelectCitizenShip";
 import { useColorMode } from "native-base";
 import React from "react";
 

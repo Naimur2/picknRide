@@ -6,7 +6,7 @@ import React from "react";
 import { scale } from "react-native-size-matters";
 import { fontSizes } from "../../../theme-config/typography";
 import SignInInputForm from "./SignInInputForm/SignInInputForm";
-import SocialButton from "./components/SocialButton/SocialButton";
+import SocialButton from "./SocialButton/SocialButton";
 
 export default function Login() {
     const { colorMode } = useColorMode();

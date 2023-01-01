@@ -4,7 +4,7 @@ import CameraView from "@screens/user-screens/CameraView/CameraView";
 import CarRideHistory from "@screens/user-screens/CarRideHistory/CarRideHistory";
 import Cars from "@screens/user-screens/Cars/Cars";
 import Dashboard from "@screens/user-screens/Dashboard/Dashboard";
-import DocumentSubmission from "@screens/DocumentSubmission/DocumentSubmission";
+import DocumentSubmission from "@screens/user-screens/DocumentSubmission/DocumentSubmission";
 import MapScreen from "@screens/MapScreen/MapScreen";
 import Notifications from "@screens/user-screens/Notifications/Notifications";
 import Pricing from "@screens/user-screens/Pricing/Pricing";
