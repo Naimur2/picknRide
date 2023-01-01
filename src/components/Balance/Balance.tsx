@@ -1,6 +1,6 @@
 import { HStack, Pressable, Text } from "native-base";
 import React from "react";
-import Wallet from "../../svgs/Wallet";
+import Wallet from "@assets/svgs/Wallet";
 
 export default function Balance({
     balance,

@@ -1,8 +1,8 @@
 import React from "react";
 import { Image, Stack, Text, VStack, HStack } from "native-base";
-import battery from "../../../../../../assets/images/battery.png";
-import locationImg from "../../../../../../assets/images/location.png";
-import clockFill from "../../../../../../assets/images/clock-fill.png";
+import battery from "@assets/images/battery.png";
+import locationImg from "@assets/images/location.png";
+import clockFill from "@assets/images/clock-fill.png";
 
 const imagetype = {
     battery,

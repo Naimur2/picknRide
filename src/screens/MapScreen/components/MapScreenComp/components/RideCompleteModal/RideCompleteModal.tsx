@@ -1,14 +1,14 @@
-import { View, Text } from "react-native";
+import clockFill from "@assets/images/clock-fill.png";
+import locationFilled from "@assets/images/location-filled.png";
+import locationOutline from "@assets/images/location-outline.png";
+import CModal from "@components/CModal/CModal";
+import H3 from "@components/H3/H3";
+import { Box, Center, HStack, Image, VStack } from "native-base";
 import React from "react";
-import CModal from "../../../../../../components/CModal/CModal";
-import { VStack, HStack, Image, Center, Box } from "native-base";
-import MarkerBar from "../../../LocationMarker/LocationMarker";
-import H3 from "../../../../../../components/H3/H3";
+import { Text } from "react-native";
 import { Rating } from "react-native-ratings";
-import clockFill from "../../../../../../../assets/images/clock-fill.png";
-import locationFilled from "../../../../../../../assets/images/location-filled.png";
-import locationOutline from "../../../../../../../assets/images/location-outline.png";
 import { scale } from "react-native-size-matters";
+import MarkerBar from "../../../LocationMarker/LocationMarker";
 
 export default function RideCompleteModal({ isOpen, onClose }) {
     return (

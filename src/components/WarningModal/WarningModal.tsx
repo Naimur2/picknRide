@@ -3,12 +3,12 @@ import React from "react";
 import { TouchableOpacity } from "react-native";
 import Modal from "react-native-modal";
 import { scale } from "react-native-size-matters";
-import Approved from "../../svgs/Approved";
-import Expired from "../../svgs/Expired";
-import Locked from "../../svgs/Locked";
-import Pending from "../../svgs/Pending";
-import Rejected from "../../svgs/Rejected";
-import Unlocked from "../../svgs/Unlocked";
+import Approved from "@assets/svgs/Approved";
+import Expired from "@assets/svgs/Expired";
+import Locked from "@assets/svgs/Locked";
+import Pending from "@assets/svgs/Pending";
+import Rejected from "@assets/svgs/Rejected";
+import Unlocked from "@assets/svgs/Unlocked";
 
 export default function WarningModal({
     isVisible,

@@ -1,15 +1,15 @@
 import { Factory, HStack } from "native-base";
 import React from "react";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import Toggler from "../../../../svgs/Toggler";
+import Toggler from "@assets/svgs/Toggler";
 import { ILatLng } from "../../MapScreen";
 
 import { useNavigation } from "@react-navigation/native";
 import { Image, TouchableOpacity } from "react-native";
-import car from "../../../../../assets/images/car-small.png";
-import cycle from "../../../../../assets/images/cycle-small.png";
-import scooter from "../../../../../assets/images/veichle.png";
-import { Search } from "../../../../components/Icons/Icons";
+import car from "@assets/images/car-small.png";
+import cycle from "@assets/images/cycle-small.png";
+import scooter from "@assets/images/veichle.png";
+import { Search } from "@components/Icons/Icons";
 import Constants from "expo-constants";
 
 const images = {

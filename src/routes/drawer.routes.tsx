@@ -1,7 +1,7 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { useColorMode } from "native-base";
 import React from "react";
-import CustomDrawer from "../screens/customDrawer/CustomDrawer";
+import CustomDrawer from "@screens/customDrawer/CustomDrawer";
 import UserRoute from "./user.routes";
 
 export default function DrawerRoute() {

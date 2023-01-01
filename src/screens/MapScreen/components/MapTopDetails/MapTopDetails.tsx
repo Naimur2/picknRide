@@ -1,8 +1,8 @@
 import React from "react";
 import { HStack, VStack, Box, Text } from "native-base";
 
-import VeichleSelector from "../../../../components/VeichleSelector/VeichleSelector";
-import { Sun } from "../../../../components/Icons/Icons";
+import VeichleSelector from "@components/VeichleSelector/VeichleSelector";
+import { Sun } from "@components/Icons/Icons";
 
 const MapTopDetails = ({ selected, setSelected, ...rest }) => {
     return (

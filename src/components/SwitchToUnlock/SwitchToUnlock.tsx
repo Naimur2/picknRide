@@ -2,7 +2,7 @@ import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { PanGestureHandler } from "react-native-gesture-handler";
 import { HStack, Image, Text, VStack, Factory } from "native-base";
-import swipe from "../../../assets/images/swipe.png";
+import swipe from "@assets/images/swipe.png";
 import { LinearGradient } from "expo-linear-gradient";
 
 import Animated, {

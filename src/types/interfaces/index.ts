@@ -1,5 +1,3 @@
-import { ICitizenship } from "../../screens/SelectCitizenShip/SelectCitizenShip";
-
 export interface ILinearProps {
     colors?: string[];
     start?: number[];

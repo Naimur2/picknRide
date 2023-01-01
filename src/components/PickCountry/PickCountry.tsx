@@ -1,16 +1,12 @@
+import { CountryCallingCode, CountryCode } from "libphonenumber-js";
 import { HStack, Input, Pressable, Text, VStack } from "native-base";
 import React from "react";
+import { NativeSyntheticEvent, TextInputFocusEventData } from "react-native";
 import { CountryPicker } from "react-native-country-codes-picker";
 import { scale } from "react-native-size-matters";
-import { ChevronDownFill } from "../Icons/Icons";
+import { validatePhone } from "@utils/validate-phone";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
-import parsePhoneNumber, {
-    CountryCallingCode,
-    CountryCode,
-} from "libphonenumber-js";
-import { isValidPhoneNumber } from "libphonenumber-js";
-import { validatePhone } from "../../helper/validate-phone";
-import { NativeSyntheticEvent, TextInputFocusEventData } from "react-native";
+import { ChevronDownFill } from "../Icons/Icons";
 
 type TInputProps = React.ComponentProps<typeof Input>;
 

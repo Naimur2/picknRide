@@ -16,7 +16,9 @@ module.exports = function (api) {
                         "@typedef": "./src/types",
                         "@theme": "./src/theme-config",
                         "@assets": "./assets",
-                        "@config":"./config.ts"
+                        "@config":"./config.ts",
+                        "@hooks": "./src/hooks",
+                        "@utils": "./src/utils",
                     },
                 },
             ],

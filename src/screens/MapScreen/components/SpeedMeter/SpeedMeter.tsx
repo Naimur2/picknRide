@@ -2,7 +2,7 @@ import { Factory, Text } from "native-base";
 import React from "react";
 import { ImageBackground } from "react-native";
 import { scale } from "react-native-size-matters";
-import speedMeter from "../../../../../assets/images/progress.png";
+import speedMeter from "@assets/images/progress.png";
 
 function SpeedMeter({ ...rest }) {
     const ImageBg = Factory(ImageBackground);

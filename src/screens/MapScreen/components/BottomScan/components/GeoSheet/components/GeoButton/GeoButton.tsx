@@ -1,12 +1,9 @@
 import { HStack, Image, Text, VStack } from "native-base";
 import React from "react";
 import { scale } from "react-native-size-matters";
-import scooter from "../../../../../../../../../assets/images/motor.png";
-import park from "../../../../../../../../../assets/images/park.png";
-import {
-    Ban,
-    ErrorOutline,
-} from "../../../../../../../../components/Icons/Icons";
+import scooter from "@assets/images/motor.png";
+import park from "@assets/images/park.png";
+import { Ban, ErrorOutline } from "@components/Icons/Icons";
 
 export default function GeoButton({
     title,

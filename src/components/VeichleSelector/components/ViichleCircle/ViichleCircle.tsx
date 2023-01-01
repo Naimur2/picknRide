@@ -1,8 +1,8 @@
 import { Box, Image, Pressable, VStack } from "native-base";
 import React from "react";
-import car from "../../../../../assets/images/car-small.png";
-import cycle from "../../../../../assets/images/cycle-small.png";
-import scooter from "../../../../../assets/images/veichle.png";
+import car from "@assets/images/car-small.png";
+import cycle from "@assets/images/cycle-small.png";
+import scooter from "@assets/images/veichle.png";
 
 const images = {
     car,

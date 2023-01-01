@@ -13,6 +13,7 @@ const baseQuery = fetchBaseQuery({
 
         if (authState?.token) {
             headers.set("Authorization", `Bearer ${authState.token}`);
+            headers.set("Pick&Ride-Token", `${authState.token}`);
         }
         return headers;
     },

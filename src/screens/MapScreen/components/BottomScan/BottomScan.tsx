@@ -1,14 +1,13 @@
+import locate from "@assets/images/locate.png";
+import scan from "@assets/images/scan.png";
+import { ErrorOutline } from "@components/Icons/Icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Factory, HStack, Image, Pressable, VStack } from "native-base";
 import React from "react";
-import locate from "../../../../../assets/images/locate.png";
-import scan from "../../../../../assets/images/scan.png";
-import { ErrorOutline } from "../../../../components/Icons/Icons";
 
 import { Dimensions } from "react-native";
 
-import { SheetManager } from "react-native-actions-sheet";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 function BottomScan({ onLeftPress }: { onLeftPress: () => void }) {

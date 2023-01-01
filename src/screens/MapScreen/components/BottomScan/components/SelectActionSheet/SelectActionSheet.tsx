@@ -1,10 +1,9 @@
+import GradientBtn from "@components/GradientBtn/GradientBtn";
+import OutlineButton from "@components/OutlineButton/OutlineButton";
 import { VStack } from "native-base";
 import React from "react";
 import ActionSheet, { SheetProps } from "react-native-actions-sheet";
 import { scale } from "react-native-size-matters";
-import GradientBtn from "../../../../../../components/GradientBtn/GradientBtn";
-import OutlineButton from "../../../../../../components/OutlineButton/OutlineButton";
-import colors from "../../../../../../theme-config/colors";
 
 interface ISelectSheet extends SheetProps {
     sheetId: string;

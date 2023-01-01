@@ -8,15 +8,15 @@ import {
 } from "native-base";
 import React from "react";
 
-import carSmall from "../../../../../../../assets/images/car-small.png";
-import motor from "../../../../../../../assets/images/motor.png";
-import ringBell from "../../../../../../../assets/images/ring-bell.png";
+import carSmall from "@assets/images/car-small.png";
+import motor from "@assets/images/motor.png";
+import ringBell from "@assets/images/ring-bell.png";
 import CarDescriptionCard from "../../../common/CarDescriptionCard/CarDescriptionCard";
 
 import { Image } from "react-native";
 import ActionSheet, { SheetProps } from "react-native-actions-sheet";
-import SwitchToUnlock from "../../../../../../components/SwitchToUnlock/SwitchToUnlock";
-import WarningModal from "../../../../../../components/WarningModal/WarningModal";
+import SwitchToUnlock from "@components/SwitchToUnlock/SwitchToUnlock";
+import WarningModal from "@components/WarningModal/WarningModal";
 
 const images = {
     carSmall,

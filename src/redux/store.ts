@@ -2,7 +2,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import { apiSlice } from "./api/v1/apiSlice";
+import { apiSliceV2 } from "./api/v2/apiSlice";
 import authReducer from "./features/auth/authSlice";
+import carsReducer from "./features/cars/carsSlice";
 import uiReducer from "./features/ui/uiSlice";
 
 const persistConfig = {
@@ -11,11 +13,14 @@ const persistConfig = {
 };
 
 const persistedAuthReducer = persistReducer(persistConfig, authReducer);
+const persistedCarsReducer = persistReducer(persistConfig, carsReducer);
 
 const reducer = combineReducers({
     [apiSlice.reducerPath]: apiSlice.reducer,
+    [apiSliceV2.reducerPath]: apiSliceV2.reducer,
     auth: persistedAuthReducer,
     ui: uiReducer,
+    cars: persistedCarsReducer,
 });
 
 export const store = configureStore({
@@ -23,7 +28,9 @@ export const store = configureStore({
     middleware: (getDefaultMiddleware: any) =>
         getDefaultMiddleware({
             serializableCheck: false,
-        }).concat(apiSlice.middleware),
+        })
+            .concat(apiSlice.middleware)
+            .concat(apiSliceV2.middleware),
     devTools: false,
 });
 

@@ -1,16 +1,15 @@
+import BackButton from "@components/BackButton/BackButton";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import AddCards from "@screens/auth-screens/AddCards/AddCards";
+import Login from "@screens/auth-screens/Login/Login";
+import OtpScreen from "@screens/auth-screens/OtpScreen/OtpScreen";
+import Register from "@screens/auth-screens/Register/Register";
+import SplashSecond from "@screens/auth-screens/SplashSecond/SplashSecond";
+import SplashThird from "@screens/auth-screens/SplashThird/SplashThird";
+import SelectArrivalDate from "@screens/user-screens/SelectArrivalDate/SelectArrivalDate";
+import SelectCitizenShip from "@screens/user-screens/SelectCitizenShip/SelectCitizenShip";
 import { useColorMode } from "native-base";
 import React from "react";
-import { Platform } from "react-native";
-import BackButton from "../components/BackButton/BackButton";
-import AddCards from "../screens/AddCards/AddCards";
-import Login from "../screens/Login/Login";
-import OtpScreen from "../screens/OtpScreen/OtpScreen";
-import Register from "../screens/Register/Register";
-import SelectArrivalDate from "../screens/SelectArrivalDate/SelectArrivalDate";
-import SelectCitizenShip from "../screens/SelectCitizenShip/SelectCitizenShip";
-import SplashSecond from "../screens/SplashSecond/SplashSecond";
-import SplashThird from "../screens/SplashThird/SplashThird";
 
 export default function AuthRoute() {
     const Stack = createNativeStackNavigator();

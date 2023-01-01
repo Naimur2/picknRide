@@ -1,9 +1,9 @@
 import { Image, VStack } from "native-base";
-import car from "../../../../../assets/images/car-small.png";
-import cycle from "../../../../../assets/images/cycle-small.png";
-import scooter from "../../../../../assets/images/veichle.png";
-import MapMarker from "../../../../svgs/MapMarker";
-import ParkMarker from "../../../../svgs/ParkMarker";
+import car from "@assets/images/car-small.png";
+import cycle from "@assets/images/cycle-small.png";
+import scooter from "@assets/images/veichle.png";
+import MapMarker from "@assets/svgs/MapMarker";
+import ParkMarker from "@assets/svgs/ParkMarker";
 
 interface IMarker {
     fuelPercentage: number;

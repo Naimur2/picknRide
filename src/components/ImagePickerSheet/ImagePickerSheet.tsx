@@ -1,8 +1,8 @@
-import { Center, Factory, HStack, Text, Actionsheet } from 'native-base';
+import { Center, Factory, HStack, Text, Actionsheet } from "native-base";
 import React from "react";
 import { TouchableOpacity } from "react-native";
-import useImagePicker from "../../hooks/use-image-picker";
-import Camera from "../../svgs/Camera";
+import useImagePicker from "@hooks/use-image-picker";
+import Camera from "@assets/svgs/Camera";
 import { UploadIcon } from "../Icons/Icons";
 
 interface IPickerSheet {
