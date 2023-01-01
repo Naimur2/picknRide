@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { HStack, Text, VStack, useColorMode } from "native-base";
 import React from "react";
 import { scale } from "react-native-size-matters";
-import { fontSizes } from "../../../theme-config/typography";
+import { fontSizes } from "@theme/typography";
 import SignInInputForm from "./SignInInputForm/SignInInputForm";
 import SocialButton from "./SocialButton/SocialButton";
 
