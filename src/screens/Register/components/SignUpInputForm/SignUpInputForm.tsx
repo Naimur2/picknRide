@@ -1,23 +1,25 @@
+import ErrorMessage from "@components/ErrorMessage/ErrorMessage";
+import GradientBtn from "@components/GradientBtn/GradientBtn";
+import PasswordInput from "@components/PasswordInput/PasswordInput";
+import PickCountry from "@components/PickCountry/PickCountry";
+import Select from "@components/Select/Select";
+import TextInput from "@components/TextInput/TextInput";
 import { useNavigation } from "@react-navigation/native";
+import { useRegisterApiMutation } from "@store/api/v1/authApi/authApiSlice";
 import { useFormik } from "formik";
-import { VStack, Spinner } from "native-base";
+import { VStack } from "native-base";
 import React from "react";
 import * as Yup from "yup";
-import ErrorMessage from "../../../../components/ErrorMessage/ErrorMessage";
-import GradientBtn from "../../../../components/GradientBtn/GradientBtn";
-import PasswordInput from "../../../../components/PasswordInput/PasswordInput";
-import PickCountry from "../../../../components/PickCountry/PickCountry";
-import Select from "../../../../components/Select/Select";
-import TextInput from "../../../../components/TextInput/TextInput";
-import { useRegisterApiMutation } from "../../../../store/api/authApi/authApiSlice";
 
 function SignUpInputForm() {
     const navigation = useNavigation();
     const [regster, result] = useRegisterApiMutation();
 
     React.useEffect(() => {
-        if (result) {
-            console.log(result);
+        if (result.isSuccess) {
+            navigation.navigate("OtpScreen", {
+                ...result.originalArgs,
+            });
         }
     }, [result]);
 

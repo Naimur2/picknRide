@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
-import { apiSlice } from "./api/apiSlice";
+import { apiSlice } from "./api/v1/apiSlice";
 import authReducer from "./features/auth/authSlice";
 import uiReducer from "./features/ui/uiSlice";
 

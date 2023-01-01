@@ -1,15 +1,16 @@
+import GradientBtn from "@components/GradientBtn/GradientBtn";
+import PasswordInput from "@components/PasswordInput/PasswordInput";
+import PickCountry from "@components/PickCountry/PickCountry";
 import { useFormik } from "formik";
 import { Text, VStack } from "native-base";
 import React from "react";
 import { scale } from "react-native-size-matters";
 import * as Yup from "yup";
-import GradientBtn from "../../../../components/GradientBtn/GradientBtn";
-import PasswordInput from "../../../../components/PasswordInput/PasswordInput";
-import PickCountry from "../../../../components/PickCountry/PickCountry";
 
-import { useLoginApiMutation } from "../../../../store/api/authApi/authApiSlice";
-import { fontSizes } from "../../../../theme-config/typography";
-import { ILoginProps } from "../../../../types/interfaces/index";
+import { fontSizes } from "@theme/typography";
+
+import { useLoginApiMutation } from "@store/api/v1/authApi/authApiSlice";
+import { ILoginProps } from "@store/api/v1/authApi/authApiSlice.types";
 
 function SignInInputForm() {
     const schema = Yup.object().shape({

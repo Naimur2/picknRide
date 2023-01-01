@@ -1,11 +1,11 @@
 import { Actionsheet, Pressable, Text } from "native-base";
 import React from "react";
 
-import axios from "axios";
 import { scale } from "react-native-size-matters";
-import apiConfig from "../../api_config/ApiConfig";
+import { useGetLocationApiQuery } from "@store/api/v1/configApi/configApiSlice";
 import { ChevronDown } from "../Icons/Icons";
 import LocationSheetContent from "./components/LocationSheetContent/LocationSheetContent";
+
 export interface Ilocations {
     id: number;
     name: string;
@@ -27,19 +27,21 @@ export default function Select({
 }) {
     const [isOpen, setIsOpen] = React.useState(false);
 
+    const { data } = useGetLocationApiQuery(undefined);
+
     // get locations from api
-    const [locations, setLocations] = React.useState<Ilocations[]>([]);
+    const locations: Ilocations[] = data?.data || [];
 
     const selectLocation =
         selected && locations.find((item) => item.id === selected);
 
-    React.useEffect(() => {
-        const getLocations = async () => {
-            const res = await axios.get(`${apiConfig.apiUrl}/getLocation`);
-            setLocations(res?.data?.data);
-        };
-        getLocations();
-    }, [isOpen]);
+    // React.useEffect(() => {
+    //     const getLocations = async () => {
+    //         const res = await axios.get(`${apiConfig.apiUrl}/getLocation`);
+    //         setLocations(res?.data?.data);
+    //     };
+    //     getLocations();
+    // }, [isOpen]);
 
     return (
         <>

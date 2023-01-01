@@ -5,12 +5,12 @@ import React from "react";
 import { useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
-import Balance from "../../components/Balance/Balance";
-import { Instagram, Whatsapp } from "../../components/Icons/Icons";
-import Scroller from "../../components/Scroller/Scroller";
-import UserAvatar from "../../components/UserAvatar/UserAvatar";
+import Balance from "@components/Balance/Balance";
+import { Instagram, Whatsapp } from "@components/Icons/Icons";
+import Scroller from "@components/Scroller/Scroller";
+import UserAvatar from "@components/UserAvatar/UserAvatar";
 import useAuth from "../../hooks/useAuth";
-import { logout } from "../../store/features/auth/authSlice";
+import { logout } from "@store/features/auth/authSlice";
 import DrawerBtn from "./components/DraweBtn/DrawerBtn";
 import { useDispatch } from "react-redux";
 

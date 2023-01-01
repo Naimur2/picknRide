@@ -9,6 +9,7 @@ import apiConfig from "../../../../api_config/ApiConfig";
 
 import GradientBtn from "../../../../components/GradientBtn/GradientBtn";
 import { fontSizes } from "../../../../theme-config/typography";
+import { IRegisterProps } from "../../../Register/components/SignUpInputForm/SignUpInputForm.types";
 
 const inputs = Array(6).fill("");
 let newInputIndex = 0;
@@ -18,16 +19,20 @@ const INPUT_HEIGHT = scale(50) + "px";
 const INPUT_BORDER_RADIUS = 10;
 const INPUT_FONT_SIZE = fontSizes.xs;
 
+interface Iotp {
+    [key: number]: string;
+}
+
 export default function OtpForm() {
     const navigation = useNavigation();
-    const { dialing_code, phone } = useRoute().params;
+    const { dialing_code, phone } = useRoute().params as IRegisterProps;
 
     const { width } = useWindowDimensions();
 
     const input = useRef();
     const [nextInputIndex, setNextInputIndex] = useState(0);
 
-    const [otp, setOtp] = useState({
+    const [otp, setOtp] = useState<Iotp>({
         0: "",
         1: "",
         2: "",
@@ -129,7 +134,7 @@ export default function OtpForm() {
                     <Box
                         shadow={5}
                         w={INPUT_WIDTH}
-                        key={index.toString()}
+                        key={index.toString() + "otp"}
                         bg={otp[index] ? "primary.100" : "white"}
                         h={INPUT_HEIGHT}
                         alignItems={"center"}
@@ -152,7 +157,6 @@ export default function OtpForm() {
                             mx="2"
                             keyboardType="numeric"
                             ref={nextInputIndex === index ? input : null}
-                            type="number"
                             fontSize={INPUT_FONT_SIZE}
                             fontWeight={700}
                             color={otp[index] ? "white" : "black"}

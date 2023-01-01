@@ -3,8 +3,8 @@ import React from "react";
 import { Dimensions } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import CModal from "../../../../components/CModal/CModal";
-import H3 from "../../../../components/H3/H3";
+import CModal from "@components/CModal/CModal";
+import H3 from "@components/H3/H3";
 import { ICAR, ILatLng } from "../../MapScreen";
 import BottomScan from "../BottomScan/BottomScan";
 import CarDetailsSheet from "../BottomScan/components/CarDetailsSheet/CarDetailsSheet";
@@ -16,7 +16,7 @@ import MapTopDetails from "../MapTopDetails/MapTopDetails";
 import SpeedMeter from "../SpeedMeter/SpeedMeter";
 
 import { scale } from "react-native-size-matters";
-import { fontSizes } from "../../../../theme-config/typography";
+import { fontSizes } from "@theme/typography";
 
 export interface IMapTopDetailsProps {
     setDestination: (destination: ILatLng) => void;

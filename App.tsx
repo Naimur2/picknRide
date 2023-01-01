@@ -8,8 +8,7 @@ import { Provider } from "react-redux";
 import "react-native-reanimated";
 import "react-native-gesture-handler";
 import { PersistGate } from "redux-persist/integration/react";
-
-import { persistor, store } from "./src/store/store";
+import { store, persistor } from "@store/store";
 
 export default function App() {
     return (

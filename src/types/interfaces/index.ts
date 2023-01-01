@@ -46,9 +46,3 @@ export interface IUser {
     email: string | null;
     wallet: number | null;
 }
-
-export interface ILoginProps {
-    dialing_code: string;
-    phone: string;
-    password: string;
-}

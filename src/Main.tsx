@@ -1,26 +1,11 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Text, View, Spinner } from "native-base";
+import { Spinner } from "native-base";
 import React from "react";
-import useAuth from "./hooks/useAuth";
+import { useSelector } from "react-redux";
 import AuthRoute from "./routes/auth.routes";
 import DrawerRoute from "./routes/drawer.routes";
-import { useSelector } from "react-redux";
-import { selectAuth, selectLoading } from "./store/store";
-import { IAuthState } from "./store/features/auth/authSlice.types";
-
-function HomeScreen() {
-    return (
-        <View>
-            <Text color={"#000"}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga
-                quos consequuntur inventore totam! Sint, magnam error.
-                Perferendis architecto a laborum neque laudantium accusantium
-                sunt rerum modi voluptate itaque quo numquam quod, velit
-                voluptatum non nobis nulla omnis minima. Atque, dignissimos?
-            </Text>
-        </View>
-    );
-}
+import { IAuthState } from "@store/features/auth/authSlice.types";
+import { selectAuth, selectLoading } from "@store/store";
 
 const Stack = createNativeStackNavigator();
 
