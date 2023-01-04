@@ -58,4 +58,19 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
             },
         },
     },
+
+    plugins: [
+        [
+            "react-native-vision-camera",
+            {
+                cameraPermissionText:
+                    "$(PRODUCT_NAME) needs access to your Camera.",
+
+                // optionally, if you want to record audio:
+                enableMicrophonePermission: true,
+                microphonePermissionText:
+                    "$(PRODUCT_NAME) needs access to your Microphone.",
+            },
+        ],
+    ],
 });
