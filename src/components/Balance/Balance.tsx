@@ -1,6 +1,6 @@
+import Wallet from "@assets/svgs/Wallet";
 import { HStack, Pressable, Text } from "native-base";
 import React from "react";
-import Wallet from "@assets/svgs/Wallet";
 
 export default function Balance({
     balance,
@@ -10,7 +10,7 @@ export default function Balance({
     currency,
 }: {
     onPress?: () => void;
-    balance?: number;
+    balance: string;
     iconColor?: string;
     textColor?: string;
     currency?: string;

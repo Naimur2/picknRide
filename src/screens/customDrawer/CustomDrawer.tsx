@@ -12,7 +12,10 @@ import UserAvatar from "@components/UserAvatar/UserAvatar";
 import useAuth from "../../hooks/useAuth";
 import { logout } from "@store/features/auth/authSlice";
 import DrawerBtn from "./components/DraweBtn/DrawerBtn";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { selectAuth } from "@store/store";
+import { IAuthState } from "../../redux/features/auth/authSlice.types";
+import { formatCountSuffix } from "../../utils/formatCountSuffix";
 
 interface IDrawerMenuItem {
     title: string;
@@ -26,52 +29,49 @@ export default function CustomDrawer() {
     const insets = useSafeAreaInsets();
     const dispatch = useDispatch();
 
+    const auth = useSelector(selectAuth);
+
     const { height } = useWindowDimensions();
 
     const drawermenu: IDrawerMenuItem[] = [
         {
             title: "Home",
-            onPress: () => navigation.navigate("Dashboard"),
+            onPress: () => navigation.navigate("Dashboard" as never),
         },
         {
             title: "Account",
-            onPress: () => navigation.navigate("Account"),
+            onPress: () => navigation.navigate("Account" as never),
         },
         {
             title: "Pricing",
-            onPress: () => navigation.navigate("Pricing"),
+            onPress: () => navigation.navigate("Pricing" as never),
         },
         {
             title: "Ride History",
-            onPress: () => navigation.navigate("RideHistory"),
+            onPress: () => navigation.navigate("RideHistory" as never),
         },
         {
             title: "Wallet",
-            onPress: () => navigation.navigate("Wallet"),
+            onPress: () => navigation.navigate("Wallet" as never),
         },
         {
             title: "Cars",
-            onPress: () => navigation.navigate("Cars"),
+            onPress: () => navigation.navigate("Cars" as never),
         },
 
         {
             title: "Settings",
-            onPress: () => navigation.navigate("Settings"),
+            onPress: () => navigation.navigate("Settings" as never),
         },
-
-        // {
-        //     title: "Special Rate",
-        //     onPress: () => {},
-        // },
-        // {
-        //     title: "Feedback",
-        //     onPress: () => {},
-        // },
     ];
 
     return (
         <>
-            <Scroller flexGrow={1}>
+            <Scroller
+                contentStyle={{
+                    flexGrow: 1,
+                }}
+            >
                 <Lg
                     colors={["#52BF04", "#52BE04", "#038C0C"]}
                     start={{ x: 0, y: 0 }}
@@ -86,11 +86,11 @@ export default function CustomDrawer() {
                         alignItems="center"
                         justifyContent={"space-between"}
                     >
-                        <UserAvatar
-                            image={user?.avatar}
-                            uname={user?.name?.slice(0, 1)}
+                        <UserAvatar />
+                        <Balance
+                            balance={formatCountSuffix(auth.wallet as number)}
+                            currency={"QAR"}
                         />
-                        <Balance balance={50} currency={"QAR"} />
                     </HStack>
                     <VStack mt={10}>
                         <Text
@@ -105,8 +105,12 @@ export default function CustomDrawer() {
                             color={"#fff"}
                             fontSize={scale(34)}
                             fontWeight={700}
+                            adjustsFontSizeToFit
+                            numberOfLines={1}
+                            maxFontSizeMultiplier={1.5}
+                            textTransform={"capitalize"}
                         >
-                            Alex Doe
+                            {auth?.f_name}
                         </Text>
                     </VStack>
                     <VStack mt={3}>
@@ -114,7 +118,7 @@ export default function CustomDrawer() {
                             <DrawerBtn
                                 title={item.title}
                                 onPress={item.onPress}
-                                key={index}
+                                key={index.toString() + item.title}
                             />
                         ))}
                     </VStack>

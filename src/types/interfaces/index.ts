@@ -43,4 +43,8 @@ export interface IUser {
     phone: string | null;
     email: string | null;
     wallet: number | null;
+    card_status: "0" | "1" | null;
+    photo: string | null;
+    resident_status: "0" | "1" | "2" | null;
+    userdocuments_status: "0" | "1" | null;
 }

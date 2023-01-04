@@ -1,16 +1,16 @@
-import { useNavigation } from "@react-navigation/native";
-import { Factory, Text, useColorMode } from "native-base";
-import React from "react";
-import { TouchableOpacity } from "react-native";
-import { scale } from "react-native-size-matters";
-import { NavigationStackOptions } from "react-navigation-stack";
+import Toggler from "@assets/svgs/Toggler";
 import ImageBg from "@components/ImageBg/ImageBg";
 import Scroller from "@components/Scroller/Scroller";
 import TopSection from "@components/TopSection/TopSection";
 import UserAvatar from "@components/UserAvatar/UserAvatar";
 import useAuth from "@hooks/useAuth";
-import Toggler from "@assets/svgs/Toggler";
+import { useNavigation } from "@react-navigation/native";
 import colors from "@theme/colors";
+import { Factory, Text, useColorMode } from "native-base";
+import React from "react";
+import { TouchableOpacity } from "react-native";
+import { scale } from "react-native-size-matters";
+import { NavigationStackOptions } from "react-navigation-stack";
 import DashModal from "./DashModal/DashModal";
 import VeichleCards from "./VeichleCards/VeichleCards";
 
@@ -46,8 +46,6 @@ export default function Dashboard() {
             ),
             headerRight: () => (
                 <UserAvatar
-                    image={user?.avatar}
-                    uname={user?.name?.slice(0, 1)}
                     avatarStyle={{
                         size: scale(35) + "px",
                     }}
@@ -57,68 +55,6 @@ export default function Dashboard() {
         };
         navigation.setOptions(navigationOptions);
     }, [navigation, colorMode]);
-
-    // const getPermission = async () => {
-    //     const forePermission =
-    //         await Location.requestForegroundPermissionsAsync();
-    //     const backPermission =
-    //         await Location.requestBackgroundPermissionsAsync();
-
-    //     return (
-    //         forePermission.status === "granted" &&
-    //         backPermission.status === "granted"
-    //     );
-    // };
-
-    // React.useEffect(() => {
-    //     auth.setLoading(true);
-    //     let clear = true;
-    //     const getUserLocation = async () => {
-    //         try {
-    //             // const hasPermission = await getPermission();
-
-    //             // if (!hasPermission) {
-    //             //     auth.setError("Permission denied");
-    //             //     auth.setLoading(false);
-    //             //     return;
-    //             // }
-
-    //             const current = await Location.getCurrentPositionAsync({
-    //                 accuracy: Location.Accuracy.Highest,
-    //             });
-
-    //             const locationCurr: ILatLng = {
-    //                 latitude: current.coords.latitude,
-    //                 longitude: current.coords.longitude,
-    //             };
-
-    //             auth.setCurrentLocation(locationCurr);
-    //             auth.setLoading(false);
-    //             auth.setError(null);
-    //         } catch (err) {
-    //             auth.setLoading(false);
-    //             auth.setError("Could not get location");
-    //         }
-    //     };
-    //     getUserLocation();
-
-    //     if (clear) {
-    //         return () => (clear = false);
-    //     }
-    // }, []);
-
-    // if (auth.isLoading) {
-    //     return (
-    //         <ImageBg
-    //             type={colorMode}
-    //             flex={1}
-    //             alignItems="center"
-    //             justifyContent={"center"}
-    //         >
-    //             <Spinner color="blue" size={"lg"} />
-    //         </ImageBg>
-    //     );
-    // }
 
     if (auth?.error) {
         return (
@@ -136,7 +72,6 @@ export default function Dashboard() {
     return (
         <ImageBg type={colorMode}>
             <Scroller
-                h="full"
                 contentStyle={{
                     alignItems: "center",
                     flexGrow: 1,

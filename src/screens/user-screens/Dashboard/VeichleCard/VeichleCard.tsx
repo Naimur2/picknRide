@@ -2,13 +2,15 @@ import React, { Component } from "react";
 import { Center, HStack, Image, VStack, Text } from "native-base";
 import { scale } from "react-native-size-matters";
 import { fontSizes } from "@theme/typography";
+import { TCarType } from "@store/features/cars/carsSlice.types";
 
 export interface IVeichleCardProps {
     id?: string | number;
     image: any;
     title: string;
-    distance: number;
-    availableNumber: number;
+    distance: string;
+    availableNumber: string;
+    type: TCarType;
 }
 
 function VCard({ image, title, distance, availableNumber }: IVeichleCardProps) {

@@ -1,5 +1,9 @@
 import { Avatar, Pressable } from "native-base";
 import React from "react";
+import { IUserAvatarProps } from "./UserAvatar.types";
+import { useSelector } from "react-redux";
+import { selectAuth } from "@store/store";
+import { IAuthState } from "../../redux/features/auth/authSlice.types";
 
 export default function UserAvatar({
     isActive = true,
@@ -9,25 +13,20 @@ export default function UserAvatar({
     avatarStyle,
     badgeStyle,
     ...rest
-}: {
-    isActive: boolean;
-    image: string;
-    onPress: () => void;
-    uname;
-    avatarStyle?: any;
-    badgeStyle?: any;
-}) {
+}: IUserAvatarProps) {
+    const auth: IAuthState = useSelector(selectAuth);
+
     return (
         <Pressable onPress={onPress} {...rest}>
             <Avatar
                 source={{
-                    uri: image,
+                    uri: image || auth.photo,
                 }}
                 borderWidth={3}
                 borderColor="white"
                 {...avatarStyle}
             >
-                {uname || "NA"}
+                {uname || auth.f_name?.slice(0, 1)}
                 {isActive ? (
                     <Avatar.Badge
                         right={0}

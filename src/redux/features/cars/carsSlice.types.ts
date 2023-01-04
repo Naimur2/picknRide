@@ -17,6 +17,25 @@ export interface ICarDetails {
     distanceInMeter: number;
 }
 
+export enum ECarType {
+    SCOTTER = "scotter",
+    CAR = "car",
+    CYCLE = "cycle",
+}
+
+export type TCarType = "scotter" | "car" | "cycle";
+
+export interface ISetSelectedVeichleTypeAction {
+    type: string;
+    payload: TCarType | null;
+}
+
+export interface ISetNearestCarsAction {
+    type: string;
+    payload: ICarDetails[];
+}
+
 export interface ICarState {
     nearestCars: ICarDetails[];
+    selectedVeichleType: TCarType | null;
 }

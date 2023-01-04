@@ -23,7 +23,7 @@ export default function NotificationsCard({
     return (
         <Card onPress={onPress} py={4} borderRadius={35} {...rest}>
             <HStack space={4} alignItems="center">
-                <UserAvatar image={user.avatar} uname={user.name} />
+                <UserAvatar />
                 <VStack>
                     <Text
                         fontSize={13}

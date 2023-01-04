@@ -14,6 +14,7 @@ import * as Yup from "yup";
 function SignUpInputForm() {
     const navigation = useNavigation();
     const [regster, result] = useRegisterApiMutation();
+    console.log("data", result.data.data);
 
     React.useEffect(() => {
         if (result.isSuccess) {

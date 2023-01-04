@@ -1,6 +1,7 @@
 import { HStack, Pressable } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
+import { fontConfig } from "../../../theme-config/fontConfig";
 import Animated, {
     interpolateColor,
     useAnimatedStyle,
@@ -36,8 +37,7 @@ const SwitchButton = ({ onPress, title, isActive }: Switchprops) => {
 
 const styles = StyleSheet.create({
     text: {
-        fontWeight: "500",
-        fontFamily: "Montserrat_300Light",
+        fontFamily: fontConfig.Montserrat[500].normal,
     },
 });
 

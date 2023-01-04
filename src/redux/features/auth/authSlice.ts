@@ -10,6 +10,10 @@ const initialState: IAuthState = {
     email: null,
     wallet: null,
     token: null,
+    card_status: null,
+    photo: null,
+    resident_status: null,
+    userdocuments_status: null,
 };
 
 const authSlice = createSlice({
@@ -25,6 +29,10 @@ const authSlice = createSlice({
             state.email = action.payload?.email;
             state.wallet = action.payload?.wallet;
             state.token = action.payload.token;
+            state.card_status = action.payload?.card_status;
+            state.photo = action.payload?.photo;
+            state.resident_status = action.payload?.resident_status;
+            state.userdocuments_status = action.payload?.userdocuments_status;
         },
         logout(state) {
             state.f_name = null;
@@ -35,6 +43,10 @@ const authSlice = createSlice({
             state.email = null;
             state.wallet = null;
             state.token = null;
+            state.card_status = null;
+            state.photo = null;
+            state.resident_status = null;
+            state.userdocuments_status = null;
         },
     },
 });

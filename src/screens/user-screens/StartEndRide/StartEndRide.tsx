@@ -43,12 +43,7 @@ export default function StartEndRide() {
                     />
                 </Touchable>
             ),
-            headerRight: () => (
-                <UserAvatar
-                    image={user?.avatar}
-                    uname={user?.name?.slice(0, 1)}
-                />
-            ),
+            headerRight: () => <UserAvatar />,
         });
     }, [navigation]);
 

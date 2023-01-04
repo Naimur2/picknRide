@@ -35,14 +35,6 @@ export default function Select({
     const selectLocation =
         selected && locations.find((item) => item.id === selected);
 
-    // React.useEffect(() => {
-    //     const getLocations = async () => {
-    //         const res = await axios.get(`${apiConfig.apiUrl}/getLocation`);
-    //         setLocations(res?.data?.data);
-    //     };
-    //     getLocations();
-    // }, [isOpen]);
-
     return (
         <>
             <Pressable
