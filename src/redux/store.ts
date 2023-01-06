@@ -6,6 +6,7 @@ import { apiSliceV2 } from "./api/v2/apiSlice";
 import authReducer from "./features/auth/authSlice";
 import carsReducer from "./features/cars/carsSlice";
 import uiReducer from "./features/ui/uiSlice";
+import documentReducer from "./features/document/documentSlice";
 
 const persistConfig = {
     key: "root",
@@ -14,6 +15,7 @@ const persistConfig = {
 
 const persistedAuthReducer = persistReducer(persistConfig, authReducer);
 const persistedCarsReducer = persistReducer(persistConfig, carsReducer);
+const persistedDocumentReducer = persistReducer(persistConfig, documentReducer);
 
 const reducer = combineReducers({
     [apiSlice.reducerPath]: apiSlice.reducer,
@@ -21,6 +23,7 @@ const reducer = combineReducers({
     auth: persistedAuthReducer,
     ui: uiReducer,
     cars: persistedCarsReducer,
+    document: persistedDocumentReducer,
 });
 
 export const store = configureStore({

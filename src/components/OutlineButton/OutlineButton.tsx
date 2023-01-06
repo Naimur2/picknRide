@@ -1,6 +1,6 @@
-import { Factory, HStack, Pressable, Text } from "native-base";
+import { Factory, Text } from "native-base";
 import React from "react";
-import { Touchable, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { scale } from "react-native-size-matters";
 import { fontSizes } from "../../theme-config/typography";
 
@@ -11,6 +11,12 @@ export default function OutlineButton({
     rightIcon,
     onPress,
     ...rest
+}: {
+    title: string;
+    titleStyle?: any;
+    buttonStyle?: any;
+    rightIcon?: any;
+    onPress: any;
 }) {
     const Touchable = Factory(TouchableOpacity);
 

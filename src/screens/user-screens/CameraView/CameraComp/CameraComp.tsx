@@ -1,20 +1,25 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import { setDocumentVideo } from "@store/features/document/documentSlice";
 import { Camera } from "expo-camera";
+import { Face } from "expo-camera/build/Camera.types";
 import * as FaceDetector from "expo-face-detector";
-import { Button, HStack, Modal, Text, VStack } from "native-base";
+import { Button, Modal, Text, VStack } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useDispatch, useSelector } from "react-redux";
+import { selectDocumentVideo } from "../../../../redux/features/document/documentSlice";
 import CameraModalComp from "../CameraModalComp/CameraModalComp";
-import { Face } from "expo-camera/build/Camera.types";
+import CameraTimer from "../CameraTimer/CameraTimer";
 
 export default function CameraComp() {
     const inset = useSafeAreaInsets();
-    let cameraRef = React.useRef<Camera>();
+    let cameraRef = React.useRef<Camera | undefined>();
     const [timer, setTimer] = React.useState(0);
-    const [show, setShow] = React.useState(false);
+    const [show, setShow] = React.useState(true);
     const [video, setVideo] = React.useState<string>();
+    const [isLoading, setIsLoading] = React.useState(false);
+    const dispatch = useDispatch();
 
     const [faceData, setFaceData] = React.useState<Face | null>(null);
     const [warning, setWarning] = React.useState<string | null>(null);
@@ -24,7 +29,7 @@ export default function CameraComp() {
     const [isRecording, setIsRecording] = React.useState(false);
 
     let recordVideo = async () => {
-        setIsRecording(false);
+        setIsLoading(true);
         let options = {
             quality: "1080p",
             maxDuration: 10,
@@ -36,11 +41,13 @@ export default function CameraComp() {
                 const recordedVideo = await cameraRef.current.recordAsync(
                     options
                 );
+                setIsRecording(true);
                 setVideo(recordedVideo.uri);
-                setIsRecording(false);
+                setIsLoading(false);
             }
         } catch (error) {
             alert(error.message);
+            setIsLoading(false);
         }
     };
 
@@ -52,13 +59,16 @@ export default function CameraComp() {
     };
 
     React.useEffect(() => {
-        if (video && faceData) {
+        if (video && timer > 10) {
+            stopRecording();
+
+            dispatch(setDocumentVideo(video));
+            console.log("video", video);
             navigation.navigate("DocumentSubmission", {
                 video: video,
-                faceData: faceData,
             });
         }
-    }, []);
+    }, [video, faceData, timer]);
 
     // React.useEffect(() => {
     //     if (isRecording && timer === 10) {
@@ -80,34 +90,34 @@ export default function CameraComp() {
 
     const handleClose = async () => {
         setShow(false);
-        await AsyncStorage.setItem("@showCameraWarning", "false");
     };
 
     const handleFacesDetected = ({ faces }: { faces: Face[] }) => {
-        if (faces.length > 1 || faces.length === 0) {
-            setWarning("Please only take one face");
+        if (faces.length === 0) {
+            setWarning("Please keep your face straight and blink your eyes");
             setFaceData(null);
         } else {
             const currentFace = faces[0];
-            const eyesShut =
-                currentFace.rightEyeOpenProbability < 0.4 &&
-                currentFace.leftEyeOpenProbability < 0.4;
-
-            const winking =
-                !eyesShut &&
-                (currentFace.rightEyeOpenProbability < 0.4 ||
-                    currentFace.leftEyeOpenProbability < 0.4);
-
-            if (!winking && !eyesShut) {
-                setWarning(
-                    "Please keep your face straight and blink your eyes"
-                );
-                setFaceData(null);
-                return;
-            }
-
             setWarning(null);
             setFaceData(currentFace);
+            // const eyesShut =
+            //     currentFace.rightEyeOpenProbability < 0.4 &&
+            //     currentFace.leftEyeOpenProbability < 0.4;
+
+            // const winking =
+            //     !eyesShut &&
+            //     (currentFace.rightEyeOpenProbability < 0.4 ||
+            //         currentFace.leftEyeOpenProbability < 0.4);
+
+            // if (!winking) {
+            //     setWarning(
+            //         "Please keep your face straight and blink your eyes"
+            //     );
+            //     setFaceData(null);
+            // } else {
+            //     setWarning(null);
+            //     setFaceData(currentFace);
+            // }
         }
     };
 
@@ -128,25 +138,25 @@ export default function CameraComp() {
                     tracking: true,
                 }}
                 style={styles.container}
-                ref={cameraRef}
+                ref={cameraRef as any}
             >
                 <VStack flex={1} alignItems="center" position={"relative"}>
-                    <HStack
-                        w={20}
-                        py={1}
-                        mt={inset.top + 50 + "px"}
-                        bg="gray.400"
-                        borderRadius={40}
-                        alignItems="center"
-                        justifyContent="center"
-                    >
-                        <Text fontSize={16} color={"#fff"} fontWeight={600}>
-                            00:{timer < 10 ? "0" + timer : timer}
-                        </Text>
-                    </HStack>
+                    <CameraTimer isRecording={isRecording} time={timer} />
+
                     {warning ? (
                         <Text px={4} mt={"5"} color={"#fff"} textAlign="center">
                             {warning}
+                        </Text>
+                    ) : null}
+                    {isLoading ? (
+                        <Text
+                            px={4}
+                            mt={"5"}
+                            fontWeight={"600"}
+                            color={"#fff"}
+                            textAlign="center"
+                        >
+                            Preparing camera, please wait...
                         </Text>
                     ) : null}
 
@@ -165,8 +175,10 @@ export default function CameraComp() {
                         <Button
                             h="100%"
                             w="100%"
-                            bg={isRecording ? "red.500" : "#fff"}
-                            onPress={!isRecording ? recordVideo : null}
+                            bg={isRecording || isLoading ? "red.500" : "#fff"}
+                            onPress={
+                                !isRecording && !isLoading ? recordVideo : null
+                            }
                             borderRadius={50}
                         />
                     </VStack>

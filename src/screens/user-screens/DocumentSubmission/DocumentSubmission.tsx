@@ -48,7 +48,7 @@ export default function DocumentSubmission() {
                     title="Document Submission"
                     subtitle="Please submit documents below to unlock Car rental option"
                 />
-                <DocumentForm routeParams={parmas} />
+                <DocumentForm />
             </Scroller>
         </ImageBg>
     );

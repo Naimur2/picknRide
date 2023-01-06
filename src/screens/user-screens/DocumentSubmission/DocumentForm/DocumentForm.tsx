@@ -19,6 +19,8 @@ import React from "react";
 import { TouchableOpacity } from "react-native";
 import CountryPicker from "react-native-country-picker-modal";
 import { scale } from "react-native-size-matters";
+import { useSelector } from "react-redux";
+import { selectDocumentVideo } from "../../../../redux/features/document/documentSlice";
 import AddImage from "../AddImage/AddImage";
 import ExpiryDate from "./ExpiryDate/ExpiryDate";
 import PickerButton from "./PickerButton/PickerButton";
@@ -26,19 +28,14 @@ import Signature from "./Signature/Signature";
 import VideoPlayer from "./VideoPlayer/VideoPlayer";
 import YesNo from "./YesNo/YesNo";
 
-export default function DocumentForm({
-    routeParams,
-}: {
-    routeParams: {
-        video: any;
-        faceData: any;
-    };
-}) {
+export default function DocumentForm() {
     const [hasIntlLicense, setHasIntlLicense] = React.useState("yes");
     const [country, setCountry] = React.useState("");
     const [show, setShow] = React.useState(false);
     const [termAccept, setTermAccept] = React.useState(false);
     const Touchable = Factory(TouchableOpacity);
+    const video = useSelector(selectDocumentVideo);
+    console.log({ video });
 
     const navigation = useNavigation();
     const { toggleColorMode } = useColorMode();
@@ -168,7 +165,7 @@ export default function DocumentForm({
                 title="Upload both sides of your ID Card"
             />
 
-            <VideoPlayer video={routeParams.video} />
+            <VideoPlayer vdo={video} />
 
             <OutlineButton
                 title="Take a selfie"

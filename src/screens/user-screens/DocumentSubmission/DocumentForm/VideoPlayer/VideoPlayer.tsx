@@ -1,10 +1,10 @@
+import { PlayBtn } from "@components/Icons/Icons";
 import { Video } from "expo-av";
-import { Factory, VStack, Text, Pressable } from "native-base";
+import { Pressable, Text, VStack } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
-import { PlayBtn } from "@components/Icons/Icons";
 
-export default function VideoPlayer({ vdo }: { vdo: { uri: string } }) {
+export default function VideoPlayer({ vdo }: { vdo: string | null }) {
     const video = React.useRef(null);
 
     const [status, setStatus] = React.useState({});
@@ -35,12 +35,12 @@ export default function VideoPlayer({ vdo }: { vdo: { uri: string } }) {
                     }}
                     position={"relative"}
                 >
-                    {vdo?.uri ? (
+                    {vdo ? (
                         <Video
                             ref={video}
                             style={styles.video}
                             source={{
-                                uri: vdo.uri,
+                                uri: vdo,
                             }}
                             useNativeControls
                             resizeMode="cover"
@@ -51,7 +51,7 @@ export default function VideoPlayer({ vdo }: { vdo: { uri: string } }) {
                         />
                     ) : null}
 
-                    {!null ? (
+                    {!vdo ? (
                         <PlayBtn
                             color={"#fff"}
                             _dark={{ color: "gray.100" }}

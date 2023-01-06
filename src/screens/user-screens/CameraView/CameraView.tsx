@@ -14,6 +14,7 @@ export default function CameraView() {
         navigation.setOptions({
             headerLeft: () => <BackButton color={"#fff"} />,
             headerTransparent: true,
+            headerShown: false,
         });
     }, [navigation]);
 
