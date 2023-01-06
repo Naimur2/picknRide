@@ -7,41 +7,48 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CameraModalComp from "../CameraModalComp/CameraModalComp";
+import { Face } from "expo-camera/build/Camera.types";
 
 export default function CameraComp() {
     const inset = useSafeAreaInsets();
-    let cameraRef = React.useRef();
+    let cameraRef = React.useRef<Camera>();
     const [timer, setTimer] = React.useState(0);
     const [show, setShow] = React.useState(false);
-    const [video, setVideo] = React.useState(null);
-    const [faceData, setFaceData] = React.useState(null);
-    const [warning, setWarning] = React.useState(false);
+    const [video, setVideo] = React.useState<string>();
+
+    const [faceData, setFaceData] = React.useState<Face | null>(null);
+    const [warning, setWarning] = React.useState<string | null>(null);
 
     const navigation = useNavigation();
 
     const [isRecording, setIsRecording] = React.useState(false);
 
-    let recordVideo = () => {
-        setIsRecording((prev) => !prev);
+    let recordVideo = async () => {
+        setIsRecording(false);
         let options = {
             quality: "1080p",
-            maxDuration: 11,
+            maxDuration: 10,
             mute: false,
         };
 
         try {
-            cameraRef.current.recordAsync(options).then((recordedVideo) => {
-                setVideo(recordedVideo);
+            if (cameraRef.current) {
+                const recordedVideo = await cameraRef.current.recordAsync(
+                    options
+                );
+                setVideo(recordedVideo.uri);
                 setIsRecording(false);
-            });
+            }
         } catch (error) {
             alert(error.message);
         }
     };
 
     let stopRecording = () => {
-        setIsRecording(false);
-        cameraRef.current.stopRecording();
+        if (cameraRef.current) {
+            setIsRecording(false);
+            cameraRef.current.stopRecording();
+        }
     };
 
     React.useEffect(() => {
@@ -51,13 +58,13 @@ export default function CameraComp() {
                 faceData: faceData,
             });
         }
-    }, [video]);
+    }, []);
 
-    React.useEffect(() => {
-        if (isRecording && timer === 10) {
-            stopRecording();
-        }
-    }, [isRecording, timer]);
+    // React.useEffect(() => {
+    //     if (isRecording && timer === 10) {
+    //         stopRecording();
+    //     }
+    // }, [isRecording, timer]);
 
     React.useEffect(() => {
         if (isRecording) {
@@ -76,50 +83,32 @@ export default function CameraComp() {
         await AsyncStorage.setItem("@showCameraWarning", "false");
     };
 
-    React.useEffect(() => {
-        const getShowCameraWarning = async () => {
-            const showCameraWarning = await AsyncStorage.getItem(
-                "@showCameraWarning"
-            );
-            if (showCameraWarning && showCameraWarning === "false") {
-                setShow(false);
-            } else {
-                setShow(true);
-            }
-        };
-
-        getShowCameraWarning();
-        return () => {
-            setShow(false);
-            setVideo(null);
-        };
-    }, []);
-
-    const handleFacesDetected = ({ faces }) => {
+    const handleFacesDetected = ({ faces }: { faces: Face[] }) => {
         if (faces.length > 1 || faces.length === 0) {
             setWarning("Please only take one face");
             setFaceData(null);
-            return;
         } else {
+            const currentFace = faces[0];
             const eyesShut =
-                faces?.[0].rightEyeOpenProbability < 0.4 &&
-                faces?.[0].leftEyeOpenProbability < 0.4;
+                currentFace.rightEyeOpenProbability < 0.4 &&
+                currentFace.leftEyeOpenProbability < 0.4;
 
             const winking =
                 !eyesShut &&
-                (faces?.[0].rightEyeOpenProbability < 0.4 ||
-                    face.leftEyeOpenProbability < 0.4);
+                (currentFace.rightEyeOpenProbability < 0.4 ||
+                    currentFace.leftEyeOpenProbability < 0.4);
 
-            if (!winking) {
+            if (!winking && !eyesShut) {
                 setWarning(
                     "Please keep your face straight and blink your eyes"
                 );
                 setFaceData(null);
                 return;
             }
+
+            setWarning(null);
+            setFaceData(currentFace);
         }
-        setWarning(null);
-        setFaceData(faces[0]);
     };
 
     return (
