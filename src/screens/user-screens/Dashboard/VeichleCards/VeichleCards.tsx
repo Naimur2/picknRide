@@ -53,7 +53,7 @@ export default function VeichleCards() {
     );
 
     const handleNavigation = async () => {
-        if (selectedVeichle === "3" && !user.hasVerifiedDoc) {
+        if (selectedVeichle === ECarType.CAR && !user.hasVerifiedDoc) {
             navigation.navigate("DocumentSubmission", {
                 veichle: currentVeichle,
             });
@@ -74,9 +74,16 @@ export default function VeichleCards() {
     };
 
     const handleSelection = (current: string) => {
-        const currentVeichle =
-            Object.entries(ECarType)[parseInt(current) - 1][1];
-        dispatch(setSelectedVeichleType(currentVeichle));
+        console.log("current", current);
+        const veichleType: {
+            [key: string]: ECarType;
+        } = {
+            1: ECarType.SCOTTER,
+            2: ECarType.CYCLE,
+            3: ECarType.CAR,
+        };
+
+        dispatch(setSelectedVeichleType(veichleType?.[current]));
     };
 
     return (

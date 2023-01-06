@@ -1,11 +1,12 @@
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { Avatar, useColorMode } from "native-base";
-import React from "react";
-import { scale } from "react-native-size-matters";
 import ImageBg from "@components/ImageBg/ImageBg";
 import Scroller from "@components/Scroller/Scroller";
 import TopSection from "@components/TopSection/TopSection";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import colors from "@theme/colors";
+import { useColorMode } from "native-base";
+import React from "react";
+import { scale } from "react-native-size-matters";
+import UserAvatar from "../../../components/UserAvatar/UserAvatar";
 import DocumentForm from "./DocumentForm/DocumentForm";
 
 export default function DocumentSubmission() {
@@ -25,17 +26,11 @@ export default function DocumentSubmission() {
             },
             headerShadowVisible: false,
             headerRight: () => (
-                <Avatar
-                    source={{
-                        uri: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                <UserAvatar
+                    avatarStyle={{
+                        size: scale(35) + "px",
                     }}
-                    borderWidth={3}
-                    borderColor="white"
-                    size={scale(35) + "px"}
-                >
-                    SS
-                    <Avatar.Badge bg="green.500" />
-                </Avatar>
+                />
             ),
         });
     }, [navigation]);

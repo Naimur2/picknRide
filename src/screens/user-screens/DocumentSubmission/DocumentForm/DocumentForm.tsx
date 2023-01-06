@@ -2,7 +2,6 @@ import CheckBox from "@components/CheckBox/CheckBox";
 import GradientBtn from "@components/GradientBtn/GradientBtn";
 import H3 from "@components/H3/H3";
 import OutlineButton from "@components/OutlineButton/OutlineButton";
-import WarningModal from "@components/WarningModal/WarningModal";
 import { useNavigation } from "@react-navigation/native";
 import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
@@ -40,18 +39,9 @@ export default function DocumentForm({
     const [show, setShow] = React.useState(false);
     const [termAccept, setTermAccept] = React.useState(false);
     const Touchable = Factory(TouchableOpacity);
-    const [isOpen, setIsOpen] = React.useState(false);
-    const [modalType, setModalType] = React.useState("");
 
     const navigation = useNavigation();
     const { toggleColorMode } = useColorMode();
-
-    React.useLayoutEffect(() => {
-        const modalVarients = ["approved", "pending", "rejected", "expired"];
-        const randomValue = Math.floor(Math.random() * modalVarients.length);
-        setModalType(modalVarients[randomValue]);
-        setIsOpen(true);
-    }, [navigation]);
 
     const FormLabel = ({ title }: { title: string }) => (
         <FormControl.Label
@@ -64,9 +54,7 @@ export default function DocumentForm({
         </FormControl.Label>
     );
 
-    const handleNavigation = () => {
-        setIsOpen(true);
-    };
+    const handleNavigation = () => {};
 
     const handleRecoder = async () => {
         try {
@@ -216,12 +204,6 @@ export default function DocumentForm({
                     title="Continue"
                 />
             </Center>
-
-            <WarningModal
-                isVisible={isOpen}
-                setIsVisible={() => setIsOpen((prev) => !prev)}
-                variant={modalType}
-            />
         </VStack>
     );
 }

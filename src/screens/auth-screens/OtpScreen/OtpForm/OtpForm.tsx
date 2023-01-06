@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { Box, HStack, Input, Text, VStack } from "native-base";
+import { Box, HStack, Input, Text, Toast, VStack } from "native-base";
 import React, { useRef, useState } from "react";
 
 import { Alert, useWindowDimensions } from "react-native";
@@ -12,6 +12,7 @@ import {
     useResendOtpApiMutation,
 } from "@store/api/v1/authApi/authApiSlice";
 import { fontSizes } from "@theme/typography";
+import ErrorToast from "../../../../components/ErrorToast/ErrorToast";
 import { IOtpVerify } from "../../../../redux/api/v1/authApi/authApiSlice.types";
 
 const inputs = Array(6).fill("");
@@ -71,6 +72,36 @@ export default function OtpForm() {
     const [showResendOtp, setShowResendOtp] = useState(false);
     const [startTimer, setStartTimer] = useState(false);
     const [numberOfAttempts, setNumberOfAttempts] = useState(0);
+
+    React.useEffect(() => {
+        if (otpResult.data?.status === 400) {
+            Toast.show({
+                id: "otpError",
+                render: () => (
+                    <ErrorToast
+                        message={
+                            otpResult.data?.message || "Something went wrong"
+                        }
+                    />
+                ),
+                placement: "top",
+            });
+        }
+        if (resendOtpResult.data?.status === 400) {
+            Toast.show({
+                id: "otpError",
+                render: () => (
+                    <ErrorToast
+                        message={
+                            resendOtpResult.data?.message ||
+                            "Something went wrong"
+                        }
+                    />
+                ),
+                placement: "top",
+            });
+        }
+    }, [otpResult.data, resendOtpResult.data]);
 
     const [timer, setTimer] = useState(60);
 

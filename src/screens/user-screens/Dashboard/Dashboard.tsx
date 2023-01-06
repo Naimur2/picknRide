@@ -20,7 +20,6 @@ export default function Dashboard() {
     const Touchable = Factory(TouchableOpacity);
 
     const auth = useAuth();
-    const user = auth?.user;
 
     React.useEffect(() => {
         const navigationOptions: NavigationStackOptions = {

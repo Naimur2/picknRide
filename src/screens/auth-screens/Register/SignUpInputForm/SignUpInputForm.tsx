@@ -1,4 +1,5 @@
 import ErrorMessage from "@components/ErrorMessage/ErrorMessage";
+import ErrorToast from "@components/ErrorToast/ErrorToast";
 import GradientBtn from "@components/GradientBtn/GradientBtn";
 import PasswordInput from "@components/PasswordInput/PasswordInput";
 import PickCountry from "@components/PickCountry/PickCountry";
@@ -7,14 +8,28 @@ import TextInput from "@components/TextInput/TextInput";
 import { useNavigation } from "@react-navigation/native";
 import { useRegisterApiMutation } from "@store/api/v1/authApi/authApiSlice";
 import { useFormik } from "formik";
-import { VStack } from "native-base";
+import { Toast, VStack } from "native-base";
 import React from "react";
 import * as Yup from "yup";
 
 function SignUpInputForm() {
     const navigation = useNavigation();
     const [regster, result] = useRegisterApiMutation();
-    console.log("data", result.data.data);
+
+    React.useEffect(() => {
+        if (result.data?.status === 400) {
+            console.log("result.error", result);
+            Toast.show({
+                id: "error",
+                render: () => (
+                    <ErrorToast
+                        message={result.data?.message || "Something went wrong"}
+                    />
+                ),
+                placement: "top",
+            });
+        }
+    }, [result]);
 
     React.useEffect(() => {
         if (result.isSuccess) {

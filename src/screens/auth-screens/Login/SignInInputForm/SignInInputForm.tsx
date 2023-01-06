@@ -12,6 +12,7 @@ import { fontSizes } from "@theme/typography";
 import { useLoginApiMutation } from "@store/api/v1/authApi/authApiSlice";
 import { ILoginProps } from "@store/api/v1/authApi/authApiSlice.types";
 import { Keyboard } from "react-native";
+import ErrorToast from "../../../../components/ErrorToast/ErrorToast";
 
 function SignInInputForm() {
     const schema = Yup.object().shape({
@@ -20,12 +21,19 @@ function SignInInputForm() {
     });
 
     const [login, result] = useLoginApiMutation();
+    console.log("sss", result.data?.status);
 
     React.useEffect(() => {
-        if (result.error) {
+        if (result.data?.status === 400) {
+            console.log("result.error", result);
             Toast.show({
-                title: "Error",
-                description: "Please check your credentials",
+                id: "error",
+                render: () => (
+                    <ErrorToast
+                        message={result.data?.message || "Something went wrong"}
+                    />
+                ),
+                placement: "top",
             });
         }
     }, [result]);
@@ -63,9 +71,6 @@ function SignInInputForm() {
     return (
         <VStack mt={10} space={2} shadow="7">
             <PickCountry
-                onChangeText={(txt) => {
-                    console.log("txt", txt);
-                }}
                 onBlur={handleBlur("phone")}
                 errorMessage={touched.phone && errors.phone ? errors.phone : ""}
                 setPhoneInfo={(phoneInfo) => {
