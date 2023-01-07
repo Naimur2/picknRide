@@ -5,8 +5,8 @@ import { apiSlice } from "./api/v1/apiSlice";
 import { apiSliceV2 } from "./api/v2/apiSlice";
 import authReducer from "./features/auth/authSlice";
 import carsReducer from "./features/cars/carsSlice";
-import uiReducer from "./features/ui/uiSlice";
 import documentReducer from "./features/document/documentSlice";
+import uiReducer from "./features/ui/uiSlice";
 
 const persistConfig = {
     key: "root",

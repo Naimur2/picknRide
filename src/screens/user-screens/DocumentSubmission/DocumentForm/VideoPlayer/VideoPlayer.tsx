@@ -20,7 +20,7 @@ export default function VideoPlayer({ vdo }: { vdo: string | null }) {
                     color: "#fff",
                 }}
             >
-                International License
+                {vdo ? "Preview" : "Take a video selfie"}
             </Text>
             <Pressable onPress={() => setStatus({ paused: !status.paused })}>
                 <VStack

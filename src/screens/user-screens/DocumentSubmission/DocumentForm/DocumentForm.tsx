@@ -13,20 +13,31 @@ import {
     Input,
     Text,
     VStack,
-    useColorMode,
 } from "native-base";
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import CountryPicker from "react-native-country-picker-modal";
 import { scale } from "react-native-size-matters";
 import { useSelector } from "react-redux";
-import { selectDocumentVideo } from "../../../../redux/features/document/documentSlice";
+import { selectDocumentVideo } from "@store/features/document/documentSlice";
 import AddImage from "../AddImage/AddImage";
 import ExpiryDate from "./ExpiryDate/ExpiryDate";
 import PickerButton from "./PickerButton/PickerButton";
 import Signature from "./Signature/Signature";
 import VideoPlayer from "./VideoPlayer/VideoPlayer";
 import YesNo from "./YesNo/YesNo";
+import { selectAuth } from "@store/store";
+
+const FormLabel = ({ title }: { title: string }) => (
+    <FormControl.Label
+        fontSize={12}
+        color="gray.400"
+        _dark={{ color: "#fff" }}
+        fontWeight={500}
+    >
+        {title}
+    </FormControl.Label>
+);
 
 export default function DocumentForm() {
     const [hasIntlLicense, setHasIntlLicense] = React.useState("yes");
@@ -35,21 +46,12 @@ export default function DocumentForm() {
     const [termAccept, setTermAccept] = React.useState(false);
     const Touchable = Factory(TouchableOpacity);
     const video = useSelector(selectDocumentVideo);
-    console.log({ video });
+
+    const auth = useSelector(selectAuth);
+
+    console.log(auth);
 
     const navigation = useNavigation();
-    const { toggleColorMode } = useColorMode();
-
-    const FormLabel = ({ title }: { title: string }) => (
-        <FormControl.Label
-            fontSize={12}
-            color="gray.400"
-            _dark={{ color: "#fff" }}
-            fontWeight={500}
-        >
-            {title}
-        </FormControl.Label>
-    );
 
     const handleNavigation = () => {};
 
@@ -97,6 +99,7 @@ export default function DocumentForm() {
                     borderBottomColor={"light.200"}
                     placeholder="Enter Id"
                     placeholderTextColor="gray.300"
+                    keyboardType="number-pad"
                     _dark={{
                         color: "#fff",
                         placeholderTextColor: "white",
@@ -152,6 +155,7 @@ export default function DocumentForm() {
                     placeholder="Enter Id"
                     borderBottomColor={"light.200"}
                     placeholderTextColor="gray.300"
+                    keyboardType="number-pad"
                     _dark={{
                         color: "#fff",
                         placeholderTextColor: "white",

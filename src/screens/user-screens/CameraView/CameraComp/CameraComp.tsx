@@ -7,13 +7,11 @@ import { Button, Modal, Text, VStack } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useDispatch, useSelector } from "react-redux";
-import { selectDocumentVideo } from "../../../../redux/features/document/documentSlice";
+import { useDispatch } from "react-redux";
 import CameraModalComp from "../CameraModalComp/CameraModalComp";
 import CameraTimer from "../CameraTimer/CameraTimer";
 
 export default function CameraComp() {
-    const inset = useSafeAreaInsets();
     let cameraRef = React.useRef<Camera | undefined>();
     const [timer, setTimer] = React.useState(0);
     const [show, setShow] = React.useState(true);

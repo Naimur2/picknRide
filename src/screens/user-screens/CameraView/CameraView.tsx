@@ -1,10 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
-// import { Camera } from "expo-camera";
-// import * as MediaLibrary from "expo-media-library";
 
+import BackButton from "@components/BackButton/BackButton";
 import React from "react";
 import { StyleSheet } from "react-native";
-import BackButton from "@components/BackButton/BackButton";
 import CameraComp from "./CameraComp/CameraComp";
 
 export default function CameraView() {

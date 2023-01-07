@@ -1,6 +1,6 @@
+import { CloseIcon } from "@components/Icons/Icons";
 import { Center, Pressable, Text, VStack } from "native-base";
 import React from "react";
-import { CloseIcon } from "@components/Icons/Icons";
 
 export default function CameraModalComp({
     onCloseModal,
