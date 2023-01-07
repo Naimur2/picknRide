@@ -29,7 +29,8 @@ const screenOptions: (props: any) => IStackScreenProps = ({
         headerLeft: () => <BackButton />,
         headerShadowVisible: false,
         headerTransparent: true,
-        headerBlurEffect: "dark",
+        headerBlurEffect: "systemThinMaterial",
+        animation: "slide_from_left",
     };
 };
 
