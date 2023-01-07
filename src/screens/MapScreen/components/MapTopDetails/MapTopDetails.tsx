@@ -1,13 +1,13 @@
+import { Box, HStack, Text, VStack } from "native-base";
 import React from "react";
-import { HStack, VStack, Box, Text } from "native-base";
 
-import VeichleSelector from "@components/VeichleSelector/VeichleSelector";
 import { Sun } from "@components/Icons/Icons";
+import VeichleSelector from "@components/VeichleSelector/VeichleSelector";
 
-const MapTopDetails = ({ selected, setSelected, ...rest }) => {
+const MapTopDetails = ({ ...rest }) => {
     return (
         <HStack alignItems="center" justifyContent="space-between" {...rest}>
-            <VeichleSelector selected={selected} setSelected={setSelected} />
+            <VeichleSelector />
             <HStack alignItems={"center"} space="2">
                 <Sun color="primary.100" />
                 <VStack>

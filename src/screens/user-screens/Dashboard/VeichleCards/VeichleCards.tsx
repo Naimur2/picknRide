@@ -13,6 +13,8 @@ import { scale } from "react-native-size-matters";
 import { useDispatch, useSelector } from "react-redux";
 import { selectSelectedVeichleType } from "../../../../redux/features/cars/carsSlice";
 import VeichleCard, { IVeichleCardProps } from "../VeichleCard/VeichleCard";
+import { selectAuth } from "../../../../redux/store";
+import { IAuthState } from "../../../../redux/features/auth/authSlice.types";
 
 const veichels: IVeichleCardProps[] = [
     {
@@ -46,14 +48,17 @@ export default function VeichleCards() {
     const selectedVeichle = useSelector(selectSelectedVeichleType);
     const VCard = Animated.createAnimatedComponent(VeichleCard);
     const navigation = useNavigation();
-    const { user } = useAuth();
+    const auth: IAuthState = useSelector(selectAuth);
+
+    console.log(selectedVeichle);
 
     const currentVeichle = veichels.find(
         (veichle) => veichle.type === selectedVeichle
     );
 
     const handleNavigation = async () => {
-        if (selectedVeichle === ECarType.CAR && !user.hasVerifiedDoc) {
+        const documentStatus = auth.userdocuments_status as "0" | "1";
+        if (selectedVeichle === ECarType.CAR && documentStatus !== "1") {
             navigation.navigate("DocumentSubmission", {
                 veichle: currentVeichle,
             });
@@ -63,9 +68,7 @@ export default function VeichleCards() {
                 await Location.requestForegroundPermissionsAsync();
 
             if (locationStatus.granted && locationStatus.status === "granted") {
-                const currentPosition = await Location.getCurrentPositionAsync(
-                    {}
-                );
+                console.log("locationStatus", locationStatus);
                 navigation.navigate("MapScreen", {
                     veichle: currentVeichle,
                 });

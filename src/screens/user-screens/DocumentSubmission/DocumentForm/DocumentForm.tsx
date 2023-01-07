@@ -1,13 +1,23 @@
 import CheckBox from "@components/CheckBox/CheckBox";
+import ErrorMessage from "@components/ErrorMessage/ErrorMessage";
 import GradientBtn from "@components/GradientBtn/GradientBtn";
 import H3 from "@components/H3/H3";
 import OutlineButton from "@components/OutlineButton/OutlineButton";
 import { useNavigation } from "@react-navigation/native";
+import { useSubmitDocumentMutation } from "@store/api/v2/documentApi/documentApiSlice";
+import {
+    EDocumentType,
+    IUserDocumentSubmission,
+    TDDocumentType,
+} from "@store/api/v2/documentApi/documentApiSlice.types";
+import { IAuthState } from "@store/features/auth/authSlice.types";
 import { selectDocumentVideo } from "@store/features/document/documentSlice";
 import { selectAuth } from "@store/store";
 import { Camera } from "expo-camera";
+
+import convertToBase64 from "@utils/convertToBase64";
 import * as MediaLibrary from "expo-media-library";
-import { useFormik } from "formik";
+import { FormikErrors, useFormik } from "formik";
 import {
     Center,
     Factory,
@@ -19,9 +29,11 @@ import {
 } from "native-base";
 import React from "react";
 import { TouchableOpacity } from "react-native";
+
 import CountryPicker from "react-native-country-picker-modal";
 import { scale } from "react-native-size-matters";
 import { useSelector } from "react-redux";
+import * as Yup from "yup";
 import AddImage from "../AddImage/AddImage";
 import ExpiryDate from "./ExpiryDate/ExpiryDate";
 import PickerButton from "./PickerButton/PickerButton";
@@ -50,26 +62,92 @@ export default function DocumentForm() {
     const navigation = useNavigation();
     const auth = useSelector(selectAuth);
 
+    const [submitDocument, result] = useSubmitDocumentMutation();
+
+    const { resident_status } = auth as IAuthState;
+
+    const firstDocumentTypes: {
+        [key: number]: TDDocumentType;
+    } = {
+        0: "Address",
+        1: "Passport",
+    };
+
+    const userTypes = {
+        "0": "Residence",
+        "1": "Tourist",
+    };
+
+    const userType =
+        userTypes[resident_status as keyof typeof userTypes] ?? "Residence";
+
+    const schema = Yup.object().shape({
+        docId1: Yup.number().required("Required"),
+        expiry1: Yup.string().required("Required"),
+        frontImage1: Yup.string().required("Required"),
+        backImage1: Yup.string().required("Required"),
+        docId2: Yup.number().required("Required"),
+        expiry2: Yup.string().required("Required"),
+        frontImage2: Yup.string().required("Required"),
+        backImage2: Yup.string().required("Required"),
+        signature: Yup.string().required("Required"),
+        country: Yup.string().required("Required"),
+        selfieVideo: Yup.string().required("Required"),
+    });
+
     const initialState = {
-        isIntlLiscense: false,
-        documentType1: "",
+        isIntlLiscense: true,
         docId1: "",
         expiry1: "",
         frontImage1: "",
         backImage1: "",
-        documentType2: "",
         docId2: "",
         expiry2: "",
         frontImage2: "",
         backImage2: "",
         signature: "",
+        country: "",
+        selfieVideo: "",
     };
 
     const formik = useFormik({
         initialValues: initialState,
-        onSubmit: (values) => {
-            console.log(values);
+        onSubmit: async (values) => {
+            const document1Expiry = new Date(values.expiry1);
+            const document2Expiry = new Date(values.expiry2);
+            const data: IUserDocumentSubmission = {
+                userType: userType as "Residence" | "Tourist",
+                internationalLicence: values.isIntlLiscense,
+                documents: [
+                    {
+                        documentType:
+                            firstDocumentTypes[resident_status as "0" | "1"] ??
+                            "Address",
+                        docId: values.docId1,
+                        expiry: document1Expiry.toISOString(),
+                        frontImage: values.frontImage1,
+                        backImage: values.backImage1,
+                    },
+                    {
+                        documentType: EDocumentType.Licence,
+                        docId: values.docId2,
+                        expiry: document2Expiry.toISOString(),
+                        frontImage: values.frontImage2,
+                        backImage: values.backImage2,
+                        country: values.country,
+                    },
+                ],
+                signature: {
+                    image: values.signature,
+                },
+                selfieVideo: {
+                    video: video,
+                },
+            };
+
+            await submitDocument(data);
         },
+        validationSchema: schema,
     });
 
     const {
@@ -80,6 +158,8 @@ export default function DocumentForm() {
         touched,
         setFieldValue,
         handleSubmit,
+        setFieldTouched,
+        setErrors,
     } = formik;
 
     const handleRecoder = async () => {
@@ -104,7 +184,50 @@ export default function DocumentForm() {
         }
     };
 
-    const handleNavigation = () => {};
+    const sunmitForm = async () => {
+        if (video) {
+            await handleAddMedia({ fieldName: "selfieVideo", uri: video });
+            handleSubmit();
+        }
+        if (!termAccept) {
+            return alert("Please accept terms and conditions");
+        }
+        if (!video) {
+            const formError: FormikErrors<typeof initialState> = {
+                ...errors,
+                selfieVideo: "Required",
+            };
+            setErrors(formError);
+            return;
+        }
+        handleSubmit();
+    };
+
+    const handleAddMedia = async ({
+        fieldName,
+        uri,
+    }: {
+        fieldName: string;
+        uri: string;
+    }) => {
+        const base64Image = await convertToBase64(uri);
+        setFieldValue(fieldName, base64Image);
+    };
+
+    React.useEffect(() => {
+        if (video) {
+            handleAddMedia({ fieldName: "selfieVideo", uri: video });
+        }
+    }, [video]);
+
+    React.useEffect(() => {
+        if (result.error) {
+            alert(result?.data?.data?.message ?? "Something went wrong");
+        }
+        if (!result.error && result.data) {
+            navigation.navigate("MapScreen" as never);
+        }
+    }, [result]);
 
     return (
         <VStack w={scale(300) + "px"} mx="auto" py={4}>
@@ -133,20 +256,53 @@ export default function DocumentForm() {
                         color: "#fff",
                         placeholderTextColor: "white",
                     }}
+                    onChangeText={handleChange("docId1")}
+                    onBlur={handleBlur("docId1")}
+                    value={values.docId1}
                 />
+
+                {touched.docId1 && errors.docId1 ? (
+                    <ErrorMessage mt={"3px"}>{errors.docId1}</ErrorMessage>
+                ) : null}
             </FormControl>
 
-            <ExpiryDate />
+            <ExpiryDate
+                onChange={(data) => {
+                    setFieldValue("expiry1", data);
+                }}
+                onPress={() => setFieldTouched("expiry1")}
+            />
+            {touched.expiry1 && errors.expiry1 ? (
+                <ErrorMessage mt={"3px"}>{errors.expiry1}</ErrorMessage>
+            ) : null}
 
             <AddImage
-                getImages={(img) => console.log(img)}
-                title="Upload both sides of your ID Card"
+                getImages={(img) => {
+                    if (img[0])
+                        handleAddMedia({
+                            fieldName: "frontImage1",
+                            uri: img[0],
+                        });
+                    if (img[1])
+                        handleAddMedia({
+                            fieldName: "backImage1",
+                            uri: img[1],
+                        });
+                }}
+                title={
+                    resident_status === "0"
+                        ? "Upload both sides of your ID Card"
+                        : "Upload both sides of your Passport"
+                }
             />
+            {touched.frontImage1 && errors.frontImage1 ? (
+                <ErrorMessage mt={"3px"}>{errors.frontImage1}</ErrorMessage>
+            ) : null}
             <VStack>
                 <YesNo
-                    selected={hasIntlLicense}
+                    selected={values.isIntlLiscense === "yes" ? "yes" : "no"}
                     setSelected={(data) => {
-                        setHasIntlLicense(data);
+                        setFieldValue("hasIntlLicense", data === "yes");
                     }}
                 />
             </VStack>
@@ -168,11 +324,16 @@ export default function DocumentForm() {
                         visible={show}
                         onSelect={(dt) => {
                             setShow(false);
+                            console.log(dt);
+                            setFieldValue("country", dt.cca2);
                             setCountry(dt);
                         }}
                         withFilter
                     />
                 )}
+                {touched.country && errors.country ? (
+                    <ErrorMessage mt={"3px"}>{errors.country}</ErrorMessage>
+                ) : null}
             </FormControl>
 
             <FormControl mb={2} mt={3}>
@@ -189,16 +350,45 @@ export default function DocumentForm() {
                         color: "#fff",
                         placeholderTextColor: "white",
                     }}
+                    onChangeText={handleChange("docId2")}
+                    onBlur={handleBlur("docId2")}
+                    value={values.docId2}
                 />
+                {touched.docId2 && errors.docId2 ? (
+                    <ErrorMessage mt={"3px"}>{errors.docId2}</ErrorMessage>
+                ) : null}
             </FormControl>
-            <ExpiryDate />
-
-            <AddImage
-                getImages={(img) => console.log(img)}
-                title="Upload both sides of your ID Card"
+            <ExpiryDate
+                onChange={(data) => {
+                    setFieldValue("expiry2", data);
+                }}
             />
 
+            <AddImage
+                getImages={(img) => {
+                    if (img[0])
+                        handleAddMedia({
+                            fieldName: "frontImage2",
+                            uri: img[0],
+                        });
+                    if (img[1])
+                        handleAddMedia({
+                            fieldName: "backImage2",
+                            uri: img[1],
+                        });
+                }}
+                title="Upload both sides of your License"
+            />
+
+            {touched.frontImage2 && errors.frontImage2 ? (
+                <ErrorMessage mt={"3px"}>{errors.frontImage2}</ErrorMessage>
+            ) : null}
+
             <VideoPlayer vdo={video} />
+
+            {touched.selfieVideo && errors.selfieVideo ? (
+                <ErrorMessage mt={"3px"}>{errors.selfieVideo}</ErrorMessage>
+            ) : null}
 
             <OutlineButton
                 title="Take a selfie"
@@ -211,7 +401,14 @@ export default function DocumentForm() {
 
             <VStack>
                 <H3>Signature</H3>
-                <Signature />
+                <Signature
+                    setSignatureValue={(data) => {
+                        setFieldValue("signature", data);
+                    }}
+                />
+                {touched.signature && errors.signature ? (
+                    <ErrorMessage mt={"3px"}>{errors.signature}</ErrorMessage>
+                ) : null}
             </VStack>
 
             <Center>
@@ -228,7 +425,7 @@ export default function DocumentForm() {
                     </Text>
                 </HStack>
                 <GradientBtn
-                    onPress={handleNavigation}
+                    onPress={sunmitForm}
                     mt="5"
                     mb={8}
                     title="Continue"

@@ -6,9 +6,11 @@ import PickerButton from "../PickerButton/PickerButton";
 
 export default function ExpiryDate({
     onChange,
+    onPress,
     ...rest
 }: {
     onChange: (date: Date) => void;
+    onPress?: () => void;
 }) {
     const [show, setShow] = React.useState(false);
     const [date, setDate] = React.useState(null);
@@ -21,7 +23,10 @@ export default function ExpiryDate({
         <FormControl mt="3" {...rest}>
             <PickerButton
                 value={date ? getTextDate(date) : "Expiry"}
-                onPress={() => setShow(true)}
+                onPress={() => {
+                    setShow(true);
+                    onPress?.();
+                }}
                 isActive={!!date}
             />
 

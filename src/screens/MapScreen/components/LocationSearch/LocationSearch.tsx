@@ -1,31 +1,72 @@
-import { Factory, HStack } from "native-base";
+import Toggler from "@assets/svgs/Toggler";
+import { Factory, HStack, Image } from "native-base";
 import React from "react";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import Toggler from "@assets/svgs/Toggler";
 import { ILatLng } from "../../MapScreen";
 
-import { useNavigation } from "@react-navigation/native";
-import { Image, TouchableOpacity } from "react-native";
-import car from "@assets/images/car-small.png";
-import cycle from "@assets/images/cycle-small.png";
-import scooter from "@assets/images/veichle.png";
+import carImage from "@assets/images/car-small.png";
+import cycleImage from "@assets/images/cycle-small.png";
+import scooterImage from "@assets/images/veichle.png";
 import { Search } from "@components/Icons/Icons";
+import { useNavigation } from "@react-navigation/native";
 import Constants from "expo-constants";
+import { TouchableOpacity } from "react-native";
+import { useSelector } from "react-redux";
+import { selectSelectedVeichleType } from "../../../../redux/features/cars/carsSlice";
 
-const images = {
-    car,
-    cycle,
-    scooter,
+const Items = {
+    car: (props: any): JSX.Element => {
+        return (
+            <Image
+                h="25px"
+                w="25px"
+                source={carImage}
+                alt="tyy"
+                resizeMode="contain"
+                tintColor={"#000"}
+                mt="-1.5"
+                {...props}
+            />
+        );
+    },
+
+    cycle: (props: any): JSX.Element => {
+        return (
+            <Image
+                h="25px"
+                w="25px"
+                source={cycleImage}
+                alt="tyy"
+                resizeMode="contain"
+                tintColor={"#000"}
+                mt="-1.5"
+                {...props}
+            />
+        );
+    },
+    scotter: (props: any): JSX.Element => {
+        return (
+            <Image
+                h="25px"
+                w="25px"
+                source={scooterImage}
+                alt="tyy"
+                resizeMode="contain"
+                tintColor={"#000"}
+                mt="-1.5"
+                {...props}
+            />
+        );
+    },
 };
 
 function LocationSearch({
     setDestinationLocation,
-    selectedType,
     ...rest
 }: {
     setDestinationLocation: (destinationLocation: ILatLng) => void;
-    selectedType: "car" | "cycle" | "scooter";
 }) {
+    const selectedType = useSelector(selectSelectedVeichleType);
     const navigation = useNavigation();
 
     const handleSearchSelector = (d, details) => {
@@ -38,8 +79,13 @@ function LocationSearch({
 
     const config = Constants?.manifest?.extra as { [key: string]: any };
 
-    const RNImage = Factory(Image);
     const Touchable = Factory(TouchableOpacity);
+
+    let Smage = Items[selectedType] ?? null;
+
+    console.log("Smage", Smage);
+
+    console.log("selectedType", selectedType);
 
     return (
         <HStack
@@ -53,17 +99,7 @@ function LocationSearch({
                 <Touchable onPress={() => navigation.openDrawer()}>
                     <Toggler />
                 </Touchable>
-                {selectedType ? (
-                    <RNImage
-                        h="25px"
-                        w="25px"
-                        source={images[selectedType]}
-                        alt="tyy"
-                        resizeMode="contain"
-                        tintColor={"#000"}
-                        mt="-1.5"
-                    />
-                ) : null}
+                <Smage />
             </HStack>
             <GooglePlacesAutocomplete
                 placeholder="Search"

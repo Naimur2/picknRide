@@ -1,32 +1,25 @@
+export type TDDocumentType = "Licence" | "Passport" | "Address";
+export type TDUserType = "Residence" | "Tourist";
+
+export enum EDocumentType {
+    Licence = "Licence",
+    Passport = "Passport",
+    Address = "Address",
+}
+
+export enum EUserType {
+    Residence = "Residence",
+    Tourist = "Tourist",
+}
+
 export interface IDocument {
-    documentType: string;
+    documentType: TDDocumentType;
     docId: string;
     expiry: string;
     frontImage: string;
     backImage: string;
+    country?: string;
 }
-const document = {
-    userType: "",
-    internationalLicence: true,
-    documents: [
-        {
-            documentType: "",
-            docId: "",
-            expiry: "",
-            frontImage: "",
-            backImage: "",
-        },
-    ],
-    selfie: {
-        image: "",
-    },
-    signature: {
-        image: "",
-    },
-    selfieVideo: {
-        video: "",
-    },
-};
 
 export interface IDocumentImage {
     image: string;
@@ -36,7 +29,7 @@ export interface IDocumentVideo {
 }
 
 export interface IUserDocumentSubmission {
-    userType: "0" | "1" | "2";
+    userType: TDUserType;
     internationalLicence: boolean;
     documents: IDocument[];
     selfie?: IDocumentImage;

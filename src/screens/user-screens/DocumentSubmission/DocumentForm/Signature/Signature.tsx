@@ -3,9 +3,21 @@ import React from "react";
 import { scale } from "react-native-size-matters";
 import SignatureBox from "./SignatureBox/SignatureBox";
 
-function Signature() {
+function Signature({
+    setSignatureValue,
+}: {
+    setSignatureValue: (value: string) => void;
+}) {
     const [show, setShow] = React.useState(false);
     const [signature, setSignature] = React.useState("");
+
+    React.useEffect(() => {
+        if (signature && setSignatureValue) {
+            // remove base64 header
+            const sig = signature.split(",")[1];
+            setSignatureValue(sig);
+        }
+    }, [signature]);
 
     return (
         <VStack mt={2} space={2}>

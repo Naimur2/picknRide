@@ -29,8 +29,9 @@ function ActualMap({
             justifyContent="space-between"
             h="full"
             w="full"
+            collapsable={false}
         >
-            <VStack flex="1">
+            <VStack flex="1" collapsable={false}>
                 <MapscreenComp
                     type={carType}
                     setType={(t) => setCarType(t)}
