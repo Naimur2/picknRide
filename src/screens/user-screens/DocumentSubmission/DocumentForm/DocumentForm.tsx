@@ -3,8 +3,11 @@ import GradientBtn from "@components/GradientBtn/GradientBtn";
 import H3 from "@components/H3/H3";
 import OutlineButton from "@components/OutlineButton/OutlineButton";
 import { useNavigation } from "@react-navigation/native";
+import { selectDocumentVideo } from "@store/features/document/documentSlice";
+import { selectAuth } from "@store/store";
 import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
+import { useFormik } from "formik";
 import {
     Center,
     Factory,
@@ -19,14 +22,12 @@ import { TouchableOpacity } from "react-native";
 import CountryPicker from "react-native-country-picker-modal";
 import { scale } from "react-native-size-matters";
 import { useSelector } from "react-redux";
-import { selectDocumentVideo } from "@store/features/document/documentSlice";
 import AddImage from "../AddImage/AddImage";
 import ExpiryDate from "./ExpiryDate/ExpiryDate";
 import PickerButton from "./PickerButton/PickerButton";
 import Signature from "./Signature/Signature";
 import VideoPlayer from "./VideoPlayer/VideoPlayer";
 import YesNo from "./YesNo/YesNo";
-import { selectAuth } from "@store/store";
 
 const FormLabel = ({ title }: { title: string }) => (
     <FormControl.Label
@@ -46,14 +47,40 @@ export default function DocumentForm() {
     const [termAccept, setTermAccept] = React.useState(false);
     const Touchable = Factory(TouchableOpacity);
     const video = useSelector(selectDocumentVideo);
-
+    const navigation = useNavigation();
     const auth = useSelector(selectAuth);
 
-    console.log(auth);
+    const initialState = {
+        isIntlLiscense: false,
+        documentType1: "",
+        docId1: "",
+        expiry1: "",
+        frontImage1: "",
+        backImage1: "",
+        documentType2: "",
+        docId2: "",
+        expiry2: "",
+        frontImage2: "",
+        backImage2: "",
+        signature: "",
+    };
 
-    const navigation = useNavigation();
+    const formik = useFormik({
+        initialValues: initialState,
+        onSubmit: (values) => {
+            console.log(values);
+        },
+    });
 
-    const handleNavigation = () => {};
+    const {
+        values,
+        handleChange,
+        handleBlur,
+        errors,
+        touched,
+        setFieldValue,
+        handleSubmit,
+    } = formik;
 
     const handleRecoder = async () => {
         try {
@@ -76,6 +103,8 @@ export default function DocumentForm() {
             setError(err);
         }
     };
+
+    const handleNavigation = () => {};
 
     return (
         <VStack w={scale(300) + "px"} mx="auto" py={4}>

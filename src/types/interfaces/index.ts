@@ -1,3 +1,4 @@
+import { IAuthState } from "../../redux/features/auth/authSlice.types";
 export interface ILinearProps {
     colors?: string[];
     start?: number[];
@@ -35,16 +36,4 @@ export interface ILinearProps {
     flexWrap?: "wrap" | "nowrap" | "wrap-reverse";
 }
 
-export interface IUser {
-    f_name: string | null;
-    l_name: string | null;
-    location_id: string | null;
-    dialing_code: string | null;
-    phone: string | null;
-    email: string | null;
-    wallet: number | null;
-    card_status: "0" | "1" | null;
-    photo: string | null;
-    resident_status: "0" | "1" | "2" | null;
-    userdocuments_status: "0" | "1" | null;
-}
+export interface IUser extends IAuthState {}

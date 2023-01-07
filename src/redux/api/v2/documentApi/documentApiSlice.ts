@@ -10,6 +10,12 @@ const documentApiSlice = apiSliceV2.injectEndpoints({
                 body: document,
             }),
         }),
+        getDocument: builder.query({
+            query: (document: IUserDocumentSubmission) => ({
+                url: "/UserDocument/GetUserDocument",
+                method: "GET",
+            }),
+        }),
     }),
 });
 
