@@ -1,4 +1,6 @@
-export const carsData = [
+import { IVeichle } from "./MapScreen";
+
+export const carsData: IVeichle[] = [
     {
         _id: "0.9706152039135430",
         fuel: 88,

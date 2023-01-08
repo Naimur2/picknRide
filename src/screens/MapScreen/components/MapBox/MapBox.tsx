@@ -3,14 +3,11 @@ import { Factory } from "native-base";
 import React from "react";
 import { Dimensions, Keyboard } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
-import MapViewDirections from "react-native-maps-directions";
-
-import Constants from "expo-constants";
-import { ILatLng, IVeichle } from "../../MapScreen";
-import MapLoc from "../MapLoc/MapLoc";
+import { carsData } from "../../data";
+import AllMarkers from "../AllMarker/AllMarker";
+import { ILatLng } from "../../MapScreen.types";
 
 export interface IMapScreenProps {
-    markers: IVeichle[];
     destinationLocation: ILatLng;
     currentLocation: ILatLng;
     children?: any;
@@ -19,19 +16,17 @@ export interface IMapScreenProps {
 const { height, width } = Dimensions.get("window");
 
 function MapBox(
-    {
-        markers,
-        currentLocation,
-        destinationLocation,
-        initialRegion,
-    }: IMapScreenProps,
-    ref
+    { currentLocation, destinationLocation, initialRegion }: IMapScreenProps,
+    ref: any
 ) {
     const Map = Factory(MapView);
     const mapRef = React.useRef<MapView>(null);
     const navigation = useNavigation();
+    const [markers, setMarkers] = React.useState<IVeichle[] | null>(null);
 
-    const config = Constants?.manifest?.extra as { [key: string]: any };
+    React.useEffect(() => {
+        setMarkers(carsData);
+    }, []);
 
     React.useEffect(() => {
         mapRef.current?.animateToRegion(initialRegion, 300);
@@ -97,26 +92,9 @@ function MapBox(
     React.useImperativeHandle(ref, () => ({
         fitToCoordinatesHandler,
         get map() {
-            return mapRef.current;
+            return mapRef.current as MapView;
         },
     }));
-
-    const allMarkers = (): JSX.Element | null => {
-        if (!markers && markers?.length === 0) {
-            return null;
-        } else {
-            return (
-                <>
-                    {markers?.map((car, index) => (
-                        <MapLoc
-                            key={car._id.toString() + index.toString()}
-                            car={car}
-                        />
-                    ))}
-                </>
-            );
-        }
-    };
 
     return (
         <Map
@@ -128,7 +106,7 @@ function MapBox(
             h={height}
             onPress={() => Keyboard.dismiss()}
         >
-            {allMarkers() || <></>}
+            <AllMarkers markers={markers} />
 
             {/* {renderMap ? (
                 <MapViewDirections

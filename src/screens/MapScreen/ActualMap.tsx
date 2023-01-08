@@ -1,21 +1,16 @@
 import { VStack } from "native-base";
 import React from "react";
 
+import { ICAR } from "./MapScreen";
 import MapBox, { IMapScreenProps } from "./components/MapBox/MapBox";
 import MapscreenComp, {
     IMapTopDetailsProps,
 } from "./components/MapScreenComp/MapscreenComp";
-import { IVeichle, ICAR } from "./MapScreen";
 
-interface IMapProps extends IMapScreenProps, IMapTopDetailsProps {
-    cars: IVeichle[] | null;
-}
+interface IMapProps extends IMapScreenProps, IMapTopDetailsProps {}
 
 function ActualMap({
-    type,
-    setType,
     setDestination,
-    cars,
     destinationLocation,
     initialRegion,
     currentLocation,
@@ -39,7 +34,6 @@ function ActualMap({
                 />
 
                 <MapBox
-                    markers={cars}
                     destinationLocation={destinationLocation}
                     initialRegion={initialRegion}
                     currentLocation={currentLocation}

@@ -1,29 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
-import { Text, VStack, Spinner } from "native-base";
 import * as React from "react";
 import ActualMap from "./ActualMap";
-import * as Location from "expo-location";
-import { carsData } from "./data";
-
-export interface ILatLng {
-    latitude: number;
-    longitude: number;
-}
-
-export interface IVeichle {
-    _id: string;
-    fuel: number;
-    coordinates: ILatLng;
-    fuel: number;
-    type: "scooter" | "park" | "cycle" | "car";
-}
-
-export type ICAR = "scooter" | "park" | "cycle" | "car";
+import { ILatLng } from "./MapScreen.types";
 
 function MapScreen() {
     const navigation = useNavigation();
-
-    const [cars, setCars] = React.useState<IVeichle[] | null>(null);
 
     const [selectedType, setSelectedType] = React.useState<ICAR>("cycle");
 
@@ -31,20 +12,6 @@ function MapScreen() {
         latitude: 0,
         longitude: 0,
     });
-
-    React.useLayoutEffect(() => {
-        let clear = true;
-        navigation.setOptions({
-            headerShown: false,
-        });
-
-        setCars(carsData);
-
-        if (clear) {
-            setCars(null);
-            return () => (clear = false);
-        }
-    }, [navigation]);
 
     const handleAddDestination = (location: ILatLng) => {
         setDestinationLocation((prev) => ({
@@ -67,7 +34,6 @@ function MapScreen() {
         <ActualMap
             type={selectedType}
             setType={setSelectedType}
-            cars={cars}
             initialRegion={region}
             setDestination={handleAddDestination}
             destinationLocation={destinationLocation}
