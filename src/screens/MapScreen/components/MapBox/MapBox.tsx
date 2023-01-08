@@ -107,18 +107,6 @@ function MapBox(
             onPress={() => Keyboard.dismiss()}
         >
             <AllMarkers markers={markers} />
-
-            {/* {renderMap ? (
-                <MapViewDirections
-                    origin={initialRegion}
-                    destination={destinationLocation}
-                    apikey={config?.GOOGLE_MAP_KEY || null}
-                    strokeWidth={3}
-                    strokeColor="hotpink"
-                />
-            ) : (
-                <></>
-            )} */}
         </Map>
     );
 }

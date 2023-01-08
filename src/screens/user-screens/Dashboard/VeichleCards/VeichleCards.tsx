@@ -16,6 +16,11 @@ import Animated, { FlipInYRight, FlipOutYLeft } from "react-native-reanimated";
 import { scale } from "react-native-size-matters";
 import { useDispatch, useSelector } from "react-redux";
 import VeichleCard, { IVeichleCardProps } from "../VeichleCard/VeichleCard";
+import { setHasForegroundLocationPermission } from "@store/features/user-location/userLocationSlice";
+import {
+    selectHasForegroundLocationPermission,
+    selectHasBackgroundLocationPermission,
+} from "../../../../redux/features/user-location/userLocationSlice";
 
 const veichels: IVeichleCardProps[] = [
     {
@@ -50,31 +55,49 @@ export default function VeichleCards() {
     const VCard = Animated.createAnimatedComponent(VeichleCard);
     const navigation = useNavigation();
     const auth: IAuthState = useSelector(selectAuth);
+    const [loading, setLoading] = React.useState(false);
 
-    console.log(selectedVeichle);
+    const hasForegroundLocationPermission = useSelector(
+        selectHasForegroundLocationPermission
+    );
+    const hasBackgroundLocationPermission = useSelector(
+        selectHasBackgroundLocationPermission
+    );
 
     const currentVeichle = veichels.find(
         (veichle) => veichle.type === selectedVeichle
     );
 
     const handleNavigation = async () => {
+        setLoading(true);
         const documentStatus = auth.userdocuments_status as "0" | "1";
         if (selectedVeichle === ECarType.CAR && documentStatus !== "1") {
             navigation.navigate("DocumentSubmission", {
                 veichle: currentVeichle,
             });
         } else {
+            let gotoNextScreen = hasForegroundLocationPermission;
             // ask for location permission
-            const locationStatus: LocationPermissionResponse =
-                await Location.requestForegroundPermissionsAsync();
+            if (!hasBackgroundLocationPermission) {
+                const locationStatus: LocationPermissionResponse =
+                    await Location.requestForegroundPermissionsAsync();
+                const hasForegroundPermission =
+                    locationStatus.granted &&
+                    locationStatus.status === "granted";
 
-            if (locationStatus.granted && locationStatus.status === "granted") {
-                console.log("locationStatus", locationStatus);
+                dispatch(
+                    setHasForegroundLocationPermission(hasForegroundPermission)
+                );
+                gotoNextScreen = hasForegroundPermission;
+            }
+
+            if (gotoNextScreen) {
                 navigation.navigate("MapScreen", {
                     veichle: currentVeichle,
                 });
             }
         }
+        setLoading(false);
     };
 
     const handleSelection = (current: string) => {
@@ -114,6 +137,7 @@ export default function VeichleCards() {
                 title={"Select"}
                 titleStyle={{ mx: "auto" }}
                 onPress={handleNavigation}
+                disbled={loading}
             />
         </VStack>
     );

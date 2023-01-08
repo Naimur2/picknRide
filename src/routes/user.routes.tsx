@@ -75,6 +75,7 @@ export default function UserRoutes() {
                 component={MapScreen}
                 options={{
                     gestureEnabled: false,
+                    headerShown: false,
                 }}
             />
             <Stack.Screen name="Pricing" component={Pricing} />
