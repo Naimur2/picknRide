@@ -1,9 +1,13 @@
 import OutlineButton from "@components/OutlineButton/OutlineButton";
 import ThreeSwitch from "@components/ThreeSwitch/ThreeSwitch";
-import useAuth from "@hooks/useAuth";
 import { useNavigation } from "@react-navigation/native";
-import { setSelectedVeichleType } from "@store/features/cars/carsSlice";
+import { IAuthState } from "@store/features/auth/authSlice.types";
+import {
+    selectSelectedVeichleType,
+    setSelectedVeichleType,
+} from "@store/features/cars/carsSlice";
 import { ECarType } from "@store/features/cars/carsSlice.types";
+import { selectAuth } from "@store/store";
 import * as Location from "expo-location";
 import { LocationPermissionResponse } from "expo-location";
 import { VStack } from "native-base";
@@ -11,10 +15,7 @@ import React from "react";
 import Animated, { FlipInYRight, FlipOutYLeft } from "react-native-reanimated";
 import { scale } from "react-native-size-matters";
 import { useDispatch, useSelector } from "react-redux";
-import { selectSelectedVeichleType } from "../../../../redux/features/cars/carsSlice";
 import VeichleCard, { IVeichleCardProps } from "../VeichleCard/VeichleCard";
-import { selectAuth } from "../../../../redux/store";
-import { IAuthState } from "../../../../redux/features/auth/authSlice.types";
 
 const veichels: IVeichleCardProps[] = [
     {
