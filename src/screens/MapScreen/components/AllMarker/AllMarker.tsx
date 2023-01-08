@@ -1,6 +1,5 @@
-
 import MapLoc from "../MapLoc/MapLoc";
-import { IVeichle } from '../../MapScreen.types';
+import { IVeichle } from "../../MapScreen.types";
 
 const AllMarkers = ({ markers }: { markers: IVeichle[] | null }) => {
     if (!markers) return null;
@@ -8,7 +7,7 @@ const AllMarkers = ({ markers }: { markers: IVeichle[] | null }) => {
     return (
         <>
             {markers?.map((car, index) => (
-                <MapLoc key={car._id.toString() + index.toString()} car={car} />
+                <MapLoc key={car?.id + index.toString()} car={car} />
             ))}
         </>
     );

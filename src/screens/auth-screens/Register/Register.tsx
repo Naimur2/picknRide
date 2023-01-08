@@ -21,6 +21,7 @@ export default function Register() {
                 contentStyle={{
                     flexGrow: 1,
                     alignItems: "center",
+                    paddingTop: insets.top + 20,
                 }}
             >
                 <Image

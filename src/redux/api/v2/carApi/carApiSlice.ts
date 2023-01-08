@@ -13,7 +13,7 @@ const carApiSlice = apiSliceV2.injectEndpoints({
                 try {
                     const result = await queryFulfilled;
                     const { data } = result;
-                    const cars = data?.data;
+                    const cars = data?.data?.items;
                     dispatch(setNearestCars(cars));
                 } catch (error) {
                     console.log(error);
@@ -28,6 +28,7 @@ const carApiSlice = apiSliceV2.injectEndpoints({
             }),
         }),
     }),
+    overrideExisting: true,
 });
 
 export const { useGetNearestCarsApiQuery, useCheckCarsNamePlateQuery } =

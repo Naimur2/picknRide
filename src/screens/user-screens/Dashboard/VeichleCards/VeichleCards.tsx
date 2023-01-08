@@ -7,6 +7,7 @@ import {
     setSelectedVeichleType,
 } from "@store/features/cars/carsSlice";
 import { ECarType } from "@store/features/cars/carsSlice.types";
+import { setHasForegroundLocationPermission } from "@store/features/user-location/userLocationSlice";
 import { selectAuth } from "@store/store";
 import * as Location from "expo-location";
 import { LocationPermissionResponse } from "expo-location";
@@ -15,12 +16,11 @@ import React from "react";
 import Animated, { FlipInYRight, FlipOutYLeft } from "react-native-reanimated";
 import { scale } from "react-native-size-matters";
 import { useDispatch, useSelector } from "react-redux";
-import VeichleCard, { IVeichleCardProps } from "../VeichleCard/VeichleCard";
-import { setHasForegroundLocationPermission } from "@store/features/user-location/userLocationSlice";
 import {
-    selectHasForegroundLocationPermission,
     selectHasBackgroundLocationPermission,
+    selectHasForegroundLocationPermission,
 } from "../../../../redux/features/user-location/userLocationSlice";
+import VeichleCard, { IVeichleCardProps } from "../VeichleCard/VeichleCard";
 
 const veichels: IVeichleCardProps[] = [
     {
@@ -68,6 +68,8 @@ export default function VeichleCards() {
         (veichle) => veichle.type === selectedVeichle
     );
 
+    console.log(hasForegroundLocationPermission);
+
     const handleNavigation = async () => {
         setLoading(true);
         const documentStatus = auth.userdocuments_status as "0" | "1";
@@ -76,19 +78,22 @@ export default function VeichleCards() {
                 veichle: currentVeichle,
             });
         } else {
-            let gotoNextScreen = hasForegroundLocationPermission;
+            let gotoNextScreen = false;
+            const locationStatus: LocationPermissionResponse =
+                await Location.requestForegroundPermissionsAsync();
             // ask for location permission
-            if (!hasBackgroundLocationPermission) {
-                const locationStatus: LocationPermissionResponse =
-                    await Location.requestForegroundPermissionsAsync();
-                const hasForegroundPermission =
-                    locationStatus.granted &&
-                    locationStatus.status === "granted";
-
+            const hasForegroundPermission =
+                locationStatus.granted && locationStatus.status === "granted";
+            if (!hasForegroundLocationPermission && hasForegroundPermission) {
                 dispatch(
                     setHasForegroundLocationPermission(hasForegroundPermission)
                 );
                 gotoNextScreen = hasForegroundPermission;
+            } else if (
+                hasForegroundLocationPermission &&
+                hasForegroundPermission
+            ) {
+                gotoNextScreen = true;
             }
 
             if (gotoNextScreen) {

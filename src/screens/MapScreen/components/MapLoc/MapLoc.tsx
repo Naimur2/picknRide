@@ -1,19 +1,20 @@
 import React from "react";
 import { Marker } from "react-native-maps";
 import Animated, { ZoomInDown, ZoomOutUp } from "react-native-reanimated";
+import { IVeichle } from "../../MapScreen.types";
 import MarkerBar from "../LocationMarker/LocationMarker";
-import { ICAR } from "../../MapScreen";
 
-function MapLoc({ car, onPress }: { car: ICAR; onPress?: () => void }) {
+function MapLoc({ car, onPress }: { car: IVeichle; onPress?: () => void }) {
     return (
         <Marker
             onPress={onPress}
-            coordinate={car.coordinates}
+            coordinate={{
+                longitude: car.longitude,
+                latitude: car.latitude,
+            }}
             tracksViewChanges={false}
         >
-            <Animated.View entering={ZoomOutUp} exiting={ZoomInDown}>
-                <MarkerBar fuelPercentage={car.fuel} type={car.type} />
-            </Animated.View>
+            <MarkerBar {...car} />
         </Marker>
     );
 }

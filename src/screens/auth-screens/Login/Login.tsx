@@ -7,10 +7,12 @@ import { scale } from "react-native-size-matters";
 import { fontSizes } from "@theme/typography";
 import SignInInputForm from "./SignInInputForm/SignInInputForm";
 import SocialButton from "./SocialButton/SocialButton";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Login() {
     const { colorMode } = useColorMode();
     const navigation = useNavigation();
+    const inset = useSafeAreaInsets();
 
     return (
         <ImageBg type={colorMode}>
@@ -18,7 +20,7 @@ export default function Login() {
                 contentStyle={{
                     flexGrow: 1,
                     paddingHorizontal: 30,
-
+                    paddingTop: inset.top + 20,
                     paddingBottom: 20,
                 }}
             >

@@ -1,11 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
+import { selectNearestCars } from "@store/features/cars/carsSlice";
 import { Factory } from "native-base";
 import React from "react";
 import { Dimensions, Keyboard } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import { useSelector } from "react-redux";
+import { ILatLng } from "../../MapScreen.types";
 import { carsData } from "../../data";
 import AllMarkers from "../AllMarker/AllMarker";
-import { ILatLng } from "../../MapScreen.types";
 
 export interface IMapScreenProps {
     destinationLocation: ILatLng;
@@ -22,11 +24,7 @@ function MapBox(
     const Map = Factory(MapView);
     const mapRef = React.useRef<MapView>(null);
     const navigation = useNavigation();
-    const [markers, setMarkers] = React.useState<IVeichle[] | null>(null);
-
-    React.useEffect(() => {
-        setMarkers(carsData);
-    }, []);
+    const markers = useSelector(selectNearestCars);
 
     React.useEffect(() => {
         mapRef.current?.animateToRegion(initialRegion, 300);
@@ -63,22 +61,22 @@ function MapBox(
         }
     }, [destinationLocation, initialRegion]);
 
-    React.useEffect(() => {
-        if (mapRef.current && markers) {
-            const markersCoords: ILatLng[] = markers?.map((marker) => {
-                return {
-                    latitude: marker?.coordinates?.latitude,
-                    longitude: marker?.coordinates?.longitude,
-                };
-            });
+    // React.useEffect(() => {
+    //     if (mapRef.current && markers) {
+    //         const markersCoords: ILatLng[] = markers?.map((marker) => {
+    //             return {
+    //                 latitude: marker?.coordinates?.latitude,
+    //                 longitude: marker?.coordinates?.longitude,
+    //             };
+    //         });
 
-            // mapRef.current.animateToRegion(initialRegion, 300);
-            mapRef?.current?.fitToSuppliedMarkers(
-                markersCoords,
-                false // not animated
-            );
-        }
-    }, [markers]);
+    //         // mapRef.current.animateToRegion(initialRegion, 300);
+    //         mapRef?.current?.fitToSuppliedMarkers(
+    //             markersCoords,
+    //             false // not animated
+    //         );
+    //     }
+    // }, [markers]);
 
     const hasInitialRegion =
         initialRegion?.latitude !== 0 && initialRegion?.longitude !== 0;
@@ -101,7 +99,7 @@ function MapBox(
             ref={mapRef}
             initialRegion={initialRegion}
             flex={1}
-            provider={PROVIDER_GOOGLE}
+            // provider={PROVIDER_GOOGLE}
             w={width}
             h={height}
             onPress={() => Keyboard.dismiss()}
