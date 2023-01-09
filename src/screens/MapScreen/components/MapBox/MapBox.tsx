@@ -3,7 +3,7 @@ import { selectNearestCars } from "@store/features/cars/carsSlice";
 import { Factory } from "native-base";
 import React from "react";
 import { Dimensions, Keyboard } from "react-native";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE, Region } from "react-native-maps";
 import { useSelector } from "react-redux";
 import { ILatLng } from "../../MapScreen.types";
 import { carsData } from "../../data";
@@ -97,7 +97,7 @@ function MapBox(
     return (
         <Map
             ref={mapRef}
-            initialRegion={initialRegion}
+            initialRegion={initialRegion as Region}
             flex={1}
             // provider={PROVIDER_GOOGLE}
             w={width}

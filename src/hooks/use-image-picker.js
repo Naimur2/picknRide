@@ -1,6 +1,6 @@
+import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
 import React from "react";
-import * as FileSystem from "expo-file-system";
 
 export default function useImagePicker(props) {
     const [image, setImage] = React.useState(null);
@@ -21,6 +21,7 @@ export default function useImagePicker(props) {
         // No permissions request is necessary for launching the image library
         setIsLoading(true);
         let result = await ImagePicker.launchCameraAsync(opt);
+        console.log(result)
         if (!result.cancelled) {
             setImage(result.uri);
             setFile(result);

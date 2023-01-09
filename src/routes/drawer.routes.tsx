@@ -12,8 +12,6 @@ export default function DrawerRoute() {
             screenOptions={{
                 headerShown: false,
                 overlayColor: colorMode === "dark" ? "#00000080" : "#ffffff80",
-
-                unmountOnBlur: true,
             }}
             drawerContent={(props) => <CustomDrawer {...props} />}
         >

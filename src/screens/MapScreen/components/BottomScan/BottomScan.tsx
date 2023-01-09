@@ -9,19 +9,24 @@ import React from "react";
 import { Dimensions } from "react-native";
 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import useCameraPermissions from "../../../../hooks/useCameraPermissions";
 
 function BottomScan({ onLeftPress }: { onLeftPress: () => void }) {
     const LinearGrad = Factory(LinearGradient);
+    const { hasPermission, askCmeraPermission } = useCameraPermissions();
     const { height } = Dimensions.get("window");
 
     const navigation = useNavigation();
 
-    // React.useEffect(() => {
-    //     SheetManager.show("speedSheet");
-    //     return () => {
-    //         SheetManager.hide("speedSheet");
-    //     };
-    // }, []);
+    const handleNavigate = async () => {
+        const hasPermission = await askCmeraPermission();
+        if (hasPermission) {
+            navigation.navigate("ScanQrCode");
+        } else {
+            alert("You need to give camera permission to use this feature");
+        }
+    };
+
     const insets = useSafeAreaInsets();
     return (
         <VStack space="6" w="full" mt={height / 3.5 - insets.bottom + "px"}>
@@ -34,10 +39,7 @@ function BottomScan({ onLeftPress }: { onLeftPress: () => void }) {
             >
                 <HStack alignItems="flex-end" px={4}>
                     <ErrorOutline onPress={onLeftPress} />
-                    <Pressable
-                        mx={"auto"}
-                        onPress={() => navigation.navigate("ScanQrCode")}
-                    >
+                    <Pressable mx={"auto"} onPress={handleNavigate}>
                         <Image source={scan} alt="scan" />
                     </Pressable>
                     <Image source={locate} alt="locate" />

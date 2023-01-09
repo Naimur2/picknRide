@@ -1,27 +1,34 @@
-import { Image, Pressable, Text, VStack } from "native-base";
-import React from "react";
 import { Plus } from "@components/Icons/Icons";
 import ImagePickerSheet from "@components/ImagePickerSheet/ImagePickerSheet";
+import { Pressable, Text, VStack } from "native-base";
+import React from "react";
+import { Image } from "react-native";
 
-export default function UploadImg({
+function UploadImg({
     setImage,
+    imgTitle,
+    imageLink,
+    ...rest
 }: {
     setImage: (image: string) => void;
-    image: string;
-    title: string;
+    imageLink?: string;
+    imgTitle?: string;
 }) {
     const [isOpen, setIsOpen] = React.useState(false);
     const [imageUrl, setImageUrl] = React.useState("");
 
-    const title = imageUrl ? imageUrl.split("/").pop() : null;
+    let title = imageUrl ? imageUrl.split("/").pop() : null;
+    title = imgTitle ? imgTitle : title;
 
     React.useEffect(() => {
-        setImage?.(imageUrl);
+        if (imageUrl) setImage(imageUrl);
     }, [imageUrl]);
+
+    const uri = imageLink ? imageLink : imageUrl;
 
     return (
         <>
-            <VStack space="2" w={"48%"}>
+            <VStack space="2" w={"48%"} {...rest}>
                 <Pressable
                     h={"120px"}
                     w="full"
@@ -45,13 +52,20 @@ export default function UploadImg({
                     />
                     {imageUrl ? (
                         <Image
-                            source={{ uri: imageUrl }}
-                            w="full"
-                            h="full"
-                            zIndex={-1}
-                            position="absolute"
-                            blurRadius={3}
-                            alt={title}
+                            style={{
+                                width: "100%",
+                                height: "100%",
+                                position: "absolute",
+                                zIndex: -1,
+                                borderRadius: 12,
+                            }}
+                            source={{ uri: uri }}
+                            // w="full"
+                            // h="full"
+                            // zIndex={-1}
+                            // position="absolute"
+                            // blurRadius={3}
+                            // alt={title}
                         />
                     ) : null}
                 </Pressable>
@@ -78,3 +92,5 @@ export default function UploadImg({
         </>
     );
 }
+
+export default React.memo(UploadImg);

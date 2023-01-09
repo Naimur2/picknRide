@@ -1,11 +1,12 @@
 import BackButton from "@components/BackButton/BackButton";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import MapScreen from "@screens/MapScreen/MapScreen";
+import Account from "@screens/user-screens/Account/Account";
 import CameraView from "@screens/user-screens/CameraView/CameraView";
 import CarRideHistory from "@screens/user-screens/CarRideHistory/CarRideHistory";
 import Cars from "@screens/user-screens/Cars/Cars";
 import Dashboard from "@screens/user-screens/Dashboard/Dashboard";
 import DocumentSubmission from "@screens/user-screens/DocumentSubmission/DocumentSubmission";
-import MapScreen from "@screens/MapScreen/MapScreen";
 import Notifications from "@screens/user-screens/Notifications/Notifications";
 import Pricing from "@screens/user-screens/Pricing/Pricing";
 import Receipt from "@screens/user-screens/Receipt/Receipt";
@@ -13,7 +14,6 @@ import ReportIssue from "@screens/user-screens/ReportIssue/ReportIssue";
 import ScanQrCode from "@screens/user-screens/ScanQrCode/ScanQrCode";
 import Settings from "@screens/user-screens/Settings/Settings";
 import StartEndRide from "@screens/user-screens/StartEndRide/StartEndRide";
-import Account from "@screens/user-screens/Account/Account";
 import TripDetails from "@screens/user-screens/TripDetails/TripDetails";
 import VarificationStatus from "@screens/user-screens/VarificationStatus/VarificationStatus";
 import Wallet from "@screens/user-screens/Wallet/Wallet";
@@ -21,6 +21,7 @@ import colors from "@theme/colors";
 import { useColorMode } from "native-base";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import SelectOtpType from "../screens/user-screens/SelectOtpType/SelectOtpType";
 
 const Stack = createNativeStackNavigator();
 
@@ -80,11 +81,20 @@ export default function UserRoutes() {
             />
             <Stack.Screen name="Pricing" component={Pricing} />
             <Stack.Screen name="Account" component={Account} />
-            <Stack.Screen name="ScanQrCode" component={ScanQrCode} />
+            <Stack.Screen
+                options={{}}
+                name="ScanQrCode"
+                component={ScanQrCode}
+            />
             {/* <Stack.Screen name="CarRideHistory" component={CarRideHistory} /> */}
             <Stack.Screen name="TripDetails" component={TripDetails} />
             <Stack.Screen name="Receipt" component={Receipt} />
-            <Stack.Screen name="StartEndRide" component={StartEndRide} />
+            <Stack.Screen
+                options={{}}
+                name="StartEndRide"
+                component={StartEndRide}
+            />
+            <Stack.Screen name="SelectOtpType" component={SelectOtpType} />
         </Stack.Navigator>
     );
 }

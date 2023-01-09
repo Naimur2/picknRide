@@ -9,8 +9,9 @@ export interface IUploadCarImages {
 
 export interface IValidateCarTripRequest {
     numberPlateImage: string;
-    mobileLatitude: string;
-    mobileLongitude: string;
+    mobileLatitude: number;
+    mobileLongitude: number;
+    vehicleNo?: string;
 }
 export interface IRequestStartCarTrip {
     tripToken: string;

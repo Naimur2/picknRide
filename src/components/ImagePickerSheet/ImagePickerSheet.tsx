@@ -17,7 +17,7 @@ const ImagePickerSheet = ({ setImage, isOpen, onClose }: IPickerSheet) => {
 
     React.useEffect(() => {
         if (image) {
-            setImage(image);
+            setImage?.(image);
         }
     }, [image]);
 
