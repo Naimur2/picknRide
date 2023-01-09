@@ -1,26 +1,16 @@
 import Toggler from "@assets/svgs/Toggler";
-import CheckBox from "@components/CheckBox/CheckBox";
 import GradientBtn from "@components/GradientBtn/GradientBtn";
 import ImageBg from "@components/ImageBg/ImageBg";
 import Scroller from "@components/Scroller/Scroller";
 import TopSection from "@components/TopSection/TopSection";
 import UserAvatar from "@components/UserAvatar/UserAvatar";
 import config from "@config";
-import useAuth from "@hooks/useAuth";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useUploadCarImageMutation } from "@store/api/v2/tripApi/tripApiSlice";
 import { IUploadCarImages } from "@store/api/v2/tripApi/tripApiSlice.types";
-import { manipulateAsync } from "expo-image-manipulator";
+import { convertPickerImageToBase64 } from "@utils/convertToBase64";
 import { useFormik } from "formik";
-import {
-    Center,
-    Factory,
-    HStack,
-    Pressable,
-    Text,
-    VStack,
-    useColorMode,
-} from "native-base";
+import { Center, Factory, HStack, VStack, useColorMode } from "native-base";
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import * as Yup from "yup";
@@ -30,8 +20,7 @@ import UploadImg from "./UploadImg/UploadImg";
 export default function StartEndRide() {
     const navigation = useNavigation();
     const { colorMode } = useColorMode();
-    const { user } = useAuth();
-    const [isChecked, setIsChecked] = React.useState(false);
+
     const Touchable = Factory(TouchableOpacity);
     const params = useRoute().params as IStartEndTripParams;
     const [uploadImage, result] = useUploadCarImageMutation();
@@ -55,21 +44,12 @@ export default function StartEndRide() {
     const formik = useFormik({
         initialValues: initialState,
         onSubmit: async (values) => {
-            const frontImage = await manipulateAsync(values.frontImage, [], {
-                base64: true,
-            });
-            const backImage = await manipulateAsync(values.backImage, [], {
-                base64: true,
-            });
-            const leftSideImage = await manipulateAsync(
-                values.leftSideImage,
-                [],
-                { base64: true }
-            );
-            const rightSideImage = await manipulateAsync(
-                values.rightSideImage,
-                [],
-                { base64: true }
+            const front = await convertPickerImageToBase64(values.frontImage);
+            const back = await convertPickerImageToBase64(values.backImage);
+            const left = await convertPickerImageToBase64(values.leftSideImage);
+
+            const right = await convertPickerImageToBase64(
+                values.rightSideImage
             );
             let resData: IUploadCarImages = {
                 tripToken: "350544503470497",
@@ -85,15 +65,15 @@ export default function StartEndRide() {
             };
             if (!config.DEV_MODE) {
                 resData = {
-                    frontImage: frontImage.base64 as string,
-                    backImage: backImage.base64 as string,
-                    leftSideImage: leftSideImage.base64 as string,
-                    rightSideImage: rightSideImage.base64 as string,
+                    frontImage: front,
+                    backImage: back,
+                    leftSideImage: left,
+                    rightSideImage: right,
                     tripToken: values.tripToken,
                     vehicleNo: values.vehicleNo,
                 };
             }
-            let res = uploadImage(resData).unwrap();
+            let res = await uploadImage(resData).unwrap();
 
             if (res?.data?.tripToken) {
                 const paramsData: IStartEndTripParams = {
@@ -110,7 +90,7 @@ export default function StartEndRide() {
         validationSchema: schema,
     });
 
-    const { handleSubmit, errors, setFieldValue } = formik;
+    const { values, handleSubmit, errors, setFieldValue } = formik;
 
     React.useEffect(() => {
         navigation.setOptions({
@@ -149,16 +129,18 @@ export default function StartEndRide() {
     };
 
     const handleStartRide = () => {
-        if (!isChecked) {
-            alert("Please agree terms and condition");
-            return;
-        }
+        // if (!isChecked.current) {
+        //     alert("Please agree terms and condition");
+        //     return;
+        // }
         if (Object.keys(errors).length !== 0) {
             alert("Please upload all images");
             return;
         }
         handleSubmit();
     };
+
+    console.log(values);
 
     return (
         <ImageBg type={colorMode}>
@@ -181,14 +163,14 @@ export default function StartEndRide() {
                                 setImage={(image) =>
                                     setFieldImage("frontImage", image)
                                 }
-                                imageLink={`data:image/png;base64,${formik.values.frontImage}`}
+                                imageLink={values.frontImage}
                                 imgTitle="Front"
                             />
                             <UploadImg
                                 setImage={(image) =>
                                     setFieldImage("backImage", image)
                                 }
-                                imageLink={`data:image/png;base64,${formik.values.backImage}`}
+                                imageLink={values.backImage}
                                 imgTitle="Back"
                             />
                         </HStack>
@@ -197,25 +179,25 @@ export default function StartEndRide() {
                                 setImage={(image) =>
                                     setFieldImage("leftSideImage", image)
                                 }
-                                imageLink={`data:image/png;base64,${formik.values.leftSideImage}`}
+                                imageLink={values.leftSideImage}
                                 imgTitle="Left"
                             />
                             <UploadImg
                                 setImage={(image) =>
                                     setFieldImage("rightSideImage", image)
                                 }
-                                imageLink={`data:image/png;base64,${formik.values.rightSideImage}`}
+                                imageLink={values.rightSideImage}
                                 imgTitle="Right"
                             />
                         </HStack>
                         <Center>
-                            <HStack space="2" mt={12}>
+                            {/* <HStack space="2" mt={12}>
                                 <Pressable
                                     onPress={() =>
-                                        setIsChecked((prev) => !prev)
+                                        (isChecked.current =!isChecked.current)
                                     }
                                 >
-                                    <CheckBox isChecked={isChecked} />
+                                    <CheckBox isChecked={isChecked.current} />
                                 </Pressable>
                                 <Text
                                     _dark={{
@@ -224,7 +206,7 @@ export default function StartEndRide() {
                                 >
                                     Agree terms and condition
                                 </Text>
-                            </HStack>
+                            </HStack> */}
                             <GradientBtn
                                 onPress={handleStartRide}
                                 mt="5"

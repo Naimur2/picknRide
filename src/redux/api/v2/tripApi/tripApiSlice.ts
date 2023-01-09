@@ -3,6 +3,7 @@ import {
     IEndCarTrip,
     IRequestStartCarTrip,
     IStartCarTrip,
+    IStartCarTripOtpType,
     IUploadCarImages,
     IValidateCarTripRequest,
 } from "./tripApiSlice.types";
@@ -44,7 +45,25 @@ const tripApiSlice = apiSliceV2.injectEndpoints({
                 body,
             }),
         }),
+        sendCarTripOtpType: builder.mutation({
+            query: (body: IStartCarTripOtpType) => ({
+                url:
+                    body.type === "email"
+                        ? "CarTrip/RequestStartCarTripEmailOTP"
+                        : "CarTrip/RequestStartCarTripWhatsAppOTP",
+                method: "POST",
+                body,
+            }),
+        }),
+        lockUnlock: builder.mutation({
+            query: (body: { lock: boolean; tripToken: string }) => ({
+                url: "CarTrip/LockUnLockCarTrip",
+                method: "POST",
+                body,
+            }),
+        }),
     }),
+    overrideExisting: true,
 });
 
 export const {
@@ -53,4 +72,6 @@ export const {
     useValidateCarTripRequestMutation,
     useStartCarTripMutation,
     useEndCarTripMutation,
+    useSendCarTripOtpTypeMutation,
+    useLockUnlockMutation,
 } = tripApiSlice;

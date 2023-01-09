@@ -1,8 +1,7 @@
 import { Plus } from "@components/Icons/Icons";
 import ImagePickerSheet from "@components/ImagePickerSheet/ImagePickerSheet";
-import { Pressable, Text, VStack } from "native-base";
+import { Pressable, Text, VStack, Image } from "native-base";
 import React from "react";
-import { Image } from "react-native";
 
 function UploadImg({
     setImage,
@@ -21,10 +20,18 @@ function UploadImg({
     title = imgTitle ? imgTitle : title;
 
     React.useEffect(() => {
-        if (imageUrl) setImage(imageUrl);
+        setImage?.(imageUrl);
     }, [imageUrl]);
 
-    const uri = imageLink ? imageLink : imageUrl;
+    const uri = React.useMemo(() => {
+        if (imageLink) {
+            return imageLink;
+        } else if (imageUrl) {
+            return imageUrl;
+        } else {
+            return "";
+        }
+    }, [imageUrl]);
 
     return (
         <>
@@ -50,22 +57,15 @@ function UploadImg({
                             color: "gray.100",
                         }}
                     />
-                    {imageUrl ? (
+                    {uri ? (
                         <Image
-                            style={{
-                                width: "100%",
-                                height: "100%",
-                                position: "absolute",
-                                zIndex: -1,
-                                borderRadius: 12,
-                            }}
                             source={{ uri: uri }}
-                            // w="full"
-                            // h="full"
-                            // zIndex={-1}
-                            // position="absolute"
-                            // blurRadius={3}
-                            // alt={title}
+                            w="full"
+                            h="full"
+                            zIndex={-1}
+                            position="absolute"
+                            blurRadius={3}
+                            alt={title}
                         />
                     ) : null}
                 </Pressable>

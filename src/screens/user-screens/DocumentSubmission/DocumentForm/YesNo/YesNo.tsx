@@ -1,7 +1,6 @@
 import { Octicons } from "@expo/vector-icons";
-import { HStack, Text, VStack, Pressable } from "native-base";
+import { HStack, Pressable, Text, VStack } from "native-base";
 import React from "react";
-import { TouchableOpacity } from "react-native";
 
 export default function YesNo({
     setSelected,

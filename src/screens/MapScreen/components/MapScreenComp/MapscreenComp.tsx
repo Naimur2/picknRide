@@ -17,6 +17,9 @@ import SpeedMeter from "../SpeedMeter/SpeedMeter";
 
 import { scale } from "react-native-size-matters";
 import { fontSizes } from "@theme/typography";
+import { useSelector } from "react-redux";
+import { selectCarTripInfo } from "../../../../redux/features/car-trip/carTripSlice";
+import { ICarTripState } from "../../../../redux/features/car-trip/carTripSlice.types";
 
 export interface IMapTopDetailsProps {
     setDestination: (destination: ILatLng) => void;
@@ -26,6 +29,7 @@ export interface IMapTopDetailsProps {
 
 function MapscreenComp({ type, setType, setDestination }: IMapTopDetailsProps) {
     const { height, width } = Dimensions.get("window");
+    const carTripDetails: ICarTripState = useSelector(selectCarTripInfo);
 
     const updateType = React.useMemo(() => {
         return (carType: ICAR) => {
@@ -41,6 +45,13 @@ function MapscreenComp({ type, setType, setDestination }: IMapTopDetailsProps) {
     }, []);
 
     const insets = useSafeAreaInsets();
+
+    React.useEffect(() => {
+        if (carTripDetails?.hasStartedJourney) {
+            console.log("carTripDetails", carTripDetails);
+            SheetManager.show("carDetailsSheet");
+        }
+    }, [carTripDetails]);
 
     return (
         <VStack
@@ -93,48 +104,6 @@ function MapscreenComp({ type, setType, setDestination }: IMapTopDetailsProps) {
                 }}
             />
             {/* <RideCompleteModal /> */}
-            <CModal isOpen={false}>
-                <H3 fontSize={fontSizes.lg} textAlign="center">
-                    Are you sure you wanna start a ride?
-                </H3>
-                <HStack justifyContent={"space-between"} space="4">
-                    <Button
-                        _text={{
-                            fontWeight: 700,
-                            fontSize: 11,
-                            textTransform: "uppercase",
-                            color: "primary.100",
-                        }}
-                        w={scale(88) + "px"}
-                        borderRadius={14}
-                        variant="outline"
-                        borderColor={"primary.100"}
-                        borderWidth={1.5}
-                        _pressed={{
-                            bg: "#ffffff80",
-                        }}
-                    >
-                        Yes
-                    </Button>
-
-                    <Button
-                        _text={{
-                            fontWeight: 700,
-                            fontSize: 11,
-                            textTransform: "uppercase",
-                            color: "#fff",
-                        }}
-                        bg="primary.100"
-                        w={scale(88) + "px"}
-                        borderRadius={14}
-                        _pressed={{
-                            bg: "primary.200",
-                        }}
-                    >
-                        No
-                    </Button>
-                </HStack>
-            </CModal>
 
             <CModal isOpen={false} py={8}>
                 <H3 fontSize={fontSizes.lg} textAlign="center">

@@ -4,6 +4,7 @@ import { persistReducer, persistStore } from "redux-persist";
 import { apiSlice } from "./api/v1/apiSlice";
 import { apiSliceV2 } from "./api/v2/apiSlice";
 import authReducer from "./features/auth/authSlice";
+import carTripReducer from "./features/car-trip/carTripSlice";
 import carsReducer from "./features/cars/carsSlice";
 import documentReducer from "./features/document/documentSlice";
 import uiReducer from "./features/ui/uiSlice";
@@ -17,6 +18,7 @@ const persistConfig = {
 const persistedAuthReducer = persistReducer(persistConfig, authReducer);
 const persistedCarsReducer = persistReducer(persistConfig, carsReducer);
 const persistedDocumentReducer = persistReducer(persistConfig, documentReducer);
+const persistedCarTripReducer = persistReducer(persistConfig, carTripReducer);
 const persistedUserLocationReducer = persistReducer(
     persistConfig,
     userLocationReducer
@@ -30,6 +32,7 @@ const reducer = combineReducers({
     cars: persistedCarsReducer,
     document: persistedDocumentReducer,
     userLocation: persistedUserLocationReducer,
+    carTrip: persistedCarTripReducer,
 });
 
 export const store = configureStore({

@@ -17,6 +17,10 @@ export interface IRequestStartCarTrip {
     tripToken: string;
 }
 
+export interface IStartCarTripOtpType extends IRequestStartCarTrip {
+    type: "sms" | "email";
+}
+
 export interface IStartCarTrip {
     otp: string;
     tripToken: string;

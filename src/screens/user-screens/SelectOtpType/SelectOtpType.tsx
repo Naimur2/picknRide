@@ -1,17 +1,50 @@
 import ImageBg from "@components/ImageBg/ImageBg";
 import Scroller from "@components/Scroller/Scroller";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useSendCarTripOtpTypeMutation } from "@store/api/v2/tripApi/tripApiSlice";
 import { fontSizes } from "@theme/typography";
 import { Text, VStack, useColorMode } from "native-base";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
 import GradientBtn from "../../../components/GradientBtn/GradientBtn";
+import { IStartEndTripParams } from "../StartEndRide/StartEnTrip.types";
 
 export default function SelectOtpType() {
     const { colorMode } = useColorMode();
     const navigation = useNavigation();
     const inset = useSafeAreaInsets();
+    const [sendOtpRequest, result] = useSendCarTripOtpTypeMutation();
+    const params = useRoute().params as IStartEndTripParams;
+
+    const handleOtpViaEmail = async () => {
+        if (!params.data.tripToken) return alert("tripToken is undefined");
+        const res = await sendOtpRequest({
+            tripToken: params.data.tripToken,
+            type: "email",
+        }).unwrap();
+
+        if (res.data?.otp) {
+            navigation.navigate("TripOtpScreen", {
+                ...params,
+                otpData: res.data,
+            });
+        }
+    };
+    const handleOtpViaWhatsapp = async () => {
+        if (!params.data.tripToken) return alert("tripToken is undefined");
+        const res = await sendOtpRequest({
+            tripToken: params.data.tripToken,
+            type: "sms",
+        }).unwrap();
+
+        if (res.data?.otp) {
+            navigation.navigate("TripOtpScreen", {
+                ...params,
+                otpData: res.data,
+            });
+        }
+    };
 
     return (
         <ImageBg type={colorMode}>
@@ -23,7 +56,7 @@ export default function SelectOtpType() {
                     paddingBottom: 20,
                 }}
             >
-                <VStack alignItems={"center"} space="4">
+                <VStack mt={10} alignItems={"center"} space="4">
                     <Text
                         mt={scale(30) + "px"}
                         color="primary.200"
@@ -50,10 +83,18 @@ export default function SelectOtpType() {
                     space="4"
                     alignItems={"center"}
                     justifyContent={"center"}
+                    mt={scale(80) + "px"}
                 >
-                    <GradientBtn title="OTP via Email" />
-                    <GradientBtn title="OTP via Whatsapp" />
-                    <GradientBtn title="OTP via Whatsapp" />
+                    <GradientBtn
+                        onPress={handleOtpViaEmail}
+                        title="OTP via Email"
+                        disabled={result.isLoading}
+                    />
+                    <GradientBtn
+                        onPress={handleOtpViaWhatsapp}
+                        title="OTP via Whatsapp"
+                        disabled={result.isLoading}
+                    />
                 </VStack>
             </Scroller>
         </ImageBg>

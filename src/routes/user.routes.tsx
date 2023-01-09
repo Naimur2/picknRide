@@ -22,6 +22,8 @@ import { useColorMode } from "native-base";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SelectOtpType from "../screens/user-screens/SelectOtpType/SelectOtpType";
+import TripOtpForm from "../screens/user-screens/TripOtpScreen/TripOtpForm/TripOtpForm";
+import TripOtpScreen from "../screens/user-screens/TripOtpScreen/TripOtpScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -95,6 +97,7 @@ export default function UserRoutes() {
                 component={StartEndRide}
             />
             <Stack.Screen name="SelectOtpType" component={SelectOtpType} />
+            <Stack.Screen name="TripOtpScreen" component={TripOtpScreen} />
         </Stack.Navigator>
     );
 }
