@@ -1,9 +1,12 @@
-import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { BarCodeScanner } from "expo-barcode-scanner";
+import torch from "@assets/images/torch.png";
+import Scroller from "@components/Scroller/Scroller";
+import { AntDesign, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import { Camera } from "expo-camera";
 import { LinearGradient } from "expo-linear-gradient";
 import {
     Factory,
+    HStack,
     Image,
     Input,
     Pressable,
@@ -12,27 +15,20 @@ import {
     useColorMode,
 } from "native-base";
 import React from "react";
-import { ImageBackground, Platform, StyleSheet } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import {
+    Dimensions,
+    ImageBackground,
+    Platform,
+    StyleSheet,
+} from "react-native";
 import { scale } from "react-native-size-matters";
-import scanBg from "@assets/images/scan-bg.png";
-import torch from "@assets/images/torch.png";
-import BackButton from "@components/BackButton/BackButton";
-import HeaderTitle from "@components/HeaderTitle/HeaderTitle";
-import Scroller from "@components/Scroller/Scroller";
-import colors from "@theme/colors";
-import { TOP_PADDING } from "@utils/final";
 
 export default function ScanQrCode() {
     const navigation = useNavigation();
-    const insets = useSafeAreaInsets();
-    const [hasPermission, setHasPermission] = React.useState(null);
-    const [flash, setFlash] = React.useState(Camera.Constants.FlashMode.off);
 
-    const [scanned, setScanned] = React.useState(false);
-    const [scannedData, setScannedData] = React.useState("");
     const ImageBg = Factory(ImageBackground);
-    const isFocused = useIsFocused();
+    const [flashOn, setFlashOn] = React.useState(false);
+    const [cameraPhoto, setCameraPhoto] = React.useState<any>(null);
 
     const colormode = useColorMode();
 
@@ -40,82 +36,26 @@ export default function ScanQrCode() {
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
-            headerTitle: () => (
-                <HeaderTitle color="#fff" title="Scan qr code" />
-            ),
-            headerTitleAlign: "center",
-            headerLeft: () => (
-                <BackButton
-                    color={colormode.colorMode === "dark" ? "white" : "black"}
-                />
-            ),
-            headerShadowVisible: false,
-            headerStyle: {
-                backgroundColor:
-                    colormode.colorMode === "dark"
-                        ? colors.dark[100]
-                        : colors.light[300],
-            },
+            headerTransparent: true,
+            headerShown: false,
         });
     }, [navigation]);
 
     const camRef = React.useRef<Camera>(null);
 
-    React.useEffect(() => {
-        const getBarCodeScannerPermissions = async () => {
-            const { status } = await BarCodeScanner.requestPermissionsAsync();
-            setHasPermission(status === "granted");
-        };
-        getBarCodeScannerPermissions();
+    const handleCameraFlash = React.useCallback(() => {}, []);
+
+    const takePicture = React.useCallback(async () => {
+        if (camRef.current) {
+            const photo = await camRef.current.takePictureAsync();
+            setCameraPhoto(photo);
+        }
     }, []);
 
-    const handleBarCodeScanned = ({ type, data }) => {
-        setScanned(true);
-        setScannedData(data);
-    };
-
-    if (hasPermission === null) {
-        return (
-            <VStack
-                space={6}
-                mt={TOP_PADDING + insets.top + "px"}
-                px="6"
-                pb={8}
-                h="full"
-                maxWidth={scale(500)}
-                mx="auto"
-            >
-                <Text my={"auto"}>Requesting for camera permission</Text>
-            </VStack>
-        );
-    }
-
-    if (hasPermission === false) {
-        return (
-            <VStack
-                space={6}
-                mt={TOP_PADDING + insets.top + "px"}
-                px="6"
-                pb={8}
-                h="full"
-                maxWidth={scale(500)}
-                mx="auto"
-            >
-                <Text my={"auto"}>No access to Camera</Text>
-            </VStack>
-        );
-    }
-
-    const handleCameraFlash = () => {
-        if (flash === Camera.Constants.FlashMode.off) {
-            setFlash(Camera.Constants.FlashMode.on);
-        } else {
-            setFlash(Camera.Constants.FlashMode.off);
-        }
-    };
+    console.log("cameraPhoto", cameraPhoto);
 
     return (
-        <ImageBg source={scanBg} flex="1" resizeMode="cover">
+        <>
             <VStack
                 w="full"
                 h="full"
@@ -131,14 +71,13 @@ export default function ScanQrCode() {
             >
                 <VStack
                     space={6}
-                    mt={4}
                     px="6"
                     pb={8}
                     h="full"
                     maxWidth={scale(500)}
                     mx="auto"
                     justifyContent={"center"}
-                    pt={Platform.OS === "android" ? 55 : 0}
+                    pt={Platform.OS === "android" ? 10 : 0}
                 >
                     <Text
                         fontSize={13}
@@ -151,7 +90,7 @@ export default function ScanQrCode() {
                     </Text>
 
                     <LinGrad
-                        py={16}
+                        py={10}
                         colors={["#fff", "#FF000095"]}
                         borderRadius={30}
                         start={{ x: 0, y: 0.2 }}
@@ -159,16 +98,60 @@ export default function ScanQrCode() {
                         borderBottomWidth={1}
                         mx={"auto"}
                     >
-                        <VStack w="280px" h="150px">
+                        <VStack
+                            w={Dimensions.get("window").width - 40}
+                            h="250px"
+                            mx={"auto"}
+                        >
                             <Camera
-                                onBarCodeScanned={
-                                    scanned ? undefined : handleBarCodeScanned
-                                }
                                 style={StyleSheet.absoluteFillObject}
                                 ref={camRef}
+                                type={Camera.Constants.Type.back}
                             />
                         </VStack>
                     </LinGrad>
+
+                    <HStack
+                        space={4}
+                        alignItems={"center"}
+                        justifyContent={"center"}
+                    >
+                        <Pressable
+                            onPress={takePicture}
+                            rounded={"full"}
+                            py={4}
+                            px={4}
+                            bg={"#fff"}
+                        >
+                            <Entypo name="camera" size={24} color="black" />
+                        </Pressable>
+                        <Pressable
+                            onPress={takePicture}
+                            rounded={"full"}
+                            py={4}
+                            px={4}
+                            bg={"#fff"}
+                        >
+                            <MaterialCommunityIcons
+                                name="camera-retake"
+                                size={24}
+                                color="black"
+                            />
+                        </Pressable>
+                        <Pressable
+                            onPress={takePicture}
+                            rounded={"full"}
+                            py={4}
+                            px={4}
+                            bg={"#fff"}
+                        >
+                            <AntDesign
+                                name="checkcircle"
+                                size={24}
+                                color="black"
+                            />
+                        </Pressable>
+                    </HStack>
 
                     <Text
                         fontSize={24}
@@ -225,6 +208,6 @@ export default function ScanQrCode() {
                     </VStack>
                 </VStack>
             </Scroller>
-        </ImageBg>
+        </>
     );
 }
