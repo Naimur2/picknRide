@@ -159,6 +159,11 @@ export default function DocumentForm() {
             };
 
             const res = await submitDocument(data);
+            if (res?.data?.succeded) {
+                alert(
+                    "Document Submitted Successfully, Please wait for approval"
+                );
+            }
         },
         validationSchema: schema,
     });
