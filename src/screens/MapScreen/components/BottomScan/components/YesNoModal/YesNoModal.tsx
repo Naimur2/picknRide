@@ -1,8 +1,8 @@
 import CModal from "@components/CModal/CModal";
 import { HStack, Button } from "native-base";
 import React from "react";
-import H3 from "../../../../../../components/H3/H3";
-import { fontSizes } from "../../../../../../theme-config/typography";
+import H3 from "@components/H3/H3";
+import { fontSizes } from "@theme/typography";
 import { scale } from "react-native-size-matters";
 
 export default function YesNoModal({

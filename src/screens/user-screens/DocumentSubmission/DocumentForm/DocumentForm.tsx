@@ -34,6 +34,7 @@ import CountryPicker from "react-native-country-picker-modal";
 import { scale } from "react-native-size-matters";
 import { useSelector } from "react-redux";
 import * as Yup from "yup";
+import { convertPickerImageToBase64 } from "../../../../utils/convertToBase64";
 import AddImage from "../AddImage/AddImage";
 import ExpiryDate from "./ExpiryDate/ExpiryDate";
 import PickerButton from "./PickerButton/PickerButton";
@@ -115,6 +116,18 @@ export default function DocumentForm() {
         onSubmit: async (values) => {
             const document1Expiry = new Date(values.expiry1);
             const document2Expiry = new Date(values.expiry2);
+            const frontImage1 = await convertPickerImageToBase64(
+                values.frontImage1
+            );
+            const backImage1 = await convertPickerImageToBase64(
+                values.backImage1
+            );
+            const frontImage2 = await convertPickerImageToBase64(
+                values.frontImage2
+            );
+            const backImage2 = await convertPickerImageToBase64(
+                values.backImage2
+            );
             const data: IUserDocumentSubmission = {
                 userType: userType as "Residence" | "Tourist",
                 internationalLicence: values.isIntlLiscense,
@@ -125,15 +138,15 @@ export default function DocumentForm() {
                             "Address",
                         docId: values.docId1,
                         expiry: document1Expiry.toISOString(),
-                        frontImage: values.frontImage1,
-                        backImage: values.backImage1,
+                        frontImage: frontImage1,
+                        backImage: backImage1,
                     },
                     {
                         documentType: EDocumentType.Licence,
                         docId: values.docId2,
                         expiry: document2Expiry.toISOString(),
-                        frontImage: values.frontImage2,
-                        backImage: values.backImage2,
+                        frontImage: frontImage2,
+                        backImage: backImage2,
                         country: values.country,
                     },
                 ],
@@ -145,7 +158,7 @@ export default function DocumentForm() {
                 },
             };
 
-            await submitDocument(data);
+            const res = await submitDocument(data);
         },
         validationSchema: schema,
     });
@@ -184,9 +197,10 @@ export default function DocumentForm() {
         }
     };
 
-    const sunmitForm = async () => {
+    const submitForm = async () => {
         if (video) {
-            await handleAddMedia({ fieldName: "selfieVideo", uri: video });
+            const base64Video = await convertToBase64(video);
+            handleAddMedia({ fieldName: "selfieVideo", uri: base64Video });
             handleSubmit();
         }
         if (!termAccept) {
@@ -210,14 +224,16 @@ export default function DocumentForm() {
         fieldName: string;
         uri: string;
     }) => {
-        const base64Image = await convertToBase64(uri);
-        setFieldValue(fieldName, base64Image);
+        // const base64Image = await convertToBase64(uri);
+        setFieldValue(fieldName, uri);
     };
 
     React.useEffect(() => {
-        if (video) {
+        const setBase64Video = async () => {
+            const base64Video = await convertToBase64(video);
             handleAddMedia({ fieldName: "selfieVideo", uri: video });
-        }
+        };
+        if (video) setBase64Video();
     }, [video]);
 
     React.useEffect(() => {
@@ -300,7 +316,7 @@ export default function DocumentForm() {
             ) : null}
             <VStack>
                 <YesNo
-                    selected={values.isIntlLiscense === "yes" ? "yes" : "no"}
+                    selected={values.isIntlLiscense ? "yes" : "no"}
                     setSelected={(data) => {
                         setFieldValue("hasIntlLicense", data === "yes");
                     }}
@@ -425,7 +441,7 @@ export default function DocumentForm() {
                     </Text>
                 </HStack>
                 <GradientBtn
-                    onPress={sunmitForm}
+                    onPress={submitForm}
                     mt="5"
                     mb={8}
                     title="Continue"
