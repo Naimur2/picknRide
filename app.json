@@ -21,7 +21,7 @@
             "supportsTablet": true,
             "bundleIdentifier": "com.PickNRide",
             "backgroundColor": "#ffffff",
-            "buildNumber": "1.0.1",
+            "buildNumber": "1.0.5",
             "config": {
                 "googleMapsApiKey": "AIzaSyDS-lAgjgs0rT8FzzB9woxe8sTPPh6v7F4"
             }

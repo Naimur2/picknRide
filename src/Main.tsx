@@ -32,10 +32,4 @@ export default function Main() {
             <Content />
         </>
     );
-
-    // return (
-    //     <Stack.Navigator>
-    //         <Stack.Screen name="Home" component={HomeScreen} />
-    //     </Stack.Navigator>
-    // );
 }
