@@ -9,12 +9,7 @@ import MapscreenComp, {
 
 interface IMapProps extends IMapScreenProps, IMapTopDetailsProps {}
 
-function ActualMap({
-    setDestination,
-    destinationLocation,
-    initialRegion,
-    currentLocation,
-}: IMapProps) {
+function ActualMap({}: IMapProps) {
     const [carType, setCarType] = React.useState<ICAR>("scooter");
 
     return (
@@ -27,17 +22,8 @@ function ActualMap({
             collapsable={false}
         >
             <VStack flex="1" collapsable={false}>
-                <MapscreenComp
-                    type={carType}
-                    setType={(t) => setCarType(t)}
-                    setDestination={setDestination}
-                />
-
-                <MapBox
-                    destinationLocation={destinationLocation}
-                    initialRegion={initialRegion}
-                    currentLocation={currentLocation}
-                />
+                <MapscreenComp type={carType} setType={(t) => setCarType(t)} />
+                <MapBox />
             </VStack>
         </VStack>
     );

@@ -36,6 +36,7 @@
     "expo-modules-autolinking": "~0.10.1",
     "expo-splash-screen": "~0.16.2",
     "expo-status-bar": "~1.4.0",
+    "expo-task-manager": "~10.3.0",
     "expo-updates": "~0.14.7",
     "formik": "^2.2.9",
     "libphonenumber-js": "^1.10.13",

@@ -1,8 +1,14 @@
 import { IUserLocationState } from "./userLocationSlice.types";
 import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from "../../store";
 
 const initialState: IUserLocationState = {
-    currentLocation: null,
+    currentLocation: {
+        latitude: 0,
+        longitude: 0,
+        latitudeDelta: 0.009,
+        longitudeDelta: 0.01,
+    },
     hasBackgroundLocationPermission: false,
     hasForegroundLocationPermission: false,
 };
@@ -25,10 +31,13 @@ export const userLocationSlice = createSlice({
 
 export const selectCurrentLocation = (state: any) =>
     state.userLocation.currentLocation;
-export const selectHasBackgroundLocationPermission = (state: any) =>
+export const selectHasBackgroundLocationPermission = (state: RootState) =>
     state.userLocation.hasBackgroundLocationPermission;
-export const selectHasForegroundLocationPermission = (state: any) =>
+export const selectHasForegroundLocationPermission = (state: RootState) =>
     state.userLocation.hasForegroundLocationPermission;
+
+export const selectCurrentRegion = (state: RootState) =>
+    state.userLocation.currentLocation;
 
 const userLocationReducer = userLocationSlice.reducer;
 

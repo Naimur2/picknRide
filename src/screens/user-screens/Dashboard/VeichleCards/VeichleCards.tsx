@@ -7,7 +7,10 @@ import {
     setSelectedVeichleType,
 } from "@store/features/cars/carsSlice";
 import { ECarType } from "@store/features/cars/carsSlice.types";
-import { setHasForegroundLocationPermission } from "@store/features/user-location/userLocationSlice";
+import {
+    setCurrentLocation,
+    setHasForegroundLocationPermission,
+} from "@store/features/user-location/userLocationSlice";
 import { selectAuth } from "@store/store";
 import * as Location from "expo-location";
 import { LocationPermissionResponse } from "expo-location";

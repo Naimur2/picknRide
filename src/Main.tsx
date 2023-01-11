@@ -6,6 +6,9 @@ import AuthRoute from "./routes/auth.routes";
 import DrawerRoute from "./routes/drawer.routes";
 import { IAuthState } from "@store/features/auth/authSlice.types";
 import { selectAuth, selectLoading } from "@store/store";
+import { useGetNearestCarsApiQuery } from "@store/api/v2/carApi/carApiSlice";
+import { selectCurrentLocation } from "./redux/features/user-location/userLocationSlice";
+import Region from "react-native-maps";
 
 const Stack = createNativeStackNavigator();
 

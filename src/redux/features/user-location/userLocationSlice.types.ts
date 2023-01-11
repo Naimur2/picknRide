@@ -1,7 +1,7 @@
-import { ILatLng } from "../../../screens/MapScreen/MapScreen.types";
+import { Region } from "react-native-maps";
 
 export interface IUserLocationState {
-    currentLocation: ILatLng | null;
+    currentLocation: Region | null;
     hasBackgroundLocationPermission: boolean;
     hasForegroundLocationPermission: boolean;
 }

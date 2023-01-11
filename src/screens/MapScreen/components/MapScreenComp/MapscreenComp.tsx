@@ -22,12 +22,11 @@ import { selectCarTripInfo } from "../../../../redux/features/car-trip/carTripSl
 import { ICarTripState } from "../../../../redux/features/car-trip/carTripSlice.types";
 
 export interface IMapTopDetailsProps {
-    setDestination: (destination: ILatLng) => void;
     type: ICAR;
     setType: (type: ICAR) => void;
 }
 
-function MapscreenComp({ type, setType, setDestination }: IMapTopDetailsProps) {
+function MapscreenComp({ type, setType }: IMapTopDetailsProps) {
     const { height, width } = Dimensions.get("window");
     const carTripDetails: ICarTripState = useSelector(selectCarTripInfo);
 
@@ -67,7 +66,7 @@ function MapscreenComp({ type, setType, setDestination }: IMapTopDetailsProps) {
         >
             <VStack>
                 <LocationSearch
-                    setDestinationLocation={setDestination}
+                    setDestinationLocation={() => {}}
                     selectedType={type}
                     position="absolute"
                     zIndex={100000}

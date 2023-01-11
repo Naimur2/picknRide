@@ -11,7 +11,10 @@ import {
     TDDocumentType,
 } from "@store/api/v2/documentApi/documentApiSlice.types";
 import { IAuthState } from "@store/features/auth/authSlice.types";
-import { selectDocumentVideo } from "@store/features/document/documentSlice";
+import {
+    selectDocumentVideo,
+    setAllDocumentFieldValues,
+} from "@store/features/document/documentSlice";
 import { selectAuth } from "@store/store";
 import { Camera } from "expo-camera";
 
@@ -32,7 +35,7 @@ import { TouchableOpacity } from "react-native";
 
 import CountryPicker from "react-native-country-picker-modal";
 import { scale } from "react-native-size-matters";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import { convertPickerImageToBase64 } from "../../../../utils/convertToBase64";
 import AddImage from "../AddImage/AddImage";
@@ -41,6 +44,7 @@ import PickerButton from "./PickerButton/PickerButton";
 import Signature from "./Signature/Signature";
 import VideoPlayer from "./VideoPlayer/VideoPlayer";
 import YesNo from "./YesNo/YesNo";
+import { selectAllDocumentFieldValues } from "../../../../redux/features/document/documentSlice";
 
 const FormLabel = ({ title }: { title: string }) => (
     <FormControl.Label
@@ -53,7 +57,7 @@ const FormLabel = ({ title }: { title: string }) => (
     </FormControl.Label>
 );
 
-export default function DocumentForm() {
+function DocumentForm() {
     const [hasIntlLicense, setHasIntlLicense] = React.useState("yes");
     const [country, setCountry] = React.useState("");
     const [show, setShow] = React.useState(false);
@@ -62,6 +66,8 @@ export default function DocumentForm() {
     const video = useSelector(selectDocumentVideo);
     const navigation = useNavigation();
     const auth = useSelector(selectAuth);
+    const allFieldValues = useSelector(selectAllDocumentFieldValues);
+    const dispatch = useDispatch();
 
     const [submitDocument, result] = useSubmitDocumentMutation();
 
@@ -93,7 +99,6 @@ export default function DocumentForm() {
         backImage2: Yup.string().required("Required"),
         signature: Yup.string().required("Required"),
         country: Yup.string().required("Required"),
-        selfieVideo: Yup.string().required("Required"),
     });
 
     const initialState = {
@@ -108,7 +113,8 @@ export default function DocumentForm() {
         backImage2: "",
         signature: "",
         country: "",
-        selfieVideo: "",
+
+        countryName: "",
     };
 
     const formik = useFormik({
@@ -128,6 +134,11 @@ export default function DocumentForm() {
             const backImage2 = await convertPickerImageToBase64(
                 values.backImage2
             );
+
+            const base64Video = await convertToBase64(
+                allFieldValues?.selfieVideo
+            );
+
             const data: IUserDocumentSubmission = {
                 userType: userType as "Residence" | "Tourist",
                 internationalLicence: values.isIntlLiscense,
@@ -154,7 +165,7 @@ export default function DocumentForm() {
                     image: values.signature,
                 },
                 selfieVideo: {
-                    video: video,
+                    video: base64Video,
                 },
             };
 
@@ -180,6 +191,20 @@ export default function DocumentForm() {
         setErrors,
     } = formik;
 
+    React.useEffect(() => {
+        if (values) {
+            dispatch(setAllDocumentFieldValues(values));
+        }
+    }, [values]);
+
+    React.useEffect(() => {
+        if (allFieldValues) {
+            Object.keys(allFieldValues).forEach((key) => {
+                setFieldValue(key, allFieldValues[key]);
+            });
+        }
+    }, []);
+
     const handleRecoder = async () => {
         try {
             const cameraPermission =
@@ -203,20 +228,11 @@ export default function DocumentForm() {
     };
 
     const submitForm = async () => {
-        if (video) {
-            const base64Video = await convertToBase64(video);
-            handleAddMedia({ fieldName: "selfieVideo", uri: base64Video });
-            handleSubmit();
-        }
         if (!termAccept) {
             return alert("Please accept terms and conditions");
         }
-        if (!video) {
-            const formError: FormikErrors<typeof initialState> = {
-                ...errors,
-                selfieVideo: "Required",
-            };
-            setErrors(formError);
+        if (!allFieldValues?.selfieVideo) {
+            alert("Please record a video");
             return;
         }
         handleSubmit();
@@ -232,14 +248,6 @@ export default function DocumentForm() {
         // const base64Image = await convertToBase64(uri);
         setFieldValue(fieldName, uri);
     };
-
-    React.useEffect(() => {
-        const setBase64Video = async () => {
-            const base64Video = await convertToBase64(video);
-            handleAddMedia({ fieldName: "selfieVideo", uri: video });
-        };
-        if (video) setBase64Video();
-    }, [video]);
 
     React.useEffect(() => {
         if (result.error) {
@@ -298,18 +306,20 @@ export default function DocumentForm() {
             ) : null}
 
             <AddImage
-                getImages={(img) => {
-                    if (img[0])
-                        handleAddMedia({
-                            fieldName: "frontImage1",
-                            uri: img[0],
-                        });
-                    if (img[1])
-                        handleAddMedia({
-                            fieldName: "backImage1",
-                            uri: img[1],
-                        });
-                }}
+                frontImage={values.frontImage1}
+                backImage={values.backImage1}
+                setFrontImage={(img) =>
+                    handleAddMedia({
+                        fieldName: "frontImage1",
+                        uri: img,
+                    })
+                }
+                setBackImage={(img) =>
+                    handleAddMedia({
+                        fieldName: "backImage1",
+                        uri: img,
+                    })
+                }
                 title={
                     resident_status === "0"
                         ? "Upload both sides of your ID Card"
@@ -334,8 +344,8 @@ export default function DocumentForm() {
                 <PickerButton
                     onPress={() => setShow(true)}
                     pt={0}
-                    isActive={country !== ""}
-                    value={country.name || "Select Country"}
+                    isActive={values.countryName !== ""}
+                    value={values.countryName || "Select Country"}
                     divider
                 />
 
@@ -344,10 +354,9 @@ export default function DocumentForm() {
                         onClose={() => setShow(false)}
                         visible={show}
                         onSelect={(dt) => {
-                            setShow(false);
-                            console.log(dt);
+                            setFieldValue("countryName", dt.name);
                             setFieldValue("country", dt.cca2);
-                            setCountry(dt);
+                            setShow(false);
                         }}
                         withFilter
                     />
@@ -386,18 +395,20 @@ export default function DocumentForm() {
             />
 
             <AddImage
-                getImages={(img) => {
-                    if (img[0])
-                        handleAddMedia({
-                            fieldName: "frontImage2",
-                            uri: img[0],
-                        });
-                    if (img[1])
-                        handleAddMedia({
-                            fieldName: "backImage2",
-                            uri: img[1],
-                        });
-                }}
+                frontImage={values.frontImage2}
+                backImage={values.backImage2}
+                setFrontImage={(img) =>
+                    handleAddMedia({
+                        fieldName: "frontImage2",
+                        uri: img,
+                    })
+                }
+                setBackImage={(img) =>
+                    handleAddMedia({
+                        fieldName: "backImage2",
+                        uri: img,
+                    })
+                }
                 title="Upload both sides of your License"
             />
 
@@ -405,11 +416,7 @@ export default function DocumentForm() {
                 <ErrorMessage mt={"3px"}>{errors.frontImage2}</ErrorMessage>
             ) : null}
 
-            <VideoPlayer vdo={video} />
-
-            {touched.selfieVideo && errors.selfieVideo ? (
-                <ErrorMessage mt={"3px"}>{errors.selfieVideo}</ErrorMessage>
-            ) : null}
+            <VideoPlayer vdo={allFieldValues.selfieVideo} />
 
             <OutlineButton
                 title="Take a selfie"
@@ -455,3 +462,5 @@ export default function DocumentForm() {
         </VStack>
     );
 }
+
+export default React.memo(DocumentForm);

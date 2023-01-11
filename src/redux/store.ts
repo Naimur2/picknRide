@@ -30,7 +30,7 @@ const reducer = combineReducers({
     auth: persistedAuthReducer,
     ui: uiReducer,
     cars: persistedCarsReducer,
-    document: persistedDocumentReducer,
+    document: documentReducer,
     userLocation: persistedUserLocationReducer,
     carTrip: persistedCarTripReducer,
 });

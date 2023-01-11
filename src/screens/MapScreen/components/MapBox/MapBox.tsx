@@ -8,27 +8,20 @@ import { useSelector } from "react-redux";
 import { ILatLng } from "../../MapScreen.types";
 import { carsData } from "../../data";
 import AllMarkers from "../AllMarker/AllMarker";
+import { selectCurrentRegion } from "@store/features/user-location/userLocationSlice";
 
 export interface IMapScreenProps {
-    destinationLocation: ILatLng;
-    currentLocation: ILatLng;
     children?: any;
-    initialRegion: ILatLng;
 }
 const { height, width } = Dimensions.get("window");
 
-function MapBox(
-    { currentLocation, destinationLocation, initialRegion }: IMapScreenProps,
-    ref: any
-) {
+function MapBox() {
     const Map = Factory(MapView);
     const mapRef = React.useRef<MapView>(null);
     const navigation = useNavigation();
     const markers = useSelector(selectNearestCars);
-
-    React.useEffect(() => {
-        mapRef.current?.animateToRegion(initialRegion, 300);
-    }, [navigation]);
+    const initialRegion = useSelector(selectCurrentRegion) as Region;
+    console.log("initialRegion", initialRegion);
 
     const fitToCoordinatesHandler = (coordinates: ILatLng[]) => {
         if (mapRef.current) {
@@ -44,55 +37,19 @@ function MapBox(
             mapRef.current.animateToRegion(initialRegion, 300);
         }
     };
+    React.useEffect(() => {
+        mapRef.current?.animateToRegion(initialRegion, 300);
+    }, [navigation, initialRegion]);
 
     React.useEffect(() => {
-        if (currentLocation && destinationLocation) {
-            const coordinates = [
-                {
-                    latitude: currentLocation.latitude,
-                    longitude: currentLocation.longitude,
-                },
-                {
-                    latitude: destinationLocation.latitude,
-                    longitude: destinationLocation.longitude,
-                },
-            ];
+        if (markers.length > 0) {
+            const coordinates = markers.map((marker) => ({
+                latitude: marker.latitude,
+                longitude: marker.longitude,
+            }));
             fitToCoordinatesHandler(coordinates);
         }
-    }, [destinationLocation, initialRegion]);
-
-    // React.useEffect(() => {
-    //     if (mapRef.current && markers) {
-    //         const markersCoords: ILatLng[] = markers?.map((marker) => {
-    //             return {
-    //                 latitude: marker?.coordinates?.latitude,
-    //                 longitude: marker?.coordinates?.longitude,
-    //             };
-    //         });
-
-    //         // mapRef.current.animateToRegion(initialRegion, 300);
-    //         mapRef?.current?.fitToSuppliedMarkers(
-    //             markersCoords,
-    //             false // not animated
-    //         );
-    //     }
-    // }, [markers]);
-
-    const hasInitialRegion =
-        initialRegion?.latitude !== 0 && initialRegion?.longitude !== 0;
-
-    const hasDestinationLocation =
-        destinationLocation?.latitude !== 0 &&
-        destinationLocation?.longitude !== 0;
-
-    const renderMap = hasDestinationLocation && hasInitialRegion;
-
-    React.useImperativeHandle(ref, () => ({
-        fitToCoordinatesHandler,
-        get map() {
-            return mapRef.current as MapView;
-        },
-    }));
+    }, [markers]);
 
     return (
         <Map
