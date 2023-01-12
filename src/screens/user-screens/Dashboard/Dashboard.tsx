@@ -38,8 +38,6 @@ export default function Dashboard() {
         skip: !initialRegion.latitude || !initialRegion.longitude,
     });
 
-    console.log("data", fetcherData);
-
     React.useEffect(() => {
         const navigationOptions: NavigationStackOptions = {
             headerTitle: "",

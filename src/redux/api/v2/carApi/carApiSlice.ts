@@ -10,6 +10,7 @@ const carApiSlice = apiSliceV2.injectEndpoints({
                 method: "GET",
             }),
             async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+                console.log({ arg });
                 try {
                     const result = await queryFulfilled;
                     const { data } = result;

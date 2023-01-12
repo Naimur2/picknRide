@@ -21,7 +21,6 @@ function SignInInputForm() {
     });
 
     const [login, result] = useLoginApiMutation();
-    console.log("sss", result.data?.status);
 
     React.useEffect(() => {
         if (result.data?.status === 400) {
