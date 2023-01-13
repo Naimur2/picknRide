@@ -23,6 +23,7 @@ import { scale } from "react-native-size-matters";
 import { useDispatch, useSelector } from "react-redux";
 import VeichleCard, { IVeichleCardProps } from "../VeichleCard/VeichleCard";
 import * as Location from "expo-location";
+import { Platform } from "react-native";
 
 const veichels: IVeichleCardProps[] = [
     {
@@ -101,7 +102,9 @@ export default function VeichleCards() {
     console.log(hasForegroundLocationPermission);
 
     const handleNavigation = async () => {
-        if (!hasBackGroundPermissions || !hasForeGroundPermissions) {
+        const hasbg =
+            Platform.OS === "android" ? hasBackGroundPermissions : true;
+        if (!hasbg || !hasForeGroundPermissions) {
             console.log("here");
             await checkPermissions();
         } else {

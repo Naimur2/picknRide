@@ -24,6 +24,8 @@ export default function Dashboard() {
 
     const dispatch = useDispatch();
 
+    console.log("colorMode", colorMode);
+
     const Touchable = Factory(TouchableOpacity);
     const [isModalVisible, setIsModalVisible] = React.useState(true);
     const {

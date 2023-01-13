@@ -8,6 +8,7 @@ import MapView, { Region } from "react-native-maps";
 import { useSelector } from "react-redux";
 import { ILatLng } from "../../MapScreen.types";
 import AllMarkers from "../AllMarker/AllMarker";
+import { useGetNearestCarsApiQuery } from "@store/api/v2/carApi/carApiSlice";
 
 export interface IMapScreenProps {
     children?: any;
@@ -20,6 +21,15 @@ function MapBox() {
     const navigation = useNavigation();
     const markers = useSelector(selectNearestCars);
     const initialRegion = useSelector(selectCurrentRegion) as Region;
+    const locationData = useGetNearestCarsApiQuery(
+        {
+            latitude: initialRegion.latitude,
+            longitude: initialRegion.longitude,
+            pageNumber: 1,
+            pageSize: 10,
+        },
+        { skip: !initialRegion.latitude || !initialRegion.longitude }
+    );
 
     const fitToCoordinatesHandler = (coordinates: ILatLng[]) => {
         if (mapRef.current) {

@@ -9,9 +9,15 @@ interface IPickerSheet {
     isOpen: boolean;
     onClose: () => void;
     setImage: (image: any) => void;
+    hideFromGallery?: boolean;
 }
 
-const ImagePickerSheet = ({ setImage, isOpen, onClose }: IPickerSheet) => {
+const ImagePickerSheet = ({
+    setImage,
+    isOpen,
+    onClose,
+    hideFromGallery,
+}: IPickerSheet) => {
     const { image, pickImage, captureImage } = useImagePicker({});
     const Button = Factory(TouchableOpacity);
 
@@ -39,18 +45,24 @@ const ImagePickerSheet = ({ setImage, isOpen, onClose }: IPickerSheet) => {
                     alignItems="center"
                     justifyContent="flex-start"
                 >
-                    <Button onPress={pickImage}>
-                        <Center>
-                            <UploadIcon
-                                mb="10px"
-                                color="primary.100"
-                                iconSize={26}
-                            />
-                            <Text color={"#000"} fontWeight={600} fontSize={15}>
-                                From File
-                            </Text>
-                        </Center>
-                    </Button>
+                    {!hideFromGallery ? (
+                        <Button onPress={pickImage}>
+                            <Center>
+                                <UploadIcon
+                                    mb="10px"
+                                    color="primary.100"
+                                    iconSize={26}
+                                />
+                                <Text
+                                    color={"#000"}
+                                    fontWeight={600}
+                                    fontSize={15}
+                                >
+                                    From File
+                                </Text>
+                            </Center>
+                        </Button>
+                    ) : null}
                     <Button onPress={captureImage}>
                         <Center>
                             <Camera

@@ -11,7 +11,7 @@ import {
 } from "@store/features/user-location/userLocationSlice";
 import { useSelector, useDispatch } from "react-redux";
 import config from "@config";
-import { Alert } from "react-native";
+import { Alert, Platform } from "react-native";
 import * as Location from "expo-location";
 import useLocationPermissions from "../../hooks/useLocationPermissions";
 
@@ -28,7 +28,8 @@ function ActualMap({}: IMapProps) {
     } = useLocationPermissions();
 
     const getCurrentLocation = async () => {
-        if (!hasForeGroundPermissions || !hasBackGroundPermissions) {
+        const hasBg = Platform.OS === "ios" ? true : hasBackGroundPermissions;
+        if (!hasForeGroundPermissions || !hasBg) {
             await checkPermissions();
             return;
         }

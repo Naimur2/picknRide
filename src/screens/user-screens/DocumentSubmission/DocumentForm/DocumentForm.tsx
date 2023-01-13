@@ -59,6 +59,7 @@ function DocumentForm() {
     const [termAccept, setTermAccept] = React.useState(false);
     const Touchable = Factory(TouchableOpacity);
     const [errors, setErrors] = React.useState({});
+    const [loading, setLoading] = React.useState(false);
 
     const navigation = useNavigation();
     const auth = useSelector(selectAuth);
@@ -118,52 +119,66 @@ function DocumentForm() {
     };
 
     const handleSubmit = async () => {
-        const document1Expiry = new Date(values.expiry1);
-        const document2Expiry = new Date(values.expiry2);
-        const frontImage1 = await convertPickerImageToBase64(
-            values.frontImage1
-        );
-        const backImage1 = await convertPickerImageToBase64(values.backImage1);
-        const frontImage2 = await convertPickerImageToBase64(
-            values.frontImage2
-        );
-        const backImage2 = await convertPickerImageToBase64(values.backImage2);
+        try {
+            setLoading(true);
+            const document1Expiry = new Date(values.expiry1);
+            const document2Expiry = new Date(values.expiry2);
+            const frontImage1 = await convertPickerImageToBase64(
+                values.frontImage1
+            );
+            const backImage1 = await convertPickerImageToBase64(
+                values.backImage1
+            );
+            const frontImage2 = await convertPickerImageToBase64(
+                values.frontImage2
+            );
+            const backImage2 = await convertPickerImageToBase64(
+                values.backImage2
+            );
 
-        const base64Video = await convertToBase64(values?.selfieVideo);
+            const base64Video = await convertToBase64(values?.selfieVideo);
 
-        const data: IUserDocumentSubmission = {
-            userType: userType as "Residence" | "Tourist",
-            internationalLicence: values.isIntlLiscense,
-            documents: [
-                {
-                    documentType:
-                        firstDocumentTypes[resident_status as "0" | "1"] ??
-                        "Address",
-                    docId: values.docId1,
-                    expiry: document1Expiry.toISOString(),
-                    frontImage: frontImage1,
-                    backImage: backImage1,
+            const data: IUserDocumentSubmission = {
+                userType: userType as "Residence" | "Tourist",
+                internationalLicence: values.isIntlLiscense,
+                documents: [
+                    {
+                        documentType:
+                            firstDocumentTypes[resident_status as "0" | "1"] ??
+                            "Address",
+                        docId: values.docId1,
+                        expiry: document1Expiry.toISOString(),
+                        frontImage: frontImage1,
+                        backImage: backImage1,
+                    },
+                    {
+                        documentType: EDocumentType.Licence,
+                        docId: values.docId2,
+                        expiry: document2Expiry.toISOString(),
+                        frontImage: frontImage2,
+                        backImage: backImage2,
+                        country: values.country,
+                    },
+                ],
+                signature: {
+                    image: values.signature,
                 },
-                {
-                    documentType: EDocumentType.Licence,
-                    docId: values.docId2,
-                    expiry: document2Expiry.toISOString(),
-                    frontImage: frontImage2,
-                    backImage: backImage2,
-                    country: values.country,
+                selfieVideo: {
+                    video: base64Video,
                 },
-            ],
-            signature: {
-                image: values.signature,
-            },
-            selfieVideo: {
-                video: base64Video,
-            },
-        };
+            };
+            console.log(data);
 
-        const res = await submitDocument(data);
-        if (res?.data?.succeded) {
-            alert("Document Submitted Successfully, Please wait for approval");
+            setLoading(false);
+
+            const res = await submitDocument(data).unwrap();
+            if (res?.data?.succeded) {
+                alert(
+                    "Document Submitted Successfully, Please wait for approval"
+                );
+            }
+        } catch (error) {
+            console.log(error);
         }
     };
 
@@ -244,6 +259,8 @@ function DocumentForm() {
 
     React.useEffect(() => {
         if (result.error) {
+            // console.error(result.error);
+            console.error(result);
             alert(result?.data?.data?.message ?? "Something went wrong");
         }
         if (!result.error && result.data) {
@@ -457,6 +474,7 @@ function DocumentForm() {
                     mt="5"
                     mb={8}
                     title="Continue"
+                    disabled={loading || result.isSuccess || !termAccept}
                 />
             </Center>
         </VStack>
