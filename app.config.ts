@@ -61,6 +61,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
                     NSLocationTemporaryUsageDescriptionDictionaryKey:
                         "This app requires location access to provide you with the best experience.",
                 },
+                UIBackgroundModes: ["location", "fetch"],
             },
         },
         plugins: [...appPlugins],

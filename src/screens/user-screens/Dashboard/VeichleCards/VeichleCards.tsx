@@ -1,5 +1,6 @@
 import OutlineButton from "@components/OutlineButton/OutlineButton";
 import ThreeSwitch from "@components/ThreeSwitch/ThreeSwitch";
+import config from "@config";
 import { useNavigation } from "@react-navigation/native";
 import { IAuthState } from "@store/features/auth/authSlice.types";
 import {
@@ -8,6 +9,8 @@ import {
 } from "@store/features/cars/carsSlice";
 import { ECarType } from "@store/features/cars/carsSlice.types";
 import {
+    selectHasBackgroundLocationPermission,
+    selectHasForegroundLocationPermission,
     setCurrentLocation,
     setHasForegroundLocationPermission,
 } from "@store/features/user-location/userLocationSlice";
@@ -19,11 +22,8 @@ import React from "react";
 import Animated, { FlipInYRight, FlipOutYLeft } from "react-native-reanimated";
 import { scale } from "react-native-size-matters";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    selectHasBackgroundLocationPermission,
-    selectHasForegroundLocationPermission,
-} from "../../../../redux/features/user-location/userLocationSlice";
 import VeichleCard, { IVeichleCardProps } from "../VeichleCard/VeichleCard";
+import * as TaskManager from "expo-task-manager";
 
 const veichels: IVeichleCardProps[] = [
     {
@@ -60,11 +60,20 @@ export default function VeichleCards() {
     const auth: IAuthState = useSelector(selectAuth);
     const [loading, setLoading] = React.useState(false);
 
+    TaskManager.defineTask(config.LOCATION_TASK_NAME, ({ data, error }) => {
+        if (error) {
+            // Error occurred - check `error.message` for more details.
+            return;
+        }
+        if (data) {
+            const { locations } = data;
+            dispatch(setCurrentLocation(locations[0].coords));
+            // do something with the locations captured in the background
+        }
+    });
+
     const hasForegroundLocationPermission = useSelector(
         selectHasForegroundLocationPermission
-    );
-    const hasBackgroundLocationPermission = useSelector(
-        selectHasBackgroundLocationPermission
     );
 
     const currentVeichle = veichels.find(
@@ -87,6 +96,7 @@ export default function VeichleCards() {
             // ask for location permission
             const hasForegroundPermission =
                 locationStatus.granted && locationStatus.status === "granted";
+
             if (!hasForegroundLocationPermission && hasForegroundPermission) {
                 dispatch(
                     setHasForegroundLocationPermission(hasForegroundPermission)
@@ -100,6 +110,13 @@ export default function VeichleCards() {
             }
 
             if (gotoNextScreen) {
+                await Location.startLocationUpdatesAsync(
+                    config.LOCATION_TASK_NAME,
+                    {
+                        accuracy: Location.Accuracy.Balanced,
+                        timeInterval: 1000,
+                    }
+                );
                 navigation.navigate("MapScreen", {
                     veichle: currentVeichle,
                 });

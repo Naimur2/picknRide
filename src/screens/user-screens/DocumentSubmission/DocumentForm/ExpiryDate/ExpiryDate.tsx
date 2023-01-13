@@ -7,17 +7,14 @@ import PickerButton from "../PickerButton/PickerButton";
 export default function ExpiryDate({
     onChange,
     onPress,
+    date,
     ...rest
 }: {
     onChange: (date: Date) => void;
     onPress?: () => void;
+    date?: Date;
 }) {
     const [show, setShow] = React.useState(false);
-    const [date, setDate] = React.useState(null);
-
-    React.useEffect(() => {
-        onChange?.(date);
-    }, [date]);
 
     return (
         <FormControl mt="3" {...rest}>
@@ -34,7 +31,7 @@ export default function ExpiryDate({
                 isOpen={show}
                 onClose={() => setShow(false)}
                 setDate={(dt) => {
-                    setDate(dt);
+                    onChange?.(dt);
                     setShow(false);
                 }}
             />

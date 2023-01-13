@@ -1,5 +1,4 @@
 import CheckBox from "@components/CheckBox/CheckBox";
-import ErrorMessage from "@components/ErrorMessage/ErrorMessage";
 import GradientBtn from "@components/GradientBtn/GradientBtn";
 import H3 from "@components/H3/H3";
 import OutlineButton from "@components/OutlineButton/OutlineButton";
@@ -11,16 +10,12 @@ import {
     TDDocumentType,
 } from "@store/api/v2/documentApi/documentApiSlice.types";
 import { IAuthState } from "@store/features/auth/authSlice.types";
-import {
-    selectDocumentVideo,
-    setAllDocumentFieldValues,
-} from "@store/features/document/documentSlice";
+import { setDocumentFieldValue } from "@store/features/document/documentSlice";
 import { selectAuth } from "@store/store";
 import { Camera } from "expo-camera";
 
 import convertToBase64 from "@utils/convertToBase64";
 import * as MediaLibrary from "expo-media-library";
-import { FormikErrors, useFormik } from "formik";
 import {
     Center,
     Factory,
@@ -28,15 +23,18 @@ import {
     HStack,
     Input,
     Text,
+    Toast,
     VStack,
 } from "native-base";
 import React from "react";
 import { TouchableOpacity } from "react-native";
 
+import ErrorToast from "@components/ErrorToast/ErrorToast";
 import CountryPicker from "react-native-country-picker-modal";
 import { scale } from "react-native-size-matters";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
+import { selectAllDocumentFieldValues } from "../../../../redux/features/document/documentSlice";
 import { convertPickerImageToBase64 } from "../../../../utils/convertToBase64";
 import AddImage from "../AddImage/AddImage";
 import ExpiryDate from "./ExpiryDate/ExpiryDate";
@@ -44,7 +42,6 @@ import PickerButton from "./PickerButton/PickerButton";
 import Signature from "./Signature/Signature";
 import VideoPlayer from "./VideoPlayer/VideoPlayer";
 import YesNo from "./YesNo/YesNo";
-import { selectAllDocumentFieldValues } from "../../../../redux/features/document/documentSlice";
 
 const FormLabel = ({ title }: { title: string }) => (
     <FormControl.Label
@@ -58,18 +55,23 @@ const FormLabel = ({ title }: { title: string }) => (
 );
 
 function DocumentForm() {
-    const [hasIntlLicense, setHasIntlLicense] = React.useState("yes");
-    const [country, setCountry] = React.useState("");
     const [show, setShow] = React.useState(false);
     const [termAccept, setTermAccept] = React.useState(false);
     const Touchable = Factory(TouchableOpacity);
-    const video = useSelector(selectDocumentVideo);
+    const [errors, setErrors] = React.useState({});
+
     const navigation = useNavigation();
     const auth = useSelector(selectAuth);
-    const allFieldValues = useSelector(selectAllDocumentFieldValues);
+    const values = useSelector(selectAllDocumentFieldValues);
+
     const dispatch = useDispatch();
 
     const [submitDocument, result] = useSubmitDocumentMutation();
+
+    const setFieldValue = (field: string, value: any) => {
+        console.log({ field, value });
+        dispatch(setDocumentFieldValue({ fieldName: field, value }));
+    };
 
     const { resident_status } = auth as IAuthState;
 
@@ -99,111 +101,71 @@ function DocumentForm() {
         backImage2: Yup.string().required("Required"),
         signature: Yup.string().required("Required"),
         country: Yup.string().required("Required"),
+        selfieVideo: Yup.string().required("Required"),
     });
 
-    const initialState = {
-        isIntlLiscense: true,
-        docId1: "",
-        expiry1: "",
-        frontImage1: "",
-        backImage1: "",
-        docId2: "",
-        expiry2: "",
-        frontImage2: "",
-        backImage2: "",
-        signature: "",
-        country: "",
-
-        countryName: "",
+    const errorValidation = async () => {
+        try {
+            await schema.validate(values, { abortEarly: false });
+            return {};
+        } catch (err: any | Yup.ValidationError) {
+            const errors: { [key: string]: string } = {};
+            err.inner.forEach((error: any) => {
+                errors[error.path] = error.message;
+            });
+            return errors;
+        }
     };
 
-    const formik = useFormik({
-        initialValues: initialState,
-        onSubmit: async (values) => {
-            const document1Expiry = new Date(values.expiry1);
-            const document2Expiry = new Date(values.expiry2);
-            const frontImage1 = await convertPickerImageToBase64(
-                values.frontImage1
-            );
-            const backImage1 = await convertPickerImageToBase64(
-                values.backImage1
-            );
-            const frontImage2 = await convertPickerImageToBase64(
-                values.frontImage2
-            );
-            const backImage2 = await convertPickerImageToBase64(
-                values.backImage2
-            );
+    const handleSubmit = async () => {
+        const document1Expiry = new Date(values.expiry1);
+        const document2Expiry = new Date(values.expiry2);
+        const frontImage1 = await convertPickerImageToBase64(
+            values.frontImage1
+        );
+        const backImage1 = await convertPickerImageToBase64(values.backImage1);
+        const frontImage2 = await convertPickerImageToBase64(
+            values.frontImage2
+        );
+        const backImage2 = await convertPickerImageToBase64(values.backImage2);
 
-            const base64Video = await convertToBase64(
-                allFieldValues?.selfieVideo
-            );
+        const base64Video = await convertToBase64(values?.selfieVideo);
 
-            const data: IUserDocumentSubmission = {
-                userType: userType as "Residence" | "Tourist",
-                internationalLicence: values.isIntlLiscense,
-                documents: [
-                    {
-                        documentType:
-                            firstDocumentTypes[resident_status as "0" | "1"] ??
-                            "Address",
-                        docId: values.docId1,
-                        expiry: document1Expiry.toISOString(),
-                        frontImage: frontImage1,
-                        backImage: backImage1,
-                    },
-                    {
-                        documentType: EDocumentType.Licence,
-                        docId: values.docId2,
-                        expiry: document2Expiry.toISOString(),
-                        frontImage: frontImage2,
-                        backImage: backImage2,
-                        country: values.country,
-                    },
-                ],
-                signature: {
-                    image: values.signature,
+        const data: IUserDocumentSubmission = {
+            userType: userType as "Residence" | "Tourist",
+            internationalLicence: values.isIntlLiscense,
+            documents: [
+                {
+                    documentType:
+                        firstDocumentTypes[resident_status as "0" | "1"] ??
+                        "Address",
+                    docId: values.docId1,
+                    expiry: document1Expiry.toISOString(),
+                    frontImage: frontImage1,
+                    backImage: backImage1,
                 },
-                selfieVideo: {
-                    video: base64Video,
+                {
+                    documentType: EDocumentType.Licence,
+                    docId: values.docId2,
+                    expiry: document2Expiry.toISOString(),
+                    frontImage: frontImage2,
+                    backImage: backImage2,
+                    country: values.country,
                 },
-            };
+            ],
+            signature: {
+                image: values.signature,
+            },
+            selfieVideo: {
+                video: base64Video,
+            },
+        };
 
-            const res = await submitDocument(data);
-            if (res?.data?.succeded) {
-                alert(
-                    "Document Submitted Successfully, Please wait for approval"
-                );
-            }
-        },
-        validationSchema: schema,
-    });
-
-    const {
-        values,
-        handleChange,
-        handleBlur,
-        errors,
-        touched,
-        setFieldValue,
-        handleSubmit,
-        setFieldTouched,
-        setErrors,
-    } = formik;
-
-    React.useEffect(() => {
-        if (values) {
-            dispatch(setAllDocumentFieldValues(values));
+        const res = await submitDocument(data);
+        if (res?.data?.succeded) {
+            alert("Document Submitted Successfully, Please wait for approval");
         }
-    }, [values]);
-
-    React.useEffect(() => {
-        if (allFieldValues) {
-            Object.keys(allFieldValues).forEach((key) => {
-                setFieldValue(key, allFieldValues[key]);
-            });
-        }
-    }, []);
+    };
 
     const handleRecoder = async () => {
         try {
@@ -229,12 +191,43 @@ function DocumentForm() {
 
     const submitForm = async () => {
         if (!termAccept) {
-            return alert("Please accept terms and conditions");
-        }
-        if (!allFieldValues?.selfieVideo) {
-            alert("Please record a video");
+            Toast.show({
+                id: "otpError",
+                render: () => (
+                    <ErrorToast
+                        message={
+                            "Please accept the terms and conditions to proceed"
+                        }
+                    />
+                ),
+                placement: "top",
+            });
             return;
         }
+
+        // check if all the fields are filled
+        const errorsValues = await errorValidation();
+        const numberOfErrors = Object.keys(errorsValues).length;
+        if (numberOfErrors > 0) {
+            Toast.show({
+                id: "otpError",
+                render: () => (
+                    <ErrorToast
+                        space={4}
+                        w={"320px"}
+                        direction={"column"}
+                        textProps={{ textAlign: "center" }}
+                        px={4}
+                        message={
+                            "Please fill all the required fields to proceed"
+                        }
+                    />
+                ),
+                placement: "top",
+            });
+            return;
+        }
+
         handleSubmit();
     };
 
@@ -257,6 +250,13 @@ function DocumentForm() {
             navigation.navigate("MapScreen" as never);
         }
     }, [result]);
+
+    React.useEffect(() => {
+        (async () => {
+            const errorsValues = await errorValidation();
+            setErrors(errorsValues);
+        })();
+    }, [values]);
 
     return (
         <VStack w={scale(300) + "px"} mx="auto" py={4}>
@@ -285,25 +285,24 @@ function DocumentForm() {
                         color: "#fff",
                         placeholderTextColor: "white",
                     }}
-                    onChangeText={handleChange("docId1")}
-                    onBlur={handleBlur("docId1")}
+                    onChangeText={(value) => setFieldValue("docId1", value)}
                     value={values.docId1}
                 />
 
-                {touched.docId1 && errors.docId1 ? (
+                {/* {errors.docId1 ? (
                     <ErrorMessage mt={"3px"}>{errors.docId1}</ErrorMessage>
-                ) : null}
+                ) : null} */}
             </FormControl>
 
             <ExpiryDate
                 onChange={(data) => {
                     setFieldValue("expiry1", data);
                 }}
-                onPress={() => setFieldTouched("expiry1")}
+                date={values.expiry1 as Date}
             />
-            {touched.expiry1 && errors.expiry1 ? (
+            {/* {errors.expiry1 ? (
                 <ErrorMessage mt={"3px"}>{errors.expiry1}</ErrorMessage>
-            ) : null}
+            ) : null} */}
 
             <AddImage
                 frontImage={values.frontImage1}
@@ -326,9 +325,9 @@ function DocumentForm() {
                         : "Upload both sides of your Passport"
                 }
             />
-            {touched.frontImage1 && errors.frontImage1 ? (
+            {/* {errors.frontImage1 ? (
                 <ErrorMessage mt={"3px"}>{errors.frontImage1}</ErrorMessage>
-            ) : null}
+            ) : null} */}
             <VStack>
                 <YesNo
                     selected={values.isIntlLiscense ? "yes" : "no"}
@@ -361,9 +360,9 @@ function DocumentForm() {
                         withFilter
                     />
                 )}
-                {touched.country && errors.country ? (
+                {/* {errors.country ? (
                     <ErrorMessage mt={"3px"}>{errors.country}</ErrorMessage>
-                ) : null}
+                ) : null} */}
             </FormControl>
 
             <FormControl mb={2} mt={3}>
@@ -380,18 +379,18 @@ function DocumentForm() {
                         color: "#fff",
                         placeholderTextColor: "white",
                     }}
-                    onChangeText={handleChange("docId2")}
-                    onBlur={handleBlur("docId2")}
+                    onChangeText={(value) => setFieldValue("docId2", value)}
                     value={values.docId2}
                 />
-                {touched.docId2 && errors.docId2 ? (
+                {/* {errors.docId2 ? (
                     <ErrorMessage mt={"3px"}>{errors.docId2}</ErrorMessage>
-                ) : null}
+                ) : null} */}
             </FormControl>
             <ExpiryDate
                 onChange={(data) => {
                     setFieldValue("expiry2", data);
                 }}
+                date={values.expiry2 as Date}
             />
 
             <AddImage
@@ -411,12 +410,12 @@ function DocumentForm() {
                 }
                 title="Upload both sides of your License"
             />
-
-            {touched.frontImage2 && errors.frontImage2 ? (
+            {/* 
+            {errors.frontImage2 ? (
                 <ErrorMessage mt={"3px"}>{errors.frontImage2}</ErrorMessage>
-            ) : null}
+            ) : null} */}
 
-            <VideoPlayer vdo={allFieldValues.selfieVideo} />
+            <VideoPlayer vdo={values.selfieVideo} />
 
             <OutlineButton
                 title="Take a selfie"
@@ -433,10 +432,11 @@ function DocumentForm() {
                     setSignatureValue={(data) => {
                         setFieldValue("signature", data);
                     }}
+                    signatureValue={values.signature}
                 />
-                {touched.signature && errors.signature ? (
+                {/* {errors.signature ? (
                     <ErrorMessage mt={"3px"}>{errors.signature}</ErrorMessage>
-                ) : null}
+                ) : null} */}
             </VStack>
 
             <Center>

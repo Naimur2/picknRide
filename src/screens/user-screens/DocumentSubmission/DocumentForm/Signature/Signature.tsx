@@ -5,19 +5,27 @@ import SignatureBox from "./SignatureBox/SignatureBox";
 
 function Signature({
     setSignatureValue,
+    signatureValue,
 }: {
     setSignatureValue: (value: string) => void;
+    signatureValue: string;
 }) {
     const [show, setShow] = React.useState(false);
-    const [signature, setSignature] = React.useState("");
 
-    React.useEffect(() => {
-        if (signature && setSignatureValue) {
-            // remove base64 header
-            const sig = signature.split(",")[1];
-            setSignatureValue(sig);
+    const handleAddSignature = React.useCallback(
+        (sign: string) => {
+            const signBase64 = sign.split(",")[1];
+            setSignatureValue?.(signBase64);
+            setShow(false);
+        },
+        [setSignatureValue, signatureValue]
+    );
+
+    const signature = React.useMemo(() => {
+        if (signatureValue) {
+            return `data:image/png;base64,${signatureValue}`;
         }
-    }, [signature]);
+    }, [signatureValue]);
 
     return (
         <VStack mt={2} space={2}>
@@ -47,8 +55,7 @@ function Signature({
             <Modal isOpen={show} onClose={() => setShow(false)}>
                 <SignatureBox
                     onSignature={(sig) => {
-                        setSignature(sig);
-                        setShow(false);
+                        handleAddSignature(sig);
                     }}
                 />
             </Modal>

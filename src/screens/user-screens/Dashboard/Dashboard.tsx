@@ -21,10 +21,9 @@ import VeichleCards from "./VeichleCards/VeichleCards";
 export default function Dashboard() {
     const navigation = useNavigation();
     const { colorMode } = useColorMode();
-    const dispatch = useDispatch();
+
     const Touchable = Factory(TouchableOpacity);
     const [isModalVisible, setIsModalVisible] = React.useState(true);
-    const [status, getPermission] = Location.useForegroundPermissions();
 
     const initialRegion = useSelector(selectCurrentLocation);
     const fetcherData = {
@@ -33,10 +32,6 @@ export default function Dashboard() {
         latitude: initialRegion?.latitude || 35.6892,
         longitude: initialRegion?.longitude || 51.389,
     };
-
-    const { data, isLoading, error } = useGetNearestCarsApiQuery(fetcherData, {
-        skip: !initialRegion.latitude || !initialRegion.longitude,
-    });
 
     React.useEffect(() => {
         const navigationOptions: NavigationStackOptions = {
@@ -84,22 +79,6 @@ export default function Dashboard() {
             }
         });
     }, []);
-
-    // React.useLayoutEffect(() => {
-    //     if (status?.status === "granted" && status?.granted) {
-    //         (async () => {
-    //             let location = await Location.getCurrentPositionAsync({});
-    //             dispatch(
-    //                 setCurrentLocation({
-    //                     latitude: location.coords.latitude,
-    //                     longitude: location.coords.longitude,
-    //                 })
-    //             );
-    //         })();
-    //     } else {
-    //         getPermission();
-    //     }
-    // }, [status]);
 
     return (
         <ImageBg type={colorMode}>

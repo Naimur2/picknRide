@@ -3,7 +3,11 @@ import { HStack, Text } from "native-base";
 import React from "react";
 import { IErrorToastProps } from "./ErrorToast.types";
 
-export default function ErrorToast({ message, ...rest }: IErrorToastProps) {
+export default function ErrorToast({
+    message,
+    textProps,
+    ...rest
+}: IErrorToastProps) {
     return (
         <HStack
             shadow="1"
@@ -19,7 +23,12 @@ export default function ErrorToast({ message, ...rest }: IErrorToastProps) {
             {...rest}
         >
             <Entypo name="warning" size={16} color="white" />
-            <Text fontWeight={"bold"} color={"white"}>
+            <Text
+                textAlign={"justify"}
+                fontWeight={"bold"}
+                color={"white"}
+                {...textProps}
+            >
                 {message}
             </Text>
         </HStack>
