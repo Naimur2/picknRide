@@ -91,15 +91,9 @@ export default function VeichleCards() {
 
     console.log({ clocation });
 
-    const hasForegroundLocationPermission = useSelector(
-        selectHasForegroundLocationPermission
-    );
-
     const currentVeichle = veichels.find(
         (veichle) => veichle.type === selectedVeichle
     );
-
-    console.log(hasForegroundLocationPermission);
 
     const handleNavigation = async () => {
         const hasbg =
@@ -108,6 +102,13 @@ export default function VeichleCards() {
             console.log("here");
             await checkPermissions();
         } else {
+            await Location.startLocationUpdatesAsync(
+                config.LOCATION_TASK_NAME,
+                {
+                    accuracy: Location.Accuracy.BestForNavigation,
+                    timeInterval: 2000,
+                }
+            );
             const documentStatus = auth.userdocuments_status as "0" | "1";
             if (selectedVeichle === ECarType.CAR && documentStatus !== "1") {
                 navigation.navigate("DocumentSubmission", {

@@ -35,6 +35,7 @@ export default function ScanQrCode() {
     const [flashOn, setFlashOn] = React.useState(false);
     const [cameraPhoto, setCameraPhoto] = React.useState<any>(null);
     const [imageUri, setImageUri] = React.useState<string>("");
+    const [isLoaded, setIsLoaded] = React.useState<boolean>(false);
     const inputRef = React.useRef<any>(null);
 
     const [validateCarTrip, validationResult] =
@@ -44,24 +45,33 @@ export default function ScanQrCode() {
 
     const handleNavigation = (tripData: IValidateCarTripData | null) => {
         if (!config.DEV_MODE && tripData) {
+            console.log(config.DEV_MODE, tripData);
             const data: IValidateCarTripData = tripData;
 
-            navigation.navigate("StartEndRide", {
-                ...data,
-                type: "START",
-            });
+            // navigation.navigate("StartEndRide", {
+            //     ...data,
+            //     type: "START",
+            // });
         } else {
+            console.log(config.DEV_MODE, tripData);
             const data: IValidateCarTripData = {
                 isValidVehicle: true,
                 vehicleNo: "123456",
                 tripToken: "123456",
             };
-            navigation.navigate("StartEndRide", {
-                type: "START",
-                data: data,
-            });
+            // navigation.navigate("StartEndRide", {
+            //     type: "START",
+            //     data: data,
+            // });
         }
     };
+
+    React.useLayoutEffect(() => {
+        setIsLoaded(true);
+        return () => {
+            setIsLoaded(false);
+        };
+    }, [navigation]);
 
     const LinGrad = Factory(LinearGradient);
 
@@ -89,10 +99,12 @@ export default function ScanQrCode() {
     }, []);
 
     const handleSubmit = React.useCallback(async () => {
-        const { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== "granted") {
+        const { status, granted } =
+            await Location.getForegroundPermissionsAsync();
+        if (status !== "granted" || !granted) {
             alert("Permission to access location was denied");
-            return;
+        } else if (!cameraPhoto || !inputRef?.current) {
+            alert("Image or number is required");
         } else {
             if (!config.DEV_MODE) {
                 const location = await Location.getCurrentPositionAsync({});
@@ -112,6 +124,7 @@ export default function ScanQrCode() {
                     mobileLongitude: config.longitude,
                 };
                 const res = await validateCarTrip(demoData).unwrap();
+                console.log(res);
                 handleNavigation(res?.data);
             }
         }
