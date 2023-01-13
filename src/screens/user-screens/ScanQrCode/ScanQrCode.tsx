@@ -26,12 +26,7 @@ import { IValidateCarTripData } from "./ScanQrCode.types";
 
 export default function ScanQrCode() {
     const navigation = useNavigation();
-    const [showCamera, setShowCamera] = useState(false);
 
-    const [hasLocationPermission, askLocationPermission] =
-        Location.useForegroundPermissions();
-
-    const Bg = Factory(Background);
     const [flashOn, setFlashOn] = React.useState(false);
     const [cameraPhoto, setCameraPhoto] = React.useState<any>(null);
     const [imageUri, setImageUri] = React.useState<string>("");
@@ -101,9 +96,10 @@ export default function ScanQrCode() {
     const handleSubmit = React.useCallback(async () => {
         const { status, granted } =
             await Location.getForegroundPermissionsAsync();
+        const hasImageOrNumber = cameraPhoto || inputRef?.current;
         if (status !== "granted" || !granted) {
             alert("Permission to access location was denied");
-        } else if (!cameraPhoto || !inputRef?.current) {
+        } else if (!hasImageOrNumber) {
             alert("Image or number is required");
         } else {
             if (!config.DEV_MODE) {
@@ -124,8 +120,9 @@ export default function ScanQrCode() {
                     mobileLongitude: config.longitude,
                 };
                 const res = await validateCarTrip(demoData).unwrap();
-                console.log(res);
-                handleNavigation(res?.data);
+                if (res?.data) {
+                    handleNavigation(res?.data);
+                }
             }
         }
     }, []);

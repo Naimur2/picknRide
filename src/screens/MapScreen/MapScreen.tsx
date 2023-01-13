@@ -28,8 +28,9 @@ function ActualMap({}: IMapProps) {
     } = useLocationPermissions();
 
     const getCurrentLocation = async () => {
-        const hasBg = Platform.OS === "ios" ? true : hasBackGroundPermissions;
-        if (!hasForeGroundPermissions || !hasBg) {
+        const hasBg =
+            Platform.OS === "android" ? false : hasBackGroundPermissions;
+        if (!hasForeGroundPermissions) {
             await checkPermissions();
             return;
         }

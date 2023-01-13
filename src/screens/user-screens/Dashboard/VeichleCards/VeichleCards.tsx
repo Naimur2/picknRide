@@ -75,21 +75,15 @@ export default function VeichleCards() {
         if (data) {
             const { locations } = data;
             console.log(locations[0].coords);
-            // dispatch(
-            //     setCurrentLocation({
-            //         latitude: locations[0].coords.latitude,
-            //         longitude: locations[0].coords.longitude,
-            //     })
-            // );
+            dispatch(
+                setCurrentLocation({
+                    latitude: locations[0].coords.latitude,
+                    longitude: locations[0].coords.longitude,
+                })
+            );
             // do something with the locations captured in the background
-            setClocation({
-                latitude: locations[0].coords.latitude,
-                longitude: locations[0].coords.longitude,
-            });
         }
     });
-
-    console.log({ clocation });
 
     const currentVeichle = veichels.find(
         (veichle) => veichle.type === selectedVeichle
@@ -98,7 +92,7 @@ export default function VeichleCards() {
     const handleNavigation = async () => {
         const hasbg =
             Platform.OS === "android" ? hasBackGroundPermissions : true;
-        if (!hasbg || !hasForeGroundPermissions) {
+        if (!hasForeGroundPermissions) {
             console.log("here");
             await checkPermissions();
         } else {
@@ -106,7 +100,7 @@ export default function VeichleCards() {
                 config.LOCATION_TASK_NAME,
                 {
                     accuracy: Location.Accuracy.BestForNavigation,
-                    timeInterval: 2000,
+                    timeInterval: 30000,
                 }
             );
             const documentStatus = auth.userdocuments_status as "0" | "1";
