@@ -1,33 +1,35 @@
-import config from "@config";
-import { useNavigation } from "@react-navigation/native";
-import { useGetNearestCarsApiQuery } from "@store/api/v2/carApi/carApiSlice";
+import { VStack } from "native-base";
+import React from "react";
+import { ICAR } from "./MapScreen.types";
+import MapBox, { IMapScreenProps } from "./components/MapBox/MapBox";
+import MapscreenComp, {
+    IMapTopDetailsProps,
+} from "./components/MapScreenComp/MapscreenComp";
 import {
     selectCurrentLocation,
     setCurrentLocation,
 } from "@store/features/user-location/userLocationSlice";
-import colors from "@theme/colors";
-import * as Location from "expo-location";
-import { Spinner, VStack } from "native-base";
-import * as React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import config from "@config";
 import { Alert } from "react-native";
-import { Region } from "react-native-maps";
-import { useDispatch, useSelector } from "react-redux";
-import ActualMap from "./ActualMap";
-import AskBackgroundPermission from "./components/AskBackGroundPermission/AskBackgroundPermission";
+import * as Location from "expo-location";
+import useLocationPermissions from "../../hooks/useLocationPermissions";
 
-function MapScreen() {
-    const navigation = useNavigation();
+interface IMapProps extends IMapScreenProps, IMapTopDetailsProps {}
+
+function ActualMap({}: IMapProps) {
+    const [carType, setCarType] = React.useState<ICAR>("scooter");
+    const currentLocation = useSelector(selectCurrentLocation);
     const dispatch = useDispatch();
-
-    const [selectedType, setSelectedType] = React.useState<ICAR>("cycle");
+    const {
+        hasBackGroundPermissions,
+        hasForeGroundPermissions,
+        checkPermissions,
+    } = useLocationPermissions();
 
     const getCurrentLocation = async () => {
-        const { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== "granted") {
-            Alert.alert(
-                "Permission to access location was denied",
-                "Please enable location services in your settings"
-            );
+        if (!hasForeGroundPermissions || !hasBackGroundPermissions) {
+            await checkPermissions();
             return;
         }
         const location = await Location.getCurrentPositionAsync({});
@@ -55,14 +57,27 @@ function MapScreen() {
         } else {
             getCurrentLocation();
         }
+        // const interval = setInterval(() => {}, 10000);
+        // return () => clearInterval(interval);
     }, []);
 
+    console.log("currentLocation", currentLocation);
+
     return (
-        <>
-            <ActualMap type={selectedType} setType={setSelectedType} />
-            <AskBackgroundPermission />
-        </>
+        <VStack
+            flex={1}
+            position="relative"
+            justifyContent="space-between"
+            h="full"
+            w="full"
+            collapsable={false}
+        >
+            <VStack flex="1" collapsable={false}>
+                <MapscreenComp type={carType} setType={(t) => setCarType(t)} />
+                <MapBox />
+            </VStack>
+        </VStack>
     );
 }
 
-export default React.memo(MapScreen);
+export default React.memo(ActualMap);

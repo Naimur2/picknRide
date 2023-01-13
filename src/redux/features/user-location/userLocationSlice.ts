@@ -18,7 +18,13 @@ export const userLocationSlice = createSlice({
     initialState,
     reducers: {
         setCurrentLocation: (state, action) => {
-            state.currentLocation = action.payload;
+            console.log("action.payload", action.payload);
+            state.currentLocation = {
+                latitude: action.payload?.latitude,
+                longitude: action.payload?.longitude,
+                latitudeDelta: 0.009,
+                longitudeDelta: 0.01,
+            };
         },
         setHasBackgroundLocationPermission: (state, action) => {
             state.hasBackgroundLocationPermission = action.payload;

@@ -1,6 +1,7 @@
 import OutlineButton from "@components/OutlineButton/OutlineButton";
 import ThreeSwitch from "@components/ThreeSwitch/ThreeSwitch";
 import config from "@config";
+import useLocationPermissions from "@hooks/useLocationPermissions";
 import { useNavigation } from "@react-navigation/native";
 import { IAuthState } from "@store/features/auth/authSlice.types";
 import {
@@ -9,21 +10,19 @@ import {
 } from "@store/features/cars/carsSlice";
 import { ECarType } from "@store/features/cars/carsSlice.types";
 import {
-    selectHasBackgroundLocationPermission,
     selectHasForegroundLocationPermission,
     setCurrentLocation,
-    setHasForegroundLocationPermission,
 } from "@store/features/user-location/userLocationSlice";
 import { selectAuth } from "@store/store";
-import * as Location from "expo-location";
-import { LocationPermissionResponse } from "expo-location";
+import * as TaskManager from "expo-task-manager";
 import { VStack } from "native-base";
 import React from "react";
+import Region from "react-native-maps";
 import Animated, { FlipInYRight, FlipOutYLeft } from "react-native-reanimated";
 import { scale } from "react-native-size-matters";
 import { useDispatch, useSelector } from "react-redux";
 import VeichleCard, { IVeichleCardProps } from "../VeichleCard/VeichleCard";
-import * as TaskManager from "expo-task-manager";
+import * as Location from "expo-location";
 
 const veichels: IVeichleCardProps[] = [
     {
@@ -58,7 +57,14 @@ export default function VeichleCards() {
     const VCard = Animated.createAnimatedComponent(VeichleCard);
     const navigation = useNavigation();
     const auth: IAuthState = useSelector(selectAuth);
-    const [loading, setLoading] = React.useState(false);
+
+    const [clocation, setClocation] = React.useState<Region>();
+
+    const {
+        hasBackGroundPermissions,
+        hasForeGroundPermissions,
+        checkPermissions,
+    } = useLocationPermissions();
 
     TaskManager.defineTask(config.LOCATION_TASK_NAME, ({ data, error }) => {
         if (error) {
@@ -67,10 +73,22 @@ export default function VeichleCards() {
         }
         if (data) {
             const { locations } = data;
-            dispatch(setCurrentLocation(locations[0].coords));
+            console.log(locations[0].coords);
+            // dispatch(
+            //     setCurrentLocation({
+            //         latitude: locations[0].coords.latitude,
+            //         longitude: locations[0].coords.longitude,
+            //     })
+            // );
             // do something with the locations captured in the background
+            setClocation({
+                latitude: locations[0].coords.latitude,
+                longitude: locations[0].coords.longitude,
+            });
         }
     });
+
+    console.log({ clocation });
 
     const hasForegroundLocationPermission = useSelector(
         selectHasForegroundLocationPermission
@@ -83,46 +101,21 @@ export default function VeichleCards() {
     console.log(hasForegroundLocationPermission);
 
     const handleNavigation = async () => {
-        setLoading(true);
-        const documentStatus = auth.userdocuments_status as "0" | "1";
-        if (selectedVeichle === ECarType.CAR && documentStatus !== "1") {
-            navigation.navigate("DocumentSubmission", {
-                veichle: currentVeichle,
-            });
+        if (!hasBackGroundPermissions || !hasForeGroundPermissions) {
+            console.log("here");
+            await checkPermissions();
         } else {
-            let gotoNextScreen = false;
-            const locationStatus: LocationPermissionResponse =
-                await Location.requestForegroundPermissionsAsync();
-            // ask for location permission
-            const hasForegroundPermission =
-                locationStatus.granted && locationStatus.status === "granted";
-
-            if (!hasForegroundLocationPermission && hasForegroundPermission) {
-                dispatch(
-                    setHasForegroundLocationPermission(hasForegroundPermission)
-                );
-                gotoNextScreen = hasForegroundPermission;
-            } else if (
-                hasForegroundLocationPermission &&
-                hasForegroundPermission
-            ) {
-                gotoNextScreen = true;
-            }
-
-            if (gotoNextScreen) {
-                await Location.startLocationUpdatesAsync(
-                    config.LOCATION_TASK_NAME,
-                    {
-                        accuracy: Location.Accuracy.Balanced,
-                        timeInterval: 1000,
-                    }
-                );
+            const documentStatus = auth.userdocuments_status as "0" | "1";
+            if (selectedVeichle === ECarType.CAR && documentStatus !== "1") {
+                navigation.navigate("DocumentSubmission", {
+                    veichle: currentVeichle,
+                });
+            } else {
                 navigation.navigate("MapScreen", {
                     veichle: currentVeichle,
                 });
             }
         }
-        setLoading(false);
     };
 
     const handleSelection = (current: string) => {
@@ -162,7 +155,6 @@ export default function VeichleCards() {
                 title={"Select"}
                 titleStyle={{ mx: "auto" }}
                 onPress={handleNavigation}
-                disbled={loading}
             />
         </VStack>
     );

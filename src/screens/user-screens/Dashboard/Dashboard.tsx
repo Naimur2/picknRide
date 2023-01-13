@@ -5,33 +5,32 @@ import TopSection from "@components/TopSection/TopSection";
 import UserAvatar from "@components/UserAvatar/UserAvatar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-import { useGetNearestCarsApiQuery } from "@store/api/v2/carApi/carApiSlice";
 import colors from "@theme/colors";
 import * as Location from "expo-location";
 import { Factory, useColorMode } from "native-base";
 import React from "react";
-import { TouchableOpacity } from "react-native";
+import { Alert, TouchableOpacity, Platform } from "react-native";
 import { scale } from "react-native-size-matters";
 import { NavigationStackOptions } from "react-navigation-stack";
-import { useDispatch, useSelector } from "react-redux";
-import { selectCurrentLocation } from "../../../redux/features/user-location/userLocationSlice";
 import DashModal from "./DashModal/DashModal";
 import VeichleCards from "./VeichleCards/VeichleCards";
+import useLocationPermissions from "../../../hooks/useLocationPermissions";
+import { useDispatch } from "react-redux";
+import { setCurrentLocation } from "@store/features/user-location/userLocationSlice";
 
 export default function Dashboard() {
     const navigation = useNavigation();
     const { colorMode } = useColorMode();
 
+    const dispatch = useDispatch();
+
     const Touchable = Factory(TouchableOpacity);
     const [isModalVisible, setIsModalVisible] = React.useState(true);
-
-    const initialRegion = useSelector(selectCurrentLocation);
-    const fetcherData = {
-        pageSize: 10,
-        pageNumber: 1,
-        latitude: initialRegion?.latitude || 35.6892,
-        longitude: initialRegion?.longitude || 51.389,
-    };
+    const {
+        hasBackGroundPermissions,
+        hasForeGroundPermissions,
+        checkPermissions,
+    } = useLocationPermissions();
 
     React.useEffect(() => {
         const navigationOptions: NavigationStackOptions = {
@@ -79,6 +78,23 @@ export default function Dashboard() {
             }
         });
     }, []);
+
+    React.useEffect(() => {
+        if (!hasForeGroundPermissions || !hasBackGroundPermissions) {
+            checkPermissions();
+        } else {
+            (async () => {
+                const {
+                    coords: { latitude, longitude },
+                } = await Location.getCurrentPositionAsync({
+                    accuracy: Location.Accuracy.BestForNavigation,
+                });
+                dispatch(setCurrentLocation({ latitude, longitude }));
+            })();
+        }
+    }, []);
+
+    React.useEffect(() => {}, []);
 
     return (
         <ImageBg type={colorMode}>

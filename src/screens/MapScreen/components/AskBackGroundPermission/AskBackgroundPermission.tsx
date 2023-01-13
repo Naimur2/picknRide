@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 export default function AskBackgroundPermission() {
     const dispatch = useDispatch();
     const [showModal, setShowModal] = React.useState(false);
+
     const hasBackgroundPermission = useSelector(
         selectHasBackgroundLocationPermission
     );
@@ -22,7 +23,7 @@ export default function AskBackgroundPermission() {
 
     const handleGetBackgrondLocationPermission = async () => {
         const locationStatus: LocationPermissionResponse =
-            await Location.requestBackgroundPermissionsAsync();
+            await requestPermission();
         const hasBackgroundLocationPermission =
             locationStatus.granted && locationStatus.status === "granted";
 
