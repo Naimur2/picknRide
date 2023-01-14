@@ -1,5 +1,10 @@
 import { apiSliceV2 } from "../apiSlice";
-import { IUserDocumentSubmission } from "./documentApiSlice.types";
+import {
+    IUploadUserDocument,
+    IUploadUserSelfieVideo,
+    IUploadUserSignatureImage,
+    IUserDocumentSubmission,
+} from "./documentApiSlice.types";
 
 const documentApiSlice = apiSliceV2.injectEndpoints({
     endpoints: (builder) => ({
@@ -10,13 +15,37 @@ const documentApiSlice = apiSliceV2.injectEndpoints({
                 body: document,
             }),
         }),
-        getDocument: builder.query({
+        getUserDocumentsStatus: builder.query({
             query: (document: IUserDocumentSubmission) => ({
-                url: "/UserDocument/GetUserDocument",
+                url: "UserDocument/GetUserDocumentsStatus",
                 method: "GET",
+            }),
+        }),
+        uploadUserDocuments: builder.mutation({
+            query: (document: IUploadUserDocument) => ({
+                url: "UserDocument/UploadUserDocuments",
+                method: "POST",
+            }),
+        }),
+        uploadSelfieVideo: builder.mutation({
+            query: (document: IUploadUserSelfieVideo) => ({
+                url: "UserDocument/UploadSelfieVideo",
+                method: "POST",
+            }),
+        }),
+        uploadSignatureImage: builder.mutation({
+            query: (document: IUploadUserSignatureImage) => ({
+                url: "UserDocument/UploadSignatureImage",
+                method: "POST",
             }),
         }),
     }),
 });
 
-export const { useSubmitDocumentMutation } = documentApiSlice;
+export const {
+    useSubmitDocumentMutation,
+    useUploadSelfieVideoMutation,
+    useUploadSignatureImageMutation,
+    useUploadUserDocumentsMutation,
+    useGetUserDocumentsStatusQuery,
+} = documentApiSlice;

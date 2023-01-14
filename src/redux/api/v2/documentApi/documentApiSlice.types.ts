@@ -36,3 +36,26 @@ export interface IUserDocumentSubmission {
     signature: IDocumentImage;
     selfieVideo: IDocumentVideo;
 }
+
+export interface IDocu {
+    documentType: TDDocumentType;
+    docId: string;
+    expiry: string;
+    country: string;
+    frontImage: string;
+    backImage: string;
+    internationalLicence?: boolean;
+}
+
+export interface IUploadUserDocument {
+    userType: TDUserType;
+    documents: IDocu[];
+}
+export interface IUploadUserSelfieVideo {
+    userType: TDUserType;
+    selfieVideo: string;
+}
+export interface IUploadUserSignatureImage {
+    userType: TDUserType;
+    signature: string;
+}

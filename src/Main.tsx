@@ -17,8 +17,6 @@ export default function Main() {
 
     const { name: currentRoute } = navigation.getCurrentRoute();
 
-    console.log(currentRoute);
-
     const Content = auth?.token ? DrawerRoute : AuthRoute;
 
     return (

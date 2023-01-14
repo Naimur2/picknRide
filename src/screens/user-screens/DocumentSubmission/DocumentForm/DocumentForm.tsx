@@ -3,10 +3,16 @@ import GradientBtn from "@components/GradientBtn/GradientBtn";
 import H3 from "@components/H3/H3";
 import OutlineButton from "@components/OutlineButton/OutlineButton";
 import { useNavigation } from "@react-navigation/native";
-import { useSubmitDocumentMutation } from "@store/api/v2/documentApi/documentApiSlice";
+import {
+    useSubmitDocumentMutation,
+    useUploadSelfieVideoMutation,
+    useUploadSignatureImageMutation,
+    useUploadUserDocumentsMutation,
+} from "@store/api/v2/documentApi/documentApiSlice";
 import {
     EDocumentType,
-    IUserDocumentSubmission,
+    IUploadUserDocument,
+    IUploadUserSignatureImage,
     TDDocumentType,
 } from "@store/api/v2/documentApi/documentApiSlice.types";
 import { IAuthState } from "@store/features/auth/authSlice.types";
@@ -34,6 +40,7 @@ import CountryPicker from "react-native-country-picker-modal";
 import { scale } from "react-native-size-matters";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
+import { IUploadUserSelfieVideo } from "../../../../redux/api/v2/documentApi/documentApiSlice.types";
 import { selectAllDocumentFieldValues } from "../../../../redux/features/document/documentSlice";
 import { convertPickerImageToBase64 } from "../../../../utils/convertToBase64";
 import AddImage from "../AddImage/AddImage";
@@ -68,6 +75,12 @@ function DocumentForm() {
     const dispatch = useDispatch();
 
     const [submitDocument, result] = useSubmitDocumentMutation();
+
+    const [uploadDocument, uploadResult] = useUploadUserDocumentsMutation();
+    const [uploadSelfieVideo, uploadSelfieVideoResult] =
+        useUploadSelfieVideoMutation();
+    const [uploadSignature, uploadSignatureResult] =
+        useUploadSignatureImageMutation();
 
     const setFieldValue = (field: string, value: any) => {
         console.log({ field, value });
@@ -120,7 +133,6 @@ function DocumentForm() {
 
     const handleSubmit = async () => {
         try {
-            setLoading(true);
             const document1Expiry = new Date(values.expiry1);
             const document2Expiry = new Date(values.expiry2);
             const frontImage1 = await convertPickerImageToBase64(
@@ -136,11 +148,8 @@ function DocumentForm() {
                 values.backImage2
             );
 
-            const base64Video = await convertToBase64(values?.selfieVideo);
-
-            const data: IUserDocumentSubmission = {
+            const initialDocument: IUploadUserDocument = {
                 userType: userType as "Residence" | "Tourist",
-                internationalLicence: values.isIntlLiscense,
                 documents: [
                     {
                         documentType:
@@ -150,7 +159,9 @@ function DocumentForm() {
                         expiry: document1Expiry.toISOString(),
                         frontImage: frontImage1,
                         backImage: backImage1,
+                        country: values.country,
                     },
+
                     {
                         documentType: EDocumentType.Licence,
                         docId: values.docId2,
@@ -158,27 +169,40 @@ function DocumentForm() {
                         frontImage: frontImage2,
                         backImage: backImage2,
                         country: values.country,
+                        country: values.country,
                     },
                 ],
-                signature: {
-                    image: values.signature,
-                },
-                selfieVideo: {
-                    video: base64Video,
-                },
             };
-            console.log(data);
 
-            setLoading(false);
+            const res1 = await uploadDocument(initialDocument).unwrap();
 
-            const res = await submitDocument(data).unwrap();
-            if (res?.data?.succeded) {
+            const base64Video = await convertToBase64(values?.selfieVideo);
+
+            const selfieVideo: IUploadUserSelfieVideo = {
+                userType: userType as "Residence" | "Tourist",
+                selfieVideo: base64Video,
+            };
+
+            const res2 = await uploadSelfieVideo(selfieVideo).unwrap();
+
+            const signature: IUploadUserSignatureImage = {
+                userType: userType as "Residence" | "Tourist",
+                signature: values.signature,
+            };
+
+            const res3 = await uploadSignature(signature).unwrap();
+
+            if (
+                res1?.data?.succeded &&
+                res2?.data?.succeded &&
+                res3?.data?.succeded
+            ) {
                 alert(
                     "Document Submitted Successfully, Please wait for approval"
                 );
             }
         } catch (error) {
-            console.log(error);
+            alert(error.message ?? "Something went wrong");
         }
     };
 
