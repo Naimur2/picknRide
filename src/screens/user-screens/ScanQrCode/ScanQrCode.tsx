@@ -2,7 +2,7 @@ import GradientBtn from "@components/GradientBtn/GradientBtn";
 import Scroller from "@components/Scroller/Scroller";
 import config from "@config";
 import { AntDesign, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { useValidateCarTripRequestMutation } from "@store/api/v2/tripApi/tripApiSlice";
 import convertToBase64 from "@utils/convertToBase64";
 import { Camera } from "expo-camera";
@@ -19,8 +19,8 @@ import {
     Text,
     VStack,
 } from "native-base";
-import React, { useState } from "react";
-import { Background, Platform, StyleSheet } from "react-native";
+import React from "react";
+import { Platform, StyleSheet } from "react-native";
 import { scale } from "react-native-size-matters";
 import { IValidateCarTripData } from "./ScanQrCode.types";
 
@@ -96,13 +96,21 @@ export default function ScanQrCode() {
     const handleSubmit = React.useCallback(async () => {
         const { status, granted } =
             await Location.getForegroundPermissionsAsync();
-        const hasImageOrNumber = cameraPhoto || inputRef?.current;
+        let hasImageOrNumber = false;
+        if (inputRef?.current) {
+            hasImageOrNumber = true;
+        }
+        if (cameraPhoto) {
+            hasImageOrNumber = true;
+        }
+
         if (status !== "granted" || !granted) {
             alert("Permission to access location was denied");
         } else if (!hasImageOrNumber) {
             alert("Image or number is required");
         } else {
             if (!config.DEV_MODE) {
+                console.log("config.DEV_MODE", config.DEV_MODE);
                 const location = await Location.getCurrentPositionAsync({});
                 const res = await validateCarTrip({
                     numberPlateImage: cameraPhoto,
@@ -110,7 +118,8 @@ export default function ScanQrCode() {
                     mobileLatitude: location.coords.latitude,
                     mobileLongitude: location.coords.longitude,
                 }).unwrap();
-                handleNavigation(res?.data);
+                console.log("res", res);
+                // handleNavigation(res?.data);
             } else {
                 const demoData = {
                     numberPlateImage:
