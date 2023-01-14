@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { IAuthState } from "@store/features/auth/authSlice.types";
 import { selectAuth, selectLoading } from "@store/store";
-import { Spinner } from "native-base";
+import { Spinner, useColorMode } from "native-base";
 import React from "react";
 import { useSelector } from "react-redux";
 import AuthRoute from "./routes/auth.routes";
@@ -16,6 +16,7 @@ export default function Main() {
     const navigation = useNavigation();
 
     const currentRoute = navigation.getCurrentRoute();
+    const { colorMode } = useColorMode();
 
     const Content = auth?.token ? DrawerRoute : AuthRoute;
 
@@ -29,7 +30,7 @@ export default function Main() {
                     right={0}
                     bottom={0}
                     size={80}
-                    color="#2d064f"
+                    color={colorMode === "light" ? "#2d064f" : "#fff"}
                     zIndex={1000}
                 />
             )}
