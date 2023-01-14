@@ -12,6 +12,7 @@ import { ECarType } from "@store/features/cars/carsSlice.types";
 import {
     selectHasForegroundLocationPermission,
     setCurrentLocation,
+    setInitialLocation,
 } from "@store/features/user-location/userLocationSlice";
 import { selectAuth } from "@store/store";
 import * as TaskManager from "expo-task-manager";
@@ -96,13 +97,29 @@ export default function VeichleCards() {
             console.log("here");
             await checkPermissions();
         } else {
-            await Location.startLocationUpdatesAsync(
-                config.LOCATION_TASK_NAME,
-                {
-                    accuracy: Location.Accuracy.BestForNavigation,
-                    timeInterval: 30000,
-                }
+            const initialRegion = await Location.getCurrentPositionAsync({});
+
+            dispatch(setInitialLocation(initialRegion.coords));
+
+            const ONE_MIN = 1000 * 60;
+
+            //    chech if the task is already registered
+            const isRegistered = await TaskManager.isTaskRegisteredAsync(
+                config.LOCATION_TASK_NAME
             );
+
+            if (!isRegistered) {
+                await Location.startLocationUpdatesAsync(
+                    config.LOCATION_TASK_NAME,
+                    {
+                        accuracy: Location.Accuracy.Balanced,
+                        timeInterval: ONE_MIN,
+                        distanceInterval: 10,
+                        showsBackgroundLocationIndicator: true,
+                    }
+                );
+            }
+
             const documentStatus = auth.userdocuments_status as "0" | "1";
             if (selectedVeichle === ECarType.CAR && documentStatus !== "1") {
                 navigation.navigate("DocumentSubmission", {

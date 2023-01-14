@@ -64,16 +64,31 @@ export default function TripOtpForm() {
                 otp: OTP,
                 tripToken: params.data.tripToken,
             }).unwrap();
+            if (res?.error?.message) {
+                Alert.alert("Error", res?.error?.message, [
+                    {
+                        text: "OK",
+                        onPress: () => {},
+                    },
+                ]);
+            } else {
+                if (res.succeeded) {
+                    const tripState: ICarTripState = {
+                        tripInfo: params.data,
+                        hasStartedJourney: true,
+                    };
+                    console.log("tripState", tripState);
 
-            if (res.succeeded) {
-                const tripState: ICarTripState = {
-                    tripInfo: params.data,
-                    hasStartedJourney: true,
-                };
-                console.log("tripState", tripState);
-
-                dispatch(setTripInfo(tripState));
-                navigation.navigate("MapScreen");
+                    dispatch(setTripInfo(tripState));
+                    navigation.navigate("MapScreen");
+                } else {
+                    Alert.alert("Error", "Something went wrong", [
+                        {
+                            text: "OK",
+                            onPress: () => {},
+                        },
+                    ]);
+                }
             }
         } catch (error) {
             alert("Invalid OTP");

@@ -1,12 +1,11 @@
 import React from "react";
-import { Marker } from "react-native-maps";
-import Animated, { ZoomInDown, ZoomOutUp } from "react-native-reanimated";
+import { MarkerAnimated } from "react-native-maps";
 import { IVeichle } from "../../MapScreen.types";
 import MarkerBar from "../LocationMarker/LocationMarker";
 
 function MapLoc({ car, onPress }: { car: IVeichle; onPress?: () => void }) {
     return (
-        <Marker
+        <MarkerAnimated
             onPress={onPress}
             coordinate={{
                 longitude: car.longitude,
@@ -15,7 +14,7 @@ function MapLoc({ car, onPress }: { car: IVeichle; onPress?: () => void }) {
             tracksViewChanges={false}
         >
             <MarkerBar {...car} />
-        </Marker>
+        </MarkerAnimated>
     );
 }
 

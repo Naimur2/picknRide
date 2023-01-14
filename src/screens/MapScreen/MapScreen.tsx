@@ -8,42 +8,42 @@ import MapscreenComp, {
 import {
     selectCurrentLocation,
     setCurrentLocation,
+    setInitialLocation,
 } from "@store/features/user-location/userLocationSlice";
 import { useSelector, useDispatch } from "react-redux";
 import config from "@config";
 import { Alert, Platform } from "react-native";
 import * as Location from "expo-location";
 import useLocationPermissions from "../../hooks/useLocationPermissions";
+import { useNavigation } from "@react-navigation/native";
 
 interface IMapProps extends IMapScreenProps, IMapTopDetailsProps {}
 
 function ActualMap({}: IMapProps) {
     const [carType, setCarType] = React.useState<ICAR>("scooter");
     const currentLocation = useSelector(selectCurrentLocation);
+    const navigation = useNavigation();
     const dispatch = useDispatch();
-    const {
-        hasBackGroundPermissions,
-        hasForeGroundPermissions,
-        checkPermissions,
-    } = useLocationPermissions();
+    const { hasForeGroundPermissions, checkPermissions } =
+        useLocationPermissions();
 
     const getCurrentLocation = async () => {
-        const hasBg =
-            Platform.OS === "android" ? false : hasBackGroundPermissions;
-        if (!hasForeGroundPermissions) {
+        const { status, granted } =
+            await Location.getForegroundPermissionsAsync();
+        if (!granted || status !== "granted") {
             await checkPermissions();
-            return;
-        }
-        const location = await Location.getCurrentPositionAsync({});
+        } else {
+            const location = await Location.getCurrentPositionAsync({});
 
-        dispatch(
-            setCurrentLocation({
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
-                latitudeDelta: 0.009,
-                longitudeDelta: 0.01,
-            })
-        );
+            dispatch(
+                setInitialLocation({
+                    latitude: location.coords.latitude,
+                    longitude: location.coords.longitude,
+                    latitudeDelta: 0.009,
+                    longitudeDelta: 0.01,
+                })
+            );
+        }
     };
 
     React.useLayoutEffect(() => {

@@ -20,7 +20,7 @@ import {
     VStack,
 } from "native-base";
 import React from "react";
-import { Platform, StyleSheet } from "react-native";
+import { Platform, StyleSheet, Alert } from "react-native";
 import { scale } from "react-native-size-matters";
 import { IValidateCarTripData } from "./ScanQrCode.types";
 
@@ -84,8 +84,8 @@ export default function ScanQrCode() {
         if (camRef.current) {
             const photo = await camRef.current.takePictureAsync();
             const base64 = await convertToBase64(photo.uri);
-            setImageUri(photo.uri);
             setCameraPhoto(base64);
+            setImageUri(photo.uri);
         }
     }, []);
 
@@ -93,20 +93,13 @@ export default function ScanQrCode() {
         setCameraPhoto(null);
     }, []);
 
-    const handleSubmit = React.useCallback(async () => {
+    const handleSubmit = async () => {
         const { status, granted } =
             await Location.getForegroundPermissionsAsync();
-        let hasImageOrNumber = false;
-        if (inputRef?.current) {
-            hasImageOrNumber = true;
-        }
-        if (cameraPhoto) {
-            hasImageOrNumber = true;
-        }
 
         if (status !== "granted" || !granted) {
             alert("Permission to access location was denied");
-        } else if (!hasImageOrNumber) {
+        } else if (!imageUri && !inputRef?.current) {
             alert("Image or number is required");
         } else {
             if (!config.DEV_MODE) {
@@ -118,8 +111,16 @@ export default function ScanQrCode() {
                     mobileLatitude: location.coords.latitude,
                     mobileLongitude: location.coords.longitude,
                 }).unwrap();
-                console.log("res", res);
-                // handleNavigation(res?.data);
+                if (res?.error?.message) {
+                    Alert.alert("Error", res?.error?.message, [
+                        {
+                            text: "OK",
+                            onPress: () => {},
+                        },
+                    ]);
+                } else {
+                    handleNavigation(res?.data);
+                }
             } else {
                 const demoData = {
                     numberPlateImage:
@@ -134,7 +135,7 @@ export default function ScanQrCode() {
                 }
             }
         }
-    }, []);
+    };
 
     return (
         <>
@@ -182,12 +183,18 @@ export default function ScanQrCode() {
                         </Text>
                     ) : null}
                     {validationResult.isLoading ? (
-                        <Center my="2">
+                        <Center
+                            position={"absolute"}
+                            top="0"
+                            left="0"
+                            right="0"
+                            my="2"
+                        >
                             <Spinner size={"lg"} color="blue.100" />
                         </Center>
                     ) : null}
 
-                    {cameraPhoto ? (
+                    {cameraPhoto && imageUri ? (
                         <Image
                             alt="cameraPhoto"
                             w="300"
@@ -198,7 +205,7 @@ export default function ScanQrCode() {
                         />
                     ) : null}
 
-                    {!cameraPhoto ? (
+                    {!cameraPhoto || !imageUri ? (
                         <LinGrad
                             py={10}
                             colors={["#fff", "#FF000095"]}
@@ -223,7 +230,7 @@ export default function ScanQrCode() {
                         alignItems={"center"}
                         justifyContent={"center"}
                     >
-                        {!cameraPhoto ? (
+                        {!cameraPhoto || !imageUri ? (
                             <Pressable
                                 onPress={takePicture}
                                 rounded={"full"}
@@ -249,7 +256,11 @@ export default function ScanQrCode() {
                                     />
                                 </Pressable>
                                 <Pressable
-                                    onPress={handleSubmit}
+                                    onPress={
+                                        !validationResult.isLoading
+                                            ? handleSubmit
+                                            : undefined
+                                    }
                                     rounded={"full"}
                                     py={4}
                                     px={4}
@@ -300,6 +311,7 @@ export default function ScanQrCode() {
                         <GradientBtn
                             onPress={handleSubmit}
                             title="Submit Manually"
+                            disabled={validationResult.isLoading}
                         />
                     </Center>
 

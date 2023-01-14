@@ -159,8 +159,12 @@ function CarDetailsSheet({
                             }}
                             color={"#fff"}
                             onPress={() => {
-                                SheetManager.hide("carDetailsSheet");
-                                setIsYesNoModalVisible(true);
+                                if (!isLocked) {
+                                    alert("Please lock the car first");
+                                } else {
+                                    SheetManager.hide("carDetailsSheet");
+                                    setIsYesNoModalVisible(true);
+                                }
                             }}
                         >
                             End Ride

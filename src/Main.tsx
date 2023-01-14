@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { IAuthState } from "@store/features/auth/authSlice.types";
 import { selectAuth, selectLoading } from "@store/store";
@@ -12,20 +13,25 @@ const Stack = createNativeStackNavigator();
 export default function Main() {
     const auth = useSelector(selectAuth) as IAuthState;
     const loading = useSelector(selectLoading);
+    const navigation = useNavigation();
+
+    const { name: currentRoute } = navigation.getCurrentRoute();
+
+    console.log(currentRoute);
 
     const Content = auth?.token ? DrawerRoute : AuthRoute;
 
     return (
         <>
-            {loading && (
+            {loading && currentRoute !== "MapScreen" && (
                 <Spinner
                     position={"absolute"}
                     top={0}
                     left={0}
                     right={0}
                     bottom={0}
-                    size={"lg"}
-                    color="blue"
+                    size={80}
+                    color="#2d064f"
                     zIndex={1000}
                 />
             )}

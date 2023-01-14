@@ -88,6 +88,8 @@ function UploadImg({
                 }}
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
+                hideFromGallery={true}
+                backCameraOnly={true}
             />
         </>
     );

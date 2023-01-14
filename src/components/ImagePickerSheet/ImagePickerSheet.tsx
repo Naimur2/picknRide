@@ -10,6 +10,7 @@ interface IPickerSheet {
     onClose: () => void;
     setImage: (image: any) => void;
     hideFromGallery?: boolean;
+    backCameraOnly?: boolean;
 }
 
 const ImagePickerSheet = ({
@@ -17,8 +18,11 @@ const ImagePickerSheet = ({
     isOpen,
     onClose,
     hideFromGallery,
+    backCameraOnly,
 }: IPickerSheet) => {
-    const { image, pickImage, captureImage } = useImagePicker({});
+    const { image, pickImage, captureImage } = useImagePicker({
+        useCamera: backCameraOnly,
+    });
     const Button = Factory(TouchableOpacity);
 
     React.useEffect(() => {

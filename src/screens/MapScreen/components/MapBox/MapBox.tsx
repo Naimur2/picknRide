@@ -1,34 +1,45 @@
 import { useNavigation } from "@react-navigation/native";
+import { useGetNearestCarsApiQuery } from "@store/api/v2/carApi/carApiSlice";
 import { selectNearestCars } from "@store/features/cars/carsSlice";
 import { selectCurrentRegion } from "@store/features/user-location/userLocationSlice";
 import { Factory } from "native-base";
 import React from "react";
 import { Dimensions, Keyboard } from "react-native";
-import MapView, { Region } from "react-native-maps";
+import MapView, { AnimatedRegion, Region } from "react-native-maps";
 import { useSelector } from "react-redux";
+import { selectInitialLocation } from "../../../../redux/features/user-location/userLocationSlice";
 import { ILatLng } from "../../MapScreen.types";
 import AllMarkers from "../AllMarker/AllMarker";
-import { useGetNearestCarsApiQuery } from "@store/api/v2/carApi/carApiSlice";
 
 export interface IMapScreenProps {
     children?: any;
 }
 const { height, width } = Dimensions.get("window");
 
+const getAnaimatedRegion = (region: Region) => {
+    return new AnimatedRegion({
+        latitude: region.latitude,
+        longitude: region.longitude,
+        latitudeDelta: region.latitudeDelta,
+        longitudeDelta: region.longitudeDelta,
+    });
+};
+
 function MapBox() {
     const Map = Factory(MapView);
     const mapRef = React.useRef<MapView>(null);
     const navigation = useNavigation();
     const markers = useSelector(selectNearestCars);
-    const initialRegion = useSelector(selectCurrentRegion) as Region;
+    const initialRegion = useSelector(selectInitialLocation) as Region;
+    const currentRegion = useSelector(selectCurrentRegion) as Region;
     const locationData = useGetNearestCarsApiQuery(
         {
-            latitude: initialRegion.latitude,
-            longitude: initialRegion.longitude,
+            latitude: currentRegion.latitude,
+            longitude: currentRegion.longitude,
             pageNumber: 1,
             pageSize: 10,
         },
-        { skip: !initialRegion.latitude || !initialRegion.longitude }
+        { skip: !currentRegion.latitude || !currentRegion.longitude }
     );
 
     const fitToCoordinatesHandler = (coordinates: ILatLng[]) => {
@@ -45,6 +56,7 @@ function MapBox() {
             mapRef.current.animateToRegion(initialRegion, 300);
         }
     };
+
     React.useEffect(() => {
         mapRef.current?.animateToRegion(initialRegion, 300);
     }, [navigation]);
@@ -59,12 +71,16 @@ function MapBox() {
         }
     }, [markers]);
 
-    console.log({ initialRegion });
+    const aniRegion = React.useMemo(() => {
+        return getAnaimatedRegion(initialRegion);
+    }, [initialRegion]);
+
+    console.log({ aniRegion });
 
     return (
         <Map
             ref={mapRef}
-            initialRegion={initialRegion as Region}
+            initialRegion={aniRegion as Region}
             flex={1}
             // provider={PROVIDER_GOOGLE}
             w={width}

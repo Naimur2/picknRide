@@ -12,7 +12,7 @@ import { convertPickerImageToBase64 } from "@utils/convertToBase64";
 import { useFormik } from "formik";
 import { Center, Factory, HStack, VStack, useColorMode } from "native-base";
 import React from "react";
-import { TouchableOpacity } from "react-native";
+import { Alert, TouchableOpacity } from "react-native";
 import * as Yup from "yup";
 import { IStartEndTripParams } from "./StartEnTrip.types";
 import UploadImg from "./UploadImg/UploadImg";
@@ -75,16 +75,27 @@ export default function StartEndRide() {
             }
             let res = await uploadImage(resData).unwrap();
 
-            if (res?.data?.tripToken) {
-                const paramsData: IStartEndTripParams = {
-                    ...params,
-                    data: {
-                        ...params.data,
-                        tripToken: res.data.tripToken,
+            if (res?.error?.message) {
+                Alert.alert("Error", res?.error?.message, [
+                    {
+                        text: "OK",
+                        onPress: () => {},
                     },
-                };
+                ]);
+            } else {
+                if (res?.data?.tripToken) {
+                    const paramsData: IStartEndTripParams = {
+                        ...params,
+                        data: {
+                            ...params.data,
+                            tripToken: res.data.tripToken,
+                        },
+                    };
 
-                navigation.navigate("SelectOtpType", paramsData);
+                    navigation.navigate("SelectOtpType", paramsData);
+                } else {
+                    alert("Token required");
+                }
             }
         },
         validationSchema: schema,

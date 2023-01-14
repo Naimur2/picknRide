@@ -9,6 +9,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
 import GradientBtn from "../../../components/GradientBtn/GradientBtn";
 import { IStartEndTripParams } from "../StartEndRide/StartEnTrip.types";
+import { Alert } from "react-native";
 
 export default function SelectOtpType() {
     const { colorMode } = useColorMode();
@@ -38,11 +39,27 @@ export default function SelectOtpType() {
             type: "sms",
         }).unwrap();
 
-        if (res.data?.otp) {
-            navigation.navigate("TripOtpScreen", {
-                ...params,
-                otpData: res.data,
-            });
+        if (res?.error?.message) {
+            Alert.alert("Error", res?.error?.message, [
+                {
+                    text: "OK",
+                    onPress: () => {},
+                },
+            ]);
+        } else {
+            if (res.data?.otp) {
+                navigation.navigate("TripOtpScreen", {
+                    ...params,
+                    otpData: res.data,
+                });
+            } else {
+                Alert.alert("Error", "Something went wrong", [
+                    {
+                        text: "OK",
+                        onPress: () => {},
+                    },
+                ]);
+            }
         }
     };
 
