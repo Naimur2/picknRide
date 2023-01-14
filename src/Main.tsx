@@ -15,13 +15,13 @@ export default function Main() {
     const loading = useSelector(selectLoading);
     const navigation = useNavigation();
 
-    const { name: currentRoute } = navigation.getCurrentRoute();
+    const currentRoute = navigation.getCurrentRoute();
 
     const Content = auth?.token ? DrawerRoute : AuthRoute;
 
     return (
         <>
-            {loading && currentRoute !== "MapScreen" && (
+            {loading && currentRoute?.name !== "MapScreen" && (
                 <Spinner
                     position={"absolute"}
                     top={0}

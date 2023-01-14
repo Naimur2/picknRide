@@ -75,12 +75,10 @@ function MapBox() {
         return getAnaimatedRegion(initialRegion);
     }, [initialRegion]);
 
-    console.log({ aniRegion });
-
     return (
         <Map
             ref={mapRef}
-            initialRegion={aniRegion as Region}
+            initialRegion={initialRegion as Region}
             flex={1}
             // provider={PROVIDER_GOOGLE}
             w={width}

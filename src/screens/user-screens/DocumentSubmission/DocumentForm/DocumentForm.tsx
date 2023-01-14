@@ -82,6 +82,8 @@ function DocumentForm() {
     const [uploadSignature, uploadSignatureResult] =
         useUploadSignatureImageMutation();
 
+    console.log(uploadResult?.originalArgs);
+
     const setFieldValue = (field: string, value: any) => {
         console.log({ field, value });
         dispatch(setDocumentFieldValue({ fieldName: field, value }));
@@ -169,7 +171,7 @@ function DocumentForm() {
                         frontImage: frontImage2,
                         backImage: backImage2,
                         country: values.country,
-                        country: values.country,
+                        internationalLicence: values.isIntlLiscense,
                     },
                 ],
             };
@@ -202,6 +204,7 @@ function DocumentForm() {
                 );
             }
         } catch (error) {
+            console.warn(error);
             alert(error.message ?? "Something went wrong");
         }
     };
