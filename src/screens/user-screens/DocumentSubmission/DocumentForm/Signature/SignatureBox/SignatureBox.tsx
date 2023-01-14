@@ -54,6 +54,7 @@ export default function SignatureBox({
                     bgHeight={190}
                     bgWidth={scale(290)}
                     backgroundColor={"#fff"}
+                    imageType="image/jpeg"
                     androidHardwareAccelerationDisabled={false}
                     webStyle={`
                             .m-signature-pad--body {

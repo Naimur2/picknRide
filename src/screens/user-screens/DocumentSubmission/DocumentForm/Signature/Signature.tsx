@@ -2,6 +2,8 @@ import { Image, Modal, Pressable, VStack } from "native-base";
 import React from "react";
 import { scale } from "react-native-size-matters";
 import SignatureBox from "./SignatureBox/SignatureBox";
+import * as FileSystem from "expo-file-system";
+import * as MediaLibrary from "expo-media-library";
 
 function Signature({
     setSignatureValue,
@@ -11,21 +13,29 @@ function Signature({
     signatureValue: string;
 }) {
     const [show, setShow] = React.useState(false);
+    const [base64, setBase64] = React.useState<string | null>(null);
 
-    const handleAddSignature = React.useCallback(
-        (sign: string) => {
-            const signBase64 = sign.split(",")[1];
-            setSignatureValue?.(signBase64);
+    const handleAddSignature = async (sign: string) => {
+        console.log("sign", sign);
+        try {
+            const path = FileSystem.documentDirectory + "sign.png";
+            await FileSystem.writeAsStringAsync(
+                path,
+                sign.replace("data:image/png;base64,", ""),
+                { encoding: FileSystem.EncodingType.Base64 }
+            );
+            const info = await FileSystem.getInfoAsync(path);
+            const mediaResult = await MediaLibrary.saveToLibraryAsync(info.uri);
+            console.log(mediaResult);
+            setBase64(sign);
+            setSignatureValue?.(info.uri);
             setShow(false);
-        },
-        [setSignatureValue, signatureValue]
-    );
-
-    const signature = React.useMemo(() => {
-        if (signatureValue) {
-            return `data:image/png;base64,${signatureValue}`;
+        } catch (error) {
+            console.log("error", error);
         }
-    }, [signatureValue]);
+    };
+
+    console.log("signatureValue", signatureValue);
 
     return (
         <VStack mt={2} space={2}>
@@ -40,10 +50,10 @@ function Signature({
                     alignItems="center"
                     justifyContent="center"
                 >
-                    {signature ? (
+                    {signatureValue ? (
                         <Image
                             source={{
-                                uri: signature,
+                                uri: base64,
                             }}
                             alt="signature"
                             h="full"

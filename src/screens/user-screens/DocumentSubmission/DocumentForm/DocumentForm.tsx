@@ -27,6 +27,7 @@ import {
     Factory,
     FormControl,
     HStack,
+    Image,
     Input,
     Text,
     Toast,
@@ -72,6 +73,8 @@ function DocumentForm() {
     const auth = useSelector(selectAuth);
     const values = useSelector(selectAllDocumentFieldValues);
 
+    const [base64I, setBase64I] = React.useState("");
+
     const dispatch = useDispatch();
 
     const [submitDocument, result] = useSubmitDocumentMutation();
@@ -85,7 +88,6 @@ function DocumentForm() {
     console.log(uploadResult?.originalArgs);
 
     const setFieldValue = (field: string, value: any) => {
-        console.log({ field, value });
         dispatch(setDocumentFieldValue({ fieldName: field, value }));
     };
 
@@ -140,70 +142,70 @@ function DocumentForm() {
             const frontImage1 = await convertPickerImageToBase64(
                 values.frontImage1
             );
-            const backImage1 = await convertPickerImageToBase64(
-                values.backImage1
-            );
-            const frontImage2 = await convertPickerImageToBase64(
-                values.frontImage2
-            );
-            const backImage2 = await convertPickerImageToBase64(
-                values.backImage2
-            );
+            setBase64I(frontImage1);
+            // const backImage1 = await convertPickerImageToBase64(
+            //     values.backImage1
+            // );
+            // const frontImage2 = await convertPickerImageToBase64(
+            //     values.frontImage2
+            // );
+            // const backImage2 = await convertPickerImageToBase64(
+            //     values.backImage2
+            // );
 
-            const initialDocument: IUploadUserDocument = {
-                userType: userType as "Residence" | "Tourist",
-                documents: [
-                    {
-                        documentType:
-                            firstDocumentTypes[resident_status as "0" | "1"] ??
-                            "Address",
-                        docId: values.docId1,
-                        expiry: document1Expiry.toISOString(),
-                        frontImage: frontImage1,
-                        backImage: backImage1,
-                        country: values.country,
-                        internationalLicence: values.isIntlLiscense,
-                    },
+            // const initialDocument: IUploadUserDocument = {
+            //     userType: userType as "Residence" | "Tourist",
+            //     documents: [
+            //         {
+            //             documentType:
+            //                 firstDocumentTypes[resident_status as "0" | "1"] ??
+            //                 "Address",
+            //             docId: values.docId1,
+            //             expiry: document1Expiry.toISOString(),
+            //             frontImage: frontImage1,
+            //             backImage: backImage1,
+            //             country: values.country,
+            //         },
 
-                    {
-                        documentType: EDocumentType.Licence,
-                        docId: values.docId2,
-                        expiry: document2Expiry.toISOString(),
-                        frontImage: frontImage2,
-                        backImage: backImage2,
-                        country: values.country,
-                        internationalLicence: values.isIntlLiscense,
-                    },
-                ],
-            };
+            //         {
+            //             documentType: EDocumentType.Licence,
+            //             docId: values.docId2,
+            //             expiry: document2Expiry.toISOString(),
+            //             frontImage: frontImage2,
+            //             backImage: backImage2,
+            //             country: values.country,
+            //             internationalLicence: values.isIntlLiscense,
+            //         },
+            //     ],
+            // };
 
-            const res1 = await uploadDocument(initialDocument).unwrap();
+            // const res1 = await uploadDocument(initialDocument).unwrap();
 
-            const base64Video = await convertToBase64(values?.selfieVideo);
+            // const base64Video = await convertToBase64(values?.selfieVideo);
 
-            const selfieVideo: IUploadUserSelfieVideo = {
-                userType: userType as "Residence" | "Tourist",
-                selfieVideo: base64Video,
-            };
+            // const selfieVideo: IUploadUserSelfieVideo = {
+            //     userType: userType as "Residence" | "Tourist",
+            //     selfieVideo: base64Video,
+            // };
 
-            const res2 = await uploadSelfieVideo(selfieVideo).unwrap();
+            // const res2 = await uploadSelfieVideo(selfieVideo).unwrap();
 
-            const signature: IUploadUserSignatureImage = {
-                userType: userType as "Residence" | "Tourist",
-                signature: values.signature,
-            };
+            // const signature: IUploadUserSignatureImage = {
+            //     userType: userType as "Residence" | "Tourist",
+            //     signature: values.signature,
+            // };
 
-            const res3 = await uploadSignature(signature).unwrap();
+            // const res3 = await uploadSignature(signature).unwrap();
 
-            if (
-                res1?.data?.succeded &&
-                res2?.data?.succeded &&
-                res3?.data?.succeded
-            ) {
-                alert(
-                    "Document Submitted Successfully, Please wait for approval"
-                );
-            }
+            // if (
+            //     res1?.data?.succeded &&
+            //     res2?.data?.succeded &&
+            //     res3?.data?.succeded
+            // ) {
+            //     alert(
+            //         "Document Submitted Successfully, Please wait for approval"
+            //     );
+            // }
         } catch (error) {
             console.warn(error);
             alert(error.message ?? "Something went wrong");
@@ -505,6 +507,14 @@ function DocumentForm() {
                     disabled={loading || result.isSuccess || !termAccept}
                 />
             </Center>
+            {base64I ? (
+                <Image
+                    source={{ uri: `data:image/jpeg;base64,${base64I}` }}
+                    h={100}
+                    w={64}
+                    alt="fghgfh"
+                />
+            ) : null}
         </VStack>
     );
 }

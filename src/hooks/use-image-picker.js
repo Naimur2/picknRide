@@ -13,7 +13,7 @@ export default function useImagePicker(props) {
 
     const opt = {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        quality: 1,
+        quality: 0.4,
         ...config,
     };
 
