@@ -4,6 +4,7 @@ import { scale } from "react-native-size-matters";
 import SignatureBox from "./SignatureBox/SignatureBox";
 import * as FileSystem from "expo-file-system";
 import * as MediaLibrary from "expo-media-library";
+import base64 from "react-native-base64";
 
 function Signature({
     setSignatureValue,
@@ -13,21 +14,20 @@ function Signature({
     signatureValue: string;
 }) {
     const [show, setShow] = React.useState(false);
-    const [base64, setBase64] = React.useState<string | null>(null);
+    const [base64Image, setBase64Image] = React.useState<string>();
 
     const handleAddSignature = async (sign: string) => {
         console.log("sign", sign);
         try {
-            const path = FileSystem.documentDirectory + "sign.png";
-            await FileSystem.writeAsStringAsync(
-                path,
-                sign.replace("data:image/png;base64,", ""),
-                { encoding: FileSystem.EncodingType.Base64 }
-            );
-            const info = await FileSystem.getInfoAsync(path);
-            const mediaResult = await MediaLibrary.saveToLibraryAsync(info.uri);
-            console.log(mediaResult);
-            setBase64(sign);
+            const imagePath = FileSystem.documentDirectory + "image.png";
+            const imageData = base64.decode(sign);
+            await FileSystem.writeAsStringAsync(imagePath, imageData, {
+                encoding: FileSystem.EncodingType.Base64,
+            });
+            await MediaLibrary.createAssetAsync(imagePath);
+            const info = await FileSystem.getInfoAsync(imagePath);
+            setBase64Image(sign);
+            console.log("info", info);
             setSignatureValue?.(info.uri);
             setShow(false);
         } catch (error) {
@@ -52,8 +52,8 @@ function Signature({
                 >
                     {signatureValue ? (
                         <Image
-                            source={{
-                                uri: base64,
+                            src={{
+                                uri: base64Image,
                             }}
                             alt="signature"
                             h="full"
