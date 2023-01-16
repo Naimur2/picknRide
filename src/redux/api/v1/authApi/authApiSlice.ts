@@ -2,6 +2,7 @@ import { apiSlice } from "../apiSlice";
 
 import { login } from "../../../features/auth/authSlice";
 import { IAuthState } from "../../../features/auth/authSlice.types";
+import { setCheckOtherInformation } from "@store/features/auth/authSlice";
 import {
     IAddCard,
     ILoginProps,
@@ -79,6 +80,13 @@ const authApiSlice = apiSlice.injectEndpoints({
                 method: "POST",
                 body: body,
             }),
+            async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+                try {
+                    await queryFulfilled;
+
+                    dispatch(setCheckOtherInformation(false));
+                } catch (error) {}
+            },
         }),
         updateResidencyApi: builder.mutation({
             query: (body: IUpdateResidency) => ({

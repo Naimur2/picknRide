@@ -99,6 +99,7 @@ function PickCountry({
                 fontWeight="500"
                 placeholderTextColor="gray.300"
                 mb={2}
+                keyboardType="phone-pad"
                 onChangeText={handleChangeText}
                 onFocus={handleFocus}
                 onBlur={handleBlur}

@@ -42,6 +42,7 @@ export default function AuthRoute() {
             screenOptions={(props: any) =>
                 screenOptions({ ...props, colorMode })
             }
+            initialRouteName="SplashSecond"
         >
             <Stack.Screen
                 options={{

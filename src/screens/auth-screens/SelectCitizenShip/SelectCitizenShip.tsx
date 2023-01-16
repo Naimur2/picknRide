@@ -24,7 +24,7 @@ export default function SelectCitizenShip() {
     const { colorMode } = useColorMode();
     const navigation = useNavigation();
     const selected = React.useRef(null);
-    const auth = useSelector((state: any) => state.auth);
+
     const [updateCitizenShip, result] = useUpdateResidencyApiMutation();
     const residencyData = useGetResidencyApiQuery(undefined, {
         skip: !navigation.isFocused(),
