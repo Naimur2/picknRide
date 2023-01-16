@@ -3,24 +3,27 @@ import ImageBg from "@components/ImageBg/ImageBg";
 import Scroller from "@components/Scroller/Scroller";
 import TopSection from "@components/TopSection/TopSection";
 import UserAvatar from "@components/UserAvatar/UserAvatar";
+import useLocationPermissions from "@hooks/useLocationPermissions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import { IAuthState } from "@store/features/auth/authSlice.types";
+import { setCurrentLocation } from "@store/features/user-location/userLocationSlice";
+import { selectAuth } from "@store/store";
 import colors from "@theme/colors";
 import * as Location from "expo-location";
 import { Factory, useColorMode } from "native-base";
 import React from "react";
-import { Alert, TouchableOpacity, Platform } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { scale } from "react-native-size-matters";
-import { NavigationStackOptions } from "react-navigation-stack";
+import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
+import { useDispatch, useSelector } from "react-redux";
 import DashModal from "./DashModal/DashModal";
 import VeichleCards from "./VeichleCards/VeichleCards";
-import useLocationPermissions from "../../../hooks/useLocationPermissions";
-import { useDispatch } from "react-redux";
-import { setCurrentLocation } from "@store/features/user-location/userLocationSlice";
 
 export default function Dashboard() {
     const navigation = useNavigation();
     const { colorMode } = useColorMode();
+    const auth: IAuthState = useSelector(selectAuth);
 
     const dispatch = useDispatch();
 
@@ -35,7 +38,7 @@ export default function Dashboard() {
     } = useLocationPermissions();
 
     React.useEffect(() => {
-        const navigationOptions: NavigationStackOptions = {
+        const navigationOptions: NativeStackNavigationOptions = {
             headerTitle: "",
             headerStyle: {
                 alignItems: "center",
@@ -107,7 +110,7 @@ export default function Dashboard() {
                 }}
             >
                 <TopSection
-                    title="Good Evening Alexis"
+                    title={`Good Evening ${auth?.f_name}!`}
                     subtitle="Select your ride"
                 />
 
