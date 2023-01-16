@@ -3,6 +3,7 @@ import ThreeSwitch from "@components/ThreeSwitch/ThreeSwitch";
 import config from "@config";
 import useLocationPermissions from "@hooks/useLocationPermissions";
 import { useNavigation } from "@react-navigation/native";
+import { useCheckVerificationQuery } from "@store/api/v2/documentApi/documentApiSlice";
 import { IAuthState } from "@store/features/auth/authSlice.types";
 import {
     selectSelectedVeichleType,
@@ -10,21 +11,19 @@ import {
 } from "@store/features/cars/carsSlice";
 import { ECarType } from "@store/features/cars/carsSlice.types";
 import {
-    selectHasForegroundLocationPermission,
     setCurrentLocation,
     setInitialLocation,
 } from "@store/features/user-location/userLocationSlice";
 import { selectAuth } from "@store/store";
+import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
 import { VStack } from "native-base";
 import React from "react";
-import Region from "react-native-maps";
+import { Platform } from "react-native";
 import Animated, { FlipInYRight, FlipOutYLeft } from "react-native-reanimated";
 import { scale } from "react-native-size-matters";
 import { useDispatch, useSelector } from "react-redux";
 import VeichleCard, { IVeichleCardProps } from "../VeichleCard/VeichleCard";
-import * as Location from "expo-location";
-import { Platform } from "react-native";
 
 const veichels: IVeichleCardProps[] = [
     {
@@ -59,8 +58,12 @@ export default function VeichleCards() {
     const VCard = Animated.createAnimatedComponent(VeichleCard);
     const navigation = useNavigation();
     const auth: IAuthState = useSelector(selectAuth);
+    console.log("auth", auth.userdocuments_status);
+    const [starFetching, setStarFetching] = React.useState(false);
+    const { data: verificationStatus, isLoading } =
+        useCheckVerificationQuery(undefined);
 
-    const [clocation, setClocation] = React.useState<Region>();
+    // console.log("verificationStatus", verificationStatus);
 
     const {
         hasBackGroundPermissions,
@@ -121,7 +124,11 @@ export default function VeichleCards() {
             }
 
             const documentStatus = auth.userdocuments_status as "0" | "1";
-            if (selectedVeichle === ECarType.CAR && documentStatus !== "1") {
+            // &&
+            // documentStatus === "0" &&
+            // !isLoading &&
+            // !verificationStatus?.data?.status
+            if (selectedVeichle === ECarType.CAR) {
                 navigation.navigate("DocumentSubmission", {
                     veichle: currentVeichle,
                 });
@@ -169,7 +176,7 @@ export default function VeichleCards() {
                 mt={8}
                 title={"Select"}
                 titleStyle={{ mx: "auto" }}
-                onPress={handleNavigation}
+                onPress={!isLoading ? handleNavigation : undefined}
             />
         </VStack>
     );

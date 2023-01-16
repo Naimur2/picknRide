@@ -83,7 +83,7 @@ export default function StartEndRide() {
                     },
                 ]);
             } else {
-                if (res?.data?.tripToken) {
+                if (res?.succeeded &&  res?.data?.tripToken) {
                     const paramsData: IStartEndTripParams = {
                         ...params,
                         data: {

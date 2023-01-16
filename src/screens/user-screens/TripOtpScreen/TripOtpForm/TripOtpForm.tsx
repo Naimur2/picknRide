@@ -72,7 +72,10 @@ export default function TripOtpForm() {
                     },
                 ]);
             } else {
-                if (res.succeeded) {
+                if (res.error !== null) {
+                    alert(res.error);
+                }
+                if (res.succeeded && res.error === null) {
                     const tripState: ICarTripState = {
                         tripInfo: params.data,
                         hasStartedJourney: true,

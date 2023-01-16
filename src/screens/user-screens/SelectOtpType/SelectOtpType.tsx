@@ -47,7 +47,7 @@ export default function SelectOtpType() {
                 },
             ]);
         } else {
-            if (res.data?.otp) {
+            if (res?.succeeded && res.data?.otp) {
                 navigation.navigate("TripOtpScreen", {
                     ...params,
                     otpData: res.data,

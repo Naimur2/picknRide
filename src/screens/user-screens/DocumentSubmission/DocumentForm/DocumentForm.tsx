@@ -4,15 +4,7 @@ import H3 from "@components/H3/H3";
 import OutlineButton from "@components/OutlineButton/OutlineButton";
 import { useNavigation } from "@react-navigation/native";
 import {
-    useSubmitDocumentMutation,
-    useUploadSelfieVideoMutation,
-    useUploadSignatureImageMutation,
-    useUploadUserDocumentsMutation,
-} from "@store/api/v2/documentApi/documentApiSlice";
-import {
     EDocumentType,
-    IUploadUserDocument,
-    IUploadUserSignatureImage,
     TDDocumentType,
 } from "@store/api/v2/documentApi/documentApiSlice.types";
 import { IAuthState } from "@store/features/auth/authSlice.types";
@@ -20,14 +12,12 @@ import { setDocumentFieldValue } from "@store/features/document/documentSlice";
 import { selectAuth } from "@store/store";
 import { Camera } from "expo-camera";
 
-import convertToBase64 from "@utils/convertToBase64";
 import * as MediaLibrary from "expo-media-library";
 import {
     Center,
     Factory,
     FormControl,
     HStack,
-    Image,
     Input,
     Text,
     Toast,
@@ -37,13 +27,13 @@ import React from "react";
 import { TouchableOpacity } from "react-native";
 
 import ErrorToast from "@components/ErrorToast/ErrorToast";
+import { useUploadDocumentMutation } from "@store/api/v2/documentApi/documentApiSlice";
 import CountryPicker from "react-native-country-picker-modal";
 import { scale } from "react-native-size-matters";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
-import { IUploadUserSelfieVideo } from "../../../../redux/api/v2/documentApi/documentApiSlice.types";
 import { selectAllDocumentFieldValues } from "../../../../redux/features/document/documentSlice";
-import { convertPickerImageToBase64 } from "../../../../utils/convertToBase64";
+import { createFormFile } from "../../../../utils/fileDetails";
 import AddImage from "../AddImage/AddImage";
 import ExpiryDate from "./ExpiryDate/ExpiryDate";
 import PickerButton from "./PickerButton/PickerButton";
@@ -67,25 +57,14 @@ function DocumentForm() {
     const [termAccept, setTermAccept] = React.useState(false);
     const Touchable = Factory(TouchableOpacity);
     const [errors, setErrors] = React.useState({});
-    const [loading, setLoading] = React.useState(false);
 
     const navigation = useNavigation();
     const auth = useSelector(selectAuth);
     const values = useSelector(selectAllDocumentFieldValues);
 
-    const [base64I, setBase64I] = React.useState("");
-
     const dispatch = useDispatch();
 
-    const [submitDocument, result] = useSubmitDocumentMutation();
-
-    const [uploadDocument, uploadResult] = useUploadUserDocumentsMutation();
-    const [uploadSelfieVideo, uploadSelfieVideoResult] =
-        useUploadSelfieVideoMutation();
-    const [uploadSignature, uploadSignatureResult] =
-        useUploadSignatureImageMutation();
-
-    console.log(uploadResult?.originalArgs);
+    const [submitDocument, result] = useUploadDocumentMutation();
 
     const setFieldValue = (field: string, value: any) => {
         dispatch(setDocumentFieldValue({ fieldName: field, value }));
@@ -139,73 +118,97 @@ function DocumentForm() {
         try {
             const document1Expiry = new Date(values.expiry1);
             const document2Expiry = new Date(values.expiry2);
-            const frontImage1 = await convertPickerImageToBase64(
-                values.frontImage1
+
+            const document1Form = new FormData();
+            document1Form.append("UserType", userType);
+            document1Form.append(
+                "DocumentType",
+                firstDocumentTypes[resident_status as "0" | "1"] ?? "Address"
             );
-            setBase64I(frontImage1);
-            // const backImage1 = await convertPickerImageToBase64(
-            //     values.backImage1
-            // );
-            // const frontImage2 = await convertPickerImageToBase64(
-            //     values.frontImage2
-            // );
-            // const backImage2 = await convertPickerImageToBase64(
-            //     values.backImage2
-            // );
+            document1Form.append("DocId", values.docId1.toString());
+            document1Form.append("Expiry", document1Expiry.toISOString());
+            document1Form.append("Country", values.country);
+            document1Form.append(
+                "FrontImage",
+                createFormFile(values.frontImage1) as any
+            );
+            document1Form.append(
+                "BackImage",
+                createFormFile(values.backImage1) as any
+            );
+            const document2Form = new FormData();
+            document2Form.append("UserType", userType);
+            document2Form.append("DocumentType", EDocumentType.Licence);
+            document2Form.append("DocId", values.docId1.toString());
+            document2Form.append("Expiry", document2Expiry.toISOString());
+            document2Form.append("Country", values.country);
+            document2Form.append(
+                "FrontImage",
+                createFormFile(values.frontImage1) as any
+            );
+            document2Form.append(
+                "BackImage",
+                createFormFile(values.backImage1) as any
+            );
+            document2Form.append(
+                "InternationalLicence",
+                values.isIntlLiscense.toString()
+            );
 
-            // const initialDocument: IUploadUserDocument = {
-            //     userType: userType as "Residence" | "Tourist",
-            //     documents: [
-            //         {
-            //             documentType:
-            //                 firstDocumentTypes[resident_status as "0" | "1"] ??
-            //                 "Address",
-            //             docId: values.docId1,
-            //             expiry: document1Expiry.toISOString(),
-            //             frontImage: frontImage1,
-            //             backImage: backImage1,
-            //             country: values.country,
-            //         },
+            // formdata for signature
+            const document3 = new FormData();
+            document3.append("UserType", userType);
+            document3.append("DocumentType", "Signature");
+            document3.append(
+                "Signature",
+                createFormFile(values.signature) as any
+            );
+            document3.append(
+                "FrontImage",
+                createFormFile(values.signature) as any
+            );
+            document3.append("Expiry", document2Expiry.toISOString());
 
-            //         {
-            //             documentType: EDocumentType.Licence,
-            //             docId: values.docId2,
-            //             expiry: document2Expiry.toISOString(),
-            //             frontImage: frontImage2,
-            //             backImage: backImage2,
-            //             country: values.country,
-            //             internationalLicence: values.isIntlLiscense,
-            //         },
-            //     ],
-            // };
+            // formdata for selfie video
+            const document4 = new FormData();
+            document4.append("UserType", userType);
+            document4.append("DocumentType", "SelfieVideo");
+            document4.append(
+                "FrontImage",
+                createFormFile(values.selfieVideo, "video") as any
+            );
+            document4.append("Expiry", document2Expiry.toISOString());
 
-            // const res1 = await uploadDocument(initialDocument).unwrap();
+            const res1 = await submitDocument(document1Form).unwrap();
+            const res2 = await submitDocument(document2Form).unwrap();
+            const res3 = await submitDocument(document3).unwrap();
+            const res4 = await submitDocument(document4).unwrap();
 
-            // const base64Video = await convertToBase64(values?.selfieVideo);
+            console.log(res1?.succeeded, res2?.succeeded);
 
-            // const selfieVideo: IUploadUserSelfieVideo = {
-            //     userType: userType as "Residence" | "Tourist",
-            //     selfieVideo: base64Video,
-            // };
+            if (res1?.error) {
+                alert(res1.error);
+            }
 
-            // const res2 = await uploadSelfieVideo(selfieVideo).unwrap();
+            if (res2?.error) {
+                alert(res2.error);
+            }
 
-            // const signature: IUploadUserSignatureImage = {
-            //     userType: userType as "Residence" | "Tourist",
-            //     signature: values.signature,
-            // };
-
-            // const res3 = await uploadSignature(signature).unwrap();
-
-            // if (
-            //     res1?.data?.succeded &&
-            //     res2?.data?.succeded &&
-            //     res3?.data?.succeded
-            // ) {
-            //     alert(
-            //         "Document Submitted Successfully, Please wait for approval"
-            //     );
-            // }
+            if (
+                res1?.succeeded &&
+                res2?.succeeded &&
+                res3?.succeeded &&
+                res4?.succeeded &&
+                res1?.error === null &&
+                res2?.error === null &&
+                res3?.error === null &&
+                res4?.error === null
+            ) {
+                alert(
+                    "Documents uploaded successfully, please wait for approval"
+                );
+                navigation.navigate("VarificationStatus");
+            }
         } catch (error) {
             console.warn(error);
             alert(error.message ?? "Something went wrong");
@@ -286,17 +289,6 @@ function DocumentForm() {
         // const base64Image = await convertToBase64(uri);
         setFieldValue(fieldName, uri);
     };
-
-    React.useEffect(() => {
-        if (result.error) {
-            // console.error(result.error);
-            console.error(result);
-            alert(result?.data?.data?.message ?? "Something went wrong");
-        }
-        if (!result.error && result.data) {
-            navigation.navigate("MapScreen" as never);
-        }
-    }, [result]);
 
     React.useEffect(() => {
         (async () => {
@@ -504,17 +496,9 @@ function DocumentForm() {
                     mt="5"
                     mb={8}
                     title="Continue"
-                    disabled={loading || result.isSuccess || !termAccept}
+                    disabled={result.isLoading || !termAccept}
                 />
             </Center>
-            {base64I ? (
-                <Image
-                    source={{ uri: `data:image/jpeg;base64,${base64I}` }}
-                    h={100}
-                    w={64}
-                    alt="fghgfh"
-                />
-            ) : null}
         </VStack>
     );
 }
