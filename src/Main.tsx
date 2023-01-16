@@ -15,10 +15,20 @@ export default function Main() {
     const loading = useSelector(selectLoading);
     const navigation = useNavigation();
 
+    const [goToDashboard, setGoToDashboard] = React.useState(false);
+
     const currentRoute = navigation.getCurrentRoute();
     const { colorMode } = useColorMode();
 
-    const Content = auth?.token ? DrawerRoute : AuthRoute;
+    React.useEffect(() => {
+        if (auth?.token && !auth.checkOtherInformation) {
+            setGoToDashboard(true);
+        } else {
+            setGoToDashboard(false);
+        }
+    }, [auth?.token, auth.checkOtherInformation]);
+
+    const Content = goToDashboard ? DrawerRoute : AuthRoute;
 
     return (
         <>

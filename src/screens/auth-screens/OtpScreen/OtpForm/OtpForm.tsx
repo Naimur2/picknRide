@@ -5,15 +5,18 @@ import React, { useRef, useState } from "react";
 import { Alert, useWindowDimensions } from "react-native";
 import { scale } from "react-native-size-matters";
 
+import ErrorToast from "@components/ErrorToast/ErrorToast";
 import GradientBtn from "@components/GradientBtn/GradientBtn";
 import { IRegisterProps } from "@screens/auth-screens/Register/SignUpInputForm/SignUpInputForm.types";
 import {
     useOtpVerifyApiMutation,
     useResendOtpApiMutation,
 } from "@store/api/v1/authApi/authApiSlice";
+import { IOtpVerify } from "@store/api/v1/authApi/authApiSlice.types";
+import { setCheckOtherInformation } from "@store/features/auth/authSlice";
 import { fontSizes } from "@theme/typography";
-import ErrorToast from "../../../../components/ErrorToast/ErrorToast";
-import { IOtpVerify } from "../../../../redux/api/v1/authApi/authApiSlice.types";
+import { useDispatch } from "react-redux";
+import ResetOtp from "./ResendOtp";
 
 const inputs = Array(6).fill("");
 let newInputIndex = 0;
@@ -27,54 +30,21 @@ interface Iotp {
     [key: number]: string;
 }
 
-interface IResendOtpTextProps {
-    onResend?: () => void;
-    leftText?: string;
-    rightText?: string;
-}
-
-const ResetOtp = ({
-    onResend,
-    leftText = "Didn’t receive any code?",
-    rightText = "Resend",
-}: IResendOtpTextProps) => (
-    <HStack my={4} alignItems={"center"} justifyContent="center" space={2}>
-        <Text
-            color={"gray.100"}
-            fontWeight={500}
-            fontSize={13}
-            _dark={{
-                color: "light.100",
-            }}
-        >
-            {leftText}
-        </Text>
-        <Text
-            onPress={onResend}
-            color={"gray.200"}
-            fontWeight={500}
-            fontSize={13}
-            _dark={{
-                color: "light.100",
-            }}
-        >
-            {rightText}
-        </Text>
-    </HStack>
-);
-
 export default function OtpForm() {
     const navigation = useNavigation();
     const { dialing_code, phone } = useRoute().params as IRegisterProps;
     const [verifyOtp, otpResult] = useOtpVerifyApiMutation();
     const [resendOtp, resendOtpResult] = useResendOtpApiMutation();
+    const dispatch = useDispatch();
 
-    const [showResendOtp, setShowResendOtp] = useState(false);
     const [startTimer, setStartTimer] = useState(false);
-    const [numberOfAttempts, setNumberOfAttempts] = useState(0);
 
     React.useEffect(() => {
-        if (otpResult.data?.status === 400) {
+        if (
+            otpResult.data?.status === 400 ||
+            otpResult.data?.status === 500 ||
+            otpResult.isError
+        ) {
             Toast.show({
                 id: "otpError",
                 render: () => (
@@ -87,7 +57,11 @@ export default function OtpForm() {
                 placement: "top",
             });
         }
-        if (resendOtpResult.data?.status === 400) {
+        if (
+            resendOtpResult.data?.status === 400 ||
+            resendOtpResult.data?.status === 500 ||
+            resendOtpResult.isError
+        ) {
             Toast.show({
                 id: "otpError",
                 render: () => (
@@ -102,26 +76,6 @@ export default function OtpForm() {
             });
         }
     }, [otpResult.data, resendOtpResult.data]);
-
-    const [timer, setTimer] = useState(60);
-
-    React.useEffect(() => {
-        if (startTimer && !showResendOtp) {
-            setShowResendOtp(false);
-            const interval = setInterval(() => {
-                setTimer((timer) => timer - 1);
-            }, 1000);
-
-            if (timer === 0) {
-                setShowResendOtp(true);
-                setStartTimer(false);
-                setTimer(60);
-            }
-            return () => clearInterval(interval);
-        }
-    }, [startTimer, timer]);
-
-    console.log("result", otpResult);
 
     const { width } = useWindowDimensions();
 
@@ -151,7 +105,24 @@ export default function OtpForm() {
             otp: OTP,
         };
 
-        await verifyOtp(submitFromData);
+        try {
+            const data = await verifyOtp(submitFromData).unwrap();
+            console.log(data?.data);
+
+            if (data?.status === 200) {
+                if (
+                    data?.data?.resident_status === "0" &&
+                    data?.data?.userdocuments_status === "0" &&
+                    data?.data?.card_status === "0"
+                ) {
+                    navigation.navigate("SelectCitizenShip");
+                } else {
+                    dispatch(setCheckOtherInformation(true));
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     React.useEffect(() => {
@@ -164,7 +135,6 @@ export default function OtpForm() {
             dialing_code: dialing_code,
             phone: phone,
         };
-        setShowResendOtp(false);
         setStartTimer(true);
         await resendOtp(resendOtpData);
     };
@@ -241,16 +211,11 @@ export default function OtpForm() {
                 ))}
             </HStack>
 
-            {showResendOtp && !startTimer ? (
-                <ResetOtp onResend={handelResendOtp} />
-            ) : null}
-            {startTimer && !showResendOtp ? (
-                <ResetOtp
-                    onResend={handelResendOtp}
-                    leftText={"Retry in"}
-                    rightText={` ${timer} seconds`}
-                />
-            ) : null}
+            <ResetOtp
+                onResend={handelResendOtp}
+                startTimer={startTimer}
+                setStartTimer={(val) => setStartTimer(val)}
+            />
 
             <GradientBtn
                 disabled={

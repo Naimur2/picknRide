@@ -1,9 +1,13 @@
+import { Input, VStack } from "native-base";
 import React from "react";
-import { Input, Text, VStack } from "native-base";
 import { scale } from "react-native-size-matters";
-import colors from "../../theme-config/colors";
-import { fontSizes } from "../../theme-config/typography";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
+
+interface ItextInput extends React.ComponentProps<typeof Input> {
+    value: string;
+    placeholder: string;
+    error?: string;
+}
 
 export default function TextInput({
     onChangeText,
@@ -11,12 +15,7 @@ export default function TextInput({
     placeholder,
     error,
     ...rest
-}: {
-    onChangeText: (text: string) => void;
-    value: string;
-    placeholder: string;
-    error: string;
-}) {
+}: ItextInput) {
     return (
         <VStack>
             <Input

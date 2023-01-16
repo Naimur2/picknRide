@@ -14,6 +14,7 @@ const initialState: IAuthState = {
     photo: null,
     resident_status: null,
     userdocuments_status: null,
+    checkOtherInformation: false,
 };
 
 const authSlice = createSlice({
@@ -33,6 +34,7 @@ const authSlice = createSlice({
             state.photo = action.payload?.photo;
             state.resident_status = action.payload?.resident_status;
             state.userdocuments_status = action.payload?.userdocuments_status;
+            state.checkOtherInformation = action.payload?.checkOtherInformation;
         },
         logout(state) {
             state.f_name = null;
@@ -47,11 +49,15 @@ const authSlice = createSlice({
             state.photo = null;
             state.resident_status = null;
             state.userdocuments_status = null;
+            state.checkOtherInformation = false;
+        },
+        setCheckOtherInformation(state, action) {
+            state.checkOtherInformation = action.payload;
         },
     },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { login, logout, setCheckOtherInformation } = authSlice.actions;
 
 const authReducer = authSlice.reducer;
 

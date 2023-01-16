@@ -136,11 +136,14 @@ function SignUpInputForm() {
             <TextInput
                 placeholder="Email"
                 value={values.email}
-                onChangeText={(value) =>
-                    setFieldValue("email", value.toLowerCase())
-                }
+                onChangeText={(value) => setFieldValue("email", value)}
                 onBlur={handleBlur("email")}
                 error={touched.email && errors.email}
+                onChange={(e) => {
+                    console.log("text", e.nativeEvent.text);
+                }}
+                keyboardType="email-address"
+                autoCapitalize="none"
             />
 
             <PasswordInput

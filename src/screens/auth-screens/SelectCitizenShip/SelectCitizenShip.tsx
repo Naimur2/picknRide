@@ -1,13 +1,15 @@
 import ImageBg from "@components/ImageBg/ImageBg";
 import { useNavigation } from "@react-navigation/native";
-import axios from "axios";
-import { Button, Text, VStack, useColorMode } from "native-base";
+import { Button, Text, Toast, VStack, useColorMode } from "native-base";
 import React, { useLayoutEffect } from "react";
-import apiConfig from "../../../api_config/ApiConfig";
-import CheckBoxGroup from "./CheckBoxGroup/CheckBoxGroup";
 
+import { useUpdateResidencyApiMutation } from "@store/api/v1/authApi/authApiSlice";
 import colors from "@theme/colors";
 import { NavigationStackOptions } from "react-navigation-stack";
+import { useGetResidencyApiQuery } from "@store/api/v1/configApi/configApiSlice";
+import CheckBoxGroup from "./CheckBoxGroup/CheckBoxGroup";
+import ErrorToast from "@components/ErrorToast/ErrorToast";
+import { useSelector } from "react-redux";
 
 export interface ICitizenship {
     id: number;
@@ -22,6 +24,29 @@ export default function SelectCitizenShip() {
     const { colorMode } = useColorMode();
     const navigation = useNavigation();
     const selected = React.useRef(null);
+    const auth = useSelector((state: any) => state.auth);
+    const [updateCitizenShip, result] = useUpdateResidencyApiMutation();
+    const residencyData = useGetResidencyApiQuery(undefined, {
+        skip: !navigation.isFocused(),
+    });
+
+    React.useEffect(() => {
+        if (
+            result.data?.status === 400 ||
+            result.data?.status === 500 ||
+            result.isError
+        ) {
+            Toast.show({
+                id: "otpError",
+                render: () => (
+                    <ErrorToast
+                        message={result.data?.message || "Something went wrong"}
+                    />
+                ),
+                placement: "top",
+            });
+        }
+    }, [result]);
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -31,28 +56,26 @@ export default function SelectCitizenShip() {
 
     const bgType = colorMode === "dark" ? "dark" : "";
 
-    const handleNavigation = () => {
-        if (selected.current?.id !== 1) {
-            navigation.navigate("SelectArrivalDate", {
-                citizenShip: selected?.current,
+    const handleNavigation = async () => {
+        try {
+            console.log(selected.current);
+            const res = await updateCitizenShip({
+                resident_id: selected.current?.id + "",
             });
-        } else {
-            navigation.navigate("AddCards", {
-                citizenShip: selected?.current,
-            });
-        }
+            console.log(res);
+            if (res?.data?.status === 200) {
+                if (selected.current?.id !== 1) {
+                    navigation.navigate("SelectArrivalDate", {
+                        citizenShip: selected?.current,
+                    });
+                } else {
+                    navigation.navigate("AddCards", {
+                        citizenShip: selected?.current,
+                    });
+                }
+            }
+        } catch (error) {}
     };
-
-    // get Residency from api
-    const [residency, setResidency] = React.useState<ICitizenship[]>([]);
-
-    React.useEffect(() => {
-        const getResidency = async () => {
-            const res = await axios.get(`${apiConfig.apiUrl}/getResidency`);
-            setResidency(res?.data?.data);
-        };
-        getResidency();
-    }, [navigation]);
 
     useLayoutEffect(() => {
         const navigationoptions: NavigationStackOptions = {
@@ -81,10 +104,12 @@ export default function SelectCitizenShip() {
                     Select one from below to proceed.
                 </Text>
 
-                <CheckBoxGroup
-                    onSelect={(it) => (selected.current = it)}
-                    items={residency}
-                />
+                {residencyData?.data ? (
+                    <CheckBoxGroup
+                        onSelect={(it) => (selected.current = it)}
+                        items={residencyData?.data?.data}
+                    />
+                ) : null}
 
                 <Button
                     onPress={handleNavigation}

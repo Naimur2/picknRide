@@ -13,4 +13,5 @@ export interface IAuthState {
     resident_status: "0" | "1" | "2" | null;
     userdocuments_status: "0" | "1" | null;
     token: string | null;
+    checkOtherInformation?: boolean;
 }

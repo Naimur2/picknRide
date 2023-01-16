@@ -43,6 +43,28 @@ const authApiSlice = apiSlice.injectEndpoints({
                 method: "POST",
                 body: body,
             }),
+            async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+                try {
+                    const result = await queryFulfilled;
+                    const { data } = result;
+
+                    const dispatchData = data.data as IAuthState;
+
+                    if (
+                        dispatchData?.resident_status === "0" &&
+                        dispatchData?.userdocuments_status === "0" &&
+                        dispatchData?.card_status === "0"
+                    ) {
+                        const dataInfo = {
+                            ...dispatchData,
+                            checkOtherInformation: true,
+                        };
+                        dispatch(login(dataInfo));
+                    } else {
+                        dispatch(login(dispatchData));
+                    }
+                } catch (error) {}
+            },
         }),
         resendOtpApi: builder.mutation({
             query: (body: TResendOtp) => ({
@@ -61,7 +83,7 @@ const authApiSlice = apiSlice.injectEndpoints({
         updateResidencyApi: builder.mutation({
             query: (body: IUpdateResidency) => ({
                 url: "updateResidency",
-                method: "POST",
+                method: "PUT",
                 body: body,
             }),
         }),
