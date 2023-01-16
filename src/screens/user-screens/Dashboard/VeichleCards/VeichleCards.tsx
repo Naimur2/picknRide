@@ -124,11 +124,13 @@ export default function VeichleCards() {
             }
 
             const documentStatus = auth.userdocuments_status as "0" | "1";
-            // &&
-            // documentStatus === "0" &&
-            // !isLoading &&
-            // !verificationStatus?.data?.status
-            if (selectedVeichle === ECarType.CAR) {
+
+            if (
+                selectedVeichle === ECarType.CAR &&
+                documentStatus === "0" &&
+                !isLoading &&
+                !verificationStatus?.data?.status
+            ) {
                 navigation.navigate("DocumentSubmission", {
                     veichle: currentVeichle,
                 });
