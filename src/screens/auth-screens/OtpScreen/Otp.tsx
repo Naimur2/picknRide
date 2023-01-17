@@ -132,17 +132,9 @@ export default function OtpForm() {
     // Resend Otp api call
     const handelResendOtp = async () => {
         const resendOtpData = {
-            dialing_code: routeParams?.dialing_code,
-            phone: routeParams?.phone,
+            dialing_code: dialing_code,
+            phone: phone,
         };
-        setOtp({
-            0: "",
-            1: "",
-            2: "",
-            3: "",
-            4: "",
-            5: "",
-        });
         setStartTimer(true);
         await resendOtp(resendOtpData);
     };
