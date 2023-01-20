@@ -125,11 +125,11 @@ export default function VeichleCards() {
 
             const documentStatus = auth.userdocuments_status as "0" | "1";
 
+            // !verificationStatus?.data?.status
             if (
                 selectedVeichle === ECarType.CAR &&
                 documentStatus === "0" &&
-                !isLoading &&
-                !verificationStatus?.data?.status
+                !isLoading
             ) {
                 navigation.navigate("DocumentSubmission", {
                     veichle: currentVeichle,

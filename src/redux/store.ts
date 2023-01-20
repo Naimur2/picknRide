@@ -30,7 +30,7 @@ const reducer = combineReducers({
     cars: carsReducer,
     document: documentReducer,
     userLocation: persistedUserLocationReducer,
-    carTrip: persistedCarTripReducer,
+    carTrip: carTripReducer,
 });
 
 export const store = configureStore({
