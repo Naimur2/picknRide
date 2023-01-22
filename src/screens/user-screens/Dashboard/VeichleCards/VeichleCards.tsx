@@ -127,7 +127,6 @@ export default function VeichleCards() {
 
             if (
                 selectedVeichle === ECarType.CAR &&
-                documentStatus === "0" &&
                 !isLoading &&
                 !verificationStatus?.data?.status
             ) {
