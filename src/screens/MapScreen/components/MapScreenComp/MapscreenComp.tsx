@@ -1,11 +1,11 @@
+import CModal from "@components/CModal/CModal";
+import H3 from "@components/H3/H3";
 import { Button, HStack, VStack } from "native-base";
 import React from "react";
 import { Dimensions } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import CModal from "@components/CModal/CModal";
-import H3 from "@components/H3/H3";
-import { ICAR, ILatLng } from "../../MapScreen";
+import { ICAR } from "../../MapScreen";
 import BottomScan from "../BottomScan/BottomScan";
 import CarDetailsSheet from "../BottomScan/components/CarDetailsSheet/CarDetailsSheet";
 import GeoSheet from "../BottomScan/components/GeoSheet/GeoSheet";
@@ -15,11 +15,11 @@ import LocationSearch from "../LocationSearch/LocationSearch";
 import MapTopDetails from "../MapTopDetails/MapTopDetails";
 import SpeedMeter from "../SpeedMeter/SpeedMeter";
 
-import { scale } from "react-native-size-matters";
 import { fontSizes } from "@theme/typography";
 import { useSelector } from "react-redux";
 import { selectCarTripInfo } from "../../../../redux/features/car-trip/carTripSlice";
 import { ICarTripState } from "../../../../redux/features/car-trip/carTripSlice.types";
+import Sos from "../Sos/Sos";
 
 export interface IMapTopDetailsProps {
     type: ICAR;
@@ -34,13 +34,6 @@ function MapscreenComp({ type, setType }: IMapTopDetailsProps) {
         return (carType: ICAR) => {
             setType(carType);
         };
-    }, []);
-
-    React.useEffect(() => {
-        // SheetManager.show("geoSheet");
-        // return () => {
-        //     SheetManager.hide("geoSheet");
-        // };
     }, []);
 
     const insets = useSafeAreaInsets();
@@ -79,6 +72,7 @@ function MapscreenComp({ type, setType }: IMapTopDetailsProps) {
                 />
             </VStack>
             <SpeedMeter />
+            {carTripDetails?.hasStartedJourney ? <Sos /> : null}
             <BottomScan
                 onLeftPress={() => SheetManager.show("selectionSheet")}
             />

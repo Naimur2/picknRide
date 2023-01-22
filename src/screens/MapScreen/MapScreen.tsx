@@ -21,49 +21,6 @@ interface IMapProps extends IMapScreenProps, IMapTopDetailsProps {}
 
 function ActualMap({}: IMapProps) {
     const [carType, setCarType] = React.useState<ICAR>("scooter");
-    const currentLocation = useSelector(selectCurrentLocation);
-    const navigation = useNavigation();
-    const dispatch = useDispatch();
-    const { hasForeGroundPermissions, checkPermissions } =
-        useLocationPermissions();
-
-    const getCurrentLocation = async () => {
-        const { status, granted } =
-            await Location.getForegroundPermissionsAsync();
-        if (!granted || status !== "granted") {
-            await checkPermissions();
-        } else {
-            const location = await Location.getCurrentPositionAsync({});
-
-            dispatch(
-                setInitialLocation({
-                    latitude: location.coords.latitude,
-                    longitude: location.coords.longitude,
-                    latitudeDelta: 0.009,
-                    longitudeDelta: 0.01,
-                })
-            );
-        }
-    };
-
-    React.useLayoutEffect(() => {
-        if (config.DEV_MODE) {
-            dispatch(
-                setCurrentLocation({
-                    latitude: config.latitude,
-                    longitude: config.longitude,
-                    latitudeDelta: 0.009,
-                    longitudeDelta: 0.01,
-                })
-            );
-        } else {
-            getCurrentLocation();
-        }
-        // const interval = setInterval(() => {}, 10000);
-        // return () => clearInterval(interval);
-    }, []);
-
-    console.log("currentLocation", currentLocation);
 
     return (
         <VStack

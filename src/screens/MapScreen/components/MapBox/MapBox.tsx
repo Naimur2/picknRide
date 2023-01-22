@@ -1,7 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { useGetNearestCarsApiQuery } from "@store/api/v2/carApi/carApiSlice";
 import { selectNearestCars } from "@store/features/cars/carsSlice";
-import { selectCurrentRegion } from "@store/features/user-location/userLocationSlice";
 import { Factory } from "native-base";
 import React from "react";
 import { Dimensions, Keyboard } from "react-native";
@@ -31,16 +29,6 @@ function MapBox() {
     const navigation = useNavigation();
     const markers = useSelector(selectNearestCars);
     const initialRegion = useSelector(selectInitialLocation) as Region;
-    const currentRegion = useSelector(selectCurrentRegion) as Region;
-    const locationData = useGetNearestCarsApiQuery(
-        {
-            latitude: currentRegion.latitude,
-            longitude: currentRegion.longitude,
-            pageNumber: 1,
-            pageSize: 10,
-        },
-        { skip: !currentRegion.latitude || !currentRegion.longitude }
-    );
 
     const fitToCoordinatesHandler = (coordinates: ILatLng[]) => {
         if (mapRef.current) {
@@ -63,29 +51,29 @@ function MapBox() {
 
     React.useEffect(() => {
         if (markers.length > 0) {
-            const coordinates = markers.map((marker) => ({
-                latitude: marker.latitude,
-                longitude: marker.longitude,
+            const coordinates = markers.map((mk) => ({
+                latitude: mk.latitude,
+                longitude: mk.longitude,
             }));
-            fitToCoordinatesHandler(coordinates);
+            fitToCoordinatesHandler([...coordinates]);
         }
     }, [markers]);
 
-    const aniRegion = React.useMemo(() => {
-        return getAnaimatedRegion(initialRegion);
-    }, [initialRegion]);
+    const allMarkers = React.useMemo(() => {
+        return markers;
+    }, [markers]);
 
     return (
         <Map
             ref={mapRef}
-            initialRegion={initialRegion as Region}
+            initialRegion={initialRegion}
             flex={1}
             // provider={PROVIDER_GOOGLE}
             w={width}
             h={height}
             onPress={() => Keyboard.dismiss()}
         >
-            <AllMarkers markers={markers} />
+            <AllMarkers markers={allMarkers} />
         </Map>
     );
 }

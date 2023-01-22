@@ -5,6 +5,8 @@ const config = {
     latitude: 25.3167871,
     longitude: 51.4805169,
     LOCATION_TASK_NAME: "background-location-task",
+    emergencyNumber: "999",
+    customerCareNumber: "321",
 };
 
 export default config;

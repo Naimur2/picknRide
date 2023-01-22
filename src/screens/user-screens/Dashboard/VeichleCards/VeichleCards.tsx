@@ -71,31 +71,11 @@ export default function VeichleCards() {
         checkPermissions,
     } = useLocationPermissions();
 
-    TaskManager.defineTask(config.LOCATION_TASK_NAME, ({ data, error }) => {
-        if (error) {
-            // Error occurred - check `error.message` for more details.
-            return;
-        }
-        if (data) {
-            const { locations } = data;
-            console.log(locations[0].coords);
-            dispatch(
-                setCurrentLocation({
-                    latitude: locations[0].coords.latitude,
-                    longitude: locations[0].coords.longitude,
-                })
-            );
-            // do something with the locations captured in the background
-        }
-    });
-
     const currentVeichle = veichels.find(
         (veichle) => veichle.type === selectedVeichle
     );
 
     const handleNavigation = async () => {
-        const hasbg =
-            Platform.OS === "android" ? hasBackGroundPermissions : true;
         if (!hasForeGroundPermissions) {
             console.log("here");
             await checkPermissions();
@@ -104,7 +84,7 @@ export default function VeichleCards() {
 
             dispatch(setInitialLocation(initialRegion.coords));
 
-            const ONE_MIN = 1000 * 60;
+            const INTERVAL_TIME = 1000 * 10;
 
             //    chech if the task is already registered
             const isRegistered = await TaskManager.isTaskRegisteredAsync(
@@ -116,14 +96,12 @@ export default function VeichleCards() {
                     config.LOCATION_TASK_NAME,
                     {
                         accuracy: Location.Accuracy.Balanced,
-                        timeInterval: ONE_MIN,
+                        timeInterval: INTERVAL_TIME,
                         distanceInterval: 10,
                         showsBackgroundLocationIndicator: true,
                     }
                 );
             }
-
-            const documentStatus = auth.userdocuments_status as "0" | "1";
 
             if (
                 selectedVeichle === ECarType.CAR &&
