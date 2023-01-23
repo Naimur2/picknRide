@@ -43,10 +43,10 @@ export default function ScanQrCode() {
             console.log(config.DEV_MODE, tripData);
             const data: IValidateCarTripData = tripData;
 
-            // navigation.navigate("StartEndRide", {
-            //     ...data,
-            //     type: "START",
-            // });
+            navigation.navigate("StartEndRide", {
+                data: tripData,
+                type: "START",
+            });
         } else {
             console.log(config.DEV_MODE, tripData);
             const data: IValidateCarTripData = {
@@ -105,12 +105,16 @@ export default function ScanQrCode() {
             if (!config.DEV_MODE) {
                 console.log("config.DEV_MODE", config.DEV_MODE);
                 const location = await Location.getCurrentPositionAsync({});
-                const res = await validateCarTrip({
+                const imageData = {
                     numberPlateImage: cameraPhoto,
                     vehicleNo: inputRef?.current as string,
                     mobileLatitude: location.coords.latitude,
                     mobileLongitude: location.coords.longitude,
-                }).unwrap();
+                };
+
+                const res = await validateCarTrip(imageData).unwrap();
+                console.log("res", res);
+
                 if (res?.error?.message) {
                     Alert.alert("Error", res?.error?.message, [
                         {

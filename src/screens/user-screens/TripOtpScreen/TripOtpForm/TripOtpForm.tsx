@@ -64,6 +64,7 @@ export default function TripOtpForm() {
                 otp: OTP,
                 tripToken: params.data.tripToken,
             }).unwrap();
+            console.log("res", res);
             if (res?.error?.message) {
                 Alert.alert("Error", res?.error?.message, [
                     {
@@ -73,7 +74,7 @@ export default function TripOtpForm() {
                 ]);
             } else {
                 if (res.error !== null) {
-                    alert(res.error);
+                    alert("Error:" + res.error);
                 }
                 if (res.succeeded && res.error === null) {
                     const tripState: ICarTripState = {
