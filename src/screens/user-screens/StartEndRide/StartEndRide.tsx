@@ -223,6 +223,7 @@ export default function StartEndRide() {
                                 mt="5"
                                 mb={8}
                                 title="START RIDE"
+                                disabled={result.isLoading}
                             />
                         </Center>
                     </VStack>

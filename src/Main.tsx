@@ -24,6 +24,7 @@ export default function Main() {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const currentRegion = useSelector(selectCurrentRegion) as Region;
+    console.log(auth);
     const locationData = useGetNearestCarsApiQuery(
         {
             latitude: currentRegion.latitude,
@@ -67,7 +68,7 @@ export default function Main() {
         }
     });
 
-    const showLoading = locationData.isLoading || loading;
+    const showLoading = locationData.isLoading || !locationData.isLoading;
 
     return (
         <>

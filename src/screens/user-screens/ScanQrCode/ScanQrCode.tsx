@@ -23,11 +23,11 @@ import React from "react";
 import { Platform, StyleSheet, Alert } from "react-native";
 import { scale } from "react-native-size-matters";
 import { IValidateCarTripData } from "./ScanQrCode.types";
+import CaptureBtns from "./CaptureBtns/CaptureBtns";
 
 export default function ScanQrCode() {
     const navigation = useNavigation();
 
-    const [flashOn, setFlashOn] = React.useState(false);
     const [cameraPhoto, setCameraPhoto] = React.useState<any>(null);
     const [imageUri, setImageUri] = React.useState<string>("");
     const [isLoaded, setIsLoaded] = React.useState<boolean>(false);
@@ -194,7 +194,7 @@ export default function ScanQrCode() {
                             right="0"
                             my="2"
                         >
-                            <Spinner size={"lg"} color="blue.100" />
+                            <Spinner size={"lg"} color="#000" />
                         </Center>
                     ) : null}
 
@@ -229,56 +229,13 @@ export default function ScanQrCode() {
                         </LinGrad>
                     ) : null}
 
-                    <HStack
-                        space={4}
-                        alignItems={"center"}
-                        justifyContent={"center"}
-                    >
-                        {!cameraPhoto || !imageUri ? (
-                            <Pressable
-                                onPress={takePicture}
-                                rounded={"full"}
-                                py={4}
-                                px={4}
-                                bg={"#fff"}
-                            >
-                                <Entypo name="camera" size={24} color="black" />
-                            </Pressable>
-                        ) : (
-                            <>
-                                <Pressable
-                                    onPress={handleReset}
-                                    rounded={"full"}
-                                    py={4}
-                                    px={4}
-                                    bg={"#fff"}
-                                >
-                                    <MaterialCommunityIcons
-                                        name="camera-retake"
-                                        size={24}
-                                        color="black"
-                                    />
-                                </Pressable>
-                                <Pressable
-                                    onPress={
-                                        !validationResult.isLoading
-                                            ? handleSubmit
-                                            : undefined
-                                    }
-                                    rounded={"full"}
-                                    py={4}
-                                    px={4}
-                                    bg={"#fff"}
-                                >
-                                    <AntDesign
-                                        name="checkcircle"
-                                        size={24}
-                                        color="black"
-                                    />
-                                </Pressable>
-                            </>
-                        )}
-                    </HStack>
+                    <CaptureBtns
+                        takePicture={takePicture}
+                        handleReset={handleReset}
+                        handleSubmit={handleSubmit}
+                        showTakePictureBtn={!cameraPhoto || !imageUri}
+                        hideButtons={validationResult.isLoading}
+                    />
 
                     <Text
                         fontSize={24}
