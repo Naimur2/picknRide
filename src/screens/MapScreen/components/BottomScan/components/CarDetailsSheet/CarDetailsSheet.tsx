@@ -67,13 +67,20 @@ function CarDetailsSheet({
     const [isYesNoModalVisible, setIsYesNoModalVisible] = React.useState(false);
 
     const onEndRide = async () => {
-        const res = await enRide({
-            tripToken: carTripState.tripInfo?.tripToken as string,
-        });
-        if (res.data) {
-            dispatch(stopCarTrip());
+        try {
+            const res = await enRide({
+                tripToken: carTripState.tripInfo?.tripToken as string,
+            });
+            setIsYesNoModalVisible(false);
+            if (res.data) {
+                dispatch(stopCarTrip());
+            }
+        } catch (error) {
+            console.log(error);
         }
     };
+
+    const handleLock = async () => {};
 
     const { colorMode } = useColorMode();
 

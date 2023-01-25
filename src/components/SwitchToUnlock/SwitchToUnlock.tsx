@@ -51,13 +51,22 @@ export default function SwitchToUnlock({
 
     const panGesture = useAnimatedGestureHandler<PanGestureHandlerGestureEvent>(
         {
-            onStart: (event, context: IContext) => {
+            onStart: (
+                event: PanGestureHandlerGestureEvent,
+                context: IContext
+            ) => {
                 context.translateX = translateX.value;
             },
-            onActive: (event, context: IContext) => {
+            onActive: (
+                event: PanGestureHandlerGestureEvent,
+                context: IContext
+            ) => {
                 translateX.value = event.translationX + context.translateX;
             },
-            onEnd: (event, context: IContext) => {
+            onEnd: (
+                event: PanGestureHandlerGestureEvent,
+                context: IContext
+            ) => {
                 if (event.velocityX < 100) {
                     translateX.value = withTiming(0, undefined, (isEnded) => {
                         if (isEnded) {
