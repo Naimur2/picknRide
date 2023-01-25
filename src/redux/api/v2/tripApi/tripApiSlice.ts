@@ -1,4 +1,5 @@
 import { apiSliceV2 } from "../apiSlice";
+import { ICarCommands } from "./tripApiSlice.types";
 import {
     IEndCarTrip,
     IRequestStartCarTrip,
@@ -62,6 +63,13 @@ const tripApiSlice = apiSliceV2.injectEndpoints({
                 body,
             }),
         }),
+        executeCarCommand: builder.mutation({
+            query: (body: ICarCommands) => ({
+                url: "CarTrip/CommandStatusCarTrip",
+                method: "POST",
+                body,
+            }),
+        }),
     }),
     overrideExisting: true,
 });
@@ -74,4 +82,5 @@ export const {
     useEndCarTripMutation,
     useSendCarTripOtpTypeMutation,
     useLockUnlockMutation,
+    useExecuteCarCommandMutation,
 } = tripApiSlice;

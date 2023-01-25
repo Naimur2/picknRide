@@ -2,20 +2,10 @@ import { VStack } from "native-base";
 import React from "react";
 import { ICAR } from "./MapScreen.types";
 import MapBox, { IMapScreenProps } from "./components/MapBox/MapBox";
+import { SheetManager } from "react-native-actions-sheet";
 import MapscreenComp, {
     IMapTopDetailsProps,
 } from "./components/MapScreenComp/MapscreenComp";
-import {
-    selectCurrentLocation,
-    setCurrentLocation,
-    setInitialLocation,
-} from "@store/features/user-location/userLocationSlice";
-import { useSelector, useDispatch } from "react-redux";
-import config from "@config";
-import { Alert, Platform } from "react-native";
-import * as Location from "expo-location";
-import useLocationPermissions from "../../hooks/useLocationPermissions";
-import { useNavigation } from "@react-navigation/native";
 
 interface IMapProps extends IMapScreenProps, IMapTopDetailsProps {}
 

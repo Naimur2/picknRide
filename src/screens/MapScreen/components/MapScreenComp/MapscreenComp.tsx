@@ -40,8 +40,9 @@ function MapscreenComp({ type, setType }: IMapTopDetailsProps) {
 
     React.useEffect(() => {
         if (carTripDetails?.hasStartedJourney) {
-            console.log("carTripDetails", carTripDetails);
             SheetManager.show("carDetailsSheet");
+        } else if (!carTripDetails?.hasStartedJourney) {
+            SheetManager.hide("carDetailsSheet");
         }
     }, [carTripDetails]);
 

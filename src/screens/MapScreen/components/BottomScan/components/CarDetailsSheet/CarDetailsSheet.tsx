@@ -2,7 +2,10 @@ import {
     Button,
     Factory,
     HStack,
+    Modal,
+    Spinner,
     Text,
+    Toast,
     useColorMode,
     VStack,
 } from "native-base";
@@ -17,20 +20,23 @@ import SwitchToUnlock from "@components/SwitchToUnlock/SwitchToUnlock";
 import WarningModal from "@components/WarningModal/WarningModal";
 import {
     useEndCarTripMutation,
+    useExecuteCarCommandMutation,
     useLockUnlockMutation,
 } from "@store/api/v2/tripApi/tripApiSlice";
-import { Image } from "react-native";
-import ActionSheet, {
-    SheetManager,
-    SheetProps,
-} from "react-native-actions-sheet";
-import { useDispatch, useSelector } from "react-redux";
 import {
     selectCarTripInfo,
     stopCarTrip,
 } from "@store/features/car-trip/carTripSlice";
 import { ICarTripState } from "@store/features/car-trip/carTripSlice.types";
+import { ActivityIndicator, Image } from "react-native";
+import ActionSheet, {
+    SheetManager,
+    SheetProps,
+} from "react-native-actions-sheet";
+import { useDispatch, useSelector } from "react-redux";
 import YesNoModal from "../YesNoModal/YesNoModal";
+import { Center } from "native-base";
+import ErrorToast from "@components/ErrorToast/ErrorToast";
 
 const images = {
     carSmall,
@@ -58,40 +64,118 @@ function CarDetailsSheet({
     const RnImage = Factory(Image);
     const [isModalVisible, setIsModalVisible] = React.useState(false);
     const [isLocked, setIsLocked] = React.useState(false);
+
     const carTripState: ICarTripState = useSelector(selectCarTripInfo);
+
     const [setLockStatus, lockResult] = useLockUnlockMutation();
-
-    const dispatch = useDispatch();
+    const [executeComannd, executionResult] = useExecuteCarCommandMutation();
     const [enRide, result] = useEndCarTripMutation();
-
-    const [isYesNoModalVisible, setIsYesNoModalVisible] = React.useState(false);
-
-    const onEndRide = async () => {
-        try {
-            const res = await enRide({
-                tripToken: carTripState.tripInfo?.tripToken as string,
-            });
-            setIsYesNoModalVisible(false);
-            if (res.data) {
-                dispatch(stopCarTrip());
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const handleLock = async () => {};
 
     const { colorMode } = useColorMode();
 
-    const handleShowModal = async (status) => {
-        await setLockStatus({
-            tripToken: carTripState.tripInfo?.tripToken as string,
-            lock: status,
-        });
-        setIsModalVisible(true);
-        setIsLocked(status);
+    const dispatch = useDispatch();
+
+    const [isYesNoModalVisible, setIsYesNoModalVisible] = React.useState(false);
+    const swipeHandlerRef = React.useRef(null);
+
+    const onEndRide = async () => {
+        try {
+            if (!isLocked) {
+                Toast.show({
+                    id: "errorToast",
+                    render: () => (
+                        <ErrorToast
+                            message={
+                                "Please lock the car before ending the ride"
+                            }
+                        />
+                    ),
+                    placement: "top",
+                });
+            } else {
+                const res = await enRide({
+                    tripToken: carTripState.tripInfo?.tripToken as string,
+                });
+                setIsYesNoModalVisible(false);
+                if (res.data) {
+                    dispatch(stopCarTrip());
+                }
+            }
+        } catch (error) {
+            Toast.show({
+                id: "errorToast",
+                render: () => (
+                    <ErrorToast
+                        message={"Error ending the ride. Please try again"}
+                    />
+                ),
+                placement: "top",
+            });
+        }
     };
+
+    const handleShowModal = async (status) => {
+        try {
+            console.log(status);
+            const res = await setLockStatus({
+                tripToken: carTripState.tripInfo?.tripToken as string,
+                lock: status,
+            });
+            if (res.succeeded) {
+                if (!res?.data?.status) {
+                    const ids = res?.data?.commandStatus.map((item) => item.id);
+                    const commandResult = await executeComannd({ ids });
+                    if (commandResult.succeeded) {
+                        const hasTimedOut =
+                            commandResult?.data?.map((cmd) => cmd.status === 3)
+                                .length > 0;
+                        if (hasTimedOut) {
+                            // setIsModalVisible(true);
+                            // setIsLocked(status);
+                            swipeHandlerRef.current?.resetStatus(
+                                status === true ? false : true
+                            );
+                            Toast.show({
+                                id: "locktimeout",
+                                render: () => (
+                                    <ErrorToast
+                                        message={"Please try again later"}
+                                    />
+                                ),
+                                placement: "top",
+                            });
+                        } else {
+                            setIsLocked(status);
+                            setIsModalVisible(true);
+                        }
+                    }
+                } else {
+                    setIsLocked(status);
+                    setIsModalVisible(true);
+                }
+            } else {
+                swipeHandlerRef.current?.resetStatus(
+                    status === true ? false : true
+                );
+                Toast.show({
+                    id: "locktimeout",
+                    render: () => (
+                        <ErrorToast message={"Please try again later"} />
+                    ),
+                    placement: "top",
+                });
+            }
+        } catch (error) {
+            Toast.show({
+                id: "locktimeout",
+                render: () => <ErrorToast message={"Please try again later"} />,
+                placement: "top",
+            });
+        }
+    };
+
+    const isLoading =
+        lockResult.isLoading || executionResult.isLoading || result.isLoading;
 
     if (!carTripState?.hasStartedJourney) return <></>;
 
@@ -150,7 +234,10 @@ function CarDetailsSheet({
                     >
                         3 km 5 QAR
                     </Text>
-                    <SwitchToUnlock setStatus={handleShowModal} />
+                    <SwitchToUnlock
+                        ref={swipeHandlerRef}
+                        setStatus={handleShowModal}
+                    />
                     <VStack mt={4} mb={5} w={"full"} space="4">
                         <Button
                             bg="red.100"
@@ -195,6 +282,14 @@ function CarDetailsSheet({
                 title={"Are you sure you want to end the ride?"}
                 onYes={onEndRide}
             />
+            <Modal isOpen={isLoading}>
+                <Center h="full" w="full" bg="#ffffff60">
+                    <Spinner size="lg" color="#0000ff" />
+                    <Text color={"#000"} fontWeight={700} mt={4}>
+                        Wait a moment
+                    </Text>
+                </Center>
+            </Modal>
         </>
     );
 }

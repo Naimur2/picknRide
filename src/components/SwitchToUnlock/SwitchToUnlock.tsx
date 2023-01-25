@@ -1,9 +1,9 @@
-import React from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
-import { PanGestureHandler } from "react-native-gesture-handler";
-import { HStack, Image, Text, VStack, Factory } from "native-base";
 import swipe from "@assets/images/swipe.png";
 import { LinearGradient } from "expo-linear-gradient";
+import { Factory, Image, Text, VStack } from "native-base";
+import React, { useImperativeHandle } from "react";
+import { Dimensions, StyleSheet } from "react-native";
+import { PanGestureHandler } from "react-native-gesture-handler";
 
 import Animated, {
     PanGestureHandlerGestureEvent,
@@ -26,25 +26,26 @@ interface IContext {
     translateY: number;
 }
 
-export default function SwitchToUnlock({
-    setStatus,
-}: {
-    setStatus: (status: boolean) => void;
-}) {
+function SwitchToUnlock(
+    {
+        setStatus,
+    }: {
+        setStatus: (status: boolean) => void;
+    },
+    ref: any
+) {
     const LinGrad = Factory(LinearGradient);
 
     const containerWidth = useSharedValue(width);
+    const swipeBtnWidth = useSharedValue(60);
     const translateX = useSharedValue(0);
-    const [isLocked, setIsLocked] = React.useState(true);
+    const [isLocked, setIsLocked] = React.useState(false);
 
-    const handleLocked = (lockStatus) => {
-        if (lockStatus === 1) {
-            setStatus?.(true);
-            setIsLocked?.(true);
-        } else {
-            setIsLocked?.(false);
-            setStatus?.(false);
-        }
+    const handleLocked = (status: { isLocked: boolean }) => {
+        console.log("handleLocked", status);
+        if (status.isLocked === isLocked) return;
+        setIsLocked(status.isLocked);
+        setStatus?.(status.isLocked);
     };
 
     const message = isLocked ? "SWIPE RIGHT TO UNLOCK" : "SWIPE LEFT TO LOCK";
@@ -67,27 +68,66 @@ export default function SwitchToUnlock({
                 event: PanGestureHandlerGestureEvent,
                 context: IContext
             ) => {
-                if (event.velocityX < 100) {
-                    translateX.value = withTiming(0, undefined, (isEnded) => {
-                        if (isEnded) {
-                            runOnJS(handleLocked)(1);
-                        }
-                    });
-                } else if (event.velocityX > containerWidth.value / 2) {
-                    const transVal = containerWidth.value - CONTAINER_WIDTH;
+                const containerWidthValue =
+                    containerWidth.value - swipeBtnWidth.value;
+                if (event.velocityX < 50 && translateX.value < 0) {
+                    translateX.value = withTiming(0);
+                } else if (
+                    event.velocityX < 50 &&
+                    translateX.value > containerWidthValue
+                ) {
+                    translateX.value = withTiming(containerWidthValue);
+                } else if (
+                    event.velocityX < 50 &&
+                    translateX.value > containerWidthValue / 2
+                ) {
                     translateX.value = withTiming(
-                        transVal,
+                        containerWidthValue,
                         undefined,
-                        (isEnded) => {
-                            if (isEnded) {
-                                runOnJS(handleLocked)(0);
+                        (didFinish) => {
+                            if (didFinish) {
+                                runOnJS(handleLocked)({
+                                    isLocked: true,
+                                });
                             }
                         }
                     );
+                } else {
+                    translateX.value = withTiming(0, undefined, (didFinish) => {
+                        if (didFinish) {
+                            runOnJS(handleLocked)({
+                                isLocked: false,
+                            });
+                        }
+                    });
                 }
             },
         }
     );
+
+    const resetStatus = (status: boolean) => {
+        if (status) {
+            translateX.value = withTiming(
+                containerWidth.value - swipeBtnWidth.value,
+                undefined,
+                (didFinish) => {
+                    if (didFinish) {
+                        runOnJS(handleLocked)({
+                            isLocked: true,
+                        });
+                    }
+                }
+            );
+        } else {
+            translateX.value = withTiming(0, undefined, (didFinish) => {
+                if (didFinish) {
+                    runOnJS(handleLocked)({
+                        isLocked: false,
+                    });
+                }
+            });
+        }
+    };
 
     const keyStyle = useAnimatedStyle(() => {
         return {
@@ -104,6 +144,10 @@ export default function SwitchToUnlock({
     const AniText = Animated.createAnimatedComponent(Text);
     const AnimatedImage = Animated.createAnimatedComponent(Image);
 
+    useImperativeHandle(ref, () => ({
+        resetStatus,
+    }));
+
     return (
         <Animated.View
             style={[styles.container]}
@@ -113,7 +157,12 @@ export default function SwitchToUnlock({
         >
             <Animated.View>
                 <PanGestureHandler onGestureEvent={panGesture}>
-                    <Animated.View style={[keyStyle, styles.box]}>
+                    <Animated.View
+                        onLayout={(e) => {
+                            swipeBtnWidth.value = e.nativeEvent.layout.width;
+                        }}
+                        style={[keyStyle, styles.box]}
+                    >
                         <LinGrad
                             colors={gradient[100]}
                             start={[1, 0]}
@@ -150,7 +199,7 @@ export default function SwitchToUnlock({
         </Animated.View>
     );
 }
-
+export default React.forwardRef(SwitchToUnlock);
 const styles = StyleSheet.create({
     box: {
         width: CONTAINER_WIDTH,

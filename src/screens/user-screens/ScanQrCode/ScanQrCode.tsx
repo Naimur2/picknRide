@@ -41,8 +41,6 @@ export default function ScanQrCode() {
     const handleNavigation = (tripData: IValidateCarTripData | null) => {
         if (!config.DEV_MODE && tripData) {
             console.log(config.DEV_MODE, tripData);
-            const data: IValidateCarTripData = tripData;
-
             navigation.navigate("StartEndRide", {
                 data: tripData,
                 type: "START",

@@ -27,3 +27,7 @@ export interface IStartCarTrip {
 }
 
 export interface IEndCarTrip extends IRequestStartCarTrip {}
+
+export interface ICarCommands {
+    ids: string[];
+}
