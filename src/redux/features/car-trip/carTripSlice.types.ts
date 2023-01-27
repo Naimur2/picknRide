@@ -3,4 +3,5 @@ import { IValidateCarTripData } from "../../../screens/user-screens/ScanQrCode/S
 export interface ICarTripState {
     tripInfo: IValidateCarTripData | null;
     hasStartedJourney: boolean;
+    isLocked: boolean;
 }

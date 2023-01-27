@@ -17,10 +17,6 @@ const persistConfig = {
 
 const persistedAuthReducer = persistReducer(persistConfig, authReducer);
 const persistedCarTripReducer = persistReducer(persistConfig, carTripReducer);
-const persistedUserLocationReducer = persistReducer(
-    persistConfig,
-    userLocationReducer
-);
 
 const reducer = combineReducers({
     [apiSlice.reducerPath]: apiSlice.reducer,
@@ -30,7 +26,7 @@ const reducer = combineReducers({
     cars: carsReducer,
     document: documentReducer,
     userLocation: userLocationReducer,
-    carTrip: carTripReducer,
+    carTrip: persistedCarTripReducer,
 });
 
 export const store = configureStore({

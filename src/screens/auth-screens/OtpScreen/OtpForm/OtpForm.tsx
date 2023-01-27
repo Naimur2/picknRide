@@ -37,6 +37,10 @@ export default function OtpForm() {
     const [resendOtp, resendOtpResult] = useResendOtpApiMutation();
     const dispatch = useDispatch();
 
+    console.log(otpResult);
+
+    console.log("routeParams", routeParams);
+
     const [startTimer, setStartTimer] = useState(false);
 
     React.useEffect(() => {
@@ -104,6 +108,7 @@ export default function OtpForm() {
             phone: routeParams?.phone,
             otp: OTP,
         };
+        console.log({ submitFromData });
 
         try {
             const data = await verifyOtp(submitFromData).unwrap();

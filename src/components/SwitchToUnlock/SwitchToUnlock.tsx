@@ -42,7 +42,6 @@ function SwitchToUnlock(
     const [isLocked, setIsLocked] = React.useState(false);
 
     const handleLocked = (status: { isLocked: boolean }) => {
-        console.log("handleLocked", status);
         if (status.isLocked === isLocked) return;
         setIsLocked(status.isLocked);
         setStatus?.(status.isLocked);

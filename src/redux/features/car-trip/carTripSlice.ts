@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ICarTripState } from "./carTripSlice.types";
+import { RootState } from "@store/store";
 
 const initialState: ICarTripState = {
     tripInfo: null,
     hasStartedJourney: false,
+    isLocked: false,
 };
 
 const carTripSlice = createSlice({
@@ -18,12 +20,18 @@ const carTripSlice = createSlice({
             state.tripInfo = null;
             state.hasStartedJourney = false;
         },
+        setIsLocked: (state, action) => {
+            state.isLocked = action.payload;
+        },
     },
 });
 
 const carTripReducer = carTripSlice.reducer;
 export default carTripReducer;
 
-export const { setTripInfo, stopCarTrip } = carTripSlice.actions;
+export const { setTripInfo, stopCarTrip, setIsLocked } = carTripSlice.actions;
 
 export const selectCarTripInfo = (state: any) => state.carTrip.tripInfo;
+export const selectHasStartedJourney = (state: any) =>
+    state.carTrip.hasStartedJourney;
+export const selectIsLocked = (state: RootState) => state.carTrip.isLocked;

@@ -13,8 +13,10 @@ import { useLoginApiMutation } from "@store/api/v1/authApi/authApiSlice";
 import { ILoginProps } from "@store/api/v1/authApi/authApiSlice.types";
 import { Keyboard } from "react-native";
 import ErrorToast from "../../../../components/ErrorToast/ErrorToast";
+import { useNavigation } from "@react-navigation/native";
 
 function SignInInputForm() {
+    const navigation = useNavigation();
     const schema = Yup.object().shape({
         password: Yup.string().required("Password is required"),
         phone: Yup.number().required("Phone number is required"),
@@ -53,7 +55,15 @@ function SignInInputForm() {
                 password: password,
                 dialing_code: "+" + dialing_code,
             };
-            await login(body);
+            try {
+                await login(body).unwrap();
+                // navigation.navigate("OtpScreen", {
+                //     dialing_code: "+" + dialing_code,
+                //     phone,
+                // });
+            } catch (error) {
+                console.log("error", error);
+            }
         },
     });
 
