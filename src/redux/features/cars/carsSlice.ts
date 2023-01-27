@@ -22,9 +22,20 @@ const carsSlice = createSlice({
                 if (isAlreadyInState === -1) {
                     state.nearestCars.push(car);
                 } else {
-                    state.nearestCars[isAlreadyInState].latitude = car.latitude;
-                    state.nearestCars[isAlreadyInState].longitude =
-                        car.longitude;
+                    if (
+                        state.nearestCars[isAlreadyInState].latitude !==
+                        car.latitude
+                    ) {
+                        state.nearestCars[isAlreadyInState].latitude =
+                            car.latitude;
+                    }
+                    if (
+                        state.nearestCars[isAlreadyInState].longitude !==
+                        car.longitude
+                    ) {
+                        state.nearestCars[isAlreadyInState].longitude =
+                            car.longitude;
+                    }
                 }
             });
         },
