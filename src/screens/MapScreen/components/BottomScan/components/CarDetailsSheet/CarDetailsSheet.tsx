@@ -321,7 +321,7 @@ function CarDetailsSheet({
                     <WarningModal
                         setIsVisible={() => setIsModalVisible(false)}
                         isVisible={isModalVisible}
-                        variant={isLocked ? "locked" : "unlocked"}
+                        variant={!isLocked ? "locked" : "unlocked"}
                     />
                 ) : null}
             </ActionSheet>
