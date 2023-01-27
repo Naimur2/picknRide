@@ -1,22 +1,19 @@
-import { useNavigation } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { IAuthState } from "@store/features/auth/authSlice.types";
-import { selectAuth, selectLoading } from "@store/store";
-import { Spinner, useColorMode } from "native-base";
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import AuthRoute from "./routes/auth.routes";
-import DrawerRoute from "./routes/drawer.routes";
-import * as TaskManager from "expo-task-manager";
 import config from "@config";
+import { useNavigation } from "@react-navigation/native";
+import { useGetNearestCarsApiQuery } from "@store/api/v2/carApi/carApiSlice";
+import { IAuthState } from "@store/features/auth/authSlice.types";
 import {
     selectCurrentRegion,
     setCurrentLocation,
 } from "@store/features/user-location/userLocationSlice";
+import { selectAuth, selectLoading } from "@store/store";
+import * as TaskManager from "expo-task-manager";
+import { Spinner, useColorMode } from "native-base";
+import React from "react";
 import { Region } from "react-native-maps";
-import { useGetNearestCarsApiQuery } from "@store/api/v2/carApi/carApiSlice";
-
-const Stack = createNativeStackNavigator();
+import { useDispatch, useSelector } from "react-redux";
+import AuthRoute from "./routes/auth.routes";
+import DrawerRoute from "./routes/drawer.routes";
 
 export default function Main() {
     const auth = useSelector(selectAuth) as IAuthState;
@@ -57,7 +54,11 @@ export default function Main() {
         }
         if (data) {
             const { locations } = data;
-            console.log(locations[0].coords);
+            console.log({
+                latitude: locations[0].coords.latitude,
+                longitude: locations[0].coords.longitude,
+            });
+
             dispatch(
                 setCurrentLocation({
                     latitude: locations[0].coords.latitude,

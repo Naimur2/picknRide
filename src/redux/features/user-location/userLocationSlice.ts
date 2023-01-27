@@ -24,7 +24,7 @@ export const userLocationSlice = createSlice({
     initialState,
     reducers: {
         setCurrentLocation: (state, action) => {
-            console.log("action.payload", action.payload);
+            console.warn("setCurrentLocation", action.payload?.latitude);
             state.currentLocation = {
                 latitude: action.payload?.latitude,
                 longitude: action.payload?.longitude,
@@ -50,8 +50,6 @@ export const userLocationSlice = createSlice({
     },
 });
 
-export const selectCurrentLocation = (state: RootState) =>
-    state.userLocation.currentLocation;
 export const selectInitialLocation = (state: RootState) =>
     state.userLocation.initialLocation;
 export const selectHasBackgroundLocationPermission = (state: RootState) =>

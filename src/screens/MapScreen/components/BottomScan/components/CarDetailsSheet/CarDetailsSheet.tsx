@@ -172,7 +172,7 @@ function CarDetailsSheet({
 
         try {
             const res = await setLockStatus({
-                tripToken: carTripState.tripInfo?.tripToken as string,
+                tripToken: carTripState?.tripInfo?.tripToken as string,
                 lock: status,
             }).unwrap();
 

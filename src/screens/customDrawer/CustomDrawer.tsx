@@ -9,7 +9,7 @@ import Balance from "@components/Balance/Balance";
 import { Instagram, Whatsapp } from "@components/Icons/Icons";
 import Scroller from "@components/Scroller/Scroller";
 import UserAvatar from "@components/UserAvatar/UserAvatar";
-import useAuth from "../../hooks/useAuth";
+
 import { logout } from "@store/features/auth/authSlice";
 import DrawerBtn from "./components/DraweBtn/DrawerBtn";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,7 +25,6 @@ interface IDrawerMenuItem {
 export default function CustomDrawer() {
     const Lg = Factory(LinearGradient);
     const navigation = useNavigation();
-    const { user } = useAuth();
     const insets = useSafeAreaInsets();
     const dispatch = useDispatch();
 

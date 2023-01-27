@@ -81,7 +81,7 @@ function LocationSearch({
 
     const Touchable = Factory(TouchableOpacity);
 
-    let Smage = Items[selectedType] ?? null;
+    let Smage = Items?.[selectedType] ?? null;
 
     console.log("Smage", Smage);
 

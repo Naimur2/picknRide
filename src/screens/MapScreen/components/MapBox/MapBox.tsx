@@ -1,34 +1,31 @@
 import { useNavigation } from "@react-navigation/native";
-import { selectNearestCars } from "@store/features/cars/carsSlice";
+import {
+    selectCurrentRegion,
+    selectInitialLocation,
+} from "@store/features/user-location/userLocationSlice";
 import { Factory } from "native-base";
 import React from "react";
 import { Dimensions, Keyboard } from "react-native";
-import MapView, { AnimatedRegion, Region } from "react-native-maps";
+import MapView, { MarkerAnimated, Region } from "react-native-maps";
 import { useSelector } from "react-redux";
-import { selectInitialLocation } from "../../../../redux/features/user-location/userLocationSlice";
 import { ILatLng } from "../../MapScreen.types";
 import AllMarkers from "../AllMarker/AllMarker";
+import { RootState } from "@store/store";
 
 export interface IMapScreenProps {
     children?: any;
 }
 const { height, width } = Dimensions.get("window");
 
-const getAnaimatedRegion = (region: Region) => {
-    return new AnimatedRegion({
-        latitude: region.latitude,
-        longitude: region.longitude,
-        latitudeDelta: region.latitudeDelta,
-        longitudeDelta: region.longitudeDelta,
-    });
-};
-
 function MapBox() {
     const Map = Factory(MapView);
     const mapRef = React.useRef<MapView>(null);
     const navigation = useNavigation();
-    const markers = useSelector(selectNearestCars);
+
     const initialRegion = useSelector(selectInitialLocation) as Region;
+
+    const currentLocation = useSelector(selectCurrentRegion) as ILatLng;
+    const locationSlice = useSelector((state) => state.userLocation);
 
     const fitToCoordinatesHandler = (coordinates: ILatLng[]) => {
         if (mapRef.current) {
@@ -48,20 +45,7 @@ function MapBox() {
     React.useEffect(() => {
         mapRef.current?.animateToRegion(initialRegion, 300);
     }, [navigation]);
-
-    React.useEffect(() => {
-        if (markers.length > 0) {
-            const coordinates = markers.map((mk) => ({
-                latitude: mk.latitude,
-                longitude: mk.longitude,
-            }));
-            fitToCoordinatesHandler([...coordinates]);
-        }
-    }, [markers]);
-
-    const allMarkers = React.useMemo(() => {
-        return markers;
-    }, [markers]);
+    console.log(currentLocation);
 
     return (
         <Map
@@ -73,7 +57,18 @@ function MapBox() {
             h={height}
             onPress={() => Keyboard.dismiss()}
         >
-            <AllMarkers markers={allMarkers} />
+            <AllMarkers />
+            {currentLocation.latitude && currentLocation.longitude ? (
+                <MarkerAnimated
+                    coordinate={{
+                        longitude: currentLocation.latitude,
+                        latitude: currentLocation.longitude,
+                    }}
+                    tracksViewChanges={false}
+                />
+            ) : (
+                <></>
+            )}
         </Map>
     );
 }

@@ -6,7 +6,6 @@ import GradientBtn from "@components/GradientBtn/GradientBtn";
 import HeaderTitle from "@components/HeaderTitle/HeaderTitle";
 import ImagePickerSheet from "@components/ImagePickerSheet/ImagePickerSheet";
 import Scroller from "@components/Scroller/Scroller";
-import useAuth from "@hooks/useAuth";
 import { useNavigation } from "@react-navigation/native";
 import colors from "@theme/colors";
 import { fontSizes } from "@theme/typography";
@@ -24,11 +23,13 @@ import React from "react";
 import { Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
+import { useSelector } from "react-redux";
+import { selectAuth } from "../../../redux/store";
 
 export default function Account() {
     const navigation = useNavigation();
     const insets = useSafeAreaInsets();
-    const { user } = useAuth();
+    const auth = useSelector(selectAuth);
     const [image, setImage] = React.useState(null);
     const [isOpen, setIsOpen] = React.useState(false);
     const colormode = useColorMode();
@@ -92,7 +93,7 @@ export default function Account() {
                         borderWidth={6}
                         borderColor="#fff"
                     >
-                        {user?.name.slice(0, 1)}
+                        NA
                     </Avatar>
                     <Pressable
                         bg="primary.100"

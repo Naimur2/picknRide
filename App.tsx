@@ -1,14 +1,14 @@
 import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import AuthProvider from "./src/context/providers/auth.provider";
+
+import { persistor, store } from "@store/store";
+import "react-native-gesture-handler";
+import "react-native-reanimated";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 import Main from "./src/Main";
 import ThemeConFig from "./src/theme-config/index";
-import { Provider } from "react-redux";
-import "react-native-reanimated";
-import "react-native-gesture-handler";
-import { PersistGate } from "redux-persist/integration/react";
-import { store, persistor } from "@store/store";
 
 export default function App() {
     return (
@@ -16,11 +16,9 @@ export default function App() {
             <PersistGate loading={null} persistor={persistor}>
                 <SafeAreaProvider>
                     <ThemeConFig>
-                        <AuthProvider>
-                            <NavigationContainer>
-                                <Main />
-                            </NavigationContainer>
-                        </AuthProvider>
+                        <NavigationContainer>
+                            <Main />
+                        </NavigationContainer>
                     </ThemeConFig>
                 </SafeAreaProvider>
             </PersistGate>
