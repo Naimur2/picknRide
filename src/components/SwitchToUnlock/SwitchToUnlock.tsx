@@ -42,9 +42,10 @@ function SwitchToUnlock(
     const [isLocked, setIsLocked] = React.useState(false);
 
     const handleLocked = (status: { isLocked: boolean }) => {
-        if (status.isLocked === isLocked) return;
-        setIsLocked(status.isLocked);
-        setStatus?.(status.isLocked);
+        if (status.isLocked !== isLocked) {
+            setStatus?.(status.isLocked);
+            setIsLocked(status.isLocked);
+        }
     };
 
     const message = isLocked ? "SWIPE RIGHT TO UNLOCK" : "SWIPE LEFT TO LOCK";
@@ -69,16 +70,16 @@ function SwitchToUnlock(
             ) => {
                 const containerWidthValue =
                     containerWidth.value - swipeBtnWidth.value;
-                if (event.velocityX < 50 && translateX.value < 0) {
+                if (event.velocityX < 100 && translateX.value < 0) {
                     translateX.value = withTiming(0);
                 } else if (
-                    event.velocityX < 50 &&
+                    event.velocityX < 100 &&
                     translateX.value > containerWidthValue
                 ) {
                     translateX.value = withTiming(containerWidthValue);
                 } else if (
-                    event.velocityX < 50 &&
-                    translateX.value > containerWidthValue / 2
+                    event.velocityX < 100 &&
+                    translateX.value > containerWidthValue * 0.5
                 ) {
                     translateX.value = withTiming(
                         containerWidthValue,

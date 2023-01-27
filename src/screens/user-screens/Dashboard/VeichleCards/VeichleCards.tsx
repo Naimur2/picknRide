@@ -80,7 +80,7 @@ export default function VeichleCards() {
 
             dispatch(setInitialLocation(initialRegion.coords));
 
-            const INTERVAL_TIME = 1000 * 10;
+            const INTERVAL_TIME = 1000 * 15;
 
             //    chech if the task is already registered
             const isRegistered = await TaskManager.isTaskRegisteredAsync(
@@ -95,7 +95,7 @@ export default function VeichleCards() {
                     {
                         accuracy: Location.Accuracy.Balanced,
                         timeInterval: INTERVAL_TIME,
-                        distanceInterval: 1,
+                        distanceInterval: 10,
                         showsBackgroundLocationIndicator: true,
                     }
                 );

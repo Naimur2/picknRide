@@ -83,6 +83,10 @@ function CarDetailsSheet({
     const [isYesNoModalVisible, setIsYesNoModalVisible] = React.useState(false);
     const swipeHandlerRef = React.useRef(null);
 
+    // React.useEffect(() => {
+    //     swipeHandlerRef.current?.resetStatus(isLocked);
+    // }, [isLocked]);
+
     const onEndRide = async () => {
         try {
             if (!isLocked) {
@@ -125,6 +129,8 @@ function CarDetailsSheet({
                         placement: "top",
                     });
                 }
+
+                setIsYesNoModalVisible(false);
             }
         } catch (error) {
             Toast.show({
@@ -167,7 +173,9 @@ function CarDetailsSheet({
         }
     };
 
-    const handleShowModal = async (status: boolean) => {
+    const handleLockUnlock = async (status: boolean) => {
+        console.log("status", status);
+
         setLoadingModalVisible(true);
 
         try {
@@ -265,7 +273,7 @@ function CarDetailsSheet({
                     </Text>
                     <SwitchToUnlock
                         ref={swipeHandlerRef}
-                        setStatus={handleShowModal}
+                        setStatus={handleLockUnlock}
                     />
                     <VStack mt={4} mb={5} w={"full"} space="4">
                         <Button
