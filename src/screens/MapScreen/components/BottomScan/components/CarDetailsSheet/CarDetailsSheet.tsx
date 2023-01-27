@@ -82,10 +82,10 @@ function CarDetailsSheet({
     const { colorMode } = useColorMode();
 
     const [isYesNoModalVisible, setIsYesNoModalVisible] = React.useState(false);
-    const swipeHandlerRef = React.useRef(null);
+    // const swipeHandlerRef = React.useRef(null);
 
     // React.useEffect(() => {
-    //     swipeHandlerRef.current?.resetStatus(isLocked);
+    // swipeHandlerRef.current?.resetStatus(isLocked);
     // }, [isLocked]);
 
     const onEndRide = async () => {
@@ -155,7 +155,7 @@ function CarDetailsSheet({
                     commandResult?.data?.map((cmd) => cmd.status === 3).length >
                     0;
                 if (hasTimedOut) {
-                    swipeHandlerRef.current?.resetStatus(!currentStatus);
+                    // swipeHandlerRef.current?.resetStatus(!currentStatus);
                     Toast.show({
                         id: "locktimeout",
                         render: () => (
@@ -189,7 +189,7 @@ function CarDetailsSheet({
                 await handleSuccessfulLock(res.data, status);
                 setLoadingModalVisible(false);
             } else {
-                swipeHandlerRef.current?.resetStatus(!status);
+                // swipeHandlerRef.current?.resetStatus(!status);
                 Toast.show({
                     id: "locktimeout",
                     render: () => (
@@ -273,7 +273,7 @@ function CarDetailsSheet({
                         3 km 5 QAR
                     </Text>
                     {/* <SwitchToUnlock
-                        ref={swipeHandlerRef}
+                        // ref={swipeHandlerRef}
                         setStatus={handleLockUnlock}
                     /> */}
                     <Center py={4}>
