@@ -24,7 +24,6 @@ export const userLocationSlice = createSlice({
     initialState,
     reducers: {
         setCurrentLocation: (state, action) => {
-            console.warn("setCurrentLocation", action.payload?.latitude);
             state.currentLocation = {
                 latitude: action.payload?.latitude,
                 longitude: action.payload?.longitude,

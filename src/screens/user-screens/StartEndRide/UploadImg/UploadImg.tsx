@@ -1,6 +1,6 @@
 import { Plus } from "@components/Icons/Icons";
-import ImagePickerSheet from "@components/ImagePickerSheet/ImagePickerSheet";
-import { Pressable, Text, VStack, Image } from "native-base";
+import useImagePicker from "@hooks/use-image-picker";
+import { Image, Pressable, Text, VStack } from "native-base";
 import React from "react";
 
 function UploadImg({
@@ -13,8 +13,9 @@ function UploadImg({
     imageLink?: string;
     imgTitle?: string;
 }) {
-    const [isOpen, setIsOpen] = React.useState(false);
-    const [imageUrl, setImageUrl] = React.useState("");
+    const { image: imageUrl, captureImage } = useImagePicker({
+        useCamera: true,
+    });
 
     let title = imageUrl ? imageUrl.split("/").pop() : null;
     title = imgTitle ? imgTitle : title;
@@ -44,7 +45,7 @@ function UploadImg({
                     shadow="9"
                     alignItems={"center"}
                     justifyContent={"center"}
-                    onPress={() => setIsOpen(true)}
+                    onPress={captureImage}
                     position="relative"
                     overflow={"hidden"}
                     _dark={{
@@ -80,17 +81,6 @@ function UploadImg({
                     </Text>
                 ) : null}
             </VStack>
-
-            <ImagePickerSheet
-                setImage={(img) => {
-                    setIsOpen(false);
-                    setImageUrl(img);
-                }}
-                isOpen={isOpen}
-                onClose={() => setIsOpen(false)}
-                hideFromGallery={true}
-                backCameraOnly={true}
-            />
         </>
     );
 }

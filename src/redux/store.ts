@@ -17,6 +17,10 @@ const persistConfig = {
 
 const persistedAuthReducer = persistReducer(persistConfig, authReducer);
 const persistedCarTripReducer = persistReducer(persistConfig, carTripReducer);
+const persistedUserLocationReducer = persistReducer(
+    persistConfig,
+    userLocationReducer
+);
 
 const reducer = combineReducers({
     [apiSlice.reducerPath]: apiSlice.reducer,
@@ -25,7 +29,7 @@ const reducer = combineReducers({
     ui: uiReducer,
     cars: carsReducer,
     document: documentReducer,
-    userLocation: userLocationReducer,
+    userLocation: persistedUserLocationReducer,
     carTrip: persistedCarTripReducer,
 });
 

@@ -87,6 +87,8 @@ export default function VeichleCards() {
                 config.LOCATION_TASK_NAME
             );
 
+            console.log("isRegistered", isRegistered);
+
             if (!isRegistered) {
                 await Location.startLocationUpdatesAsync(
                     config.LOCATION_TASK_NAME,

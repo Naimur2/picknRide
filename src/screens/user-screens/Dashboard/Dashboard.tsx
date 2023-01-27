@@ -17,6 +17,8 @@ import { scale } from "react-native-size-matters";
 import { useDispatch, useSelector } from "react-redux";
 import DashModal from "./DashModal/DashModal";
 import VeichleCards from "./VeichleCards/VeichleCards";
+import { setCurrentLocation } from "@store/features/user-location/userLocationSlice";
+import * as Location from "expo-location";
 
 export default function Dashboard() {
     const navigation = useNavigation();
@@ -80,6 +82,21 @@ export default function Dashboard() {
                 setIsModalVisibleHandler(value === "true");
             }
         });
+    }, []);
+
+    React.useEffect(() => {
+        if (!hasForeGroundPermissions || !hasBackGroundPermissions) {
+            checkPermissions();
+        } else {
+            (async () => {
+                const {
+                    coords: { latitude, longitude },
+                } = await Location.getCurrentPositionAsync({
+                    accuracy: Location.Accuracy.BestForNavigation,
+                });
+                dispatch(setCurrentLocation({ latitude, longitude }));
+            })();
+        }
     }, []);
 
     return (

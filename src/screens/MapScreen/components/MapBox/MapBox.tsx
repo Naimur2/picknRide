@@ -3,7 +3,7 @@ import {
     selectCurrentRegion,
     selectInitialLocation,
 } from "@store/features/user-location/userLocationSlice";
-import { Factory } from "native-base";
+import { Center, Factory, VStack, Box } from "native-base";
 import React from "react";
 import { Dimensions, Keyboard } from "react-native";
 import MapView, { MarkerAnimated, Region } from "react-native-maps";
@@ -25,7 +25,6 @@ function MapBox() {
     const initialRegion = useSelector(selectInitialLocation) as Region;
 
     const currentLocation = useSelector(selectCurrentRegion) as ILatLng;
-    const locationSlice = useSelector((state) => state.userLocation);
 
     const fitToCoordinatesHandler = (coordinates: ILatLng[]) => {
         if (mapRef.current) {
@@ -45,7 +44,12 @@ function MapBox() {
     React.useEffect(() => {
         mapRef.current?.animateToRegion(initialRegion, 300);
     }, [navigation]);
-    console.log(currentLocation);
+
+    React.useEffect(() => {
+        if (currentLocation.latitude && currentLocation.longitude) {
+            fitToCoordinatesHandler([currentLocation]);
+        }
+    }, [currentLocation]);
 
     return (
         <Map
@@ -57,18 +61,22 @@ function MapBox() {
             h={height}
             onPress={() => Keyboard.dismiss()}
         >
-            <AllMarkers />
             {currentLocation.latitude && currentLocation.longitude ? (
                 <MarkerAnimated
                     coordinate={{
-                        longitude: currentLocation.latitude,
-                        latitude: currentLocation.longitude,
+                        longitude: currentLocation.longitude,
+                        latitude: currentLocation.latitude,
                     }}
                     tracksViewChanges={false}
-                />
+                >
+                    <Center h={6} w={6} rounded={"full"} bg="#866aad50">
+                        <Box h={4} w={4} rounded={"full"} bg="#866aad"></Box>
+                    </Center>
+                </MarkerAnimated>
             ) : (
                 <></>
             )}
+            <AllMarkers />
         </Map>
     );
 }
