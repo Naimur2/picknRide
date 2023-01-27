@@ -69,7 +69,7 @@ function CarDetailsSheet({
     const [loadingModalVisible, setLoadingModalVisible] = React.useState(false);
 
     const [isModalVisible, setIsModalVisible] = React.useState(false);
-    // const [isLocked, setIsLocked] = React.useState(false);
+
     const isLocked = useSelector(selectIsLocked);
 
     const carTripState: ICarTripState = useSelector(selectCarTripInfo);
@@ -82,8 +82,6 @@ function CarDetailsSheet({
 
     const [isYesNoModalVisible, setIsYesNoModalVisible] = React.useState(false);
     const swipeHandlerRef = React.useRef(null);
-    console.log(carTripState.tripInfo?.tripToken);
-    console.log(result);
 
     const onEndRide = async () => {
         try {
@@ -104,9 +102,28 @@ function CarDetailsSheet({
                 const res = await enRide({
                     tripToken: carTripState.tripInfo?.tripToken as string,
                 }).unwrap();
-                console.log("res", res);
+                console.log(
+                    "%cres",
+                    "color: green; background: yellow; font-size: 30px",
+                    res
+                );
+                // console.log("res", res);
                 if (res.data) {
                     dispatch(stopCarTrip());
+                }
+                if (res.error) {
+                    Toast.show({
+                        id: "errorToast",
+                        render: () => (
+                            <ErrorToast
+                                message={
+                                    res?.error?.message ||
+                                    "Error ending the ride"
+                                }
+                            />
+                        ),
+                        placement: "top",
+                    });
                 }
             }
         } catch (error) {
@@ -182,12 +199,6 @@ function CarDetailsSheet({
             setLoadingModalVisible(false);
         }
     };
-
-    React.useEffect(() => {
-        if (swipeHandlerRef.current) {
-            swipeHandlerRef.current.resetStatus(isLocked);
-        }
-    }, [isLocked, carTripState?.hasStartedJourney]);
 
     const isLoading =
         lockResult.isLoading ||

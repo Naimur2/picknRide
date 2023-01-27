@@ -1,42 +1,45 @@
 import GradientBtn from "@components/GradientBtn/GradientBtn";
 import Scroller from "@components/Scroller/Scroller";
 import config from "@config";
-import { AntDesign, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useValidateCarTripRequestMutation } from "@store/api/v2/tripApi/tripApiSlice";
-import convertToBase64 from "@utils/convertToBase64";
 import { Camera } from "expo-camera";
+import {
+    CameraType,
+    FlashMode,
+    ImageType,
+} from "expo-camera/build/Camera.types";
+import * as FileSystem from "expo-file-system";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Location from "expo-location";
 import {
     Center,
     Factory,
-    HStack,
     Image,
     Input,
-    Pressable,
     Spinner,
     Text,
     VStack,
 } from "native-base";
 import React from "react";
-import { Platform, StyleSheet, Alert } from "react-native";
+import { Alert, Platform, StyleSheet } from "react-native";
 import { scale } from "react-native-size-matters";
-import { IValidateCarTripData } from "./ScanQrCode.types";
 import CaptureBtns from "./CaptureBtns/CaptureBtns";
+import { IValidateCarTripData } from "./ScanQrCode.types";
+
+import TorchBtn from "./TorchBtn/TorchBtn";
 
 export default function ScanQrCode() {
     const navigation = useNavigation();
 
     const [cameraPhoto, setCameraPhoto] = React.useState<any>(null);
     const [imageUri, setImageUri] = React.useState<string>("");
-    const [isLoaded, setIsLoaded] = React.useState<boolean>(false);
+    const [isOpenTorch, setIsOpenTorch] = React.useState<boolean>(false);
+
     const inputRef = React.useRef<any>(null);
 
     const [validateCarTrip, validationResult] =
         useValidateCarTripRequestMutation();
-
-    // console.log("validationResult", validationResult);
 
     const handleNavigation = (tripData: IValidateCarTripData | null) => {
         if (!config.DEV_MODE && tripData) {
@@ -59,13 +62,6 @@ export default function ScanQrCode() {
         }
     };
 
-    React.useLayoutEffect(() => {
-        setIsLoaded(true);
-        return () => {
-            setIsLoaded(false);
-        };
-    }, [navigation]);
-
     const LinGrad = Factory(LinearGradient);
 
     React.useLayoutEffect(() => {
@@ -80,9 +76,16 @@ export default function ScanQrCode() {
 
     const takePicture = React.useCallback(async () => {
         if (camRef.current) {
-            const photo = await camRef.current.takePictureAsync();
-            const base64 = await convertToBase64(photo.uri);
-            setCameraPhoto(base64);
+            const photo = await camRef.current.takePictureAsync({
+                base64: true,
+                quality: 0.1,
+                imageType: ImageType.jpg,
+            });
+
+            // filesize
+            const fileInfo = await FileSystem.getInfoAsync(photo.uri);
+
+            setCameraPhoto(photo.base64);
             setImageUri(photo.uri);
         }
     }, []);
@@ -137,6 +140,10 @@ export default function ScanQrCode() {
                 }
             }
         }
+    };
+
+    const toggleTorch = () => {
+        setIsOpenTorch((prev) => !prev);
     };
 
     return (
@@ -221,7 +228,12 @@ export default function ScanQrCode() {
                                 <Camera
                                     style={StyleSheet.absoluteFillObject}
                                     ref={camRef}
-                                    type={Camera.Constants.Type.back}
+                                    type={CameraType.back}
+                                    flashMode={
+                                        isOpenTorch
+                                            ? FlashMode.torch
+                                            : FlashMode.off
+                                    }
                                 />
                             </VStack>
                         </LinGrad>
@@ -233,6 +245,7 @@ export default function ScanQrCode() {
                         handleSubmit={handleSubmit}
                         showTakePictureBtn={!cameraPhoto || !imageUri}
                         hideButtons={validationResult.isLoading}
+                        toggleTorch={toggleTorch}
                     />
 
                     <Text
@@ -273,30 +286,6 @@ export default function ScanQrCode() {
                             disabled={validationResult.isLoading}
                         />
                     </Center>
-
-                    {/* <VStack space="2" alignItems={"center"} mb={16}>
-                        <Text
-                            fontSize={13}
-                            fontWeight={600}
-                            color="#fff"
-                            mx={"auto"}
-                            textAlign={"center"}
-                        >
-                            Use Flash
-                        </Text>
-                        <Pressable
-                            w="50px"
-                            h="50px"
-                            alignItems="center"
-                            justifyContent="center"
-                            borderRadius={30}
-                            bg="#fff"
-                            shadow="9"
-                            onPress={handleCameraFlash}
-                        >
-                            <  source={torch} alt="torch" />
-                        </Pressable>
-                    </VStack> */}
                 </VStack>
             </Scroller>
         </>
