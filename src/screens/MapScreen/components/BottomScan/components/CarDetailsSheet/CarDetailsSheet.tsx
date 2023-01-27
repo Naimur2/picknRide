@@ -39,6 +39,7 @@ import ActionSheet, {
 import { useDispatch, useSelector } from "react-redux";
 import { selectIsLocked } from "../../../../../../redux/features/car-trip/carTripSlice";
 import YesNoModal from "../YesNoModal/YesNoModal";
+import ToggleSwitch from "toggle-switch-react-native";
 
 const images = {
     carSmall,
@@ -214,7 +215,7 @@ function CarDetailsSheet({
         result.isLoading ||
         loadingModalVisible;
 
-    if (!carTripState?.hasStartedJourney) return <></>;
+    // if (!carTripState?.hasStartedJourney) return <></>;
 
     return (
         <>
@@ -271,36 +272,50 @@ function CarDetailsSheet({
                     >
                         3 km 5 QAR
                     </Text>
-                    <SwitchToUnlock
+                    {/* <SwitchToUnlock
                         ref={swipeHandlerRef}
                         setStatus={handleLockUnlock}
-                    />
-                    <VStack mt={4} mb={5} w={"full"} space="4">
-                        <Button
-                            bg="red.100"
-                            _pressed={{ bg: "red.800" }}
-                            w="120px"
-                            borderRadius={30}
-                            mx="auto"
-                            _text={{
-                                color: "white",
-                                fontWeight: "700",
-                                fontSize: 13,
-                                textTransform: "uppercase",
-                            }}
-                            color={"#fff"}
-                            onPress={() => {
-                                if (!isLocked) {
-                                    alert("Please lock the car first");
-                                } else {
-                                    SheetManager.hide("carDetailsSheet");
-                                    setIsYesNoModalVisible(true);
-                                }
-                            }}
-                        >
-                            End Ride
-                        </Button>
-                    </VStack>
+                    /> */}
+                    <Center py={4}>
+                        <ToggleSwitch
+                            onColor="green"
+                            offColor="red"
+                            isOn={isLocked}
+                            onToggle={handleLockUnlock}
+                            size="large"
+                        />
+                        <Text mt={2} fontWeight={"bold"}>
+                            {isLocked ? "Car is locked" : "Car is unlocked"}
+                        </Text>
+                    </Center>
+                    {isLocked ? (
+                        <VStack mt={4} mb={5} w={"full"} space="4">
+                            <Button
+                                bg="red.100"
+                                _pressed={{ bg: "red.800" }}
+                                w="120px"
+                                borderRadius={30}
+                                mx="auto"
+                                _text={{
+                                    color: "white",
+                                    fontWeight: "700",
+                                    fontSize: 13,
+                                    textTransform: "uppercase",
+                                }}
+                                color={"#fff"}
+                                onPress={() => {
+                                    if (!isLocked) {
+                                        alert("Please lock the car first");
+                                    } else {
+                                        SheetManager.hide("carDetailsSheet");
+                                        setIsYesNoModalVisible(true);
+                                    }
+                                }}
+                            >
+                                End Ride
+                            </Button>
+                        </VStack>
+                    ) : null}
                 </VStack>
                 {isModalVisible ? (
                     <WarningModal
