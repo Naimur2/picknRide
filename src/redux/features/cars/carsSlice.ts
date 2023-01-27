@@ -15,9 +15,19 @@ const carsSlice = createSlice({
     initialState,
     reducers: {
         setNearestCars: (state: ICarState, action: ISetNearestCarsAction) => {
-            state.nearestCars = [...state.nearestCars, ...action.payload];
+            action.payload.forEach((car) => {
+                const isAlreadyInState = state.nearestCars.findIndex(
+                    (c) => c.id === car.id
+                );
+                if (isAlreadyInState === -1) {
+                    state.nearestCars.push(car);
+                } else {
+                    state.nearestCars[isAlreadyInState].latitude = car.latitude;
+                    state.nearestCars[isAlreadyInState].longitude =
+                        car.longitude;
+                }
+            });
         },
-
         setSelectedVeichleType: (
             state: ICarState,
             action: ISetSelectedVeichleTypeAction
