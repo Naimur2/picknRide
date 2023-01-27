@@ -175,9 +175,11 @@ function CarDetailsSheet({
     };
 
     const handleLockUnlock = async (status: boolean) => {
-        console.log("status", status);
-
         setLoadingModalVisible(true);
+        console.warn("status", {
+            tripToken: carTripState?.tripInfo?.tripToken as string,
+            lock: status,
+        });
 
         try {
             const res = await setLockStatus({
@@ -200,6 +202,7 @@ function CarDetailsSheet({
                 setLoadingModalVisible(false);
             }
         } catch (error) {
+            console.log("error", error);
             Toast.show({
                 id: "locktimeout",
                 render: () => <ErrorToast message={"Please try again later"} />,
@@ -215,7 +218,7 @@ function CarDetailsSheet({
         result.isLoading ||
         loadingModalVisible;
 
-    // if (!carTripState?.hasStartedJourney) return <></>;
+    if (!carTripState?.hasStartedJourney) return <></>;
 
     return (
         <>
@@ -321,7 +324,7 @@ function CarDetailsSheet({
                     <WarningModal
                         setIsVisible={() => setIsModalVisible(false)}
                         isVisible={isModalVisible}
-                        variant={!isLocked ? "locked" : "unlocked"}
+                        variant={isLocked ? "locked" : "unlocked"}
                     />
                 ) : null}
             </ActionSheet>

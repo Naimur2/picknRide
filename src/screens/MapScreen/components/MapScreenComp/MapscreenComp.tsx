@@ -39,12 +39,12 @@ function MapscreenComp({ type, setType }: IMapTopDetailsProps) {
     const insets = useSafeAreaInsets();
 
     React.useEffect(() => {
-        // if (carTripDetails?.hasStartedJourney) {
-        SheetManager.show("carDetailsSheet");
-        // } else if (!carTripDetails?.hasStartedJourney) {
-        //     SheetManager.hide("carDetailsSheet");
-        // }
-    }, []);
+        if (carTripDetails?.hasStartedJourney) {
+            SheetManager.show("carDetailsSheet");
+        } else if (!carTripDetails?.hasStartedJourney) {
+            SheetManager.hide("carDetailsSheet");
+        }
+    }, [carTripDetails]);
 
     return (
         <VStack

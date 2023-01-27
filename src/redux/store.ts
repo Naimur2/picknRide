@@ -29,7 +29,7 @@ const reducer = combineReducers({
     ui: uiReducer,
     cars: carsReducer,
     document: documentReducer,
-    userLocation: persistedUserLocationReducer,
+    userLocation: userLocationReducer,
     carTrip: persistedCarTripReducer,
 });
 

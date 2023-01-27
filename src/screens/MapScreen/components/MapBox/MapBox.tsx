@@ -6,11 +6,17 @@ import {
 import { Center, Factory, VStack, Box } from "native-base";
 import React from "react";
 import { Dimensions, Keyboard } from "react-native";
-import MapView, { MarkerAnimated, Region } from "react-native-maps";
+import MapView, {
+    AnimatedRegion,
+    Marker,
+    MarkerAnimated,
+    Region,
+} from "react-native-maps";
 import { useSelector } from "react-redux";
 import { ILatLng } from "../../MapScreen.types";
 import AllMarkers from "../AllMarker/AllMarker";
 import { RootState } from "@store/store";
+import Animated from "react-native-reanimated";
 
 export interface IMapScreenProps {
     children?: any;
@@ -51,6 +57,15 @@ function MapBox() {
         }
     }, [currentLocation]);
 
+    const getAnimatedMarker = () => {
+        return new AnimatedRegion({
+            latitude: currentLocation.latitude,
+            longitude: currentLocation.longitude,
+            latitudeDelta: 0.009,
+            longitudeDelta: 0.01,
+        });
+    };
+
     return (
         <Map
             ref={mapRef}
@@ -62,17 +77,14 @@ function MapBox() {
             onPress={() => Keyboard.dismiss()}
         >
             {currentLocation.latitude && currentLocation.longitude ? (
-                <MarkerAnimated
-                    coordinate={{
-                        longitude: currentLocation.longitude,
-                        latitude: currentLocation.latitude,
-                    }}
+                <Marker.Animated
+                    coordinate={getAnimatedMarker()}
                     tracksViewChanges={false}
                 >
                     <Center h={6} w={6} rounded={"full"} bg="#866aad50">
                         <Box h={4} w={4} rounded={"full"} bg="#866aad"></Box>
                     </Center>
-                </MarkerAnimated>
+                </Marker.Animated>
             ) : (
                 <></>
             )}
