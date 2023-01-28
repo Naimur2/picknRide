@@ -66,11 +66,9 @@ export default function Main() {
         }
     });
 
-    const showLoading = locationData.isLoading || !locationData.isLoading;
-
     return (
         <>
-            {loading && currentRoute?.name !== "MapScreen" && !showLoading ? (
+            {loading && currentRoute?.name !== "MapScreen" ? (
                 <Spinner
                     position={"absolute"}
                     top={0}

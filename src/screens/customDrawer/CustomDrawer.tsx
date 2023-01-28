@@ -16,6 +16,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectAuth } from "@store/store";
 import { IAuthState } from "../../redux/features/auth/authSlice.types";
 import { formatCountSuffix } from "../../utils/formatCountSuffix";
+import { clearCarTrip } from "@store/features/car-trip/carTripSlice";
+import { clearDocument } from "@store/features/document/documentSlice";
 
 interface IDrawerMenuItem {
     title: string;
@@ -133,7 +135,11 @@ export default function CustomDrawer() {
                             borderWidth={3}
                             borderRadius={16}
                             borderColor={"#fff"}
-                            onPress={() => dispatch(logout())}
+                            onPress={() => {
+                                dispatch(clearDocument());
+                                dispatch(clearCarTrip());
+                                dispatch(logout());
+                            }}
                         >
                             SIGN OUT
                         </Button>

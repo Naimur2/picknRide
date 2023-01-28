@@ -23,13 +23,19 @@ const carTripSlice = createSlice({
         setIsLocked: (state, action) => {
             state.isLocked = action.payload;
         },
+        clearCarTrip: (state) => {
+            state.tripInfo = null;
+            state.hasStartedJourney = false;
+            state.isLocked = false;
+        },
     },
 });
 
 const carTripReducer = carTripSlice.reducer;
 export default carTripReducer;
 
-export const { setTripInfo, stopCarTrip, setIsLocked } = carTripSlice.actions;
+export const { setTripInfo, stopCarTrip, setIsLocked, clearCarTrip } =
+    carTripSlice.actions;
 
 export const selectCarTripInfo = (state: any) => state.carTrip.tripInfo;
 export const selectHasStartedJourney = (state: any) =>

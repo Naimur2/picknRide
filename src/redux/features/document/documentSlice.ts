@@ -35,6 +35,20 @@ const documentSlice = createSlice({
         ) => {
             state[action.payload.fieldName] = action.payload.value as never;
         },
+        clearDocument: (state) => {
+            state.isIntlLiscense = true;
+            state.docId1 = "";
+            state.expiry1 = "";
+            state.frontImage1 = "";
+            state.backImage1 = "";
+            state.docId2 = "";
+            state.expiry2 = "";
+            state.frontImage2 = "";
+            state.backImage2 = "";
+            state.signature = "";
+            state.country = "";
+            state.selfieVideo = "";
+        },
     },
 });
 
@@ -43,7 +57,7 @@ export const selectDocumentVideo = (state: RootState) =>
 export const selectAllDocumentFieldValues = (state: RootState) =>
     state.document;
 
-export const { setDocumentVideo, setDocumentFieldValue } =
+export const { setDocumentVideo, setDocumentFieldValue, clearDocument } =
     documentSlice.actions;
 
 const documentReducer = documentSlice.reducer;
