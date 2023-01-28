@@ -16,6 +16,7 @@ import AuthRoute from "./routes/auth.routes";
 import DrawerRoute from "./routes/drawer.routes";
 import LottieView from "lottie-react-native";
 import loader from "@assets/lottie/pic-loading.json";
+import LoadingView from "@components/LoadingView/LoadingView";
 
 export default function Main() {
     const auth = useSelector(selectAuth) as IAuthState;
@@ -82,15 +83,7 @@ export default function Main() {
                 justifyContent={"center"}
                 alignItems={"center"}
             >
-                <LottieView
-                    style={{
-                        width: 150,
-                        height: 150,
-                    }}
-                    source={loader}
-                    autoPlay
-                    loop
-                />
+                <LoadingView />
             </VStack>
         );
     }

@@ -7,6 +7,7 @@ const config = {
     LOCATION_TASK_NAME: "background-location-task",
     emergencyNumber: "999",
     customerCareNumber: "321",
+    whatsappNumber: "974 5533 9923",
 };
 
 export default config;

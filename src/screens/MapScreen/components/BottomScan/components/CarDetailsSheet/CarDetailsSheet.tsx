@@ -42,6 +42,7 @@ import { selectIsLocked } from "../../../../../../redux/features/car-trip/carTri
 import { fontConfig } from "../../../../../../theme-config/fontConfig";
 import YesNoModal from "../YesNoModal/YesNoModal";
 import colors from "../../../../../../theme-config/colors";
+import LoadingView from "@components/LoadingView/LoadingView";
 
 const images = {
     carSmall,
@@ -222,7 +223,7 @@ function CarDetailsSheet({
 
     const switchWidth = Dimensions.get("window").width - 100;
 
-    // if (!carTripState?.hasStartedJourney) return <></>;
+    if (!carTripState?.hasStartedJourney) return <></>;
 
     return (
         <>
@@ -365,7 +366,8 @@ function CarDetailsSheet({
             />
             <Modal isOpen={isLoading}>
                 <Center h="full" w="full" bg="#ffffff60">
-                    <Spinner size="lg" color="#0000ff" />
+                    <LoadingView />
+                    <Spinner size="lg" color={colors.primary[100]} />
                     <Text color={"#000"} fontWeight={700} mt={4}>
                         Wait a moment
                     </Text>

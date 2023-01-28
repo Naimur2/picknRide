@@ -1,4 +1,4 @@
-import { Factory, Text } from "native-base";
+import { Factory, Text, Pressable, Spinner } from "native-base";
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import { scale } from "react-native-size-matters";
@@ -10,6 +10,8 @@ export default function OutlineButton({
     buttonStyle,
     rightIcon,
     onPress,
+    disabled,
+    showSpinner,
     ...rest
 }: {
     title: string;
@@ -17,11 +19,11 @@ export default function OutlineButton({
     buttonStyle?: any;
     rightIcon?: any;
     onPress: any;
+    disabled?: boolean;
+    showSpinner?: boolean;
 }) {
-    const Touchable = Factory(TouchableOpacity);
-
     return (
-        <Touchable
+        <Pressable
             w={scale(300) + "px"}
             mt={6}
             mb={8}
@@ -29,11 +31,15 @@ export default function OutlineButton({
             borderWidth={2}
             borderColor="primary.100"
             borderRadius={20}
-            onPress={onPress}
+            onPress={disabled ? () => {} : onPress}
             display="flex"
             flexDir={"row"}
             alignItems="center"
             py={2}
+            opacity={disabled ? 0.5 : 1}
+            _pressed={{
+                opacity: 0.5,
+            }}
             {...rest}
         >
             <Text
@@ -47,6 +53,9 @@ export default function OutlineButton({
                 {title}
             </Text>
             {rightIcon && rightIcon()}
-        </Touchable>
+            {showSpinner ? (
+                <Spinner size="sm" color="primary.100" ml={2} />
+            ) : null}
+        </Pressable>
     );
 }

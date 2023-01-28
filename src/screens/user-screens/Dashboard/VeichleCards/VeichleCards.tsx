@@ -56,7 +56,7 @@ export default function VeichleCards() {
     const navigation = useNavigation();
     const auth: IAuthState = useSelector(selectAuth);
     console.log("auth", auth.userdocuments_status);
-    const [starFetching, setStarFetching] = React.useState(false);
+
     const { data: verificationStatus, isLoading } =
         useCheckVerificationQuery(undefined);
 
@@ -159,6 +159,8 @@ export default function VeichleCards() {
                 title={"Select"}
                 titleStyle={{ mx: "auto" }}
                 onPress={!isLoading ? handleNavigation : undefined}
+                disabled={isLoading}
+                showSpinner={isLoading}
             />
         </VStack>
     );

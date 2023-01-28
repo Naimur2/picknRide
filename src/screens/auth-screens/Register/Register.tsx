@@ -1,4 +1,11 @@
-import { HStack, Image, Text, VStack, useColorMode } from "native-base";
+import {
+    HStack,
+    Image,
+    Pressable,
+    Text,
+    VStack,
+    useColorMode,
+} from "native-base";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
@@ -9,11 +16,16 @@ import SignUpInputForm from "./SignUpInputForm/SignUpInputForm";
 import dark from "@assets/images/background-map-dark.png";
 import light from "@assets/images/background-map-light.png";
 import { fontSizes } from "@theme/typography";
+import * as Linking from "expo-linking";
+import config from "@config";
 
 export default function Register() {
     const { colorMode } = useColorMode();
 
     const insets = useSafeAreaInsets();
+    const openWhatsapp = () => {
+        Linking.openURL(`https://wa.me/${config.whatsappNumber}`);
+    };
 
     return (
         <>
@@ -64,16 +76,18 @@ export default function Register() {
                         py={4}
                         justifyContent={"space-between"}
                     >
-                        <HStack alignItems={"center"} space="2">
-                            <Whatsapp color="primary.100" />
-                            <Text
-                                fontSize={fontSizes.xs}
-                                fontWeight={500}
-                                color={"gray.100"}
-                            >
-                                Whatsapp
-                            </Text>
-                        </HStack>
+                        <Pressable onPress={openWhatsapp}>
+                            <HStack alignItems={"center"} space="2">
+                                <Whatsapp color="primary.100" />
+                                <Text
+                                    fontSize={fontSizes.xs}
+                                    fontWeight={500}
+                                    color={"gray.100"}
+                                >
+                                    Whatsapp
+                                </Text>
+                            </HStack>
+                        </Pressable>
                         <HStack alignItems={"center"} space="2">
                             <Telephone color="primary.100" />
                             <Text
@@ -81,7 +95,7 @@ export default function Register() {
                                 fontWeight={500}
                                 color={"gray.100"}
                             >
-                                +974 0000 0000
+                                +{config.whatsappNumber}
                             </Text>
                         </HStack>
                     </HStack>
