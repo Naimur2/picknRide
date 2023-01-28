@@ -8,12 +8,14 @@ import {
 } from "@store/features/user-location/userLocationSlice";
 import { selectAuth, selectLoading } from "@store/store";
 import * as TaskManager from "expo-task-manager";
-import { Spinner, useColorMode } from "native-base";
+import { Spinner, VStack, useColorMode } from "native-base";
 import React from "react";
 import { Region } from "react-native-maps";
 import { useDispatch, useSelector } from "react-redux";
 import AuthRoute from "./routes/auth.routes";
 import DrawerRoute from "./routes/drawer.routes";
+import LottieView from "lottie-react-native";
+import loader from "@assets/lottie/pic-loading.json";
 
 export default function Main() {
     const auth = useSelector(selectAuth) as IAuthState;
@@ -66,20 +68,41 @@ export default function Main() {
         }
     });
 
+    let loadingView = null;
+    if (loading) {
+        loadingView = (
+            <VStack
+                position={"absolute"}
+                top={0}
+                left={0}
+                right={0}
+                bottom={0}
+                bg={"#ffffff50"}
+                zIndex={1000}
+                justifyContent={"center"}
+                alignItems={"center"}
+            >
+                <LottieView
+                    style={{
+                        width: 150,
+                        height: 150,
+                    }}
+                    source={loader}
+                    autoPlay
+                    loop
+                />
+            </VStack>
+        );
+    }
+
+    if (locationData.isLoading && !loading) {
+        loadingView = null;
+    }
+
     return (
         <>
-            {loading && currentRoute?.name !== "MapScreen" ? (
-                <Spinner
-                    position={"absolute"}
-                    top={0}
-                    left={0}
-                    right={0}
-                    bottom={0}
-                    size={80}
-                    color={colorMode === "light" ? "#2d064f" : "#fff"}
-                    zIndex={1000}
-                />
-            ) : null}
+            {loadingView}
+
             <Content />
         </>
     );

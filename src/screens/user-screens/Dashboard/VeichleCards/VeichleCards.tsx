@@ -20,6 +20,7 @@ import Animated, { FlipInYRight, FlipOutYLeft } from "react-native-reanimated";
 import { scale } from "react-native-size-matters";
 import { useDispatch, useSelector } from "react-redux";
 import VeichleCard, { IVeichleCardProps } from "../VeichleCard/VeichleCard";
+import { setLoading } from "@store/features/ui/uiSlice";
 
 const veichels: IVeichleCardProps[] = [
     {
@@ -72,9 +73,11 @@ export default function VeichleCards() {
     );
 
     const handleNavigation = async () => {
+        dispatch(setLoading(true));
         if (!hasForeGroundPermissions) {
             console.log("here");
             await checkPermissions();
+            dispatch(setLoading(false));
         } else {
             const initialRegion = await Location.getCurrentPositionAsync({});
 
@@ -114,6 +117,8 @@ export default function VeichleCards() {
                     veichle: currentVeichle,
                 });
             }
+
+            dispatch(setLoading(false));
         }
     };
 

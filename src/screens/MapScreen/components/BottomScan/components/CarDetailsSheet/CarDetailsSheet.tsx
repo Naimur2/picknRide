@@ -17,7 +17,6 @@ import ringBell from "@assets/images/ring-bell.png";
 import CarDescriptionCard from "../../../common/CarDescriptionCard/CarDescriptionCard";
 
 import ErrorToast from "@components/ErrorToast/ErrorToast";
-import SwitchToUnlock from "@components/SwitchToUnlock/SwitchToUnlock";
 import WarningModal from "@components/WarningModal/WarningModal";
 import {
     useEndCarTripMutation,
@@ -31,15 +30,18 @@ import {
 } from "@store/features/car-trip/carTripSlice";
 import { ICarTripState } from "@store/features/car-trip/carTripSlice.types";
 import { Center } from "native-base";
-import { Image } from "react-native";
+import { Dimensions, Image } from "react-native";
 import ActionSheet, {
     SheetManager,
     SheetProps,
 } from "react-native-actions-sheet";
+import SwitchToggle from "react-native-switch-toggle";
 import { useDispatch, useSelector } from "react-redux";
+
 import { selectIsLocked } from "../../../../../../redux/features/car-trip/carTripSlice";
+import { fontConfig } from "../../../../../../theme-config/fontConfig";
 import YesNoModal from "../YesNoModal/YesNoModal";
-import ToggleSwitch from "toggle-switch-react-native";
+import colors from "../../../../../../theme-config/colors";
 
 const images = {
     carSmall,
@@ -218,7 +220,9 @@ function CarDetailsSheet({
         result.isLoading ||
         loadingModalVisible;
 
-    if (!carTripState?.hasStartedJourney) return <></>;
+    const switchWidth = Dimensions.get("window").width - 100;
+
+    // if (!carTripState?.hasStartedJourney) return <></>;
 
     return (
         <>
@@ -280,15 +284,38 @@ function CarDetailsSheet({
                         setStatus={handleLockUnlock}
                     /> */}
                     <Center py={4}>
-                        <ToggleSwitch
-                            onColor="green"
-                            offColor="red"
-                            isOn={isLocked}
-                            onToggle={handleLockUnlock}
-                            size="large"
+                        <SwitchToggle
+                            switchOn={isLocked}
+                            onPress={() => handleLockUnlock(!isLocked)}
+                            containerStyle={{
+                                marginTop: 16,
+                                width: switchWidth,
+                                height: 48,
+                                borderRadius: 25,
+                                padding: 5,
+                            }}
+                            buttonTextStyle={{
+                                color: "#000",
+                                fontWeight: "bold",
+                                fontSize: 16,
+                                fontFamily: fontConfig.Montserrat[700].normal,
+                            }}
+                            circleColorOn="#fff"
+                            circleColorOff="#fff"
+                            backgroundColorOn="red"
+                            backgroundColorOff={colors.primary[100]}
+                            circleStyle={{
+                                width: 40,
+                                height: 40,
+                                borderRadius: 20,
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}
                         />
+
                         <Text mt={2} fontWeight={"bold"}>
-                            {isLocked ? "Car is locked" : "Car is unlocked"}
+                            {!isLocked ? "Press to lock" : "Press to unlocke"}
                         </Text>
                     </Center>
                     {isLocked ? (

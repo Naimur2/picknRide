@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ICarTripState } from "./carTripSlice.types";
 import { RootState } from "@store/store";
+import { ICarTripState } from "./carTripSlice.types";
 
 const initialState: ICarTripState = {
     tripInfo: null,
     hasStartedJourney: false,
-    isLocked: false,
+    isLocked: true,
 };
 
 const carTripSlice = createSlice({

@@ -66,6 +66,7 @@
     "react-native-size-matters": "^0.4.0",
     "react-native-step-indicator": "^1.0.3",
     "react-native-svg": "12.3.0",
+    "react-native-switch-toggle": "^2.2.1",
     "react-native-web": "~0.18.7",
     "react-native-webview": "11.23.0",
     "react-redux": "^8.0.5",
