@@ -8,6 +8,7 @@ import {
 const initialState: ICarState = {
     nearestCars: [],
     selectedVeichleType: null,
+    speed: 0,
 };
 
 const carsSlice = createSlice({
@@ -45,12 +46,18 @@ const carsSlice = createSlice({
         ) => {
             state.selectedVeichleType = action.payload;
         },
+        setCurrentSpeed: (state: ICarState, action: any) => {
+            state.speed = action.payload;
+        },
     },
 });
 
 const carsReducer = carsSlice.reducer;
 export default carsReducer;
-export const { setNearestCars, setSelectedVeichleType } = carsSlice.actions;
+export const { setNearestCars, setSelectedVeichleType, setCurrentSpeed } =
+    carsSlice.actions;
 export const selectNearestCars = (state: any) => state.cars.nearestCars;
 export const selectSelectedVeichleType = (state: any) =>
     state.cars.selectedVeichleType;
+
+export const selectCurrentSpeed = (state: any) => state.cars.speed;

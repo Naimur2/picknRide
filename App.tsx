@@ -9,10 +9,12 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import Main from "./src/Main";
 import ThemeConFig from "./src/theme-config/index";
+import { StatusBar } from "react-native";
 
 export default function App() {
     return (
         <Provider store={store}>
+            <StatusBar hidden />
             <PersistGate loading={null} persistor={persistor}>
                 <SafeAreaProvider>
                     <ThemeConFig>

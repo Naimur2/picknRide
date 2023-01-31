@@ -38,4 +38,5 @@ export interface ISetNearestCarsAction {
 export interface ICarState {
     nearestCars: ICarDetails[];
     selectedVeichleType: TCarType | null;
+    speed: number;
 }

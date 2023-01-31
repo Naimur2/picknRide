@@ -107,7 +107,6 @@ export default function OtpForm() {
 
         try {
             const data = await verifyOtp(submitFromData).unwrap();
-            console.log(data?.data);
 
             if (data?.status === 200) {
                 if (

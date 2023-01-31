@@ -15,6 +15,7 @@ const initialState: IAuthState = {
     resident_status: null,
     userdocuments_status: null,
     checkOtherInformation: false,
+    currentForm: 0,
 };
 
 const authSlice = createSlice({
@@ -50,15 +51,25 @@ const authSlice = createSlice({
             state.resident_status = null;
             state.userdocuments_status = null;
             state.checkOtherInformation = false;
+            state.currentForm = 0;
         },
         setCheckOtherInformation(state, action) {
             state.checkOtherInformation = action.payload;
         },
+        setCurrentForm(state, action) {
+            state.currentForm = action.payload;
+        },
     },
 });
 
-export const { login, logout, setCheckOtherInformation } = authSlice.actions;
+export const { login, logout, setCheckOtherInformation, setCurrentForm } =
+    authSlice.actions;
 
 const authReducer = authSlice.reducer;
+export const selectToken = (state: { auth: IAuthState }) => state.auth.token;
+export const selectCheckOtherInformation = (state: { auth: IAuthState }) =>
+    state.auth.checkOtherInformation;
+export const selectCurrentForm = (state: { auth: IAuthState }) =>
+    state.auth.currentForm;
 
 export default authReducer;

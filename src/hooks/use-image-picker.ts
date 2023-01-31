@@ -14,14 +14,18 @@ export default function useImagePicker(props) {
     const opt = {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         quality: 0.4,
+
         ...config,
     };
 
     const captureImage = async () => {
         // No permissions request is necessary for launching the image library
         setIsLoading(true);
-        let result = await ImagePicker.launchCameraAsync(opt);
-        console.log(result)
+        let result = await ImagePicker.launchCameraAsync({
+            ...opt,
+            base64: true,
+        });
+        console.log(result);
         if (!result.cancelled) {
             setImage(result.uri);
             setFile(result);
@@ -32,7 +36,10 @@ export default function useImagePicker(props) {
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         setIsLoading(true);
-        let result = await ImagePicker.launchImageLibraryAsync(opt);
+        let result = await ImagePicker.launchImageLibraryAsync({
+            ...opt,
+            base64: true,
+        });
         if (!result.cancelled) {
             setImage(result.uri);
             setFile(result);

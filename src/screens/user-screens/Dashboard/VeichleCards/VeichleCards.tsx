@@ -54,19 +54,9 @@ export default function VeichleCards() {
     const selectedVeichle = useSelector(selectSelectedVeichleType);
     const VCard = Animated.createAnimatedComponent(VeichleCard);
     const navigation = useNavigation();
-    const auth: IAuthState = useSelector(selectAuth);
-    console.log("auth", auth.userdocuments_status);
 
-    const { data: verificationStatus, isLoading } =
-        useCheckVerificationQuery(undefined);
-
-    // console.log("verificationStatus", verificationStatus);
-
-    const {
-        hasBackGroundPermissions,
-        hasForeGroundPermissions,
-        checkPermissions,
-    } = useLocationPermissions();
+    const { hasForeGroundPermissions, checkPermissions } =
+        useLocationPermissions();
 
     const currentVeichle = veichels.find(
         (veichle) => veichle.type === selectedVeichle
@@ -83,7 +73,7 @@ export default function VeichleCards() {
 
             dispatch(setInitialLocation(initialRegion.coords));
 
-            const INTERVAL_TIME = 1000 * 15;
+            const INTERVAL_TIME = 1000 * 30;
 
             //    chech if the task is already registered
             const isRegistered = await TaskManager.isTaskRegisteredAsync(
@@ -104,19 +94,9 @@ export default function VeichleCards() {
                 );
             }
 
-            if (
-                selectedVeichle === ECarType.CAR &&
-                !isLoading &&
-                !verificationStatus?.data?.status
-            ) {
-                navigation.navigate("DocumentSubmission", {
-                    veichle: currentVeichle,
-                });
-            } else {
-                navigation.navigate("MapScreen", {
-                    veichle: currentVeichle,
-                });
-            }
+            navigation.navigate("MapScreen", {
+                veichle: currentVeichle,
+            });
 
             dispatch(setLoading(false));
         }
@@ -158,9 +138,7 @@ export default function VeichleCards() {
                 mt={8}
                 title={"Select"}
                 titleStyle={{ mx: "auto" }}
-                onPress={!isLoading ? handleNavigation : undefined}
-                disabled={isLoading}
-                showSpinner={isLoading}
+                onPress={handleNavigation}
             />
         </VStack>
     );

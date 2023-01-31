@@ -14,4 +14,5 @@ export interface IAuthState {
     userdocuments_status: "0" | "1" | null;
     token: string | null;
     checkOtherInformation?: boolean;
+    currentForm?: number;
 }

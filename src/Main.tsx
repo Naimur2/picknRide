@@ -1,6 +1,8 @@
+import LoadingView from "@components/LoadingView/LoadingView";
 import config from "@config";
 import { useNavigation } from "@react-navigation/native";
 import { useGetNearestCarsApiQuery } from "@store/api/v2/carApi/carApiSlice";
+import { selectToken } from "@store/features/auth/authSlice";
 import { IAuthState } from "@store/features/auth/authSlice.types";
 import {
     selectCurrentRegion,
@@ -8,15 +10,13 @@ import {
 } from "@store/features/user-location/userLocationSlice";
 import { selectAuth, selectLoading } from "@store/store";
 import * as TaskManager from "expo-task-manager";
-import { Spinner, VStack, useColorMode } from "native-base";
+import { VStack, useColorMode } from "native-base";
 import React from "react";
 import { Region } from "react-native-maps";
 import { useDispatch, useSelector } from "react-redux";
 import AuthRoute from "./routes/auth.routes";
 import DrawerRoute from "./routes/drawer.routes";
-import LottieView from "lottie-react-native";
-import loader from "@assets/lottie/pic-loading.json";
-import LoadingView from "@components/LoadingView/LoadingView";
+import { setCurrentSpeed } from "@store/features/cars/carsSlice";
 
 export default function Main() {
     const auth = useSelector(selectAuth) as IAuthState;
@@ -24,6 +24,9 @@ export default function Main() {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const currentRegion = useSelector(selectCurrentRegion) as Region;
+    const token = useSelector(selectToken);
+
+    console.log("token", token);
 
     const locationData = useGetNearestCarsApiQuery(
         {
@@ -50,6 +53,35 @@ export default function Main() {
 
     const Content = goToDashboard ? DrawerRoute : AuthRoute;
 
+    const getNearestLocation = async ({
+        latitude,
+        longitude,
+        pageSize = 10,
+        pageNumber = 1,
+    }: {
+        latitude: number;
+        longitude: number;
+        pageSize: number;
+        pageNumber: number;
+    }) => {
+        const URL =
+            config.API_V2 +
+            `Cars/AllNearestCars?PageNumber=${pageNumber}&PageSize=${pageSize}&Latitude=${latitude}&Longitude=${longitude}`;
+        const response = await fetch(URL, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+                "Pick&Ride-Token": token,
+                token: token,
+            },
+        });
+        const data = await response.json();
+        const cars = data?.items;
+        console.log({ data });
+        // dispatch(setNearestCars(cars));
+    };
+
     TaskManager.defineTask(config.LOCATION_TASK_NAME, ({ data, error }) => {
         if (error) {
             // Error occurred - check `error.message` for more details.
@@ -57,7 +89,18 @@ export default function Main() {
         }
         if (data) {
             const { locations } = data;
-            console.log(locations);
+            console.log("locations: ", locations);
+
+            const speed = locations[0].coords.speed;
+
+            dispatch(setCurrentSpeed(speed));
+
+            getNearestLocation({
+                latitude: locations[0].coords.latitude,
+                longitude: locations[0].coords.longitude,
+                pageSize: 10,
+                pageNumber: 1,
+            });
 
             dispatch(
                 setCurrentLocation({
