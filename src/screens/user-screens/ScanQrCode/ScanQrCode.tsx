@@ -28,6 +28,8 @@ import CaptureBtns from "./CaptureBtns/CaptureBtns";
 import { IValidateCarTripData } from "./ScanQrCode.types";
 
 import TorchBtn from "./TorchBtn/TorchBtn";
+import { useDispatch } from "react-redux";
+import { setStartOrEndRide } from "@store/features/ui/uiSlice";
 
 export default function ScanQrCode() {
     const navigation = useNavigation();
@@ -35,6 +37,7 @@ export default function ScanQrCode() {
     const [cameraPhoto, setCameraPhoto] = React.useState<any>(null);
     const [imageUri, setImageUri] = React.useState<string>("");
     const [isOpenTorch, setIsOpenTorch] = React.useState<boolean>(false);
+    const dispatch = useDispatch();
 
     const inputRef = React.useRef<any>(null);
 
@@ -44,6 +47,7 @@ export default function ScanQrCode() {
     const handleNavigation = (tripData: IValidateCarTripData | null) => {
         if (!config.DEV_MODE && tripData) {
             console.log(config.DEV_MODE, tripData);
+            dispatch(setStartOrEndRide("start"));
             navigation.navigate("StartEndRide", {
                 data: tripData,
                 type: "START",

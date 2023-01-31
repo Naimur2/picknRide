@@ -5,6 +5,7 @@ export interface IUploadCarImages {
     backImage: string;
     leftSideImage: string;
     rightSideImage: string;
+    tripAction?: "StartTrip" | "EndTrip";
 }
 
 export interface IValidateCarTripRequest {

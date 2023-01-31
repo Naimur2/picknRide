@@ -19,17 +19,15 @@ import CarDescriptionCard from "../../../common/CarDescriptionCard/CarDescriptio
 import ErrorToast from "@components/ErrorToast/ErrorToast";
 import WarningModal from "@components/WarningModal/WarningModal";
 import {
-    useEndCarTripMutation,
     useExecuteCarCommandMutation,
     useLockUnlockMutation,
 } from "@store/api/v2/tripApi/tripApiSlice";
 import {
     selectCarTripInfo,
     setIsLocked,
-    stopCarTrip,
 } from "@store/features/car-trip/carTripSlice";
 import { ICarTripState } from "@store/features/car-trip/carTripSlice.types";
-import { Center } from "native-base";
+import { Center, Toast } from "native-base";
 import { Dimensions, Image } from "react-native";
 import ActionSheet, {
     SheetManager,
@@ -38,11 +36,13 @@ import ActionSheet, {
 import SwitchToggle from "react-native-switch-toggle";
 import { useDispatch, useSelector } from "react-redux";
 
+import LoadingView from "@components/LoadingView/LoadingView";
+import { useNavigation } from "@react-navigation/native";
+import { setStartOrEndRide } from "@store/features/ui/uiSlice";
 import { selectIsLocked } from "../../../../../../redux/features/car-trip/carTripSlice";
+import colors from "../../../../../../theme-config/colors";
 import { fontConfig } from "../../../../../../theme-config/fontConfig";
 import YesNoModal from "../YesNoModal/YesNoModal";
-import colors from "../../../../../../theme-config/colors";
-import LoadingView from "@components/LoadingView/LoadingView";
 
 const images = {
     carSmall,
@@ -80,7 +80,8 @@ function CarDetailsSheet({
 
     const [setLockStatus, lockResult] = useLockUnlockMutation();
     const [executeComannd, executionResult] = useExecuteCarCommandMutation();
-    const [enRide, result] = useEndCarTripMutation();
+
+    const navigation = useNavigation();
 
     const { colorMode } = useColorMode();
 
@@ -92,59 +93,22 @@ function CarDetailsSheet({
     // }, [isLocked]);
 
     const onEndRide = async () => {
-        try {
-            if (!isLocked) {
-                Toast.show({
-                    id: "errorToast",
-                    render: () => (
-                        <ErrorToast
-                            message={
-                                "Please lock the car before ending the ride"
-                            }
-                        />
-                    ),
-                    placement: "top",
-                });
-            } else {
-                setIsYesNoModalVisible(false);
-                const res = await enRide({
-                    tripToken: carTripState.tripInfo?.tripToken as string,
-                }).unwrap();
-                console.log(
-                    "%cres",
-                    "color: green; background: yellow; font-size: 30px",
-                    res
-                );
-                // console.log("res", res);
-                if (res.data) {
-                    dispatch(stopCarTrip());
-                }
-                if (res.error) {
-                    Toast.show({
-                        id: "errorToast",
-                        render: () => (
-                            <ErrorToast
-                                message={
-                                    res?.error?.message ||
-                                    "Error ending the ride"
-                                }
-                            />
-                        ),
-                        placement: "top",
-                    });
-                }
-
-                setIsYesNoModalVisible(false);
-            }
-        } catch (error) {
+        if (!isLocked) {
             Toast.show({
                 id: "errorToast",
                 render: () => (
                     <ErrorToast
-                        message={"Error ending the ride. Please try again"}
+                        message={"Please lock the car before ending the ride"}
                     />
                 ),
                 placement: "top",
+            });
+        } else {
+            setIsYesNoModalVisible(false);
+            dispatch(setStartOrEndRide("end"));
+            navigation.navigate("StartEndRide", {
+                data: carTripState?.tripInfo,
+                type: "END",
             });
         }
     };
@@ -218,7 +182,6 @@ function CarDetailsSheet({
     const isLoading =
         lockResult.isLoading ||
         executionResult.isLoading ||
-        result.isLoading ||
         loadingModalVisible;
 
     const switchWidth = Dimensions.get("window").width - 100;

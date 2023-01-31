@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: UIState = {
     loading: false,
+    startOrEndRide: undefined,
 };
 
 export const uiSlice = createSlice({
@@ -12,8 +13,17 @@ export const uiSlice = createSlice({
         setLoading: (state, action) => {
             state.loading = action.payload;
         },
+        setStartOrEndRide: (
+            state,
+            action: {
+                payload: "start" | "end";
+            }
+        ) => {
+            state.startOrEndRide = action.payload;
+        },
     },
 });
 
-export const { setLoading } = uiSlice.actions;
+export const { setLoading, setStartOrEndRide } = uiSlice.actions;
+export const selectStartOrEndRide = (state: any) => state.ui.startOrEndRide;
 export default uiSlice.reducer;
