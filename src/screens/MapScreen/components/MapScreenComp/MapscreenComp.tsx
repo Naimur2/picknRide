@@ -15,10 +15,10 @@ import LocationSearch from "../LocationSearch/LocationSearch";
 import MapTopDetails from "../MapTopDetails/MapTopDetails";
 import SpeedMeter from "../SpeedMeter/SpeedMeter";
 
+import { selectCarTripInfo } from "@store/features/car-trip/carTripSlice";
+import { ICarTripState } from "@store/features/car-trip/carTripSlice.types";
 import { fontSizes } from "@theme/typography";
 import { useSelector } from "react-redux";
-import { selectCarTripInfo } from "../../../../redux/features/car-trip/carTripSlice";
-import { ICarTripState } from "../../../../redux/features/car-trip/carTripSlice.types";
 import Sos from "../Sos/Sos";
 
 export interface IMapTopDetailsProps {
@@ -97,7 +97,6 @@ function MapscreenComp({ type, setType }: IMapTopDetailsProps) {
                     SheetManager.show("geoSheet");
                 }}
             />
-            {/* <RideCompleteModal /> */}
 
             <CModal isOpen={false} py={8}>
                 <H3 fontSize={fontSizes.lg} textAlign="center">

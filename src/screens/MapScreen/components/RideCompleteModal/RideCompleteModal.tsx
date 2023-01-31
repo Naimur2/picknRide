@@ -8,9 +8,15 @@ import React from "react";
 import { Text } from "react-native";
 import { Rating } from "react-native-ratings";
 import { scale } from "react-native-size-matters";
-import MarkerBar from "../../../LocationMarker/LocationMarker";
+import MarkerBar from "../LocationMarker/LocationMarker";
 
-export default function RideCompleteModal({ isOpen, onClose }) {
+export default function RideCompleteModal({
+    isOpen,
+    onClose,
+}: {
+    isOpen: boolean;
+    onClose: () => void;
+}) {
     return (
         <CModal
             isOpen={isOpen}

@@ -1,9 +1,9 @@
+import GradientBtn from "@components/GradientBtn/GradientBtn";
 import { Button, HStack, Text, VStack, useColorMode } from "native-base";
 import React from "react";
 import ActionSheet, { SheetProps } from "react-native-actions-sheet";
-import GradientBtn from "@components/GradientBtn/GradientBtn";
-import CarDescriptionCard from "../../../common/CarDescriptionCard/CarDescriptionCard";
 import { scale } from "react-native-size-matters";
+import CarDescriptionCard from "../../../CarDescriptionCard/CarDescriptionCard";
 
 interface ISpeedSheet extends SheetProps {
     sheetId: string;

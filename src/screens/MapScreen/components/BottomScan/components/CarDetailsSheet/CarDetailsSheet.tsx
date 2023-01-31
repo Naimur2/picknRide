@@ -14,7 +14,7 @@ import React from "react";
 import carSmall from "@assets/images/car-small.png";
 import motor from "@assets/images/motor.png";
 import ringBell from "@assets/images/ring-bell.png";
-import CarDescriptionCard from "../../../common/CarDescriptionCard/CarDescriptionCard";
+import CarDescriptionCard from "../../../CarDescriptionCard/CarDescriptionCard";
 
 import ErrorToast from "@components/ErrorToast/ErrorToast";
 import WarningModal from "@components/WarningModal/WarningModal";
@@ -27,7 +27,7 @@ import {
     setIsLocked,
 } from "@store/features/car-trip/carTripSlice";
 import { ICarTripState } from "@store/features/car-trip/carTripSlice.types";
-import { Center, Toast } from "native-base";
+import { Center } from "native-base";
 import { Dimensions, Image } from "react-native";
 import ActionSheet, {
     SheetManager,
@@ -86,11 +86,6 @@ function CarDetailsSheet({
     const { colorMode } = useColorMode();
 
     const [isYesNoModalVisible, setIsYesNoModalVisible] = React.useState(false);
-    // const swipeHandlerRef = React.useRef(null);
-
-    // React.useEffect(() => {
-    // swipeHandlerRef.current?.resetStatus(isLocked);
-    // }, [isLocked]);
 
     const onEndRide = async () => {
         if (!isLocked) {
@@ -243,10 +238,7 @@ function CarDetailsSheet({
                     >
                         3 km 5 QAR
                     </Text>
-                    {/* <SwitchToUnlock
-                        // ref={swipeHandlerRef}
-                        setStatus={handleLockUnlock}
-                    /> */}
+
                     <Center py={4}>
                         <SwitchToggle
                             switchOn={isLocked}
