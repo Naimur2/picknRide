@@ -232,6 +232,7 @@ export default function StartEndRide() {
                         to end ride."
                         subtitle="Please upload 4 photos to end ride"
                     />
+
                     <VStack mt={8} px={6} space={4} w="full">
                         <HStack mt={4} justifyContent="space-between">
                             <UploadImg
