@@ -10,7 +10,7 @@ interface IMarker {
 
 const MarkerBar = ({ fuelStatus, fuelIndicator }: IVeichle) => {
     console.log({ fuelStatus, fuelIndicator });
-    const background = fuelIndicator.toLowerCase() || "green";
+    const background = "green";
 
     const bg = {
         green: "#7EFC0070",

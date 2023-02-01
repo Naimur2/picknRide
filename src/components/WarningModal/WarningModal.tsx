@@ -18,7 +18,7 @@ export default function WarningModal({
 }: {
     isVisible: boolean;
     setIsVisible: (isVisible: boolean) => void;
-    variant: "approved" | "pending" | "rejected" | "expired";
+    variant: "approved" | "pending" | "rejected" | "expired" | "required";
 }) {
     const variants = {
         approved: {
@@ -49,6 +49,12 @@ export default function WarningModal({
         locked: {
             icon: <Locked />,
             text: "Your ride has been locked",
+            title: "Locked",
+        },
+
+        required: {
+            icon: <Locked />,
+            text: "Please submit all of your documents to unlock your ride",
             title: "Locked",
         },
     };

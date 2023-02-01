@@ -29,7 +29,7 @@ function BottomScan({ onLeftPress }: { onLeftPress: () => void }) {
 
     const insets = useSafeAreaInsets();
     return (
-        <VStack space="6" w="full" mt={height / 3.5 - insets.bottom + "px"}>
+        <VStack space="6" w="full" position={"absolute"} bottom={0}>
             <LinearGrad
                 colors={["#ffffff", "#ffffff40"]}
                 start={[0, 1]}

@@ -8,8 +8,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
 import { IAuthState } from "@store/features/auth/authSlice.types";
+import { setCurrentLocation } from "@store/features/user-location/userLocationSlice";
 import { selectAuth } from "@store/store";
 import colors from "@theme/colors";
+import * as Location from "expo-location";
 import { Factory, useColorMode } from "native-base";
 import React from "react";
 import { TouchableOpacity } from "react-native";
@@ -17,8 +19,6 @@ import { scale } from "react-native-size-matters";
 import { useDispatch, useSelector } from "react-redux";
 import DashModal from "./DashModal/DashModal";
 import VeichleCards from "./VeichleCards/VeichleCards";
-import { setCurrentLocation } from "@store/features/user-location/userLocationSlice";
-import * as Location from "expo-location";
 
 export default function Dashboard() {
     const navigation = useNavigation();

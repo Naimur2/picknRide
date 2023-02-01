@@ -120,7 +120,8 @@ export default function ScanQrCode() {
                 const res = await validateCarTrip(imageData).unwrap();
                 console.log("res", res);
 
-                if (res?.error?.message) {
+                if (!res?.succeeded && res?.error?.message) {
+                    console.log(res);
                     Alert.alert("Error", res?.error?.message, [
                         {
                             text: "OK",

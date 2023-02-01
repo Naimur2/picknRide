@@ -13,7 +13,11 @@ function UploadImg({
     imageLink?: string;
     imgTitle?: string;
 }) {
-    const { image: imageUrl, captureImage } = useImagePicker({
+    const {
+        image: imageUrl,
+        captureImage,
+        file,
+    } = useImagePicker({
         useCamera: true,
     });
 

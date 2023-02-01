@@ -51,12 +51,15 @@ function MapscreenComp({ type, setType }: IMapTopDetailsProps) {
             flex={1}
             position="absolute"
             zIndex={10000}
+            top={0}
+            left={0}
+            bottom={0}
+            right={0}
             w={width}
             bg={"transparent"}
             pointerEvents="box-none"
             pt={insets.top + 15 + "px"}
             justifyContent="space-between"
-            h={height}
         >
             <VStack>
                 <LocationSearch

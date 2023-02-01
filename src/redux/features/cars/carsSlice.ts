@@ -46,7 +46,12 @@ const carsSlice = createSlice({
         ) => {
             state.selectedVeichleType = action.payload;
         },
-        setCurrentSpeed: (state: ICarState, action: any) => {
+        setCurrentSpeed: (
+            state: ICarState,
+            action: {
+                payload: number;
+            }
+        ) => {
             state.speed = action.payload;
         },
     },

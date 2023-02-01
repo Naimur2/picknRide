@@ -2,11 +2,21 @@ import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
 import React from "react";
 
-export default function useImagePicker(props) {
-    const [image, setImage] = React.useState(null);
-    const [isLoading, setIsLoading] = React.useState(false);
-    const [file, setFile] = React.useState(null);
-    const [fileName, setFileName] = React.useState(null);
+export default function useImagePicker(props): {
+    image: string | null;
+    pickImage: () => void;
+    captureImage: () => void;
+    isLoading: boolean;
+    file: ImagePicker.ImagePickerResult | null;
+    fileName: string | null;
+    fileSize: number | null;
+} {
+    const [image, setImage] = React.useState<string | null>(null);
+    const [isLoading, setIsLoading] = React.useState<boolean>(false);
+    const [file, setFile] =
+        React.useState<ImagePicker.ImagePickerResult | null>(null);
+    // ImagePicker Result
+    const [fileName, setFileName] = React.useState<string | null>(null);
 
     const [fileSize, setFileSize] = React.useState(null);
     const config = props.options || {};
@@ -48,8 +58,8 @@ export default function useImagePicker(props) {
     };
 
     React.useEffect(() => {
-        const getFileInfo = async (fileURI) => {
-            const fileInfo = await FileSystem.getInfoAsync(fileURI);
+        const getFileInfo = async (fileURI: string) => {
+            const fileInfo = (await FileSystem.getInfoAsync(fileURI)) as any;
             const { size } = fileInfo;
             setFileName(fileInfo.uri.split("/").pop());
 

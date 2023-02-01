@@ -19,6 +19,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
 
 import boyWScooter from "@assets/images/boywscooter.png";
+import { fontSizes } from "@theme/typography";
 interface ITopSection {
     title: string;
     subtitle: string;
@@ -78,7 +79,7 @@ export default function Receipt({ title, subtitle }: ITopSection) {
                             <Text
                                 lineHeight={scale(40) + "px"}
                                 fontWeight={500}
-                                fontSize={scale(30) + "px"}
+                                fontSize={fontSizes["3xl"]}
                                 pt={7}
                                 maxW={scale(300)}
                                 color="primary.200"
@@ -93,7 +94,7 @@ export default function Receipt({ title, subtitle }: ITopSection) {
                                 color={"green.300"}
                                 pt={2}
                                 fontWeight={500}
-                                fontSize={scale(13) + "px"}
+                                fontSize={fontSizes.xs}
                                 _dark={{
                                     color: "#000",
                                 }}
@@ -103,7 +104,7 @@ export default function Receipt({ title, subtitle }: ITopSection) {
                             <Text
                                 color={"green.300"}
                                 fontWeight={500}
-                                fontSize={scale(13) + "px"}
+                                fontSize={fontSizes.sm}
                                 _dark={{
                                     color: "#000",
                                 }}
@@ -125,7 +126,7 @@ export default function Receipt({ title, subtitle }: ITopSection) {
                             color={"#000"}
                             pt={2}
                             fontWeight={600}
-                            fontSize={scale(20) + "px"}
+                            fontSize={fontSizes.xl}
                             _dark={{
                                 color: "gray.100",
                             }}
@@ -136,7 +137,7 @@ export default function Receipt({ title, subtitle }: ITopSection) {
                             color={"#000"}
                             pt={2}
                             fontWeight={600}
-                            fontSize={scale(20) + "px"}
+                            fontSize={fontSizes.xl}
                             _dark={{
                                 color: "#fff",
                             }}
@@ -152,7 +153,7 @@ export default function Receipt({ title, subtitle }: ITopSection) {
                             color={"#000"}
                             pt={2}
                             fontWeight={500}
-                            fontSize={scale(12) + "px"}
+                            fontSize={fontSizes.sm}
                             _dark={{
                                 color: "#fff",
                             }}
@@ -163,7 +164,7 @@ export default function Receipt({ title, subtitle }: ITopSection) {
                             color={"#000"}
                             pt={2}
                             fontWeight={600}
-                            fontSize={scale(12) + "px"}
+                            fontSize={fontSizes.sm}
                             _dark={{
                                 color: "#fff",
                             }}
@@ -177,7 +178,7 @@ export default function Receipt({ title, subtitle }: ITopSection) {
                             color={"#000"}
                             pt={2}
                             fontWeight={700}
-                            fontSize={scale(12) + "px"}
+                            fontSize={fontSizes.sm}
                             _dark={{
                                 color: "#fff",
                             }}
@@ -188,7 +189,7 @@ export default function Receipt({ title, subtitle }: ITopSection) {
                             color={"#000"}
                             pt={2}
                             fontWeight={600}
-                            fontSize={scale(12) + "px"}
+                            fontSize={fontSizes.sm}
                             _dark={{
                                 color: "#fff",
                             }}
@@ -202,7 +203,7 @@ export default function Receipt({ title, subtitle }: ITopSection) {
                             color={"#000"}
                             pt={2}
                             fontWeight={500}
-                            fontSize={scale(12) + "px"}
+                            fontSize={fontSizes.sm}
                             _dark={{
                                 color: "#fff",
                             }}
@@ -213,7 +214,7 @@ export default function Receipt({ title, subtitle }: ITopSection) {
                             color={"#000"}
                             pt={2}
                             fontWeight={600}
-                            fontSize={scale(12) + "px"}
+                            fontSize={fontSizes.sm}
                             _dark={{
                                 color: "#fff",
                             }}
@@ -227,7 +228,7 @@ export default function Receipt({ title, subtitle }: ITopSection) {
                             color={"#000"}
                             pt={2}
                             fontWeight={500}
-                            fontSize={scale(12) + "px"}
+                            fontSize={fontSizes.sm}
                             _dark={{
                                 color: "#fff",
                             }}
@@ -238,7 +239,7 @@ export default function Receipt({ title, subtitle }: ITopSection) {
                             color={"#000"}
                             pt={2}
                             fontWeight={600}
-                            fontSize={scale(12) + "px"}
+                            fontSize={fontSizes.sm}
                             _dark={{
                                 color: "#fff",
                             }}
@@ -252,7 +253,7 @@ export default function Receipt({ title, subtitle }: ITopSection) {
                             color={"#000"}
                             pt={2}
                             fontWeight={600}
-                            fontSize={scale(20) + "px"}
+                            fontSize={fontSizes.xl}
                             _dark={{
                                 color: "gray.100",
                             }}
@@ -271,7 +272,7 @@ export default function Receipt({ title, subtitle }: ITopSection) {
                                 color={"gray.100"}
                                 pt={2}
                                 fontWeight={600}
-                                fontSize={scale(12) + "px"}
+                                fontSize={fontSizes.sm}
                                 _dark={{
                                     color: "#fff",
                                 }}
@@ -281,7 +282,7 @@ export default function Receipt({ title, subtitle }: ITopSection) {
                             <Text
                                 color={"#000"}
                                 fontWeight={600}
-                                fontSize={scale(12) + "px"}
+                                fontSize={fontSizes.sm}
                                 _dark={{
                                     color: "#fff",
                                 }}
@@ -292,7 +293,7 @@ export default function Receipt({ title, subtitle }: ITopSection) {
                         <Text
                             color={"#000"}
                             fontWeight={600}
-                            fontSize={scale(12) + "px"}
+                            fontSize={fontSizes.sm}
                             _dark={{
                                 color: "#fff",
                             }}
@@ -310,7 +311,7 @@ export default function Receipt({ title, subtitle }: ITopSection) {
                             <Text
                                 color={"#000"}
                                 fontWeight={600}
-                                fontSize={scale(12) + "px"}
+                                fontSize={fontSizes.sm}
                                 textAlign={"center"}
                             >
                                 Download PDF
@@ -324,7 +325,7 @@ export default function Receipt({ title, subtitle }: ITopSection) {
                             <Text
                                 color={"#000"}
                                 fontWeight={600}
-                                fontSize={scale(12) + "px"}
+                                fontSize={fontSizes.sm}
                                 textAlign={"center"}
                             >
                                 Resend Email
@@ -338,7 +339,7 @@ export default function Receipt({ title, subtitle }: ITopSection) {
                             <Text
                                 color={"#000"}
                                 fontWeight={600}
-                                fontSize={scale(12) + "px"}
+                                fontSize={fontSizes.sm}
                                 textAlign={"center"}
                             >
                                 Review

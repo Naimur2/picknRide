@@ -1,4 +1,5 @@
 import Toggler from "@assets/svgs/Toggler";
+import ErrorToast from "@components/ErrorToast/ErrorToast";
 import GradientBtn from "@components/GradientBtn/GradientBtn";
 import ImageBg from "@components/ImageBg/ImageBg";
 import Scroller from "@components/Scroller/Scroller";
@@ -6,11 +7,14 @@ import TopSection from "@components/TopSection/TopSection";
 import UserAvatar from "@components/UserAvatar/UserAvatar";
 import config from "@config";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import RideCompleteModal from "@screens/MapScreen/components/RideCompleteModal/RideCompleteModal";
 import {
     useEndCarTripMutation,
     useUploadCarImageMutation,
 } from "@store/api/v2/tripApi/tripApiSlice";
 import { IUploadCarImages } from "@store/api/v2/tripApi/tripApiSlice.types";
+import { stopCarTrip } from "@store/features/car-trip/carTripSlice";
+import { selectStartOrEndRide } from "@store/features/ui/uiSlice";
 import { convertPickerImageToBase64 } from "@utils/convertToBase64";
 import { useFormik } from "formik";
 import {
@@ -23,31 +27,30 @@ import {
 } from "native-base";
 import React from "react";
 import { Alert, TouchableOpacity } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
+import { IValidateCarTripData } from "../ScanQrCode/ScanQrCode.types";
 import { IStartEndTripParams } from "./StartEnTrip.types";
 import UploadImg from "./UploadImg/UploadImg";
-import ErrorToast from "@components/ErrorToast/ErrorToast";
-import { useDispatch, useSelector } from "react-redux";
-import { IValidateCarTripData } from "../ScanQrCode/ScanQrCode.types";
-import { stopCarTrip } from "@store/features/car-trip/carTripSlice";
-import { selectStartOrEndRide } from "@store/features/ui/uiSlice";
-import RideCompleteModal from "@screens/MapScreen/components/RideCompleteModal/RideCompleteModal";
 
 export default function StartEndRide() {
     const navigation = useNavigation();
     const params = useRoute().params as {
         data: IValidateCarTripData;
+        type: "START" | "END";
     };
     const { colorMode } = useColorMode();
 
     const Touchable = Factory(TouchableOpacity);
-    const params = useRoute().params as IStartEndTripParams;
+    // const params = useRoute().params as IStartEndTripParams;
     const [uploadImage, result] = useUploadCarImageMutation();
     const [enRide, endRideResult] = useEndCarTripMutation();
     const dispatch = useDispatch();
     const startOrEnd = useSelector(selectStartOrEndRide);
     const [showRideComplete, setShowRideComplete] = React.useState(false);
-
+    console.log(
+        endRideResult ? JSON.stringify(endRideResult) : "no endRideResult"
+    );
     const onEndRide = async (tripToken: string) => {
         try {
             const res = await enRide({
@@ -212,21 +215,12 @@ export default function StartEndRide() {
     return (
         <ImageBg type={colorMode}>
             <Scroller
-                h="full"
                 contentStyle={{
                     alignItems: "center",
                     flexGrow: 1,
                 }}
             >
                 <>
-                    <RideCompleteModal
-                        isOpen={showRideComplete}
-                        onClose={() => {
-                            navigation.navigate("MapScreen");
-                            setShowRideComplete(false);
-                        }}
-                    />
-
                     <TopSection
                         title="Upload photos
                         to end ride."
@@ -287,12 +281,25 @@ export default function StartEndRide() {
                                 onPress={handleStartRide}
                                 mt="5"
                                 mb={8}
-                                title="START RIDE"
+                                title={
+                                    startOrEnd === "start"
+                                        ? "Start Ride"
+                                        : "End Ride"
+                                }
                                 disabled={result.isLoading}
                             />
                         </Center>
                     </VStack>
                 </>
+                {showRideComplete ? (
+                    <RideCompleteModal
+                        isOpen={showRideComplete}
+                        onClose={() => {
+                            navigation.navigate("MapScreen");
+                            setShowRideComplete(false);
+                        }}
+                    />
+                ) : null}
             </Scroller>
         </ImageBg>
     );

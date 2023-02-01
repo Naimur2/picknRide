@@ -92,15 +92,16 @@ export default function Main() {
             console.log("locations: ", locations);
 
             const speed = locations[0].coords.speed;
+            const toKmPerHour: number = speed * 3.6;
 
-            dispatch(setCurrentSpeed(speed));
+            dispatch(setCurrentSpeed(toKmPerHour));
 
-            getNearestLocation({
-                latitude: locations[0].coords.latitude,
-                longitude: locations[0].coords.longitude,
-                pageSize: 10,
-                pageNumber: 1,
-            });
+            // getNearestLocation({
+            //     latitude: locations[0].coords.latitude,
+            //     longitude: locations[0].coords.longitude,
+            //     pageSize: 10,
+            //     pageNumber: 1,
+            // });
 
             dispatch(
                 setCurrentLocation({
@@ -131,7 +132,7 @@ export default function Main() {
         );
     }
 
-    if (locationData.isLoading && !loading) {
+    if (locationData.isLoading) {
         loadingView = null;
     }
 
