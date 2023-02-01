@@ -14,9 +14,7 @@
         "updates": {
             "fallbackToCacheTimeout": 0
         },
-        "assetBundlePatterns": [
-            "**/*"
-        ],
+        "assetBundlePatterns": ["**/*"],
         "ios": {
             "supportsTablet": true,
             "bundleIdentifier": "com.PickNRide",
@@ -56,6 +54,16 @@
                 {
                     "photosPermission": "Allow $(PRODUCT_NAME) to access your photos.",
                     "savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos."
+                }
+            ],
+            [
+                "react-native-vision-camera",
+                {
+                    "cameraPermissionText": "$(PRODUCT_NAME) needs access to your Camera.",
+
+                    // optionally, if you want to record audio:
+                    "enableMicrophonePermission": true,
+                    "microphonePermissionText": "$(PRODUCT_NAME) needs access to your Microphone."
                 }
             ]
         ]
