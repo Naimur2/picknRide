@@ -11,6 +11,7 @@ import SelectArrivalDate from "@screens/auth-screens/SelectArrivalDate/SelectArr
 import SelectCitizenShip from "@screens/auth-screens/SelectCitizenShip/SelectCitizenShip";
 import SplashSecond from "@screens/auth-screens/SplashSecond/SplashSecond";
 import SplashThird from "@screens/auth-screens/SplashThird/SplashThird";
+import { MFWebView } from "myfatoorah-reactnative";
 import { useColorMode } from "native-base";
 import React from "react";
 
@@ -70,6 +71,11 @@ export default function AuthRoute() {
                 options={{
                     headerBackVisible: false,
                 }}
+            />
+            <Stack.Screen
+                name="MFWebView"
+                component={MFWebView}
+                options={MFWebView.navigationOptions}
             />
         </Stack.Navigator>
     );
