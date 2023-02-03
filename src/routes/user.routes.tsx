@@ -21,8 +21,8 @@ import colors from "@theme/colors";
 import { useColorMode } from "native-base";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import TestPayment from "../screens/others/TestPayment";
 import SelectOtpType from "../screens/user-screens/SelectOtpType/SelectOtpType";
-import TripOtpForm from "../screens/user-screens/TripOtpScreen/TripOtpForm/TripOtpForm";
 import TripOtpScreen from "../screens/user-screens/TripOtpScreen/TripOtpScreen";
 
 const Stack = createNativeStackNavigator();
@@ -33,7 +33,7 @@ export default function UserRoutes() {
 
     return (
         <Stack.Navigator
-            initialRouteName="Dashboard"
+            initialRouteName="TestPayment"
             screenOptions={{
                 headerTitle: "",
                 headerTitleStyle: { color: "white" },
@@ -57,6 +57,7 @@ export default function UserRoutes() {
                 animation: "slide_from_left",
             }}
         >
+            <Stack.Screen name="TestPayment" component={TestPayment} />
             <Stack.Screen name="Dashboard" component={Dashboard} />
             <Stack.Screen
                 name="DocumentSubmission"
