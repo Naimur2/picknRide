@@ -8,6 +8,7 @@ const config = {
     emergencyNumber: "999",
     customerCareNumber: "321",
     whatsappNumber: "974 5533 9923",
+    MAPS_API: "https://maps.googleapis.com/maps/api/",
 };
 
 export default config;

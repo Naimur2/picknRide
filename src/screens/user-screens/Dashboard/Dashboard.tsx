@@ -12,7 +12,7 @@ import { setCurrentLocation } from "@store/features/user-location/userLocationSl
 import { selectAuth } from "@store/store";
 import colors from "@theme/colors";
 import * as Location from "expo-location";
-import { Factory, useColorMode } from "native-base";
+import { Factory, useColorMode, Center, ScrollView } from "native-base";
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import { scale } from "react-native-size-matters";
@@ -37,7 +37,7 @@ export default function Dashboard() {
         checkPermissions,
     } = useLocationPermissions();
 
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         const navigationOptions: NativeStackNavigationOptions = {
             headerTitle: "",
             headerStyle: {
@@ -100,26 +100,28 @@ export default function Dashboard() {
     }, []);
 
     return (
-        <ImageBg type={colorMode}>
-            <Scroller
-                contentStyle={{
-                    alignItems: "center",
-                    flexGrow: 1,
-                }}
-            >
-                <TopSection
-                    title={`Good Evening ${auth?.f_name}!`}
-                    subtitle="Select your ride"
-                />
+        <ScrollView
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            nestedScrollEnabled={true}
+            keyboardShouldPersistTaps="handled"
+        >
+            <ImageBg type={colorMode} flexGrow={1}>
+                <Center pb={10}>
+                    <TopSection
+                        title={`Good Evening ${auth?.f_name}!`}
+                        subtitle="Select your ride"
+                    />
 
-                <VeichleCards />
-                <DashModal
-                    isOpen={isModalVisible}
-                    onClose={() => {
-                        setIsModalVisibleHandler(false);
-                    }}
-                />
-            </Scroller>
-        </ImageBg>
+                    <VeichleCards />
+                    <DashModal
+                        isOpen={isModalVisible}
+                        onClose={() => {
+                            setIsModalVisibleHandler(false);
+                        }}
+                    />
+                </Center>
+            </ImageBg>
+        </ScrollView>
     );
 }

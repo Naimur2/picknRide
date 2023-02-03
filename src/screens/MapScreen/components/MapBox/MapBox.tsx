@@ -66,6 +66,8 @@ function MapBox() {
         });
     };
 
+    console.log(currentLocation);
+
     return (
         <Map
             ref={mapRef}

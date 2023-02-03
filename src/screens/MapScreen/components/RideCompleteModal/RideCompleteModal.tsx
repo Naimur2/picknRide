@@ -3,20 +3,53 @@ import locationFilled from "@assets/images/location-filled.png";
 import locationOutline from "@assets/images/location-outline.png";
 import CModal from "@components/CModal/CModal";
 import H3 from "@components/H3/H3";
-import { Box, Center, HStack, Image, VStack } from "native-base";
+import { Box, Center, HStack, Image, VStack, Text } from "native-base";
 import React from "react";
-import { Text } from "react-native";
+
 import { Rating } from "react-native-ratings";
 import { scale } from "react-native-size-matters";
 import MarkerBar from "../LocationMarker/LocationMarker";
+import { ILatLng } from "@screens/MapScreen/MapScreen.types";
+import { useGetAddressByCoordinatesQuery } from "@store/api/v3/mapsApiSlice";
 
 export default function RideCompleteModal({
     isOpen,
     onClose,
+    startLocation,
+    endLocation,
+    distanceTravelled,
+    timeElapsed,
 }: {
     isOpen: boolean;
     onClose: () => void;
+    startLocation: ILatLng;
+    endLocation: ILatLng;
+    distanceTravelled: number;
+    timeElapsed: number;
 }) {
+    const { data: startPosition, isLoading } = useGetAddressByCoordinatesQuery(
+        {
+            latitude: startLocation?.latitude,
+            longitude: startLocation?.longitude,
+        },
+        {
+            skip: !startLocation,
+        }
+    );
+    const { data: endPosition, isLoading: isLoadingEnd } =
+        useGetAddressByCoordinatesQuery(
+            {
+                latitude: endLocation?.latitude,
+                longitude: endLocation?.longitude,
+            },
+            {
+                skip: !endLocation,
+            }
+        );
+
+    const loc1 = startPosition?.results[0].formatted_address;
+    const loc2 = endPosition?.results[0].formatted_address;
+
     return (
         <CModal
             isOpen={isOpen}
@@ -82,7 +115,7 @@ export default function RideCompleteModal({
                             }}
                             maxW="150px"
                         >
-                            Masraf Al-Rayan Building
+                            {loc1}
                         </Text>
                     </HStack>
                 </HStack>
@@ -137,7 +170,7 @@ export default function RideCompleteModal({
                             }}
                             maxW="150px"
                         >
-                            Al Wakra
+                            {loc2}
                         </Text>
                     </HStack>
                 </HStack>
@@ -179,7 +212,7 @@ export default function RideCompleteModal({
                             fontSize={scale(16)}
                             color={"#fff"}
                         >
-                            28 km
+                            {distance} km
                         </Text>
                         <Text
                             fontWeight={500}
@@ -224,7 +257,7 @@ export default function RideCompleteModal({
                             fontSize={scale(16)}
                             color={"#fff"}
                         >
-                            15 min
+                            {time} min
                         </Text>
                         <Text
                             fontWeight={500}

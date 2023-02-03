@@ -91,8 +91,17 @@ export default function Main() {
             const { locations } = data;
             console.log("locations: ", locations);
 
+            dispatch(
+                setCurrentLocation({
+                    latitude: locations[0].coords.latitude,
+                    longitude: locations[0].coords.longitude,
+                })
+            );
+
             const speed = locations[0].coords.speed;
             const toKmPerHour: number = speed * 3.6;
+
+            console.log("speed: ", toKmPerHour);
 
             dispatch(setCurrentSpeed(toKmPerHour));
 
@@ -103,12 +112,6 @@ export default function Main() {
             //     pageNumber: 1,
             // });
 
-            dispatch(
-                setCurrentLocation({
-                    latitude: locations[0].coords.latitude,
-                    longitude: locations[0].coords.longitude,
-                })
-            );
             // do something with the locations captured in the background
         }
     });

@@ -21,15 +21,16 @@ import {
     Text,
     VStack,
 } from "native-base";
-import React from "react";
 import { Alert, Platform, StyleSheet } from "react-native";
 import { scale } from "react-native-size-matters";
 import CaptureBtns from "./CaptureBtns/CaptureBtns";
 import { IValidateCarTripData } from "./ScanQrCode.types";
 
-import TorchBtn from "./TorchBtn/TorchBtn";
-import { useDispatch } from "react-redux";
+import WarningModal from "@components/WarningModal/WarningModal";
 import { setStartOrEndRide } from "@store/features/ui/uiSlice";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setCurrentForm } from "@store/features/auth/authSlice";
 
 export default function ScanQrCode() {
     const navigation = useNavigation();
@@ -38,6 +39,12 @@ export default function ScanQrCode() {
     const [imageUri, setImageUri] = React.useState<string>("");
     const [isOpenTorch, setIsOpenTorch] = React.useState<boolean>(false);
     const dispatch = useDispatch();
+    const [showWarningModal, setShowWarningModal] =
+        React.useState<boolean>(false);
+
+    const [warningVariant, setWarningVariant] = useState<
+        "approved" | "pending" | "rejected" | "expired" | "required"
+    >("approved");
 
     const inputRef = React.useRef<any>(null);
 
@@ -120,7 +127,11 @@ export default function ScanQrCode() {
                 const res = await validateCarTrip(imageData).unwrap();
                 console.log("res", res);
 
-                if (!res?.succeeded && res?.error?.message) {
+                if (
+                    !res?.succeeded &&
+                    res?.error?.message &&
+                    !res?.error?.values
+                ) {
                     console.log(res);
                     Alert.alert("Error", res?.error?.message, [
                         {
@@ -128,6 +139,28 @@ export default function ScanQrCode() {
                             onPress: () => {},
                         },
                     ]);
+                } else if (
+                    !res?.succeeded &&
+                    res?.error?.message &&
+                    res?.error?.values
+                ) {
+                    const obj = res?.error?.values || {};
+                    const keysValues = Object.values(obj);
+                    const noDuplicateValues = [...new Set(keysValues)];
+                    const keyValue = noDuplicateValues?.[0] as string;
+                    if (keyValue?.toLowerCase() === "pending") {
+                        setWarningVariant("pending");
+                        setShowWarningModal(true);
+                    } else if (keyValue?.toLowerCase() === "expired") {
+                        setWarningVariant("expired");
+                        setShowWarningModal(true);
+                    } else if (keyValue?.toLowerCase() === "required") {
+                        setWarningVariant("required");
+                        setShowWarningModal(true);
+                    } else if (keyValue?.toLowerCase() === "rejected") {
+                        setWarningVariant("rejected");
+                        setShowWarningModal(true);
+                    }
                 } else {
                     handleNavigation(res?.data);
                 }
@@ -149,6 +182,16 @@ export default function ScanQrCode() {
 
     const toggleTorch = () => {
         setIsOpenTorch((prev) => !prev);
+    };
+
+    const handleToglewarning = () => {
+        if (warningVariant === "rejected" || warningVariant === "expired") {
+            setShowWarningModal(false);
+            navigation.navigate("DocumentSubmission");
+            dispatch(setCurrentForm(1));
+        } else {
+            setShowWarningModal(false);
+        }
     };
 
     return (
@@ -291,6 +334,11 @@ export default function ScanQrCode() {
                             disabled={validationResult.isLoading}
                         />
                     </Center>
+                    <WarningModal
+                        variant={warningVariant}
+                        isVisible={showWarningModal}
+                        setIsVisible={handleToglewarning}
+                    />
                 </VStack>
             </Scroller>
         </>

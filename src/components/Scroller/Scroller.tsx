@@ -1,5 +1,9 @@
 import { ScrollView } from "native-base";
 import React from "react";
+import {
+    SafeAreaView,
+    useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 export default function Scroller({
     children,
@@ -9,13 +13,16 @@ export default function Scroller({
     children: React.ReactNode;
     contentStyle?: object;
 }) {
+    const inset = useSafeAreaInsets();
+
     return (
         <ScrollView
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
-                ...contentStyle,
                 flexGrow: 1,
+                paddingBottom: inset.bottom,
+                ...contentStyle,
             }}
             nestedScrollEnabled={true}
             keyboardShouldPersistTaps="handled"

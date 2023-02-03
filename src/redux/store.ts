@@ -9,6 +9,7 @@ import carsReducer from "./features/cars/carsSlice";
 import documentReducer from "./features/document/documentSlice";
 import uiReducer from "./features/ui/uiSlice";
 import userLocationReducer from "./features/user-location/userLocationSlice";
+import { mapsApiSlice } from "./api/v3/mapsApiSlice";
 
 const persistConfig = {
     key: "root",
@@ -25,6 +26,7 @@ const persistedUserLocationReducer = persistReducer(
 const reducer = combineReducers({
     [apiSlice.reducerPath]: apiSlice.reducer,
     [apiSliceV2.reducerPath]: apiSliceV2.reducer,
+    [mapsApiSlice.reducerPath]: mapsApiSlice.reducer,
     auth: persistedAuthReducer,
     ui: uiReducer,
     cars: carsReducer,
@@ -40,7 +42,8 @@ export const store = configureStore({
             serializableCheck: false,
         })
             .concat(apiSlice.middleware)
-            .concat(apiSliceV2.middleware),
+            .concat(apiSliceV2.middleware)
+            .concat(mapsApiSlice.middleware),
     devTools: false,
 });
 

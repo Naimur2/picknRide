@@ -32,6 +32,8 @@ import * as Yup from "yup";
 import { IValidateCarTripData } from "../ScanQrCode/ScanQrCode.types";
 import { IStartEndTripParams } from "./StartEnTrip.types";
 import UploadImg from "./UploadImg/UploadImg";
+import { ILatLng } from "../../MapScreen/MapScreen.types";
+import { ScrollView } from "native-base";
 
 export default function StartEndRide() {
     const navigation = useNavigation();
@@ -48,6 +50,11 @@ export default function StartEndRide() {
     const dispatch = useDispatch();
     const startOrEnd = useSelector(selectStartOrEndRide);
     const [showRideComplete, setShowRideComplete] = React.useState(false);
+    const [startingPoint, setStartingPoint] = React.useState<ILatLng>();
+    const [endingPoint, setEndingPoint] = React.useState<ILatLng>();
+    const [distanceTravelled, setDistanceTravelled] = React.useState(0);
+    const [timeElapsed, setTimeElapsed] = React.useState(0);
+
     console.log(
         endRideResult ? JSON.stringify(endRideResult) : "no endRideResult"
     );
@@ -58,8 +65,33 @@ export default function StartEndRide() {
             }).unwrap();
 
             if (res.data) {
+                const {
+                    number: vehicleNo,
+                    name: veichleName,
+                    tripStartTime,
+                    tripEndTime,
+                    price,
+                    tripDate,
+                    totalTripTime,
+                    totalKM,
+                    startLatitude,
+                    startLongitude,
+                    endLatitude,
+                    endLongitude,
+                } = res?.data?.tripDetails;
                 dispatch(stopCarTrip());
                 setShowRideComplete(true);
+                setStartingPoint({
+                    latitude: startLatitude,
+                    longitude: startLongitude,
+                });
+                setEndingPoint({
+                    latitude: endLatitude,
+                    longitude: endLongitude,
+                });
+
+                setDistanceTravelled(totalKM);
+                setTimeElapsed(totalTripTime);
             }
 
             if (res.error) {
@@ -162,7 +194,7 @@ export default function StartEndRide() {
 
     const { values, handleSubmit, errors, setFieldValue } = formik;
 
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: "",
             headerStyle: {
@@ -213,21 +245,21 @@ export default function StartEndRide() {
     console.log(values);
 
     return (
-        <ImageBg type={colorMode}>
-            <Scroller
-                contentStyle={{
-                    alignItems: "center",
-                    flexGrow: 1,
-                }}
-            >
-                <>
+        <ScrollView
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            nestedScrollEnabled={true}
+            keyboardShouldPersistTaps="handled"
+        >
+            <ImageBg type={colorMode}>
+                <Center>
                     <TopSection
                         title="Upload photos
                         to end ride."
                         subtitle="Please upload 4 photos to end ride"
                     />
 
-                    <VStack mt={8} px={6} space={4} w="full">
+                    <VStack pb={10} mt={8} px={6} space={4} w="full">
                         <HStack mt={4} justifyContent="space-between">
                             <UploadImg
                                 setImage={(image) =>
@@ -290,17 +322,22 @@ export default function StartEndRide() {
                             />
                         </Center>
                     </VStack>
-                </>
-                {showRideComplete ? (
-                    <RideCompleteModal
-                        isOpen={showRideComplete}
-                        onClose={() => {
-                            navigation.navigate("MapScreen");
-                            setShowRideComplete(false);
-                        }}
-                    />
-                ) : null}
-            </Scroller>
-        </ImageBg>
+
+                    {showRideComplete ? (
+                        <RideCompleteModal
+                            isOpen={showRideComplete}
+                            onClose={() => {
+                                navigation.navigate("MapScreen");
+                                setShowRideComplete(false);
+                            }}
+                            startLocation={startingPoint}
+                            endLocation={endingPoint}
+                            distanceTravelled={distanceTravelled}
+                            timeElapsed={timeElapsed}
+                        />
+                    ) : null}
+                </Center>
+            </ImageBg>
+        </ScrollView>
     );
 }
