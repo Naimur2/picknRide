@@ -1,6 +1,5 @@
 import Toggler from "@assets/svgs/Toggler";
 import ImageBg from "@components/ImageBg/ImageBg";
-import Scroller from "@components/Scroller/Scroller";
 import TopSection from "@components/TopSection/TopSection";
 import UserAvatar from "@components/UserAvatar/UserAvatar";
 import useLocationPermissions from "@hooks/useLocationPermissions";
@@ -12,7 +11,7 @@ import { setCurrentLocation } from "@store/features/user-location/userLocationSl
 import { selectAuth } from "@store/store";
 import colors from "@theme/colors";
 import * as Location from "expo-location";
-import { Factory, useColorMode, Center, ScrollView } from "native-base";
+import { Center, Factory, ScrollView, useColorMode } from "native-base";
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import { scale } from "react-native-size-matters";
@@ -77,6 +76,21 @@ export default function Dashboard() {
     };
 
     React.useEffect(() => {
+        (async () => {
+            const hasForegroundLocation =
+                await Location.getForegroundPermissionsAsync();
+            const hasBackgroundLocation =
+                await Location.getBackgroundPermissionsAsync();
+
+            const value = await AsyncStorage.getItem("isModalVisible");
+            if (
+                value &&
+                hasForegroundLocation.granted &&
+                hasBackgroundLocation.granted
+            ) {
+                setIsModalVisibleHandler(value === "true");
+            }
+        })();
         AsyncStorage.getItem("isModalVisible").then((value) => {
             if (value) {
                 setIsModalVisibleHandler(value === "true");

@@ -6,6 +6,7 @@ const initialState: ICarTripState = {
     tripInfo: null,
     hasStartedJourney: false,
     isLocked: false,
+    offerModalVisible: false,
 };
 
 const carTripSlice = createSlice({
@@ -29,16 +30,26 @@ const carTripSlice = createSlice({
             state.hasStartedJourney = false;
             state.isLocked = false;
         },
+        setOfferModalVisible: (state, action) => {
+            state.offerModalVisible = action.payload;
+        },
     },
 });
 
 const carTripReducer = carTripSlice.reducer;
 export default carTripReducer;
 
-export const { setTripInfo, stopCarTrip, setIsLocked, clearCarTrip } =
-    carTripSlice.actions;
+export const {
+    setTripInfo,
+    stopCarTrip,
+    setIsLocked,
+    clearCarTrip,
+    setOfferModalVisible,
+} = carTripSlice.actions;
 
 export const selectCarTripInfo = (state: any) => state.carTrip.tripInfo;
 export const selectHasStartedJourney = (state: any) =>
     state.carTrip.hasStartedJourney;
 export const selectIsLocked = (state: RootState) => state.carTrip.isLocked;
+export const selectOfferModalVisible = (state: RootState) =>
+    state.carTrip.offerModalVisible;

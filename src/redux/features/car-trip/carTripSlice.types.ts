@@ -4,4 +4,5 @@ export interface ICarTripState {
     tripInfo: IValidateCarTripData | null;
     hasStartedJourney: boolean;
     isLocked: boolean;
+    offerModalVisible: boolean;
 }
