@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
     ActivityIndicator,
+    Button,
     Text,
     TextInput,
     TouchableOpacity,
@@ -291,14 +292,19 @@ export default function MyFatooraScreen() {
 
             <InAppAppleView ref={inAppApplePayViewRef} />
 
-            {/*
-        <Button title="Execute Recurring Payment"
-          onPress={this.onExecuteRecurringPaymentButtonClickHandler}
-        />
-        
-        <Button title="Cancel Recurring Payment"
-          onPress={this.onCancelRecurringPaymentButtonClickHandler}
-        /> */}
+            <Button
+                title="Execute Direct Payment"
+                onPress={onExecuteDirectPaymentButtonClickHandler}
+            />
+            <Button
+                title="Execute Recurring Payment"
+                onPress={onExecuteRecurringPaymentButtonClickHandler}
+            />
+
+            <Button
+                title="Cancel Recurring Payment"
+                onPress={onCancelRecurringPaymentButtonClickHandler}
+            />
         </View>
     );
 }
