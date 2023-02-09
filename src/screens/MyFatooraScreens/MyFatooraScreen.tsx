@@ -32,6 +32,8 @@ export default function MyFatooraScreen() {
     const [year, setYear] = useState("21");
     const [cvv, setCVV] = useState("100");
     const [isDirectPayment, setIsDirectPayment] = useState(false);
+    const [appleSessionId, setAppleSessionId] = useState("");
+    const [appleCountryCode, setAppleCountryCode] = useState("");
 
     const {
         initiatePayments,
@@ -63,6 +65,9 @@ export default function MyFatooraScreen() {
             try {
                 const res1 = await initiateSessionForInAppApplePay("MF123");
                 console.log("rest", res1);
+
+                setAppleCountryCode(res1?.countryCode);
+                setAppleSessionId(res1?.sessionId);
 
                 const res2 = await executePaymentForInAppApplePay({
                     countryCode: res1?.countryCode,

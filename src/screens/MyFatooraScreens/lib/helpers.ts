@@ -179,15 +179,13 @@ export function executePaymentForInAppApplePay({
     const promise = new Promise((resolve, reject) => {
         if (!inAppApplePayViewRef?.current) return reject("No ref");
 
+        console.log(inAppApplePayViewRef?.current);
+
         inAppApplePayViewRef?.current?.loadWithStartLoading(
             sessionId,
             countryCode,
             request,
             MFLanguage.ENGLISH,
-            (data) => {
-                console.log("executePaymentForInAppApplePay", data);
-                // hideLoading()
-            },
             (response) => {
                 console.log("executePaymentForInAppApplePay", response);
                 if (response.getError()) {

@@ -6,7 +6,7 @@ function InAppAppleView({}, ref: any) {
     return (
         <View
             style={{
-                height: 60,
+                height: 100,
                 margin: 0,
                 marginTop: 0,
                 flexDirection: "column",
@@ -19,7 +19,6 @@ function InAppAppleView({}, ref: any) {
                 ref={ref}
                 height={35}
                 buttonText={"Buy with"}
-                hideLoadning={true}
             />
         </View>
     );
