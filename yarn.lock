@@ -2451,6 +2451,11 @@
   dependencies:
     invariant "^2.2.4"
 
+"@react-native-community/masked-view@^0.1.11":
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.11.tgz#2f4c6e10bee0786abff4604e39a37ded6f3980ce"
+  integrity sha512-rQfMIGSR/1r/SyN87+VD8xHHzDYeHaJq6elOSCAD+0iLagXkSI2pfA0LmSXP21uw5i3em7GkkRjfJ8wpqWXZNw==
+
 "@react-native/assets@1.0.0":
   version "1.0.0"
   resolved "https://registry.npmjs.org/@react-native/assets/-/assets-1.0.0.tgz"
@@ -6543,6 +6548,11 @@ mv@~2:
     mkdirp "~0.5.1"
     ncp "~2.0.0"
     rimraf "~2.4.0"
+
+myfatoorah-reactnative@^0.0.486:
+  version "0.0.486"
+  resolved "https://registry.yarnpkg.com/myfatoorah-reactnative/-/myfatoorah-reactnative-0.0.486.tgz#18f749e0f03af525ff88703f36a8f4200390c63e"
+  integrity sha512-9gzH5cE6dzVTTDd4JbjGZ3KWWdbyUTJtG6B2K0iXTSCLRcWyzHFGFjvVefwzGlTyzBg8DQ/aiX1v95nwlp7d+Q==
 
 mz@^2.7.0:
   version "2.7.0"
