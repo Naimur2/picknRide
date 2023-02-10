@@ -22,7 +22,6 @@ function PaymentMethodsList({
                     style={styles.flatList}
                     contentContainerStyle={{ justifyContent: "center" }}
                     renderItem={({ item: rowData, index: row }) => {
-                        console.log("rowData", rowData);
                         return (
                             <TouchableOpacity
                                 onPress={() => {
