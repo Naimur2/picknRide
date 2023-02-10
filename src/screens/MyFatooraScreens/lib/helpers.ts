@@ -179,8 +179,6 @@ export function executePaymentForInAppApplePay({
     const promise = new Promise((resolve, reject) => {
         if (!inAppApplePayViewRef?.current) return reject("No ref");
 
-        console.log(inAppApplePayViewRef?.current);
-
         inAppApplePayViewRef?.current?.loadWithStartLoading(
             sessionId,
             countryCode,
