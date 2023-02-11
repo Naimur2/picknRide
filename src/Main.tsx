@@ -10,7 +10,7 @@ import {
 } from "@store/features/user-location/userLocationSlice";
 import { selectAuth, selectLoading } from "@store/store";
 import * as TaskManager from "expo-task-manager";
-import { VStack, useColorMode } from "native-base";
+import { Modal, VStack, useColorMode } from "native-base";
 import React from "react";
 import { Region } from "react-native-maps";
 import { useDispatch, useSelector } from "react-redux";
@@ -93,7 +93,7 @@ export default function Main() {
 
             console.log("speed: ", toKmPerHour);
 
-            dispatch(setCurrentSpeed(toKmPerHour));
+            dispatch(setCurrentSpeed(toKmPerHour.toFixed(2)));
 
             // getNearestLocation({
             //     latitude: locations[0].coords.latitude,
@@ -106,32 +106,15 @@ export default function Main() {
         }
     });
 
-    let loadingView = null;
-    if (loading) {
-        loadingView = (
-            <VStack
-                position={"absolute"}
-                top={0}
-                left={0}
-                right={0}
-                bottom={0}
-                bg={"#ffffff50"}
-                zIndex={1000}
+    return (
+        <>
+            <Modal
+                isOpen={loading && !locationData.isLoading}
                 justifyContent={"center"}
                 alignItems={"center"}
             >
                 <LoadingView />
-            </VStack>
-        );
-    }
-
-    if (locationData.isLoading) {
-        loadingView = null;
-    }
-
-    return (
-        <>
-            {loadingView}
+            </Modal>
 
             <Content />
         </>

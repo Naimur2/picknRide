@@ -28,6 +28,7 @@ export default function useLocationPermissions(): {
             if (isForGranted && Platform.OS === "android") {
                 const backLocPerStatus =
                     await Location.getBackgroundPermissionsAsync();
+                console.log(backLocPerStatus);
                 if (
                     !backLocPerStatus.granted &&
                     backLocPerStatus.status !== "granted"

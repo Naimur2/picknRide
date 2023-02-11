@@ -97,7 +97,7 @@ export default function Dashboard() {
                 dispatch(setCurrentLocation({ latitude, longitude }));
             })();
         }
-    }, []);
+    }, [hasForeGroundPermissions, hasBackGroundPermissions]);
 
     return (
         <ScrollView
@@ -107,7 +107,7 @@ export default function Dashboard() {
             keyboardShouldPersistTaps="handled"
         >
             <ImageBg type={colorMode} flexGrow={1}>
-                <Center pb={10}>
+                <Center pb={5}>
                     <TopSection
                         title={`Good Evening ${auth?.f_name}!`}
                         subtitle="Select your ride"

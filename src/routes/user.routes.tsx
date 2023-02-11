@@ -28,22 +28,29 @@ import MyFatooraScreen from "../screens/MyFatooraScreens/MyFatooraScreen";
 
 const Stack = createNativeStackNavigator();
 
+const BackBtn = () => {
+    const { colorMode } = useColorMode();
+    return (
+        <BackButton
+            color={colorMode === "dark" ? "white" : "black"}
+            onPress={() => {
+                console.log("Back Pressed");
+            }}
+        />
+    );
+};
+
 export default function UserRoutes() {
     const { colorMode } = useColorMode();
-    const insets = useSafeAreaInsets();
 
     return (
         <Stack.Navigator
-            initialRouteName="MFPayment"
+            initialRouteName="Dashboard"
             screenOptions={{
                 headerTitle: "",
                 headerTitleStyle: { color: "white" },
                 headerTintColor: colorMode === "light" ? "black" : "white",
-                headerLeft: () => (
-                    <BackButton
-                        color={colorMode === "dark" ? "white" : "black"}
-                    />
-                ),
+                headerLeft: BackBtn,
                 headerShadowVisible: true,
                 headerStyle: {
                     backgroundColor:

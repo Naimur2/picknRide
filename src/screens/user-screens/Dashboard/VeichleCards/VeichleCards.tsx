@@ -55,8 +55,11 @@ export default function VeichleCards() {
     const VCard = Animated.createAnimatedComponent(VeichleCard);
     const navigation = useNavigation();
 
-    const { hasForeGroundPermissions, checkPermissions } =
-        useLocationPermissions();
+    const {
+        hasForeGroundPermissions,
+        checkPermissions,
+        hasBackGroundPermissions,
+    } = useLocationPermissions();
 
     const currentVeichle = veichels.find(
         (veichle) => veichle.type === selectedVeichle
@@ -64,7 +67,7 @@ export default function VeichleCards() {
 
     const handleNavigation = async () => {
         dispatch(setLoading(true));
-        if (!hasForeGroundPermissions) {
+        if (!hasForeGroundPermissions || !hasBackGroundPermissions) {
             console.log("here");
             await checkPermissions();
             dispatch(setLoading(false));
