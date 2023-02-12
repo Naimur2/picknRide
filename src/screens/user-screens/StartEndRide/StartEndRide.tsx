@@ -2,7 +2,6 @@ import Toggler from "@assets/svgs/Toggler";
 import ErrorToast from "@components/ErrorToast/ErrorToast";
 import GradientBtn from "@components/GradientBtn/GradientBtn";
 import ImageBg from "@components/ImageBg/ImageBg";
-import Scroller from "@components/Scroller/Scroller";
 import TopSection from "@components/TopSection/TopSection";
 import UserAvatar from "@components/UserAvatar/UserAvatar";
 import config from "@config";
@@ -21,6 +20,7 @@ import {
     Center,
     Factory,
     HStack,
+    ScrollView,
     Toast,
     VStack,
     useColorMode,
@@ -29,11 +29,12 @@ import React from "react";
 import { Alert, TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
+import { ILatLng } from "../../MapScreen/MapScreen.types";
 import { IValidateCarTripData } from "../ScanQrCode/ScanQrCode.types";
 import { IStartEndTripParams } from "./StartEnTrip.types";
 import UploadImg from "./UploadImg/UploadImg";
-import { ILatLng } from "../../MapScreen/MapScreen.types";
-import { ScrollView } from "native-base";
+import { setCurrentForm } from "@store/features/auth/authSlice";
+import WarningModal from "../../../components/WarningModal/WarningModal";
 
 export default function StartEndRide() {
     const navigation = useNavigation();
@@ -55,9 +56,73 @@ export default function StartEndRide() {
     const [distanceTravelled, setDistanceTravelled] = React.useState(0);
     const [timeElapsed, setTimeElapsed] = React.useState(0);
 
-    console.log(
-        endRideResult ? JSON.stringify(endRideResult) : "no endRideResult"
-    );
+    const [showWarningModal, setShowWarningModal] =
+        React.useState<boolean>(false);
+
+    const [warningVariant, setWarningVariant] = React.useState<
+        "approved" | "pending" | "rejected" | "expired" | "required"
+    >("approved");
+
+    const errorHandler = (error: {
+        code: 701 | 712 | 715 | 711 | 702 | 703 | 704 | 706 | 707 | 708;
+        message: string;
+    }) => {
+        switch (error.code) {
+            case 701:
+                Toast.show({
+                    id: "errorToast",
+                    render: () => <ErrorToast message={error.message} />,
+                    placement: "top",
+                });
+
+                navigation.navigate("MFPayment", {
+                    amount: 250,
+                });
+                break;
+            case 712:
+            case 707:
+                setWarningVariant("required");
+                setShowWarningModal(true);
+                break;
+            case 715:
+                setWarningVariant("pending");
+                setShowWarningModal(true);
+                break;
+            case 711:
+                setWarningVariant("expired");
+                setShowWarningModal(true);
+                break;
+            case 702:
+            case 703:
+            case 704:
+            case 706:
+                Toast.show({
+                    id: "errorToast",
+                    render: () => <ErrorToast message={error.message} />,
+                    placement: "top",
+                });
+                break;
+            case 708:
+                const numbers = error?.message?.match?.(/\d+/g)?.map?.(Number);
+                const amount = numbers?.[1] || 250;
+                navigation.navigate("MFPayment", {
+                    amount: amount,
+                });
+                break;
+            default:
+                Toast.show({
+                    id: "errorToast",
+                    render: () => (
+                        <ErrorToast
+                            message={error?.message || "Something Went wrong"}
+                        />
+                    ),
+                    placement: "top",
+                });
+                break;
+        }
+    };
+
     const onEndRide = async (tripToken: string) => {
         try {
             const res = await enRide({
@@ -66,12 +131,6 @@ export default function StartEndRide() {
 
             if (res.data) {
                 const {
-                    number: vehicleNo,
-                    name: veichleName,
-                    tripStartTime,
-                    tripEndTime,
-                    price,
-                    tripDate,
                     totalTripTime,
                     totalKM,
                     startLatitude,
@@ -95,28 +154,24 @@ export default function StartEndRide() {
             }
 
             if (res.error) {
-                Toast.show({
-                    id: "errorToast",
-                    render: () => (
-                        <ErrorToast
-                            message={
-                                res?.error?.message || "Error ending the ride"
-                            }
-                        />
-                    ),
-                    placement: "top",
-                });
+                errorHandler(res.error);
             }
         } catch (error) {
-            Toast.show({
-                id: "errorToast",
-                render: () => (
-                    <ErrorToast
-                        message={"Error ending the ride. Please try again"}
-                    />
-                ),
-                placement: "top",
-            });
+            errorHandler(error);
+        }
+    };
+
+    const handleToglewarning = () => {
+        if (
+            warningVariant === "rejected" ||
+            warningVariant === "expired" ||
+            warningVariant === "required"
+        ) {
+            setShowWarningModal(false);
+            navigation.navigate("DocumentSubmission");
+            dispatch(setCurrentForm(1));
+        } else {
+            setShowWarningModal(false);
         }
     };
 
@@ -162,13 +217,8 @@ export default function StartEndRide() {
             }
             let res = await uploadImage(resData).unwrap();
 
-            if (res?.error?.message) {
-                Alert.alert("Error", res?.error?.message, [
-                    {
-                        text: "OK",
-                        onPress: () => {},
-                    },
-                ]);
+            if (res?.error) {
+                errorHandler(res?.error);
             } else {
                 if (res?.succeeded && res?.data?.tripToken) {
                     if (startOrEnd === "start") {
@@ -337,6 +387,11 @@ export default function StartEndRide() {
                         />
                     ) : null}
                 </Center>
+                <WarningModal
+                    variant={warningVariant}
+                    isVisible={showWarningModal}
+                    setIsVisible={handleToglewarning}
+                />
             </ImageBg>
         </ScrollView>
     );

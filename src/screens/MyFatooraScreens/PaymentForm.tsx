@@ -21,16 +21,20 @@ import GradientBtn from "../../components/GradientBtn/GradientBtn";
 import PaymentMethodsList from "./components/PaymentMethodList";
 import useMyFatoora from "./mfhooks/useMyFatoora";
 import { ICardListProps } from "./types/myfatoora.interface";
+import { useTopUpBalanceMutation } from "@store/api/v2/documentApi/documentApiSlice";
 
 export default function PaymentForm({
     paymentMethods,
+    amount,
 }: {
     paymentMethods: ICardListProps[];
+    amount: number;
 }) {
     const [selectedIndex, setSelectedIndex] = useState(-1);
     const [isDirectPayment, setIsDirectPayment] = useState(false);
     const { executeDirectPayment, executePayment } = useMyFatoora();
     const dispatch = useDispatch();
+    const [topUp, result] = useTopUpBalanceMutation();
 
     const initialState = {
         cardHolderName: "John Smith",
@@ -38,7 +42,7 @@ export default function PaymentForm({
         month: "05",
         year: "21",
         cvv: "100",
-        paymentAmount: "250",
+        paymentAmount: amount.toString() || "250",
     };
 
     // q:minimum number of digit in credit card number?
@@ -50,17 +54,6 @@ export default function PaymentForm({
         cvv: Yup.string().required("Required"),
         paymentAmount: Yup.number().required("Required"),
     });
-
-    const formik = useFormik({
-        initialValues: initialState,
-        validationSchema: creditCardNumberSchema,
-        onSubmit: async (values) => {
-            onExecutePaymentButtonClickHandler();
-        },
-    });
-
-    const { values, errors, touched, handleChange, handleSubmit, handleBlur } =
-        formik;
 
     const onExecutePaymentButtonClickHandler = () => {
         if (paymentMethods[selectedIndex].IsDirectPayment) {
@@ -89,7 +82,24 @@ export default function PaymentForm({
             })
                 .then((res) => {
                     dispatch(setLoading(false));
-                    console.log("executeDirectPayment", res);
+                    if (res?.Data?.PaymentURL) {
+                        topUp({
+                            amount: parseFloat(values.paymentAmount),
+                            payemntStatus: 1,
+                            paymentData: res?.Data?.PaymentURL,
+                            paymentType: selectedIndex,
+                            remark: "topup",
+                        })
+                            .unwrap()
+                            .then((res) => {
+                                alert("Payment Success");
+                            })
+                            .catch((err) => {
+                                alert("Payment Failed");
+                            });
+                    } else {
+                        alert("Payment Failed");
+                    }
                 })
                 .catch((err) => {
                     dispatch(setLoading(false));
@@ -97,6 +107,17 @@ export default function PaymentForm({
                 });
         }
     };
+
+    const formik = useFormik({
+        initialValues: initialState,
+        validationSchema: creditCardNumberSchema,
+        onSubmit: async (values) => {
+            onExecutePaymentButtonClickHandler();
+        },
+    });
+
+    const { values, errors, touched, handleChange, handleSubmit, handleBlur } =
+        formik;
 
     const formHandler = () => {
         if (isDirectPayment) {
@@ -244,6 +265,10 @@ export default function PaymentForm({
                                     onChangeText={handleChange("month")}
                                     onBlur={handleBlur("month")}
                                     keyboardType="numeric"
+                                    editable={false}
+                                    isDisabled={true}
+                                    isReadOnly={true}
+                                    defaultValue={amount.toString()}
                                 />
                                 {errors.month && touched.month ? (
                                     <ErrorMessage>{errors.month}</ErrorMessage>

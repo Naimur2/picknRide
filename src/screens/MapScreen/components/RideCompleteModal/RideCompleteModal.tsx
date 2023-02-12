@@ -3,14 +3,15 @@ import locationFilled from "@assets/images/location-filled.png";
 import locationOutline from "@assets/images/location-outline.png";
 import CModal from "@components/CModal/CModal";
 import H3 from "@components/H3/H3";
-import { Box, Center, HStack, Image, VStack, Text } from "native-base";
+import { Box, Center, HStack, Image, Text, VStack } from "native-base";
 import React from "react";
 
-import { Rating } from "react-native-ratings";
-import { scale } from "react-native-size-matters";
-import MarkerBar from "../LocationMarker/LocationMarker";
 import { ILatLng } from "@screens/MapScreen/MapScreen.types";
 import { useGetAddressByCoordinatesQuery } from "@store/api/v3/mapsApiSlice";
+import { Rating } from "react-native-ratings";
+import { scale } from "react-native-size-matters";
+import { useDispatch } from "react-redux";
+import MarkerBar from "../LocationMarker/LocationMarker";
 
 export default function RideCompleteModal({
     isOpen,
@@ -22,18 +23,23 @@ export default function RideCompleteModal({
 }: {
     isOpen: boolean;
     onClose: () => void;
-    startLocation: ILatLng;
-    endLocation: ILatLng;
-    distanceTravelled: number;
-    timeElapsed: number;
+    startLocation?: ILatLng;
+    endLocation?: ILatLng;
+    distanceTravelled?: number;
+    timeElapsed?: number;
 }) {
+    const dispatch = useDispatch();
+
     const { data: startPosition, isLoading } = useGetAddressByCoordinatesQuery(
         {
             latitude: startLocation?.latitude,
             longitude: startLocation?.longitude,
         },
         {
-            skip: !startLocation,
+            skip:
+                startLocation?.latitude && startLocation?.longitude
+                    ? false
+                    : true,
         }
     );
     const { data: endPosition, isLoading: isLoadingEnd } =
@@ -43,12 +49,19 @@ export default function RideCompleteModal({
                 longitude: endLocation?.longitude,
             },
             {
-                skip: !endLocation,
+                skip:
+                    endLocation?.latitude && endLocation?.longitude
+                        ? false
+                        : true,
             }
         );
 
-    const loc1 = startPosition?.results[0].formatted_address;
-    const loc2 = endPosition?.results[0].formatted_address;
+    const loc1 = startPosition?.results[0]?.formatted_address;
+    const loc2 = endPosition?.results[0]?.formatted_address;
+
+    if (isLoading || isLoadingEnd) {
+        return null;
+    }
 
     return (
         <CModal
