@@ -21,6 +21,7 @@ import { scale } from "react-native-size-matters";
 import { useDispatch, useSelector } from "react-redux";
 import VeichleCard, { IVeichleCardProps } from "../VeichleCard/VeichleCard";
 import { setLoading } from "@store/features/ui/uiSlice";
+import { Platform } from "react-native";
 
 const veichels: IVeichleCardProps[] = [
     {
@@ -67,41 +68,85 @@ export default function VeichleCards() {
 
     const handleNavigation = async () => {
         dispatch(setLoading(true));
-        if (!hasForeGroundPermissions || !hasBackGroundPermissions) {
-            console.log("here");
-            await checkPermissions();
-            dispatch(setLoading(false));
-        } else {
-            const initialRegion = await Location.getCurrentPositionAsync({});
-
-            dispatch(setInitialLocation(initialRegion.coords));
-
-            const INTERVAL_TIME = 1000 * 30;
-
-            //    chech if the task is already registered
-            const isRegistered = await TaskManager.isTaskRegisteredAsync(
-                config.LOCATION_TASK_NAME
-            );
-
-            console.log("isRegistered", isRegistered);
-
-            if (!isRegistered) {
-                await Location.startLocationUpdatesAsync(
-                    config.LOCATION_TASK_NAME,
-                    {
-                        accuracy: Location.Accuracy.Balanced,
-                        timeInterval: INTERVAL_TIME,
-                        distanceInterval: 10,
-                        showsBackgroundLocationIndicator: true,
-                    }
+        if (Platform.OS !== "android") {
+            if (!hasForeGroundPermissions || !hasBackGroundPermissions) {
+                console.log("here");
+                await checkPermissions();
+                dispatch(setLoading(false));
+            } else {
+                const initialRegion = await Location.getCurrentPositionAsync(
+                    {}
                 );
+
+                dispatch(setInitialLocation(initialRegion.coords));
+
+                const INTERVAL_TIME = 1000 * 30;
+
+                //    chech if the task is already registered
+                const isRegistered = await TaskManager.isTaskRegisteredAsync(
+                    config.LOCATION_TASK_NAME
+                );
+
+                console.log("isRegistered", isRegistered);
+
+                if (!isRegistered) {
+                    await Location.startLocationUpdatesAsync(
+                        config.LOCATION_TASK_NAME,
+                        {
+                            accuracy: Location.Accuracy.Balanced,
+                            timeInterval: INTERVAL_TIME,
+                            distanceInterval: 10,
+                            showsBackgroundLocationIndicator: true,
+                        }
+                    );
+                }
+
+                navigation.navigate("MapScreen", {
+                    veichle: currentVeichle,
+                });
+
+                dispatch(setLoading(false));
             }
+        }
+        if (Platform.OS === "ios") {
+            if (!hasForeGroundPermissions) {
+                console.log("here");
+                await checkPermissions();
+                dispatch(setLoading(false));
+            } else {
+                const initialRegion = await Location.getCurrentPositionAsync(
+                    {}
+                );
 
-            navigation.navigate("MapScreen", {
-                veichle: currentVeichle,
-            });
+                dispatch(setInitialLocation(initialRegion.coords));
 
-            dispatch(setLoading(false));
+                const INTERVAL_TIME = 1000 * 30;
+
+                //    chech if the task is already registered
+                const isRegistered = await TaskManager.isTaskRegisteredAsync(
+                    config.LOCATION_TASK_NAME
+                );
+
+                console.log("isRegistered", isRegistered);
+
+                if (!isRegistered) {
+                    await Location.startLocationUpdatesAsync(
+                        config.LOCATION_TASK_NAME,
+                        {
+                            accuracy: Location.Accuracy.Balanced,
+                            timeInterval: INTERVAL_TIME,
+                            distanceInterval: 10,
+                            showsBackgroundLocationIndicator: true,
+                        }
+                    );
+                }
+
+                navigation.navigate("MapScreen", {
+                    veichle: currentVeichle,
+                });
+
+                dispatch(setLoading(false));
+            }
         }
     };
 

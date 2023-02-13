@@ -33,6 +33,10 @@ import { setStartOrEndRide } from "@store/features/ui/uiSlice";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import ErrorToast from "@components/ErrorToast/ErrorToast";
+import {
+    SafeAreaView,
+    useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 export default function ScanQrCode() {
     const navigation = useNavigation();
@@ -211,7 +215,8 @@ export default function ScanQrCode() {
             setShowWarningModal(false);
         }
     };
-
+    const insets = useSafeAreaInsets();
+    console.log("insets", insets);
     return (
         <>
             <VStack
@@ -224,6 +229,8 @@ export default function ScanQrCode() {
             <Scroller
                 contentStyle={{
                     flexGrow: 1,
+                    paddingTop: insets.top,
+                    paddingBottom: insets.bottom,
                 }}
                 position="relative"
             >
@@ -256,17 +263,6 @@ export default function ScanQrCode() {
                         >
                             {validationResult.data.data.error.messagw}
                         </Text>
-                    ) : null}
-                    {validationResult.isLoading ? (
-                        <Center
-                            position={"absolute"}
-                            top="0"
-                            left="0"
-                            right="0"
-                            my="2"
-                        >
-                            <Spinner size={"lg"} color="#000" />
-                        </Center>
                     ) : null}
 
                     {cameraPhoto && imageUri ? (
