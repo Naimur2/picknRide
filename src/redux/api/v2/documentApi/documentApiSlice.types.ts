@@ -59,3 +59,11 @@ export interface IUploadUserSignatureImage {
     userType: TDUserType;
     signature: string;
 }
+
+export interface ITopUpBalance {
+    paymentType: number;
+    amount: number;
+    payemntStatus: number;
+    paymentData: string;
+    remark: string;
+}

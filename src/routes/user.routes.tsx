@@ -18,18 +18,30 @@ import TripDetails from "@screens/user-screens/TripDetails/TripDetails";
 import VarificationStatus from "@screens/user-screens/VarificationStatus/VarificationStatus";
 import Wallet from "@screens/user-screens/Wallet/Wallet";
 import colors from "@theme/colors";
+import { MFWebView } from "myfatoorah-reactnative";
 import { useColorMode } from "native-base";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SelectOtpType from "../screens/user-screens/SelectOtpType/SelectOtpType";
-import TripOtpForm from "../screens/user-screens/TripOtpScreen/TripOtpForm/TripOtpForm";
 import TripOtpScreen from "../screens/user-screens/TripOtpScreen/TripOtpScreen";
+import MyFatooraScreen from "../screens/MyFatooraScreens/MyFatooraScreen";
 
 const Stack = createNativeStackNavigator();
 
+const BackBtn = () => {
+    const { colorMode } = useColorMode();
+    return (
+        <BackButton
+            color={colorMode === "dark" ? "white" : "black"}
+            onPress={() => {
+                console.log("Back Pressed");
+            }}
+        />
+    );
+};
+
 export default function UserRoutes() {
     const { colorMode } = useColorMode();
-    const insets = useSafeAreaInsets();
 
     return (
         <Stack.Navigator
@@ -38,11 +50,7 @@ export default function UserRoutes() {
                 headerTitle: "",
                 headerTitleStyle: { color: "white" },
                 headerTintColor: colorMode === "light" ? "black" : "white",
-                headerLeft: () => (
-                    <BackButton
-                        color={colorMode === "dark" ? "white" : "black"}
-                    />
-                ),
+                headerLeft: BackBtn,
                 headerShadowVisible: true,
                 headerStyle: {
                     backgroundColor:
@@ -57,6 +65,7 @@ export default function UserRoutes() {
                 animation: "slide_from_left",
             }}
         >
+            <Stack.Screen name="MFPayment" component={MyFatooraScreen} />
             <Stack.Screen name="Dashboard" component={Dashboard} />
             <Stack.Screen
                 name="DocumentSubmission"
@@ -98,6 +107,11 @@ export default function UserRoutes() {
             />
             <Stack.Screen name="SelectOtpType" component={SelectOtpType} />
             <Stack.Screen name="TripOtpScreen" component={TripOtpScreen} />
+            <Stack.Screen
+                name="MFWebView"
+                component={MFWebView}
+                options={MFWebView.navigationOptions}
+            />
         </Stack.Navigator>
     );
 }

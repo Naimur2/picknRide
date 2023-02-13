@@ -4,6 +4,7 @@ import {
     SafeAreaView,
     useSafeAreaInsets,
 } from "react-native-safe-area-context";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default function Scroller({
     children,
@@ -16,7 +17,7 @@ export default function Scroller({
     const inset = useSafeAreaInsets();
 
     return (
-        <ScrollView
+        <KeyboardAwareScrollView
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
@@ -29,6 +30,6 @@ export default function Scroller({
             {...rest}
         >
             {children}
-        </ScrollView>
+        </KeyboardAwareScrollView>
     );
 }

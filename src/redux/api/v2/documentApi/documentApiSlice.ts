@@ -1,4 +1,5 @@
 import { apiSliceV2 } from "../apiSlice";
+import { ITopUpBalance } from "./documentApiSlice.types";
 
 const documentApiSlice = apiSliceV2.injectEndpoints({
     endpoints: (builder) => ({
@@ -15,9 +16,19 @@ const documentApiSlice = apiSliceV2.injectEndpoints({
                 body: document,
             }),
         }),
+        topUpBalance: builder.mutation({
+            query: (document: ITopUpBalance) => ({
+                url: "Payment/TopUp",
+                method: "POST",
+                body: document,
+            }),
+        }),
     }),
     overrideExisting: true,
 });
 
-export const { useUploadDocumentMutation, useCheckVerificationQuery } =
-    documentApiSlice;
+export const {
+    useUploadDocumentMutation,
+    useCheckVerificationQuery,
+    useTopUpBalanceMutation,
+} = documentApiSlice;

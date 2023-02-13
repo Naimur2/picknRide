@@ -112,8 +112,7 @@ export default function OtpForm() {
             if (data?.status === 200) {
                 if (
                     data?.data?.resident_status === "0" &&
-                    data?.data?.userdocuments_status === "0" &&
-                    data?.data?.card_status === "0"
+                    data?.data?.userdocuments_status === "0"
                 ) {
                     navigation.navigate("SelectCitizenShip");
                 } else {
