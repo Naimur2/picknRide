@@ -107,8 +107,7 @@ export default function VeichleCards() {
 
                 dispatch(setLoading(false));
             }
-        }
-        if (Platform.OS === "ios") {
+        } else {
             if (!hasForeGroundPermissions) {
                 console.log("here");
                 await checkPermissions();
