@@ -16,7 +16,7 @@ const carsSlice = createSlice({
     initialState,
     reducers: {
         setNearestCars: (state: ICarState, action: ISetNearestCarsAction) => {
-            action.payload.forEach((car) => {
+            action?.payload?.forEach((car) => {
                 const isAlreadyInState = state.nearestCars.findIndex(
                     (c) => c.id === car.id
                 );

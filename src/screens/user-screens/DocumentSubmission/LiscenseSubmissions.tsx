@@ -54,7 +54,7 @@ export default function LiscenseSubmissions() {
             return {};
         } catch (err: any | Yup.ValidationError) {
             const errors: { [key: string]: string } = {};
-            err.inner.forEach((error: any) => {
+            err?.inner?.forEach((error: any) => {
                 errors[error.path] = error.message;
             });
             return errors;

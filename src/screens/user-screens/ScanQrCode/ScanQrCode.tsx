@@ -57,6 +57,8 @@ export default function ScanQrCode() {
     const [validateCarTrip, validationResult] =
         useValidateCarTripRequestMutation();
 
+    console.log("validationResult", validationResult);
+
     const handleNavigation = (tripData: IValidateCarTripData | null) => {
         if (!config.DEV_MODE && tripData) {
             console.log(config.DEV_MODE, tripData);
