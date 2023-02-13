@@ -1,7 +1,7 @@
 import { apiSlice } from "../apiSlice";
 
-import { login } from "../../../features/auth/authSlice";
-import { IAuthState } from "../../../features/auth/authSlice.types";
+import { login } from "@store/features/auth/authSlice";
+import { IAuthState } from "@store/features/auth/authSlice.types";
 import { setCheckOtherInformation } from "@store/features/auth/authSlice";
 import {
     IAddCard,
@@ -16,9 +16,13 @@ const authApiSlice = apiSlice.injectEndpoints({
         loginApi: builder.mutation({
             query: (body: ILoginProps) => {
                 return {
-                    url: "login",
+                    url: "Customer/SignIn",
                     method: "POST",
-                    body: body,
+                    body: {
+                        phoneCode: body.dialing_code,
+                        mobileNo: body.phone,
+                        password: body.password,
+                    },
                 };
             },
             async onQueryStarted(arg, { queryFulfilled, dispatch }) {
@@ -53,8 +57,7 @@ const authApiSlice = apiSlice.injectEndpoints({
 
                     if (
                         dispatchData?.resident_status === "0" &&
-                        dispatchData?.userdocuments_status === "0" &&
-                        dispatchData?.card_status === "0"
+                        dispatchData?.userdocuments_status === "0"
                     ) {
                         const dataInfo = {
                             ...dispatchData,

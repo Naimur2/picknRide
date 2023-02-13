@@ -9,7 +9,11 @@ import { NavigationStackOptions } from "react-navigation-stack";
 import { useGetResidencyApiQuery } from "@store/api/v1/configApi/configApiSlice";
 import CheckBoxGroup from "./CheckBoxGroup/CheckBoxGroup";
 import ErrorToast from "@components/ErrorToast/ErrorToast";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import {
+    selectCheckOtherInformation,
+    setCheckOtherInformation,
+} from "@store/features/auth/authSlice";
 
 export interface ICitizenship {
     id: number;
@@ -24,6 +28,7 @@ export default function SelectCitizenShip() {
     const { colorMode } = useColorMode();
     const navigation = useNavigation();
     const selected = React.useRef(null);
+    const dispatch = useDispatch();
 
     const [updateCitizenShip, result] = useUpdateResidencyApiMutation();
     const residencyData = useGetResidencyApiQuery(undefined, {
@@ -69,9 +74,7 @@ export default function SelectCitizenShip() {
                         citizenShip: selected?.current,
                     });
                 } else {
-                    navigation.navigate("AddCards", {
-                        citizenShip: selected?.current,
-                    });
+                    dispatch(setCheckOtherInformation(false));
                 }
             }
         } catch (error) {}
