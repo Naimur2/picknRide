@@ -20,6 +20,7 @@ import {
     Spinner,
     Text,
     VStack,
+    Toast,
 } from "native-base";
 import { Platform, StyleSheet } from "react-native";
 import { scale } from "react-native-size-matters";
@@ -29,10 +30,9 @@ import { IValidateCarTripData } from "./ScanQrCode.types";
 import WarningModal from "@components/WarningModal/WarningModal";
 import { setCurrentForm } from "@store/features/auth/authSlice";
 import { setStartOrEndRide } from "@store/features/ui/uiSlice";
-import { Toast } from "native-base";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import ErrorToast from "../../../components/ErrorToast/ErrorToast";
+import ErrorToast from "@components/ErrorToast/ErrorToast";
 
 export default function ScanQrCode() {
     const navigation = useNavigation();
