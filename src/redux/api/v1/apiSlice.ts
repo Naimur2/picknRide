@@ -5,12 +5,12 @@ import { setLoading } from "@store/features/ui/uiSlice";
 import { RootState } from "@store/store";
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: config.API_V2,
+    baseUrl: config.API_V1,
     credentials: "include",
     prepareHeaders: (headers: Headers, { getState }) => {
         const state = getState() as RootState;
         const authState = state?.auth;
-        headers.set("Pick&Ride-Token", `${authState.token || "sdvdsv"}`);
+
         if (authState?.token) {
             headers.set("Authorization", `Bearer ${authState.token}`);
             headers.set("Pick&Ride-Token", `${authState.token}`);
