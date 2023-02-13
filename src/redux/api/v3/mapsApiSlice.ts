@@ -2,7 +2,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setLoading } from "@store/features/ui/uiSlice";
 import Constants from "expo-constants";
 import { ILatLng } from "../../../screens/MapScreen/MapScreen.types";
-const config = Constants?.manifest?.extra as { [key: string]: any };
+import config from "@config";
+const constants = Constants?.manifest?.extra as { [key: string]: any };
 
 const baseQuery = fetchBaseQuery({
     baseUrl: config.MAPS_API,
@@ -25,9 +26,12 @@ export const mapsApiSlice = createApi({
     baseQuery: loadingBaseQuery,
     endpoints: (builder) => ({
         getAddressByCoordinates: builder.query({
-            query: (coordinates: ILatLng) => ({
-                url: `geocode/json?latlng=${coordinates.latitude},${coordinates.longitude}&key=${config?.GOOGLE_MAP_KEY}`,
-            }),
+            query: (coordinates: ILatLng) => {
+                console.log("coordinates", coordinates);
+                return {
+                    url: `geocode/json?latlng=${coordinates.latitude},${coordinates.longitude}&key=${constants?.GOOGLE_MAP_KEY}`,
+                };
+            },
         }),
     }),
 });

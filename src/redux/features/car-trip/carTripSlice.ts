@@ -5,7 +5,7 @@ import { ICarTripState } from "./carTripSlice.types";
 const initialState: ICarTripState = {
     tripInfo: null,
     hasStartedJourney: false,
-    isLocked: false,
+    isLocked: true,
     offerModalVisible: false,
 };
 
@@ -20,7 +20,7 @@ const carTripSlice = createSlice({
         stopCarTrip: (state) => {
             state.tripInfo = null;
             state.hasStartedJourney = false;
-            state.isLocked = false;
+            state.isLocked = true;
         },
         setIsLocked: (state, action) => {
             state.isLocked = action.payload;
@@ -28,7 +28,7 @@ const carTripSlice = createSlice({
         clearCarTrip: (state) => {
             state.tripInfo = null;
             state.hasStartedJourney = false;
-            state.isLocked = false;
+            state.isLocked = true;
         },
         setOfferModalVisible: (state, action) => {
             state.offerModalVisible = action.payload;

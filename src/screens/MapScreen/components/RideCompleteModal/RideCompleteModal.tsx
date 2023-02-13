@@ -12,6 +12,7 @@ import { Rating } from "react-native-ratings";
 import { scale } from "react-native-size-matters";
 import { useDispatch } from "react-redux";
 import MarkerBar from "../LocationMarker/LocationMarker";
+import { fontSizes } from "@theme/typography";
 
 export default function RideCompleteModal({
     isOpen,
@@ -20,6 +21,7 @@ export default function RideCompleteModal({
     endLocation,
     distanceTravelled,
     timeElapsed,
+    amount = 0,
 }: {
     isOpen: boolean;
     onClose: () => void;
@@ -27,10 +29,15 @@ export default function RideCompleteModal({
     endLocation?: ILatLng;
     distanceTravelled?: number;
     timeElapsed?: number;
+    amount?: number;
 }) {
     const dispatch = useDispatch();
 
-    const { data: startPosition, isLoading } = useGetAddressByCoordinatesQuery(
+    const {
+        data: startPosition,
+        isLoading,
+        error: errorStart,
+    } = useGetAddressByCoordinatesQuery(
         {
             latitude: startLocation?.latitude,
             longitude: startLocation?.longitude,
@@ -42,22 +49,25 @@ export default function RideCompleteModal({
                     : true,
         }
     );
-    const { data: endPosition, isLoading: isLoadingEnd } =
-        useGetAddressByCoordinatesQuery(
-            {
-                latitude: endLocation?.latitude,
-                longitude: endLocation?.longitude,
-            },
-            {
-                skip:
-                    endLocation?.latitude && endLocation?.longitude
-                        ? false
-                        : true,
-            }
-        );
+    const {
+        data: endPosition,
+        isLoading: isLoadingEnd,
+        error: errorEnd,
+    } = useGetAddressByCoordinatesQuery(
+        {
+            latitude: endLocation?.latitude,
+            longitude: endLocation?.longitude,
+        },
+        {
+            skip:
+                endLocation?.latitude && endLocation?.longitude ? false : true,
+        }
+    );
 
     const loc1 = startPosition?.results[0]?.formatted_address;
     const loc2 = endPosition?.results[0]?.formatted_address;
+
+    console.log(isLoading, isLoadingEnd, errorStart, errorEnd);
 
     if (isLoading || isLoadingEnd) {
         return null;
@@ -82,12 +92,31 @@ export default function RideCompleteModal({
                     Ride completed
                 </Text>
             </VStack>
-            <VStack>
-                <HStack alignItems={"center"}>
-                    <MarkerBar justifyContent="center" alignItems="center" />
-                    <H3 fontSize={scale(14)}>Ride Parked Successfully</H3>
-                </HStack>
+
+            <VStack
+                mb={4}
+                alignItems={"center"}
+                space={4}
+                justifyContent={"center"}
+            >
+                <MarkerBar />
+                <H3 mb="0" pb={"0"} fontSize={scale(14)}>
+                    Ride Parked Successfully
+                </H3>
             </VStack>
+
+            <Text
+                fontSize={fontSizes["2xl"]}
+                fontWeight={700}
+                textAlign={"center"}
+                color="#000"
+                _dark={{
+                    color: "#fff",
+                }}
+                my={4}
+            >
+                {amount} QAR
+            </Text>
 
             <VStack w={"full"} px={8}>
                 <HStack space={8}>
@@ -225,7 +254,7 @@ export default function RideCompleteModal({
                             fontSize={scale(16)}
                             color={"#fff"}
                         >
-                            {distance} km
+                            {distanceTravelled} km
                         </Text>
                         <Text
                             fontWeight={500}
@@ -270,7 +299,7 @@ export default function RideCompleteModal({
                             fontSize={scale(16)}
                             color={"#fff"}
                         >
-                            {time} min
+                            {timeElapsed} min
                         </Text>
                         <Text
                             fontWeight={500}

@@ -12,6 +12,7 @@ import {
     useUploadCarImageMutation,
 } from "@store/api/v2/tripApi/tripApiSlice";
 import { IUploadCarImages } from "@store/api/v2/tripApi/tripApiSlice.types";
+import { setCurrentForm } from "@store/features/auth/authSlice";
 import { stopCarTrip } from "@store/features/car-trip/carTripSlice";
 import { selectStartOrEndRide } from "@store/features/ui/uiSlice";
 import { convertPickerImageToBase64 } from "@utils/convertToBase64";
@@ -26,15 +27,14 @@ import {
     useColorMode,
 } from "native-base";
 import React from "react";
-import { Alert, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
+import WarningModal from "../../../components/WarningModal/WarningModal";
 import { ILatLng } from "../../MapScreen/MapScreen.types";
 import { IValidateCarTripData } from "../ScanQrCode/ScanQrCode.types";
 import { IStartEndTripParams } from "./StartEnTrip.types";
 import UploadImg from "./UploadImg/UploadImg";
-import { setCurrentForm } from "@store/features/auth/authSlice";
-import WarningModal from "../../../components/WarningModal/WarningModal";
 
 export default function StartEndRide() {
     const navigation = useNavigation();
@@ -55,6 +55,7 @@ export default function StartEndRide() {
     const [endingPoint, setEndingPoint] = React.useState<ILatLng>();
     const [distanceTravelled, setDistanceTravelled] = React.useState(0);
     const [timeElapsed, setTimeElapsed] = React.useState(0);
+    const [amount, setAmount] = React.useState(0);
 
     const [showWarningModal, setShowWarningModal] =
         React.useState<boolean>(false);
@@ -137,6 +138,7 @@ export default function StartEndRide() {
                     startLongitude,
                     endLatitude,
                     endLongitude,
+                    price,
                 } = res?.data?.tripDetails;
                 dispatch(stopCarTrip());
                 setShowRideComplete(true);
@@ -151,6 +153,8 @@ export default function StartEndRide() {
 
                 setDistanceTravelled(totalKM);
                 setTimeElapsed(totalTripTime);
+
+                setAmount(price);
             }
 
             if (res.error) {
@@ -384,6 +388,7 @@ export default function StartEndRide() {
                             endLocation={endingPoint}
                             distanceTravelled={distanceTravelled}
                             timeElapsed={timeElapsed}
+                            amount={amount}
                         />
                     ) : null}
                 </Center>

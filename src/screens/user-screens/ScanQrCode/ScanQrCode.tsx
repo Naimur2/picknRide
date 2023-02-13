@@ -17,26 +17,22 @@ import {
     Factory,
     Image,
     Input,
-    Spinner,
     Text,
-    VStack,
     Toast,
+    VStack,
 } from "native-base";
 import { Platform, StyleSheet } from "react-native";
 import { scale } from "react-native-size-matters";
 import CaptureBtns from "./CaptureBtns/CaptureBtns";
 import { IValidateCarTripData } from "./ScanQrCode.types";
 
+import ErrorToast from "@components/ErrorToast/ErrorToast";
 import WarningModal from "@components/WarningModal/WarningModal";
 import { setCurrentForm } from "@store/features/auth/authSlice";
 import { setStartOrEndRide } from "@store/features/ui/uiSlice";
 import React, { useState } from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
-import ErrorToast from "@components/ErrorToast/ErrorToast";
-import {
-    SafeAreaView,
-    useSafeAreaInsets,
-} from "react-native-safe-area-context";
 
 export default function ScanQrCode() {
     const navigation = useNavigation();
