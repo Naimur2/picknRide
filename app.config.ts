@@ -9,6 +9,9 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         slug: "PickNRide",
         extra: {
             GOOGLE_MAP_KEY: "AIzaSyDS-lAgjgs0rT8FzzB9woxe8sTPPh6v7F4",
+            eas: {
+                projectId: "1bf0ebc3-28f5-4a78-8533-1bb3a9c89a00",
+            },
         },
         androidStatusBar: {
             hidden: true,
