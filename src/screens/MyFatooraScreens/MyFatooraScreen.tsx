@@ -38,7 +38,7 @@ export default function MyFatooraPayment() {
         <Scroller>
             <ImageBg type={colorMode} flexGrow={1}>
                 <PaymentForm
-                    amount={params.amount}
+                    amount={params?.amount}
                     paymentMethods={paymentMethods}
                 />
             </ImageBg>

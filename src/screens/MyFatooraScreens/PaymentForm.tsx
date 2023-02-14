@@ -37,12 +37,12 @@ export default function PaymentForm({
     const [topUp, result] = useTopUpBalanceMutation();
 
     const initialState = {
-        cardHolderName: "John Smith",
-        cardNumber: "5123450000000008",
-        month: "05",
-        year: "21",
-        cvv: "100",
-        paymentAmount: amount.toString() || "250",
+        cardHolderName: "",
+        cardNumber: "",
+        month: "",
+        year: "",
+        cvv: "",
+        paymentAmount: amount.toString() || "",
     };
 
     // q:minimum number of digit in credit card number?
@@ -266,9 +266,9 @@ export default function PaymentForm({
                                     onBlur={handleBlur("month")}
                                     keyboardType="numeric"
                                     editable={false}
-                                    isDisabled={true}
-                                    isReadOnly={true}
-                                    defaultValue={amount.toString()}
+                                    isDisabled={Boolean(amount)}
+                                    isReadOnly={Boolean(amount)}
+                                    defaultValue={amount.toString() || ""}
                                 />
                                 {errors.month && touched.month ? (
                                     <ErrorMessage>{errors.month}</ErrorMessage>

@@ -53,7 +53,7 @@ export default function CustomDrawer() {
         },
         {
             title: "Wallet",
-            onPress: () => navigation.navigate("Wallet" as never),
+            onPress: () => navigation.navigate("MFPayment" as never),
         },
         {
             title: "Cars",
