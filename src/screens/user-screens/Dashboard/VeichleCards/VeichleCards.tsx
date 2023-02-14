@@ -68,7 +68,7 @@ export default function VeichleCards() {
 
     const handleNavigation = async () => {
         dispatch(setLoading(true));
-        if (Platform.OS !== "android") {
+        if (Platform.OS === "android") {
             if (!hasForeGroundPermissions || !hasBackGroundPermissions) {
                 console.log("here");
                 await checkPermissions();

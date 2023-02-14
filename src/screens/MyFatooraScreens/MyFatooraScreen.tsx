@@ -8,6 +8,7 @@ import PaymentForm from "./PaymentForm";
 import ImageBg from "@components/ImageBg/ImageBg";
 import { useColorMode } from "native-base";
 import { useRoute } from "@react-navigation/native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function MyFatooraPayment() {
     const distpatch = useDispatch();
@@ -33,6 +34,8 @@ export default function MyFatooraPayment() {
                 distpatch(setLoading(false));
             });
     }, []);
+
+    const insets = useSafeAreaInsets();
 
     return (
         <Scroller>

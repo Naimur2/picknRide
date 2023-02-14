@@ -42,7 +42,7 @@ export default function PaymentForm({
         month: "",
         year: "",
         cvv: "",
-        paymentAmount: amount.toString() || "",
+        paymentAmount: amount?.toString() || "",
     };
 
     // q:minimum number of digit in credit card number?
@@ -268,7 +268,7 @@ export default function PaymentForm({
                                     editable={false}
                                     isDisabled={Boolean(amount)}
                                     isReadOnly={Boolean(amount)}
-                                    defaultValue={amount.toString() || ""}
+                                    defaultValue={amount?.toString() || ""}
                                 />
                                 {errors.month && touched.month ? (
                                     <ErrorMessage>{errors.month}</ErrorMessage>
@@ -335,7 +335,7 @@ export default function PaymentForm({
                     </VStack>
                 ) : null}
             </VStack>
-            <Center pb={10}>
+            <Center pb={20}>
                 <GradientBtn
                     gradientStyle={{
                         width: scale(250) + "px",
