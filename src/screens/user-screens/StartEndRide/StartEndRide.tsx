@@ -198,14 +198,13 @@ export default function StartEndRide() {
     const formik = useFormik({
         initialValues: initialState,
         onSubmit: async (values) => {
-            const front = await convertPickerImageToBase64(values.frontImage);
-            const back = await convertPickerImageToBase64(values.backImage);
-            const left = await convertPickerImageToBase64(values.leftSideImage);
+            const front = values.frontImage;
+            const back = values.backImage;
+            const left = values.leftSideImage;
 
-            const right = await convertPickerImageToBase64(
-                values.rightSideImage
-            );
-            let resData: IUploadCarImages = {};
+            const right = values.rightSideImage;
+
+            let resData: IUploadCarImages | {} = {};
 
             if (!config.DEV_MODE) {
                 resData = {
@@ -328,6 +327,7 @@ export default function StartEndRide() {
                                 }
                                 imageLink={values.backImage}
                                 imgTitle="Back"
+                                disabled={values.frontImage === ""}
                             />
                         </HStack>
                         <HStack mt={4} justifyContent="space-between">
@@ -337,6 +337,7 @@ export default function StartEndRide() {
                                 }
                                 imageLink={values.leftSideImage}
                                 imgTitle="Left"
+                                disabled={values.backImage === ""}
                             />
                             <UploadImg
                                 setImage={(image) =>
@@ -344,6 +345,7 @@ export default function StartEndRide() {
                                 }
                                 imageLink={values.rightSideImage}
                                 imgTitle="Right"
+                                disabled={values.leftSideImage === ""}
                             />
                         </HStack>
                         <Center>

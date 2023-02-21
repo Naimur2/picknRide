@@ -1,29 +1,27 @@
 import creditCardImage from "@assets/images/credit-card.png";
 import Camera from "@assets/svgs/Camera";
-import Pen from "@assets/svgs/Pen";
+import ErrorMessage from "@components/ErrorMessage/ErrorMessage";
+import ErrorToast from "@components/ErrorToast/ErrorToast";
 import GradientBtn from "@components/GradientBtn/GradientBtn";
 import OutlineButton from "@components/OutlineButton/OutlineButton";
 import Scroller from "@components/Scroller/Scroller";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
+import { useAddCardsApiMutation } from "@store/api/v1/authApi/authApiSlice";
 import { fontSizes } from "@theme/typography";
+import { useFormik } from "formik";
 import {
     FormControl,
     HStack,
     Image,
     Input,
-    Pressable,
     Text,
+    Toast,
     VStack,
 } from "native-base";
 import React from "react";
 import { Dimensions, Platform } from "react-native";
 import { scale } from "react-native-size-matters";
 import * as Yup from "yup";
-import { useFormik } from "formik";
-import ErrorMessage from "@components/ErrorMessage/ErrorMessage";
-import { useAddCardsApiMutation } from "@store/api/v1/authApi/authApiSlice";
-import { Toast } from "native-base";
-import ErrorToast from "@components/ErrorToast/ErrorToast";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height;
 

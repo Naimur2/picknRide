@@ -7,7 +7,7 @@ export default function useImagePicker(props): {
     pickImage: () => void;
     captureImage: () => void;
     isLoading: boolean;
-    file: ImagePicker.ImagePickerResult | null;
+    file: ImagePicker.ImageInfo | null;
     fileName: string | null;
     fileSize: number | null;
 } {
@@ -24,7 +24,6 @@ export default function useImagePicker(props): {
     const opt = {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         quality: 0.4,
-
         ...config,
     };
 
@@ -35,7 +34,7 @@ export default function useImagePicker(props): {
             ...opt,
             base64: true,
         });
-        console.log(result);
+
         if (!result.cancelled) {
             setImage(result.uri);
             setFile(result);

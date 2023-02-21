@@ -1,42 +1,58 @@
 import { Plus } from "@components/Icons/Icons";
 import useImagePicker from "@hooks/use-image-picker";
+import { setLoading } from "@store/features/ui/uiSlice";
 import { Image, Pressable, Text, VStack } from "native-base";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 function UploadImg({
     setImage,
     imgTitle,
     imageLink,
+    disabled,
     ...rest
 }: {
     setImage: (image: string) => void;
     imageLink?: string;
     imgTitle?: string;
+    disabled?: boolean;
 }) {
     const {
         image: imageUrl,
         captureImage,
         file,
+        isLoading,
     } = useImagePicker({
         useCamera: true,
     });
 
     let title = imageUrl ? imageUrl.split("/").pop() : null;
     title = imgTitle ? imgTitle : title;
+    const dispatch = useDispatch();
 
     React.useEffect(() => {
-        setImage?.(imageUrl);
-    }, [imageUrl]);
+        if (file) {
+            setImage?.(file?.base64);
+        }
+    }, [file]);
 
     const uri = React.useMemo(() => {
         if (imageLink) {
-            return imageLink;
+            return `data:image/png;base64,${imageLink}`;
         } else if (imageUrl) {
             return imageUrl;
         } else {
             return "";
         }
     }, [imageUrl]);
+
+    useEffect(() => {
+        if (isLoading) {
+            dispatch(setLoading(true));
+        } else {
+            dispatch(setLoading(false));
+        }
+    }, [isLoading]);
 
     return (
         <>
@@ -49,8 +65,10 @@ function UploadImg({
                     shadow="9"
                     alignItems={"center"}
                     justifyContent={"center"}
-                    onPress={captureImage}
+                    pointerEvents={disabled ? "none" : "auto"}
+                    onPress={disabled ? undefined : captureImage}
                     position="relative"
+                    opacity={disabled ? 0.9 : 1}
                     overflow={"hidden"}
                     _dark={{
                         bg: "gray.200",

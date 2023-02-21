@@ -68,6 +68,7 @@ export default function VeichleCards() {
 
     const handleNavigation = async () => {
         dispatch(setLoading(true));
+        console.log(Platform.OS);
         if (Platform.OS === "android") {
             if (!hasForeGroundPermissions || !hasBackGroundPermissions) {
                 console.log("here");
@@ -77,6 +78,8 @@ export default function VeichleCards() {
                 const initialRegion = await Location.getCurrentPositionAsync(
                     {}
                 );
+
+                console.log("initialRegion", initialRegion);
 
                 dispatch(setInitialLocation(initialRegion.coords));
 

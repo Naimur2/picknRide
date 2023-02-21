@@ -53,18 +53,14 @@ export default function ScanQrCode() {
     const [validateCarTrip, validationResult] =
         useValidateCarTripRequestMutation();
 
-    console.log("validationResult", validationResult);
-
     const handleNavigation = (tripData: IValidateCarTripData | null) => {
         if (!config.DEV_MODE && tripData) {
-            console.log(config.DEV_MODE, tripData);
             dispatch(setStartOrEndRide("start"));
             navigation.navigate("StartEndRide", {
                 data: tripData,
                 type: "START",
             });
         } else {
-            console.log(config.DEV_MODE, tripData);
             const data: IValidateCarTripData = {
                 isValidVehicle: true,
                 vehicleNo: "123456",
@@ -177,7 +173,6 @@ export default function ScanQrCode() {
             alert("Image or number is required");
         } else {
             if (!config.DEV_MODE) {
-                console.log("config.DEV_MODE", config.DEV_MODE);
                 const location = await Location.getCurrentPositionAsync({});
                 const imageData = {
                     numberPlateImage: cameraPhoto,
@@ -187,7 +182,6 @@ export default function ScanQrCode() {
                 };
 
                 const res = await validateCarTrip(imageData).unwrap();
-                console.log("res", res);
 
                 if (!res?.succeeded && res?.error) {
                     errorHandler(res?.error);
@@ -195,7 +189,7 @@ export default function ScanQrCode() {
                     handleNavigation(res?.data);
                 }
             } else {
-                console.log("config.DEV_MODE", config.DEV_MODE);
+                console.log("DEV MODE");
             }
         }
     };
@@ -205,7 +199,11 @@ export default function ScanQrCode() {
     };
 
     const handleToglewarning = () => {
-        if (warningVariant === "rejected" || warningVariant === "expired") {
+        if (
+            warningVariant === "rejected" ||
+            warningVariant === "expired" ||
+            warningVariant === "required"
+        ) {
             setShowWarningModal(false);
             navigation.navigate("DocumentSubmission");
             dispatch(setCurrentForm(1));
