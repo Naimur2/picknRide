@@ -11,10 +11,12 @@ const baseQuery = fetchBaseQuery({
         const state = getState() as RootState;
         const authState = state?.auth;
 
+        const authToken = authState?.token || "gfhghf";
+
         if (authState?.token) {
-            headers.set("Authorization", `Bearer ${authState.token}`);
-            headers.set("Pick&Ride-Token", `${authState.token}`);
-            headers.set("token", `${authState.token}`);
+            headers.set("Authorization", `Bearer ${authToken}`);
+            headers.set("Pick&Ride-Token", `${authToken}`);
+            headers.set("token", `${authToken}`);
         }
         return headers;
     },

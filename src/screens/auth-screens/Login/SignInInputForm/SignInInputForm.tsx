@@ -9,11 +9,11 @@ import * as Yup from "yup";
 
 import { fontSizes } from "@theme/typography";
 
+import { useNavigation } from "@react-navigation/native";
 import { useLoginApiMutation } from "@store/api/v1/authApi/authApiSlice";
 import { ILoginProps } from "@store/api/v1/authApi/authApiSlice.types";
 import { Keyboard } from "react-native";
 import ErrorToast from "../../../../components/ErrorToast/ErrorToast";
-import { useNavigation } from "@react-navigation/native";
 
 function SignInInputForm() {
     const navigation = useNavigation();
@@ -119,6 +119,7 @@ function SignInInputForm() {
                 _dark={{
                     color: "white",
                 }}
+                onPress={() => navigation.navigate("ForgotPassword")}
             >
                 Forgot Password
             </Text>

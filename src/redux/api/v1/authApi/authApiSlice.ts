@@ -16,9 +16,13 @@ const authApiSlice = apiSlice.injectEndpoints({
         loginApi: builder.mutation({
             query: (body: ILoginProps) => {
                 return {
-                    url: "login",
+                    url: "Customer/SignIn",
                     method: "POST",
-                    body: body,
+                    body: {
+                        phoneCode: body.dialing_code,
+                        mobileNo: body.phone,
+                        password: body.password,
+                    },
                 };
             },
             async onQueryStarted(arg, { queryFulfilled, dispatch }) {
