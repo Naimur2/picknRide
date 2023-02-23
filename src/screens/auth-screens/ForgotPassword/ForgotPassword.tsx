@@ -16,6 +16,9 @@ export default function ForgotPassword() {
     const [phone, setPhone] = React.useState("");
     const [country, setCountry] = React.useState("");
     const [dialingCode, setDialingCode] = React.useState("");
+
+    console.log(params);
+
     return (
         <ScreenWithScrollImage>
             <VStack alignItems={"center"} space="4">
@@ -36,9 +39,9 @@ export default function ForgotPassword() {
                         color: "light.200",
                     }}
                 >
-                    Please enter your email address. We will send you An email
-                    containing a recovery link to set an new password for your
-                    account.
+                    Please enter your {params?.validationType === "email"}. We
+                    will send you An email containing a recovery link to set an
+                    new password for your account.
                 </Text>
             </VStack>
 

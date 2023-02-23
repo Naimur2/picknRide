@@ -20,14 +20,14 @@ export default function SelectAuthOtpType() {
     const routeParams = useRoute().params as ISelectAuthOtpTypeParams;
 
     const handleOtpViaEmail = async () => {
-        if (routeParams?.authType === "forgotPassword") {
+        if (routeParams?.authType === "ForgotPassword") {
             navigation.navigate("ForgotPassword", {
                 validationType: "email",
             } as ISelectAuthTypeParams);
         }
     };
     const handleOtpViaWhatsapp = async () => {
-        if (routeParams?.authType === "forgotPassword") {
+        if (routeParams?.authType === "ForgotPassword") {
             navigation.navigate("ForgotPassword", {
                 validationType: "whatsapp",
             } as ISelectAuthTypeParams);

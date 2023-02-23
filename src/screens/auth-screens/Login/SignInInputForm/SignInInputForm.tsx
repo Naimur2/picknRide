@@ -119,7 +119,11 @@ function SignInInputForm() {
                 _dark={{
                     color: "white",
                 }}
-                onPress={() => navigation.navigate("SelectAuthOtpType")}
+                onPress={() =>
+                    navigation.navigate("SelectAuthOtpType", {
+                        authType: "ForgotPassword",
+                    })
+                }
             >
                 Forgot Password
             </Text>
