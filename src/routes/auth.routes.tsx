@@ -4,6 +4,7 @@ import {
     createNativeStackNavigator,
 } from "@react-navigation/native-stack";
 import AddCards from "@screens/auth-screens/AddCards/AddCards";
+import ForgotPassword from "@screens/auth-screens/ForgotPassword/ForgotPassword";
 import Login from "@screens/auth-screens/Login/Login";
 import OtpScreen from "@screens/auth-screens/OtpScreen/OtpScreen";
 import Register from "@screens/auth-screens/Register/Register";
@@ -13,7 +14,7 @@ import SplashSecond from "@screens/auth-screens/SplashSecond/SplashSecond";
 import SplashThird from "@screens/auth-screens/SplashThird/SplashThird";
 import { useColorMode } from "native-base";
 import React from "react";
-import ForgotPassword from "@screens/auth-screens/ForgotPassword/ForgotPassword";
+import SelectAuthOtpType from "../screens/auth-screens/SelectAuthOtpType/SelectAuthOtpType";
 
 interface IStackScreenProps extends NativeStackNavigationOptions {
     colorMode: "light" | "dark";
@@ -58,6 +59,10 @@ export default function AuthRoute() {
             <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
             <Stack.Screen name="OtpScreen" component={OtpScreen} />
+            <Stack.Screen
+                name="SelectAuthOtpType"
+                component={SelectAuthOtpType}
+            />
             <Stack.Screen
                 name="SelectCitizenShip"
                 component={SelectCitizenShip}

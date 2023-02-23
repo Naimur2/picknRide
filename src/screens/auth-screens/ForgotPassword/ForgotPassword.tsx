@@ -1,15 +1,18 @@
 import GradientBtn from "@components/GradientBtn/GradientBtn";
 import TextInput from "@components/TextInput/TextInput";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { fontSizes } from "@theme/typography";
 import { HStack, Text, VStack } from "native-base";
 import React from "react";
 import { scale } from "react-native-size-matters";
 import ScreenWithScrollImage from "./ScreenWithScrollImage";
 import PickCountry from "@components/PickCountry/PickCountry";
+import { ISelectAuthTypeParams } from "../SelectAuthOtpType/SelectAuthOtpType.types";
 
 export default function ForgotPassword() {
     const navigation = useNavigation();
+    const params = useRoute().params as ISelectAuthTypeParams;
+
     const [phone, setPhone] = React.useState("");
     const [country, setCountry] = React.useState("");
     const [dialingCode, setDialingCode] = React.useState("");

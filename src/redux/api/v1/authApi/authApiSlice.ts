@@ -31,7 +31,7 @@ const authApiSlice = apiSlice.injectEndpoints({
                     const result = await queryFulfilled;
                     const { data } = result;
                     console.log({ data });
-                    dispatch(login(data.data as IAuthState));
+                    // dispatch(login(data.data as IAuthState));
                 } catch (error) {}
             },
         }),
