@@ -98,6 +98,42 @@ const authApiSlice = apiSlice.injectEndpoints({
                 body: body,
             }),
         }),
+        forgotPasswordByWhatsApp: builder.mutation({
+            query: (body: { mobileNo: string; phoneCode: string }) => ({
+                url: "Customer/ForgotPasswordByWhatsApp",
+                method: "POST",
+                body: body,
+            }),
+        }),
+        forgotPasswordByEmail: builder.mutation({
+            query: (body: { emailId: string }) => ({
+                url: "Customer/ForgotPasswordByEmail",
+                method: "POST",
+                body: body,
+            }),
+        }),
+        verifyPasswordOtpPhone: builder.mutation({
+            query: (body: {
+                mobileNo: string;
+                phoneCode: string;
+                otp: string;
+            }) => ({
+                url: "Customer/VerifyForgotPasswordOTP",
+                method: "POST",
+                body: body,
+            }),
+        }),
+        changePassword: builder.mutation({
+            query: (body: {
+                currentPassword: string;
+                newPassword: string;
+                confirmNewPassword: string;
+            }) => ({
+                url: "Customer/ChangePassword",
+                method: "POST",
+                body: body,
+            }),
+        }),
     }),
     overrideExisting: true,
 });
@@ -109,4 +145,8 @@ export const {
     useResendOtpApiMutation,
     useAddCardsApiMutation,
     useUpdateResidencyApiMutation,
+    useForgotPasswordByWhatsAppMutation,
+    useForgotPasswordByEmailMutation,
+    useVerifyPasswordOtpPhoneMutation,
+    useChangePasswordMutation,
 } = authApiSlice;
