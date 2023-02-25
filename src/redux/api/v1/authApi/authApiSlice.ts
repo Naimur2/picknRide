@@ -31,7 +31,12 @@ const authApiSlice = apiSlice.injectEndpoints({
                     const result = await queryFulfilled;
                     const { data } = result;
                     console.log({ data });
-                    // dispatch(login(data.data as IAuthState));
+                    dispatch(
+                        login({
+                            ...data.data,
+                            photo: "https://png.pngtree.com/png-clipart/20221207/ourmid/pngtree-art-boy-avatar-png-image_6514653.png",
+                        })
+                    );
                 } catch (error) {}
             },
         }),
@@ -112,13 +117,20 @@ const authApiSlice = apiSlice.injectEndpoints({
                 body: body,
             }),
         }),
-        verifyPasswordOtpPhone: builder.mutation({
+        verifyForgotPasswordOtpWhatsapp: builder.mutation({
             query: (body: {
                 mobileNo: string;
                 phoneCode: string;
                 otp: string;
             }) => ({
-                url: "Customer/VerifyForgotPasswordOTP",
+                url: "Customer/VerifyForgotPasswordByWhatsAppOTP",
+                method: "POST",
+                body: body,
+            }),
+        }),
+        verifyForgotPasswordOtpEmail: builder.mutation({
+            query: (body: { email: string; otp: string }) => ({
+                url: "Customer/VerifyForgotPasswordByEmailOTP",
                 method: "POST",
                 body: body,
             }),
@@ -147,6 +159,7 @@ export const {
     useUpdateResidencyApiMutation,
     useForgotPasswordByWhatsAppMutation,
     useForgotPasswordByEmailMutation,
-    useVerifyPasswordOtpPhoneMutation,
+    useVerifyForgotPasswordOtpWhatsappMutation,
+    useVerifyForgotPasswordOtpEmailMutation,
     useChangePasswordMutation,
 } = authApiSlice;

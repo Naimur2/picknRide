@@ -15,6 +15,8 @@ import SplashThird from "@screens/auth-screens/SplashThird/SplashThird";
 import { useColorMode } from "native-base";
 import React from "react";
 import SelectAuthOtpType from "../screens/auth-screens/SelectAuthOtpType/SelectAuthOtpType";
+import ForgotPasswordOtp from "../screens/auth-screens/ForgotPasswordOtp/ForgotPasswordOtp";
+import ResetPassword from "../screens/auth-screens/ResetPassword/ResetPassword";
 
 interface IStackScreenProps extends NativeStackNavigationOptions {
     colorMode: "light" | "dark";
@@ -59,6 +61,11 @@ export default function AuthRoute() {
             <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
             <Stack.Screen name="OtpScreen" component={OtpScreen} />
+            <Stack.Screen name="ResetPassword" component={ResetPassword} />
+            <Stack.Screen
+                name="ForgotPasswordOtp"
+                component={ForgotPasswordOtp}
+            />
             <Stack.Screen
                 name="SelectAuthOtpType"
                 component={SelectAuthOtpType}
