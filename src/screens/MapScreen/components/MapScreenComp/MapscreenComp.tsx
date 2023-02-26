@@ -70,7 +70,7 @@ function MapscreenComp({ type, setType }: IMapTopDetailsProps) {
                 />
                 <MapTopDetails
                     selected={type}
-                    px="6"
+                    px="4"
                     setSelected={updateType}
                     mt={"80px"}
                 />

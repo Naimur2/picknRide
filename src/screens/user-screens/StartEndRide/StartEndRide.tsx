@@ -15,12 +15,12 @@ import { IUploadCarImages } from "@store/api/v2/tripApi/tripApiSlice.types";
 import { setCurrentForm } from "@store/features/auth/authSlice";
 import { stopCarTrip } from "@store/features/car-trip/carTripSlice";
 import { selectStartOrEndRide } from "@store/features/ui/uiSlice";
-import { convertPickerImageToBase64 } from "@utils/convertToBase64";
 import { useFormik } from "formik";
 import {
     Center,
     Factory,
     HStack,
+    Pressable,
     ScrollView,
     Toast,
     VStack,
@@ -254,14 +254,14 @@ export default function StartEndRide() {
                 alignItems: "center",
             },
             headerLeft: () => (
-                <Touchable onPress={() => navigation.openDrawer()}>
+                <Pressable onPress={() => navigation.openDrawer()}>
                     <Toggler
                         mx={4}
                         _dark={{
                             color: "#000",
                         }}
                     />
-                </Touchable>
+                </Pressable>
             ),
             headerRight: () => <UserAvatar />,
         });

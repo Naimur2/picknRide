@@ -7,8 +7,8 @@ const SvgComponent = (props, ref) => {
     return (
         <Svg
             xmlns="http://www.w3.org/2000/svg"
-            width={24}
-            height={24}
+            width={20}
+            height={18}
             ref={ref}
             {...props}
         >

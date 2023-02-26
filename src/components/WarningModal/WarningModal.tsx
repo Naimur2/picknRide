@@ -29,7 +29,7 @@ export default function WarningModal({
         pending: {
             icon: <Pending />,
             text: "Documents has been submitted waiting for verification.",
-            title: "Approved",
+            title: "Pending",
         },
         rejected: {
             icon: <Rejected />,

@@ -8,12 +8,13 @@ import {
 } from "@store/features/document/documentSlice";
 import { selectAuth } from "@store/store";
 import { createFormFile } from "@utils/fileDetails";
-import { Center, HStack, Pressable, Text, VStack } from "native-base";
+import { Center, HStack, Pressable, Text, VStack, Toast } from "native-base";
 import React from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import Signature from "./DocumentForm/Signature/Signature";
 import { setCurrentForm } from "@store/features/auth/authSlice";
+import ErrorToast from "@components/ErrorToast/ErrorToast";
 
 export default function SignatureSubmission() {
     const [termAccept, setTermAccept] = React.useState(false);
@@ -65,8 +66,12 @@ export default function SignatureSubmission() {
 
             const res4 = await submitDocument(document4).unwrap();
 
-            if (res4?.error) {
-                alert(res4.error);
+            if (res4.error) {
+                Toast.show({
+                    id: "otpError",
+                    render: () => <ErrorToast message={res4.error.message} />,
+                    placement: "top",
+                });
             }
 
             if (res4?.succeeded && res4?.error === null) {

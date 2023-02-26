@@ -1,5 +1,5 @@
 import Toggler from "@assets/svgs/Toggler";
-import { Factory, HStack, Image } from "native-base";
+import { Center, Factory, HStack, Image, Pressable, Text } from "native-base";
 import React from "react";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { ILatLng } from "../../MapScreen";
@@ -12,7 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 import Constants from "expo-constants";
 import { TouchableOpacity } from "react-native";
 import { useSelector } from "react-redux";
-import { selectSelectedVeichleType } from "../../../../redux/features/cars/carsSlice";
+import { selectSelectedVeichleType } from "@store/features/cars/carsSlice";
 
 const Items = {
     car: (props: any): JSX.Element => {
@@ -89,19 +89,41 @@ function LocationSearch({
 
     return (
         <HStack
-            px={6}
+            px={4}
             space={4}
-            justifyContent="center"
-            alignItems={"flex-start"}
+            justifyContent="space-between"
+            alignItems={"center"}
+            w="100%"
             {...rest}
         >
-            <HStack width={"20%"} mt={6} mr={2} space={4} alignItems="center">
-                <Touchable onPress={() => navigation.openDrawer()}>
+            <HStack width={"20%"} mr={2} space={4} alignItems="center">
+                <Pressable
+                    display={"flex"}
+                    alignItems={"center"}
+                    justifyContent={"center"}
+                    onPress={() => navigation.openDrawer()}
+                >
                     <Toggler />
-                </Touchable>
+                </Pressable>
                 <Smage />
             </HStack>
-            <GooglePlacesAutocomplete
+
+            <Pressable
+                display={"flex"}
+                flexDir={"row"}
+                alignItems={"center"}
+                justifyContent={"flex-start"}
+                bg="white"
+                py={2}
+                rounded={"full"}
+                w={"70%"}
+                px={2}
+            >
+                <Search />
+                <Text ml={2}>Search</Text>
+            </Pressable>
+
+            {/* <GooglePlacesAutocomplete
                 placeholder="Search"
                 fetchDetails={true}
                 onPress={handleSearchSelector}
@@ -137,7 +159,7 @@ function LocationSearch({
                         color: "#1faadb",
                     },
                 }}
-            />
+            /> */}
         </HStack>
     );
 }

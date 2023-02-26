@@ -1,9 +1,11 @@
-import { UIState } from "./uiSlice.types";
+import { ITemperatur, UIState } from "./uiSlice.types";
 import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from "@store/store";
 
 const initialState: UIState = {
     loading: false,
     startOrEndRide: undefined,
+    temperatur: undefined,
 };
 
 export const uiSlice = createSlice({
@@ -21,9 +23,21 @@ export const uiSlice = createSlice({
         ) => {
             state.startOrEndRide = action.payload;
         },
+        setTemperature: (
+            state,
+            action: {
+                payload: ITemperatur;
+            }
+        ) => {
+            state.temperatur = action.payload;
+        },
     },
 });
 
-export const { setLoading, setStartOrEndRide } = uiSlice.actions;
-export const selectStartOrEndRide = (state: any) => state.ui.startOrEndRide;
+export const { setLoading, setStartOrEndRide, setTemperature } =
+    uiSlice.actions;
+export const selectStartOrEndRide = (state: RootState) =>
+    state.ui.startOrEndRide;
+export const selectLoading = (state: RootState) => state.ui.loading;
+export const selectTemperature = (state: RootState) => state.ui.temperatur;
 export default uiSlice.reducer;

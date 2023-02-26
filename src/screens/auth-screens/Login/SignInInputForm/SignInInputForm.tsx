@@ -24,21 +24,6 @@ function SignInInputForm() {
 
     const [login, result] = useLoginApiMutation();
 
-    React.useEffect(() => {
-        if (result.data?.status === 400) {
-            console.log("result.error", result);
-            Toast.show({
-                id: "error",
-                render: () => (
-                    <ErrorToast
-                        message={result.data?.message || "Something went wrong"}
-                    />
-                ),
-                placement: "top",
-            });
-        }
-    }, [result]);
-
     const formik = useFormik({
         initialValues: {
             dialing_code: "974",
@@ -56,11 +41,21 @@ function SignInInputForm() {
                 dialing_code: "+" + dialing_code,
             };
             try {
-                await login(body).unwrap();
-                // navigation.navigate("OtpScreen", {
-                //     dialing_code: "+" + dialing_code,
-                //     phone,
-                // });
+                const result = await login(body).unwrap();
+                if (result.error) {
+                    Toast.show({
+                        id: "error",
+                        render: () => (
+                            <ErrorToast
+                                message={
+                                    result.error?.message ||
+                                    "Something went wrong"
+                                }
+                            />
+                        ),
+                        placement: "top",
+                    });
+                }
             } catch (error) {
                 console.log("error", error);
             }

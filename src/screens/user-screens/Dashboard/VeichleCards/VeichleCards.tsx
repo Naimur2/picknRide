@@ -112,7 +112,7 @@ export default function VeichleCards() {
             }
         } else {
             if (!hasForeGroundPermissions) {
-                console.log("here");
+                console.log("here2");
                 await checkPermissions();
                 dispatch(setLoading(false));
             } else {
@@ -122,7 +122,7 @@ export default function VeichleCards() {
 
                 dispatch(setInitialLocation(initialRegion.coords));
 
-                const INTERVAL_TIME = 1000 * 30;
+                const INTERVAL_TIME = 1000 * 10;
 
                 //    chech if the task is already registered
                 const isRegistered = await TaskManager.isTaskRegisteredAsync(
@@ -137,7 +137,7 @@ export default function VeichleCards() {
                         {
                             accuracy: Location.Accuracy.Balanced,
                             timeInterval: INTERVAL_TIME,
-                            distanceInterval: 10,
+                            // distanceInterval: 10,
                             showsBackgroundLocationIndicator: true,
                         }
                     );

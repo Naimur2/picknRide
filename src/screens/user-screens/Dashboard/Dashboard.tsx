@@ -11,7 +11,7 @@ import { setCurrentLocation } from "@store/features/user-location/userLocationSl
 import { selectAuth } from "@store/store";
 import colors from "@theme/colors";
 import * as Location from "expo-location";
-import { Center, Factory, ScrollView, useColorMode } from "native-base";
+import { Center, Factory, Pressable, ScrollView, useColorMode } from "native-base";
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import { scale } from "react-native-size-matters";
@@ -47,7 +47,7 @@ export default function Dashboard() {
                         : colors.green[200],
             },
             headerLeft: () => (
-                <Touchable onPress={() => navigation.openDrawer()}>
+                <Pressable onPress={() => navigation.openDrawer()}>
                     <Toggler
                         mx={4}
                         _dark={{
@@ -56,7 +56,7 @@ export default function Dashboard() {
                         py={2}
                         px={4}
                     />
-                </Touchable>
+                </Pressable>
             ),
             headerRight: () => (
                 <UserAvatar

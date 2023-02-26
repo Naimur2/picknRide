@@ -9,7 +9,6 @@ import {
     FlashMode,
     ImageType,
 } from "expo-camera/build/Camera.types";
-import * as FileSystem from "expo-file-system";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Location from "expo-location";
 import {
@@ -29,7 +28,7 @@ import { IValidateCarTripData } from "./ScanQrCode.types";
 import ErrorToast from "@components/ErrorToast/ErrorToast";
 import WarningModal from "@components/WarningModal/WarningModal";
 import { setCurrentForm } from "@store/features/auth/authSlice";
-import { setStartOrEndRide } from "@store/features/ui/uiSlice";
+import { setLoading, setStartOrEndRide } from "@store/features/ui/uiSlice";
 import React, { useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
@@ -151,11 +150,13 @@ export default function ScanQrCode() {
                 imageType: ImageType.jpg,
             });
 
-            // filesize
-            await FileSystem.getInfoAsync(photo.uri);
-
+            dispatch(setLoading(true));
             setCameraPhoto(photo.base64);
             setImageUri(photo.uri);
+
+            await handleSubmit(photo.base64);
+
+            dispatch(setLoading(false));
         }
     }, []);
 
@@ -163,7 +164,7 @@ export default function ScanQrCode() {
         setCameraPhoto(null);
     }, []);
 
-    const handleSubmit = async () => {
+    async function handleSubmit(nameplateImage?: string) {
         const { status, granted } =
             await Location.getForegroundPermissionsAsync();
 
@@ -175,7 +176,7 @@ export default function ScanQrCode() {
             if (!config.DEV_MODE) {
                 const location = await Location.getCurrentPositionAsync({});
                 const imageData = {
-                    numberPlateImage: cameraPhoto,
+                    numberPlateImage: nameplateImage,
                     vehicleNo: inputRef?.current as string,
                     mobileLatitude: location.coords.latitude,
                     mobileLongitude: location.coords.longitude,
@@ -192,7 +193,7 @@ export default function ScanQrCode() {
                 console.log("DEV MODE");
             }
         }
-    };
+    }
 
     const toggleTorch = () => {
         setIsOpenTorch((prev) => !prev);
@@ -300,7 +301,7 @@ export default function ScanQrCode() {
                     <CaptureBtns
                         takePicture={takePicture}
                         handleReset={handleReset}
-                        handleSubmit={handleSubmit}
+                        handleSubmit={() => handleSubmit(cameraPhoto)}
                         showTakePictureBtn={!cameraPhoto || !imageUri}
                         hideButtons={validationResult.isLoading}
                         toggleTorch={toggleTorch}
@@ -339,7 +340,7 @@ export default function ScanQrCode() {
 
                     <Center>
                         <GradientBtn
-                            onPress={handleSubmit}
+                            onPress={() => handleSubmit(cameraPhoto)}
                             title="Submit Manually"
                             disabled={validationResult.isLoading}
                         />

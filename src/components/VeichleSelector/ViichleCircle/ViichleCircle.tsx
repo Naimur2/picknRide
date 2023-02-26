@@ -26,13 +26,13 @@ function ViichleCircle({
                 bg={isActive ? "primary.100" : "#CAE5B7"}
                 borderWidth={3}
                 borderColor="#fff"
-                p="2.5"
+                p="8px"
                 borderRadius={50}
                 onPress={onPress}
             >
                 <Image
-                    w="16px"
-                    h="16px"
+                    w="14px"
+                    h="14px"
                     resizeMode="contain"
                     source={images[type] || scooter}
                     alt="cycle"

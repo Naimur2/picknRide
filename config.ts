@@ -9,6 +9,8 @@ const config = {
     customerCareNumber: "321",
     whatsappNumber: "974 5533 9923",
     MAPS_API: "https://maps.googleapis.com/maps/api/",
+    WEATHER_API: "http://api.weatherapi.com/v1/current.json",
+    WEATHER_API_KEY: "a480a4fe97024196b8d111139232502",
 };
 
 export default config;

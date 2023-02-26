@@ -50,7 +50,7 @@ export default function CaptureBtns({
                             color="black"
                         />
                     </Pressable>
-                    <Pressable
+                    {/* <Pressable
                         onPress={handleSubmit}
                         rounded={"full"}
                         py={4}
@@ -58,7 +58,7 @@ export default function CaptureBtns({
                         bg={"#fff"}
                     >
                         <AntDesign name="checkcircle" size={24} color="black" />
-                    </Pressable>
+                    </Pressable> */}
                 </>
             )}
         </HStack>

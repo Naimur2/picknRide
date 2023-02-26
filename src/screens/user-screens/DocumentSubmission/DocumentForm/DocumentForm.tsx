@@ -3,8 +3,8 @@ import React from "react";
 
 import Collapsible from "react-native-collapsible";
 import { scale } from "react-native-size-matters";
-import H3 from "../../../../components/H3/H3";
-import { fontSizes } from "../../../../theme-config/typography";
+import H3 from "@components/H3/H3";
+import { fontSizes } from "@theme/typography";
 import IdSubmission from "../IdSubmission";
 import LiscenseSubmissions from "../LiscenseSubmissions";
 import SignatureSubmission from "../SignatureSubmission";
@@ -16,14 +16,7 @@ import { selectCurrentForm } from "@store/features/auth/authSlice";
 function DocumentForm() {
     const current = useSelector(selectCurrentForm);
 
-    const [submittedDocuments, setSubmittedDocuments] = React.useState<{
-        [key: number]: boolean;
-    }>({
-        1: false,
-        2: false,
-        3: false,
-        4: false,
-    });
+    console.log("current", current);
 
     const colormode = useColorMode();
 
@@ -81,7 +74,7 @@ function DocumentForm() {
                         />
                     </Pressable>
 
-                    <Collapsible collapsed={index !== current}>
+                    <Collapsible collapsed={index + 1 !== current}>
                         {section.component}
                     </Collapsible>
                 </VStack>

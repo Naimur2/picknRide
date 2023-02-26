@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { selectAllDocumentFieldValues } from "@store/features/document/documentSlice";
 import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
-import { VStack } from "native-base";
+import { VStack, Toast } from "native-base";
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import OutlineButton from "../../../components/OutlineButton/OutlineButton";
@@ -13,6 +13,7 @@ import { useUploadDocumentMutation } from "@store/api/v2/documentApi/documentApi
 import { selectAuth } from "@store/store";
 import GradientBtn from "../../../components/GradientBtn/GradientBtn";
 import { setCurrentForm } from "@store/features/auth/authSlice";
+import ErrorToast from "@components/ErrorToast/ErrorToast";
 
 export default function VideoSubmission() {
     const navigation = useNavigation();
@@ -67,8 +68,12 @@ export default function VideoSubmission() {
             document4.append("Expiry", document2Expiry.toISOString());
 
             const res4 = await submitDocument(document4).unwrap();
-            if (res4?.error) {
-                alert(res4.error);
+            if (res4.error) {
+                Toast.show({
+                    id: "otpError",
+                    render: () => <ErrorToast message={res4.error.message} />,
+                    placement: "top",
+                });
             }
             if (res4?.succeeded && res4?.error === null) {
                 alert(

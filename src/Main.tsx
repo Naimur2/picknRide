@@ -22,6 +22,8 @@ import {
     MFEnvironment,
 } from "@screens/MyFatooraScreens/types/enums.myfatoora";
 import { MFSettings, MFTheme } from "myfatoorah-reactnative";
+import dayjs from "dayjs";
+import { setTemperature } from "@store/features/ui/uiSlice";
 
 export default function Main() {
     const auth = useSelector(selectAuth) as IAuthState;
@@ -72,6 +74,22 @@ export default function Main() {
         );
     }, []);
 
+    const getWeather = async (lat: number, lng: number) => {
+        try {
+            console.log("getWeather: ", lat, lng);
+            const url = `${config.WEATHER_API}?key=${config.WEATHER_API_KEY}&q=${lat},${lng}`;
+            const response = await fetch(url);
+            const data = await response.json();
+            const currentDay = dayjs(Date.now()).format("dddd");
+            const condtion = data.current.condition.text;
+            const icon = "https:" + data.current.condition.icon;
+            const temp = data.current.temp_c;
+            dispatch(setTemperature({ currentDay, condtion, icon, temp }));
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     TaskManager.defineTask(config.LOCATION_TASK_NAME, ({ data, error }) => {
         if (error) {
             // Error occurred - check `error.message` for more details.
@@ -92,6 +110,10 @@ export default function Main() {
             const toKmPerHour: number = speed * 3.6;
 
             console.log("speed: ", toKmPerHour);
+            getWeather(
+                locations[0].coords.latitude,
+                locations[0].coords.longitude
+            );
 
             dispatch(setCurrentSpeed(toKmPerHour.toFixed(2)));
 

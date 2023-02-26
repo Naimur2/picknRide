@@ -15,7 +15,7 @@ import { TDDocumentType } from "@store/api/v2/documentApi/documentApiSlice.types
 import ExpiryDate from "./DocumentForm/ExpiryDate/ExpiryDate";
 import AddImage from "./AddImage/AddImage";
 import { useUploadDocumentMutation } from "@store/api/v2/documentApi/documentApiSlice";
-import GradientBtn from "../../../components/GradientBtn/GradientBtn";
+import GradientBtn from "@components/GradientBtn/GradientBtn";
 import { setCurrentForm } from "@store/features/auth/authSlice";
 
 export default function IdSubmission() {
@@ -91,8 +91,12 @@ export default function IdSubmission() {
 
             console.log(res1?.succeeded);
 
-            if (res1?.error) {
-                alert(res1.error);
+            if (res1.error) {
+                Toast.show({
+                    id: "otpError",
+                    render: () => <ErrorToast message={res1.error.message} />,
+                    placement: "top",
+                });
             }
 
             if (res1?.succeeded && res1?.error === null) {

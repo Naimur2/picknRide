@@ -88,8 +88,12 @@ export default function LiscenseSubmissions() {
             );
             const res2 = await submitDocument(document2Form).unwrap();
 
-            if (res2?.error) {
-                alert(res2.error);
+            if (res2.error) {
+                Toast.show({
+                    id: "otpError",
+                    render: () => <ErrorToast message={res2.error.message} />,
+                    placement: "top",
+                });
             }
 
             if (res2?.succeeded && res2?.error === null) {
