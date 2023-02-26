@@ -22,7 +22,7 @@ interface IStackScreenProps extends NativeStackNavigationOptions {
     colorMode: "light" | "dark";
 }
 
-const screenOptions: (props: any) => IStackScreenProps = ({
+export const authScreenOptions: (props: any) => IStackScreenProps = ({
     colorMode,
 }: {
     colorMode: "light" | "dark";
@@ -44,7 +44,7 @@ export default function AuthRoute() {
     return (
         <Stack.Navigator
             screenOptions={(props: any) =>
-                screenOptions({ ...props, colorMode })
+                authScreenOptions({ ...props, colorMode })
             }
             initialRouteName="SplashSecond"
         >
@@ -59,17 +59,8 @@ export default function AuthRoute() {
             <Stack.Screen name="SplashThird" component={SplashThird} />
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Register" component={Register} />
-            <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
             <Stack.Screen name="OtpScreen" component={OtpScreen} />
-            <Stack.Screen name="ResetPassword" component={ResetPassword} />
-            <Stack.Screen
-                name="ForgotPasswordOtp"
-                component={ForgotPasswordOtp}
-            />
-            <Stack.Screen
-                name="SelectAuthOtpType"
-                component={SelectAuthOtpType}
-            />
+
             <Stack.Screen
                 name="SelectCitizenShip"
                 component={SelectCitizenShip}

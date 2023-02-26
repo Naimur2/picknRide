@@ -50,3 +50,21 @@ export interface ICardListProps {
     ServiceCharge: number;
     TotalAmount: number;
 }
+
+export interface IMyFatooraRoutePaymentDetails {
+    message: string;
+    requiredAmount: number;
+    currentBalance: number;
+}
+
+export interface IMyFatooraRouteParams {
+    amount?: number;
+    paymentDetails?: IMyFatooraRoutePaymentDetails;
+    paymentFor?: "lowBalance" | "recharge";
+}
+
+export interface IPaymentAmount {
+    _id?: string | number;
+    amount: number;
+    currency: string;
+}

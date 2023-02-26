@@ -88,7 +88,7 @@ export default function Account() {
                 <VStack alignItems={"center"} position="relative">
                     <Avatar
                         shadow="9"
-                        source={{ uri: image ? image : user?.avatar }}
+                        source={{ uri: image }}
                         size={"120px"}
                         borderWidth={6}
                         borderColor="#fff"

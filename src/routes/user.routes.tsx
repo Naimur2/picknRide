@@ -65,7 +65,13 @@ export default function UserRoutes() {
                 animation: "slide_from_left",
             }}
         >
-            <Stack.Screen name="MFPayment" component={MyFatooraScreen} />
+            <Stack.Screen
+                options={{
+                    headerShown: false,
+                }}
+                name="MFPayment"
+                component={MyFatooraScreen}
+            />
             <Stack.Screen name="Dashboard" component={Dashboard} />
             <Stack.Screen
                 name="DocumentSubmission"

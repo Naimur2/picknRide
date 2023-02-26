@@ -24,16 +24,16 @@ import {
 import { MFSettings, MFTheme } from "myfatoorah-reactnative";
 import dayjs from "dayjs";
 import { setTemperature } from "@store/features/ui/uiSlice";
+import HomeRoutes from "@navigation/home.routes";
 
 export default function Main() {
-    const auth = useSelector(selectAuth) as IAuthState;
     const loading = useSelector(selectLoading);
-    const navigation = useNavigation();
-    const dispatch = useDispatch();
-    const currentRegion = useSelector(selectCurrentRegion) as Region;
     const token = useSelector(selectToken);
 
     console.log("token", token);
+
+    const dispatch = useDispatch();
+    const currentRegion = useSelector(selectCurrentRegion) as Region;
 
     const locationData = useGetNearestCarsApiQuery(
         {
@@ -44,18 +44,6 @@ export default function Main() {
         },
         { skip: !currentRegion.latitude || !currentRegion.longitude }
     );
-
-    const [goToDashboard, setGoToDashboard] = React.useState(false);
-
-    React.useEffect(() => {
-        if (auth?.token && !auth.checkOtherInformation) {
-            setGoToDashboard(true);
-        } else {
-            setGoToDashboard(false);
-        }
-    }, [auth?.token, auth.checkOtherInformation]);
-
-    const Content = goToDashboard ? DrawerRoute : AuthRoute;
 
     React.useEffect(() => {
         let token =
@@ -138,7 +126,7 @@ export default function Main() {
                 <LoadingView />
             </Modal>
 
-            <Content />
+            <HomeRoutes />
         </>
     );
 }

@@ -4,13 +4,17 @@ import ScreenWithScrollImage from "@components/ScreenWithScrollImage/ScreenWithS
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fontSizes } from "@theme/typography";
 import { useFormik } from "formik";
-import { Text, VStack } from "native-base";
+import { Text, VStack, Toast } from "native-base";
 import React from "react";
 import { scale } from "react-native-size-matters";
 import * as Yup from "yup";
 import { ISelectValidateOtpTypeParams } from "../ForgotPassword/ForgotPassword.types";
+import { useChangePasswordMutation } from "@store/api/v1/authApi/authApiSlice";
+import ErrorToast from "@components/ErrorToast/ErrorToast";
 
 function ResetPassword() {
+    const [resetPassword, result] = useChangePasswordMutation();
+
     const navigation = useNavigation();
     const routeParams = useRoute().params as ISelectValidateOtpTypeParams;
 
@@ -24,15 +28,45 @@ function ResetPassword() {
         password_2: Yup.string()
             .required("Confirm Password is required")
             .oneOf([Yup.ref("password_1"), null], "Passwords must match"),
+        old_password: Yup.string().required("Old Password is required"),
     });
 
     const formik = useFormik({
         initialValues: {
+            old_password: "",
             password_1: "",
             password_2: "",
         },
         onSubmit: async (values) => {
-            const { password_1 } = values;
+            const { password_1, password_2, old_password } = values;
+            try {
+                const result = await resetPassword({
+                    currentPassword: old_password,
+                    newPassword: password_1,
+                    confirmNewPassword: password_2,
+                });
+                if (result?.error) {
+                    Toast.show({
+                        id: "otpError",
+                        render: () => (
+                            <ErrorToast message={result.error.message} />
+                        ),
+                        placement: "top",
+                    });
+                }
+                if (result?.succeeded) {
+                    alert("Password reset successful");
+                    navigation.navigate("Login");
+                }
+            } catch (error) {
+                Toast.show({
+                    id: "otpError",
+                    render: () => (
+                        <ErrorToast message={"Error reseting passwword"} />
+                    ),
+                    placement: "top",
+                });
+            }
         },
         validationSchema: schema,
     });
@@ -55,6 +89,13 @@ function ResetPassword() {
             </Text>
             <VStack my={20} space={4}>
                 <PasswordInput
+                    placeholder="Old Password"
+                    value={values.old_password}
+                    onChangeText={handleChange("old_password")}
+                    onBlur={handleBlur("old_password")}
+                    error={touched.old_password && errors.old_password}
+                />
+                <PasswordInput
                     placeholder="Password"
                     value={values.password_1}
                     onChangeText={handleChange("password_1")}
@@ -76,7 +117,11 @@ function ResetPassword() {
                 mt={4}
                 // onPress={() => navigation.navigate("OtpScreen")}
                 onPress={handleSubmit}
-                disabled={true}
+                disabled={
+                    values.password_1 === "" ||
+                    values.password_2 === "" ||
+                    values.old_password === ""
+                }
             />
         </ScreenWithScrollImage>
     );

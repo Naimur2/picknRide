@@ -130,8 +130,8 @@ export default function PaymentForm({
     return (
         <>
             <VStack p={6} space="4">
-                <H3>Pay Now</H3>
-                <FormControl>
+                <H3>Select method</H3>
+                {/* <FormControl>
                     <Text
                         fontWeight={600}
                         fontSize={fontSizes.sm}
@@ -155,7 +155,7 @@ export default function PaymentForm({
                         onBlur={handleBlur("paymentAmount")}
                         value={values.paymentAmount}
                     />
-                </FormControl>
+                </FormControl> */}
 
                 <Text
                     fontWeight={600}
