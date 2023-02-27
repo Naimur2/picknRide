@@ -35,6 +35,7 @@ import { ILatLng } from "../../MapScreen/MapScreen.types";
 import { IValidateCarTripData } from "../ScanQrCode/ScanQrCode.types";
 import { IStartEndTripParams } from "./StartEnTrip.types";
 import UploadImg from "./UploadImg/UploadImg";
+import { IMyFatooraRouteParams } from "@screens/MyFatooraScreens/types/myfatoora.interface";
 
 export default function StartEndRide() {
     const navigation = useNavigation();
@@ -64,21 +65,68 @@ export default function StartEndRide() {
         "approved" | "pending" | "rejected" | "expired" | "required"
     >("approved");
 
-    const errorHandler = (error: {
-        code: 701 | 712 | 715 | 711 | 702 | 703 | 704 | 706 | 707 | 708;
-        message: string;
-    }) => {
+    const errorHandler = (
+        error: {
+            code:
+                | 701
+                | 712
+                | 715
+                | 711
+                | 702
+                | 703
+                | 704
+                | 706
+                | 707
+                | 708
+                | 718
+                | 719;
+            message: string;
+        },
+        data?: any
+    ) => {
         switch (error.code) {
             case 701:
+            case 718:
+            case 719:
                 Toast.show({
                     id: "errorToast",
                     render: () => <ErrorToast message={error.message} />,
                     placement: "top",
                 });
 
-                navigation.navigate("MFPayment", {
-                    amount: 250,
-                });
+                if (data && data.tripDetails) {
+                    const {
+                        totalTripTime,
+                        totalKM,
+                        startLatitude,
+                        startLongitude,
+                        endLatitude,
+                        endLongitude,
+                        price,
+                    } = data?.tripDetails;
+                    navigation.navigate("MFPayment", {
+                        amount: price || data?.tripAmount,
+                        paymentFor: "lowBalance",
+                        showTimers: true,
+                        paymentDetails: {
+                            to: {
+                                latitude: startLatitude,
+                                longitude: startLongitude,
+                            },
+                            from: {
+                                latitude: endLatitude,
+                                longitude: endLongitude,
+                            },
+                            distance: totalKM,
+                            time: totalTripTime,
+                            message: error.message,
+                            currentBalance: data?.walletBalance,
+                            requiredAmount: data?.walletBalance - price || 0,
+                            duration: data?.tripDetails?.totalTripTime,
+                        },
+                    } as IMyFatooraRouteParams);
+                }
+
                 break;
             case 712:
             case 707:
@@ -158,7 +206,7 @@ export default function StartEndRide() {
             }
 
             if (res.error) {
-                errorHandler(res.error);
+                errorHandler(res.error, res?.data);
             }
         } catch (error) {
             errorHandler(error);

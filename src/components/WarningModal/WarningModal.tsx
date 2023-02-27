@@ -55,7 +55,7 @@ export default function WarningModal({
         required: {
             icon: <Expired />,
             text: "Please submit all of your documents to unlock your ride",
-            title: "Locked",
+            title: "Required",
         },
     };
 

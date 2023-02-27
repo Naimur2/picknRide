@@ -1,7 +1,7 @@
 import H3 from "@components/H3/H3";
 import ImageBg from "@components/ImageBg/ImageBg";
 import Scroller from "@components/Scroller/Scroller";
-import { useRoute } from "@react-navigation/native";
+import { useRoute, useNavigation } from "@react-navigation/native";
 import WalletTab from "@screens/user-screens/Wallet/WalletTab/WalletTab";
 import { setLoading } from "@store/features/ui/uiSlice";
 import { HStack, Text, VStack, useColorMode } from "native-base";
@@ -14,6 +14,8 @@ import {
     IMyFatooraRouteParams,
     IPaymentAmount,
 } from "./types/myfatoora.interface";
+import RideCompleteData from "@screens/MapScreen/components/RideCompleteModal/RideCompleteData";
+import PaymentTimer from "./components/PaymentTimer";
 
 const amounts: IPaymentAmount[] = [
     {
@@ -73,6 +75,7 @@ export default function MyFatooraPayment() {
     const { colorMode } = useColorMode();
     const params = useRoute().params as IMyFatooraRouteParams;
     const [selected, setSelected] = React.useState(amounts[0]);
+    const navigation = useNavigation();
 
     const [paymentMethods, setPaymentMethods] = useState<ICardListProps[]>([]);
 
@@ -120,23 +123,37 @@ export default function MyFatooraPayment() {
                     <VStack p={4} space={4}>
                         <Text fontWeight={600} fontSize={17}>
                             {params?.paymentDetails?.message ||
-                                "Your wallet balance is not enough to pay for this trip. Please add money to your wallet."}
+                                "Your trip is paused due to low balance. Please add money to continue your trip."}
                         </Text>
-                        <AmountDetails
-                            amount={
-                                params?.paymentDetails?.currentBalance || 400
-                            }
-                            label={"Current Balance"}
-                        />
-                        <AmountDetails
-                            amount={
-                                params?.paymentDetails?.requiredAmount || 420
-                            }
-                            label={"Required Amount"}
-                        />
-                        <AmountDetails
-                            amount={amountValue || 100}
-                            label={"You need to add"}
+
+                        <VStack
+                            justifyContent={"center"}
+                            alignItems={"center"}
+                            my={2}
+                        >
+                            <Text fontWeight={500} textAlign={"center"}>
+                                Your payment is pending, please complete the
+                                payment within
+                            </Text>
+                            <HStack alignItems={"center"} space="2">
+                                <PaymentTimer
+                                    timeLimit={5}
+                                    onFinish={() => {
+                                        navigation.goBack();
+                                    }}
+                                />
+                                <Text textAlign={"center"} fontWeight={500}>
+                                    min
+                                </Text>
+                            </HStack>
+                        </VStack>
+
+                        <RideCompleteData
+                            startLocation={params?.paymentDetails?.from}
+                            endLocation={params?.paymentDetails?.to}
+                            amount={params?.paymentDetails?.amount}
+                            distanceTravelled={params?.paymentDetails?.distance}
+                            timeElapsed={params?.paymentDetails?.duration}
                         />
                     </VStack>
                 )}

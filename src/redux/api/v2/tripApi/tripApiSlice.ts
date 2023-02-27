@@ -70,6 +70,12 @@ const tripApiSlice = apiSliceV2.injectEndpoints({
                 body,
             }),
         }),
+        checkIsCarTripActive: builder.query({
+            query: () => ({
+                url: "CarTrip/TripStatus",
+                method: "GET",
+            }),
+        }),
     }),
     overrideExisting: true,
 });
@@ -83,4 +89,5 @@ export const {
     useSendCarTripOtpTypeMutation,
     useLockUnlockMutation,
     useExecuteCarCommandMutation,
+    useCheckIsCarTripActiveQuery,
 } = tripApiSlice;

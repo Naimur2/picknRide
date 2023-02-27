@@ -15,6 +15,7 @@ import LocationSearch from "../LocationSearch/LocationSearch";
 import MapTopDetails from "../MapTopDetails/MapTopDetails";
 import SpeedMeter from "../SpeedMeter/SpeedMeter";
 
+import { useCheckIsCarTripActiveQuery } from "@store/api/v2/tripApi/tripApiSlice";
 import { selectCarTripInfo } from "@store/features/car-trip/carTripSlice";
 import { ICarTripState } from "@store/features/car-trip/carTripSlice.types";
 import { fontSizes } from "@theme/typography";
@@ -29,6 +30,10 @@ export interface IMapTopDetailsProps {
 function MapscreenComp({ type, setType }: IMapTopDetailsProps) {
     const { height, width } = Dimensions.get("window");
     const carTripDetails: ICarTripState = useSelector(selectCarTripInfo);
+    const { data, isFetching, isLoading } =
+        useCheckIsCarTripActiveQuery(undefined);
+
+    console.log("data", data);
 
     const updateType = React.useMemo(() => {
         return (carType: ICAR) => {
@@ -39,12 +44,12 @@ function MapscreenComp({ type, setType }: IMapTopDetailsProps) {
     const insets = useSafeAreaInsets();
 
     React.useEffect(() => {
-        if (carTripDetails?.hasStartedJourney) {
+        if (data?.data?.isSucceded) {
             SheetManager.show("carDetailsSheet");
-        } else if (!carTripDetails?.hasStartedJourney) {
+        } else {
             SheetManager.hide("carDetailsSheet");
         }
-    }, [carTripDetails]);
+    }, [data]);
 
     return (
         <VStack

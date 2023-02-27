@@ -32,6 +32,9 @@ import { setLoading, setStartOrEndRide } from "@store/features/ui/uiSlice";
 import React, { useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
+import { IMyFatooraRouteParams } from "../../MyFatooraScreens/types/myfatoora.interface";
+import PaymentTimer from "@screens/MyFatooraScreens/components/PaymentTimer";
+import { HStack } from "native-base";
 
 export default function ScanQrCode() {
     const navigation = useNavigation();
@@ -94,7 +97,7 @@ export default function ScanQrCode() {
 
                 navigation.navigate("MFPayment", {
                     amount: 250,
-                });
+                } as IMyFatooraRouteParams);
                 break;
             case 712:
             case 707:

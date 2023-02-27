@@ -1,3 +1,5 @@
+import { Region } from "react-native-maps";
+import { ILatLng } from "../../MapScreen/MapScreen.types";
 import {
     MFCurrencyISO,
     MFMobileCountryCodeISO,
@@ -55,12 +57,18 @@ export interface IMyFatooraRoutePaymentDetails {
     message: string;
     requiredAmount: number;
     currentBalance: number;
+    from?: ILatLng;
+    to?: ILatLng;
+    distance?: number;
+    duration?: number;
+    amount?: number;
 }
 
 export interface IMyFatooraRouteParams {
     amount?: number;
     paymentDetails?: IMyFatooraRoutePaymentDetails;
     paymentFor?: "lowBalance" | "recharge";
+    showTimers?: boolean;
 }
 
 export interface IPaymentAmount {

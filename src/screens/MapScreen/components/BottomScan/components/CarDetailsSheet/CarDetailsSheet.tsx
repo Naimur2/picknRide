@@ -56,6 +56,7 @@ interface ICarDetails extends SheetProps {
     availeTime: string;
     availableBattery: string;
     sheetId: string;
+    hasStartedJourney: boolean;
 }
 
 function CarDetailsSheet({
@@ -65,6 +66,7 @@ function CarDetailsSheet({
     availeTime,
     availableBattery,
     sheetId,
+    hasStartedJourney,
     ...rest
 }: ICarDetails) {
     const RnImage = Factory(Image);
@@ -181,7 +183,9 @@ function CarDetailsSheet({
 
     const switchWidth = Dimensions.get("window").width - 100;
 
-    if (!carTripState?.hasStartedJourney) return <></>;
+    if (!hasStartedJourney) {
+        return <></>;
+    }
 
     return (
         <>
