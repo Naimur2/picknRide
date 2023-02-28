@@ -96,11 +96,11 @@ export default function LiscenseSubmissions() {
                 });
             }
 
-            if (res2?.succeeded && res2?.error === null) {
+            if (res2?.succeeded) {
                 alert(
                     "Documents uploaded successfully, please wait for approval"
                 );
-                dispatch(setCurrentForm(2));
+                dispatch(setCurrentForm(3));
             }
         } catch (error) {
             console.warn(error);

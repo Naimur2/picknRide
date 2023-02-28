@@ -51,7 +51,7 @@ const authSlice = createSlice({
             state.resident_status = null;
             state.userdocuments_status = null;
             state.checkOtherInformation = false;
-            state.currentForm = 0;
+            state.currentForm = 1;
         },
         setCheckOtherInformation(state, action) {
             state.checkOtherInformation = action.payload;

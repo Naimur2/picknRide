@@ -99,11 +99,11 @@ export default function IdSubmission() {
                 });
             }
 
-            if (res1?.succeeded && res1?.error === null) {
+            if (res1?.succeeded) {
                 alert(
                     "Documents uploaded successfully, please wait for approval"
                 );
-                dispatch(setCurrentForm(1));
+                dispatch(setCurrentForm(2));
             }
         } catch (error) {
             console.warn(error);

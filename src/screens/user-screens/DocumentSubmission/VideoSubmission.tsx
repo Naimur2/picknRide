@@ -19,6 +19,7 @@ export default function VideoSubmission() {
     const navigation = useNavigation();
     const values = useSelector(selectAllDocumentFieldValues) as any;
     const [error, setError] = React.useState<Error | null>(null);
+    const dispatch = useDispatch();
 
     const auth = useSelector(selectAuth);
     const { resident_status } = auth as IAuthState;
@@ -75,13 +76,14 @@ export default function VideoSubmission() {
                     placement: "top",
                 });
             }
-            if (res4?.succeeded && res4?.error === null) {
+            if (res4?.succeeded) {
                 alert(
                     "Documents uploaded successfully, please wait for approval"
                 );
-                dispatch(setCurrentForm(3));
+                dispatch(setCurrentForm(4));
             }
         } catch (error) {
+            console.log(error);
             alert("Error uploading documents");
         }
     };

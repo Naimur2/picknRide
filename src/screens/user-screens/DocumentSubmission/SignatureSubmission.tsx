@@ -53,18 +53,7 @@ export default function SignatureSubmission() {
             );
             document3.append("Expiry", document2Expiry.toISOString());
 
-            // formdata for selfie video
-            const document4 = new FormData();
-            document4.append("UserType", userType);
-            document4.append("DocumentType", "SelfieVideo");
-            document4.append(
-                "FrontImage",
-                createFormFile(values.selfieVideo, "video") as any
-            );
-
-            document4.append("Expiry", document2Expiry.toISOString());
-
-            const res4 = await submitDocument(document4).unwrap();
+            const res4 = await submitDocument(document3).unwrap();
 
             if (res4.error) {
                 Toast.show({
@@ -74,7 +63,7 @@ export default function SignatureSubmission() {
                 });
             }
 
-            if (res4?.succeeded && res4?.error === null) {
+            if (res4?.succeeded) {
                 alert(
                     "Documents uploaded successfully, please wait for approval"
                 );
@@ -82,7 +71,7 @@ export default function SignatureSubmission() {
             }
         } catch (error) {
             console.warn(error);
-            alert(error.message ?? "Something went wrong");
+            alert(error?.message ?? "Something went wrong");
         }
     };
 
