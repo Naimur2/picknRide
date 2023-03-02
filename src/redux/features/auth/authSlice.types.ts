@@ -15,4 +15,6 @@ export interface IAuthState {
     token: string | null;
     checkOtherInformation?: boolean;
     currentForm?: number;
+    qid?: string;
+    dob?: string;
 }

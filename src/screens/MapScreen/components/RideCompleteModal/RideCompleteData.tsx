@@ -20,6 +20,7 @@ export interface IRideCompleteData {
     distanceTravelled?: number;
     timeElapsed?: number;
     amount?: number;
+    hideCompletText?: boolean;
 }
 
 export default function RideCompleteData({
@@ -28,6 +29,7 @@ export default function RideCompleteData({
     distanceTravelled,
     timeElapsed,
     amount = 0,
+    hideCompletText = false,
 }: IRideCompleteData) {
     const {
         data: startPosition,
@@ -70,28 +72,32 @@ export default function RideCompleteData({
     }
     return (
         <VStack bg="white">
-            <VStack bg="primary.100" w="100%" p={2}>
-                <Text
-                    fontSize={scale(16)}
-                    fontWeight={700}
-                    textAlign={"center"}
-                    color="#fff"
-                >
-                    Ride completed
-                </Text>
-            </VStack>
+            {!hideCompletText ? (
+                <VStack bg="primary.100" w="100%" p={2}>
+                    <Text
+                        fontSize={scale(16)}
+                        fontWeight={700}
+                        textAlign={"center"}
+                        color="#fff"
+                    >
+                        Ride completed
+                    </Text>
+                </VStack>
+            ) : null}
 
-            <VStack
-                mb={4}
-                alignItems={"center"}
-                space={4}
-                justifyContent={"center"}
-            >
-                <MarkerBar />
-                <H3 mb="0" pb={"0"} fontSize={scale(14)}>
-                    Ride Parked Successfully
-                </H3>
-            </VStack>
+            {!hideCompletText ? (
+                <VStack
+                    mb={4}
+                    alignItems={"center"}
+                    space={4}
+                    justifyContent={"center"}
+                >
+                    <MarkerBar />
+                    <H3 mb="0" pb={"0"} fontSize={scale(14)}>
+                        Ride Parked Successfully
+                    </H3>
+                </VStack>
+            ) : null}
 
             <Text
                 fontSize={fontSizes["2xl"]}

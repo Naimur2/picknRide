@@ -101,12 +101,23 @@ function CarDetailsSheet({
                 placement: "top",
             });
         } else {
-            setIsYesNoModalVisible(false);
-            dispatch(setStartOrEndRide("end"));
-            navigation.navigate("StartEndRide", {
-                data: carTripState?.tripInfo,
-                type: "END",
-            });
+            if (carTripState?.tripInfo) {
+                setIsYesNoModalVisible(false);
+                dispatch(setStartOrEndRide("end"));
+                navigation.navigate("StartEndRide", {
+                    data: carTripState?.tripInfo,
+                    type: "END",
+                });
+            } else {
+                Toast.show({
+                    id: "errorToast",
+                    render: () => (
+                        <ErrorToast message={"Please try again later"} />
+                    ),
+                    placement: "top",
+                });
+                setIsYesNoModalVisible(false);
+            }
         }
     };
 

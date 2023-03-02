@@ -16,6 +16,8 @@ const initialState: IAuthState = {
     userdocuments_status: null,
     checkOtherInformation: false,
     currentForm: 0,
+    qid: undefined,
+    dob: undefined,
 };
 
 const authSlice = createSlice({
@@ -36,6 +38,9 @@ const authSlice = createSlice({
             state.resident_status = action.payload?.resident_status;
             state.userdocuments_status = action.payload?.userdocuments_status;
             state.checkOtherInformation = action.payload?.checkOtherInformation;
+            state.currentForm = 1;
+            state.qid = action.payload?.qid;
+            state.dob = action.payload?.date_of_birth;
         },
         logout(state) {
             state.f_name = null;
@@ -52,6 +57,8 @@ const authSlice = createSlice({
             state.userdocuments_status = null;
             state.checkOtherInformation = false;
             state.currentForm = 1;
+            state.qid = undefined;
+            state.dob = undefined;
         },
         setCheckOtherInformation(state, action) {
             state.checkOtherInformation = action.payload;

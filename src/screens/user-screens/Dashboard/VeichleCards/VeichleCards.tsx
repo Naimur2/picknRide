@@ -3,25 +3,22 @@ import ThreeSwitch from "@components/ThreeSwitch/ThreeSwitch";
 import config from "@config";
 import useLocationPermissions from "@hooks/useLocationPermissions";
 import { useNavigation } from "@react-navigation/native";
-import { useCheckVerificationQuery } from "@store/api/v2/documentApi/documentApiSlice";
-import { IAuthState } from "@store/features/auth/authSlice.types";
 import {
     selectSelectedVeichleType,
     setSelectedVeichleType,
 } from "@store/features/cars/carsSlice";
 import { ECarType } from "@store/features/cars/carsSlice.types";
+import { setLoading } from "@store/features/ui/uiSlice";
 import { setInitialLocation } from "@store/features/user-location/userLocationSlice";
-import { selectAuth } from "@store/store";
 import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
 import { VStack } from "native-base";
 import React from "react";
+import { Platform } from "react-native";
 import Animated, { FlipInYRight, FlipOutYLeft } from "react-native-reanimated";
 import { scale } from "react-native-size-matters";
 import { useDispatch, useSelector } from "react-redux";
 import VeichleCard, { IVeichleCardProps } from "../VeichleCard/VeichleCard";
-import { setLoading } from "@store/features/ui/uiSlice";
-import { Platform } from "react-native";
 
 const veichels: IVeichleCardProps[] = [
     {

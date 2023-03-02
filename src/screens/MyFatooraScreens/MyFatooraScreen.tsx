@@ -154,6 +154,7 @@ export default function MyFatooraPayment() {
                             amount={params?.paymentDetails?.amount}
                             distanceTravelled={params?.paymentDetails?.distance}
                             timeElapsed={params?.paymentDetails?.duration}
+                            hideCompletText={true}
                         />
                     </VStack>
                 )}

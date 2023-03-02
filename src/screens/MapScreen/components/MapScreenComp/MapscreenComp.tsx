@@ -21,6 +21,7 @@ import { ICarTripState } from "@store/features/car-trip/carTripSlice.types";
 import { fontSizes } from "@theme/typography";
 import { useSelector } from "react-redux";
 import Sos from "../Sos/Sos";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 export interface IMapTopDetailsProps {
     type: ICAR;
@@ -28,10 +29,16 @@ export interface IMapTopDetailsProps {
 }
 
 function MapscreenComp({ type, setType }: IMapTopDetailsProps) {
+    const navigation = useNavigation();
+    const [doFetch, setDoFetch] = React.useState<boolean>(false);
     const { height, width } = Dimensions.get("window");
     const carTripDetails: ICarTripState = useSelector(selectCarTripInfo);
-    const { data, isFetching, isLoading } =
-        useCheckIsCarTripActiveQuery(undefined);
+    const { data, isFetching, isLoading } = useCheckIsCarTripActiveQuery(
+        undefined,
+        {
+            skip: !doFetch,
+        }
+    );
 
     console.log("data", data);
 
@@ -44,7 +51,13 @@ function MapscreenComp({ type, setType }: IMapTopDetailsProps) {
     const insets = useSafeAreaInsets();
 
     React.useEffect(() => {
-        if (data?.data?.isSucceded) {
+        setDoFetch(true);
+    }, []);
+
+    React.useEffect(() => {
+        console.log("data?.data?.succeeded", data?.succeeded);
+        if (data?.succeeded) {
+            console.log("data?.data?.succeeded", data?.succeeded);
             SheetManager.show("carDetailsSheet");
         } else {
             SheetManager.hide("carDetailsSheet");
@@ -94,6 +107,7 @@ function MapscreenComp({ type, setType }: IMapTopDetailsProps) {
                 availeTime={"1 hour"}
                 availableBattery={"100%"}
                 carId={"10545"}
+                hasStartedJourney={data?.succeeded}
             />
 
             <GeoSheet sheetId={"geoSheet"} />

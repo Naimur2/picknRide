@@ -47,11 +47,7 @@ function UploadImg({
     }, [imageUrl]);
 
     useEffect(() => {
-        if (isLoading) {
-            dispatch(setLoading(true));
-        } else {
-            dispatch(setLoading(false));
-        }
+        dispatch(setLoading(isLoading));
     }, [isLoading]);
 
     return (

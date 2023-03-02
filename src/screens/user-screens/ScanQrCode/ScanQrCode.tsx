@@ -84,9 +84,10 @@ export default function ScanQrCode() {
     }, [navigation]);
 
     const errorHandler = (error: {
-        code: 701 | 712 | 715 | 711 | 702 | 703 | 704 | 706 | 707 | 708;
+        code: 701 | 712 | 715 | 711 | 702 | 703 | 704 | 706 | 707 | 708 | 901;
         message: string;
     }) => {
+        console.log("error", error);
         switch (error.code) {
             case 701:
                 Toast.show({
@@ -129,6 +130,16 @@ export default function ScanQrCode() {
                     amount: amount,
                 });
                 break;
+            case 901:
+                Toast.show({
+                    id: "errorToast",
+                    render: () => (
+                        <ErrorToast
+                            message={error?.message || "Something Went wrong"}
+                        />
+                    ),
+                    placement: "top",
+                });
             default:
                 Toast.show({
                     id: "errorToast",
@@ -178,14 +189,20 @@ export default function ScanQrCode() {
         } else {
             if (!config.DEV_MODE) {
                 const location = await Location.getCurrentPositionAsync({});
+
                 const imageData = {
-                    numberPlateImage: nameplateImage,
                     vehicleNo: inputRef?.current as string,
                     mobileLatitude: location.coords.latitude,
                     mobileLongitude: location.coords.longitude,
                 };
+                if (nameplateImage) {
+                    imageData["nameplateImage"] = nameplateImage;
+                }
+                console.log("imageData", imageData);
 
                 const res = await validateCarTrip(imageData).unwrap();
+
+                console.log("res", res);
 
                 if (!res?.succeeded && res?.error) {
                     errorHandler(res?.error);

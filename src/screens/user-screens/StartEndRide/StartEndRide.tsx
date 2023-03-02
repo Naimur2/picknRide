@@ -45,7 +45,6 @@ export default function StartEndRide() {
     };
     const { colorMode } = useColorMode();
 
-    const Touchable = Factory(TouchableOpacity);
     // const params = useRoute().params as IStartEndTripParams;
     const [uploadImage, result] = useUploadCarImageMutation();
     const [enRide, endRideResult] = useEndCarTripMutation();
@@ -84,16 +83,17 @@ export default function StartEndRide() {
         },
         data?: any
     ) => {
+        console.log("error", error);
         switch (error.code) {
             case 701:
             case 718:
             case 719:
+            case 708:
                 Toast.show({
                     id: "errorToast",
                     render: () => <ErrorToast message={error.message} />,
                     placement: "top",
                 });
-
                 if (data && data.tripDetails) {
                     const {
                         totalTripTime,
@@ -151,12 +151,39 @@ export default function StartEndRide() {
                     placement: "top",
                 });
                 break;
-            case 708:
-                const numbers = error?.message?.match?.(/\d+/g)?.map?.(Number);
-                const amount = numbers?.[1] || 250;
-                navigation.navigate("MFPayment", {
-                    amount: amount,
-                });
+
+                if (data && data.tripDetails) {
+                    const {
+                        totalTripTime,
+                        totalKM,
+                        startLatitude,
+                        startLongitude,
+                        endLatitude,
+                        endLongitude,
+                        price,
+                    } = data?.tripDetails;
+                    navigation.navigate("MFPayment", {
+                        amount: price || data?.tripAmount,
+                        paymentFor: "lowBalance",
+                        showTimers: true,
+                        paymentDetails: {
+                            to: {
+                                latitude: startLatitude,
+                                longitude: startLongitude,
+                            },
+                            from: {
+                                latitude: endLatitude,
+                                longitude: endLongitude,
+                            },
+                            distance: totalKM,
+                            time: totalTripTime,
+                            message: error.message,
+                            currentBalance: data?.walletBalance,
+                            requiredAmount: data?.walletBalance - price || 0,
+                            duration: data?.tripDetails?.totalTripTime,
+                        },
+                    } as IMyFatooraRouteParams);
+                }
                 break;
             default:
                 Toast.show({
@@ -179,15 +206,16 @@ export default function StartEndRide() {
             }).unwrap();
 
             if (res.data) {
-                const {
-                    totalTripTime,
-                    totalKM,
-                    startLatitude,
-                    startLongitude,
-                    endLatitude,
-                    endLongitude,
-                    price,
-                } = res?.data?.tripDetails;
+                const totalTripTime = res?.data?.tripDetails?.totalTripTime;
+                const totalKM = res?.data?.tripDetails?.totalKM;
+                const startLatitude = res?.data?.tripDetails?.startLatitude;
+                const startLongitude = res?.data?.tripDetails?.startLongitude;
+                const endLatitude = res?.data?.tripDetails?.endLatitude;
+                const endLongitude = res?.data?.tripDetails?.endLongitude;
+                const price = res?.data?.tripDetails?.price;
+
+                console.log("res", res);
+
                 dispatch(stopCarTrip());
                 setShowRideComplete(true);
                 setStartingPoint({
@@ -342,8 +370,6 @@ export default function StartEndRide() {
         }
         handleSubmit();
     };
-
-    console.log(values);
 
     return (
         <ScrollView

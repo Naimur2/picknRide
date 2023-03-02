@@ -15,8 +15,10 @@ import { useDispatch, useSelector } from "react-redux";
 import Signature from "./DocumentForm/Signature/Signature";
 import { setCurrentForm } from "@store/features/auth/authSlice";
 import ErrorToast from "@components/ErrorToast/ErrorToast";
+import { useNavigation } from "@react-navigation/native";
 
 export default function SignatureSubmission() {
+    const navigation = useNavigation();
     const [termAccept, setTermAccept] = React.useState(false);
     const dispatch = useDispatch();
     const values = useSelector(selectAllDocumentFieldValues) as any;
@@ -68,6 +70,11 @@ export default function SignatureSubmission() {
                     "Documents uploaded successfully, please wait for approval"
                 );
                 dispatch(setCurrentForm(undefined));
+                if (navigation.canGoBack()) {
+                    navigation.goBack();
+                } else {
+                    navigation.navigate("Dashboard");
+                }
             }
         } catch (error) {
             console.warn(error);
