@@ -10,11 +10,18 @@ import HeaderTitle from "@components/HeaderTitle/HeaderTitle";
 import ImageBg from "@components/ImageBg/ImageBg";
 import Scroller from "@components/Scroller/Scroller";
 import { TOP_PADDING } from "@utils/final";
+import { useGetAllCarTripsQuery } from "@store/api/v2/tripApi/tripApiSlice";
 
 export default function RideHistory() {
     const navigation = useNavigation();
     const { colorMode } = useColorMode();
     const insets = useSafeAreaInsets();
+    const { data, isFetching, isLoading } = useGetAllCarTripsQuery({
+        pageNumber: 1,
+        pageSize: 10,
+    });
+
+    console.log("data", data);
 
     React.useLayoutEffect(() => {
         navigation.setOptions({

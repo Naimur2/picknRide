@@ -25,6 +25,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
 import { useSelector } from "react-redux";
 import { selectAuth } from "../../../redux/store";
+import { useFormik } from "formik";
 
 export default function Account() {
     const navigation = useNavigation();
@@ -33,6 +34,21 @@ export default function Account() {
     const [image, setImage] = React.useState(null);
     const [isOpen, setIsOpen] = React.useState(false);
     const colormode = useColorMode();
+
+    const formik = useFormik({
+        initialValues: {
+            f_name: auth?.f_name,
+            l_name: auth?.l_name,
+            email: auth?.email,
+            phone: auth.phone,
+            qid: auth?.qid,
+            dob: auth?.dob,
+            dialing_code: auth?.dialing_code,
+        },
+        onSubmit: (values) => {
+            console.log(values);
+        },
+    });
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -141,6 +157,9 @@ export default function Account() {
                                     <Pen width={scale(16)} height={scale(16)} />
                                 </Pressable>
                             }
+                            value={formik.values.qid}
+                            onChangeText={formik.handleChange("qid")}
+                            onBlur={formik.handleBlur("qid")}
                         />
                     </FormControl>
                     <FormControl mt={3} w="full">
@@ -149,7 +168,7 @@ export default function Account() {
                             color="gray.400"
                             _dark={{ color: "#fff" }}
                         >
-                            Enter your full name
+                            Enter your first name
                         </FormControl.Label>
                         <Input
                             w="full"
@@ -168,6 +187,39 @@ export default function Account() {
                                     <Pen width={scale(16)} height={scale(16)} />
                                 </Pressable>
                             }
+                            value={formik.values.f_name}
+                            onChangeText={formik.handleChange("f_name")}
+                            onBlur={formik.handleBlur("f_name")}
+                        />
+                    </FormControl>
+                    <FormControl mt={3} w="full">
+                        <FormControl.Label
+                            fontSize={fontSizes.xs}
+                            color="gray.400"
+                            _dark={{ color: "#fff" }}
+                        >
+                            Enter your Last name
+                        </FormControl.Label>
+                        <Input
+                            w="full"
+                            fontSize={fontSizes.sm}
+                            fontWeight={600}
+                            variant="underlined"
+                            borderBottomColor={"light.200"}
+                            placeholder="Enter your full name"
+                            placeholderTextColor="gray.300"
+                            _dark={{
+                                color: "#fff",
+                                placeholderTextColor: "white",
+                            }}
+                            rightElement={
+                                <Pressable>
+                                    <Pen width={scale(16)} height={scale(16)} />
+                                </Pressable>
+                            }
+                            value={formik.values.l_name}
+                            onChangeText={formik.handleChange("l_name")}
+                            onBlur={formik.handleBlur("l_name")}
                         />
                     </FormControl>
                     <FormControl mt={3} w="full">
@@ -195,6 +247,9 @@ export default function Account() {
                                     <Pen width={scale(16)} height={scale(16)} />
                                 </Pressable>
                             }
+                            value={formik.values.dob}
+                            onChangeText={formik.handleChange("dob")}
+                            onBlur={formik.handleBlur("dob")}
                         />
                     </FormControl>
                     <FormControl mt={3} w="full">
@@ -222,6 +277,13 @@ export default function Account() {
                                     <Pen width={scale(16)} height={scale(16)} />
                                 </Pressable>
                             }
+                            value={
+                                formik.values.dialing_code +
+                                "" +
+                                formik.values.phone
+                            }
+                            onChangeText={formik.handleChange("phone")}
+                            onBlur={formik.handleBlur("phone")}
                         />
                     </FormControl>
 
@@ -250,6 +312,9 @@ export default function Account() {
                                     <Pen width={scale(16)} height={scale(16)} />
                                 </Pressable>
                             }
+                            value={formik.values.email}
+                            onChangeText={formik.handleChange("email")}
+                            onBlur={formik.handleBlur("email")}
                         />
                     </FormControl>
                 </VStack>

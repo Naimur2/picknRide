@@ -4,13 +4,18 @@ import HeaderTitle from "@components/HeaderTitle/HeaderTitle";
 import Scroller from "@components/Scroller/Scroller";
 import { useNavigation } from "@react-navigation/native";
 import colors from "@theme/colors";
-import { VStack, useColorMode } from "native-base";
+import { FlatList, VStack, useColorMode } from "native-base";
 import React from "react";
-import { Platform } from "react-native";
+import { ActivityIndicator, Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
 
 import HistoryCard, { IHistoryCard } from "./HistoryCard/HistoryCard";
+import {
+    tripApiSlice,
+    useGetAllCarTripsQuery,
+} from "@store/api/v2/tripApi/tripApiSlice";
+import { useDispatch } from "react-redux";
 
 const historyCards: IHistoryCard[] = [
     {
@@ -69,12 +74,51 @@ const historyCards: IHistoryCard[] = [
         distance: "1.2 km",
         fair: "3.2",
     },
+    {
+        _id: "5",
+        starting: {
+            locationName: "Masraf Al-Rayan Building",
+            time: "10 September, 10.30 AM",
+        },
+        destination: {
+            locationName: "Al Wakrah",
+            time: "10 September, 11.00 AM",
+        },
+        duration: "30 min",
+        distance: "1.2 km",
+        fair: "3.2",
+    },
+    {
+        _id: "6",
+        starting: {
+            locationName: "Masraf Al-Rayan Building",
+            time: "10 September, 10.30 AM",
+        },
+        destination: {
+            locationName: "Al Wakrah",
+            time: "10 September, 11.00 AM",
+        },
+        duration: "30 min",
+        distance: "1.2 km",
+        fair: "3.2",
+    },
 ];
+
+const LoadingComponent = () => {
+    return (
+        <VStack alignItems="center" justifyContent="center" height={scale(100)}>
+            <ActivityIndicator size="large" color="black" />
+        </VStack>
+    );
+};
 
 export default function CarRideHistory() {
     const navigation = useNavigation();
     const insets = useSafeAreaInsets();
     const colormode = useColorMode();
+    const dispatch = useDispatch();
+
+    const { data, isFetching, isLoading } = useGetAllCarTripsQuery(undefined);
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -100,38 +144,51 @@ export default function CarRideHistory() {
 
     const [selected, setSelected] = React.useState("scooter");
 
+    const onLoadMore = async () => {
+        console.log("onLoadMore");
+        const hasNextPage = data?.data?.hasNextPage;
+        const currentPage = data?.data?.pageIndex;
+        if (hasNextPage) {
+            const res = await dispatch(
+                tripApiSlice.endpoints.geMoreCarTrips.initiate({
+                    pageNumber: currentPage + 1,
+                    pageSize: 15,
+                })
+            ).unwrap();
+            console.log("res", res);
+        }
+    };
+
     return (
-        <Scroller
-            contentStyle={{
-                flexGrow: 1,
-            }}
-            bg="light.300"
-            _dark={{
-                bg: "dark.100",
-            }}
-        >
-            <VStack
-                space={6}
-                mt={4}
-                px="6"
-                pb={8}
-                h="full"
-                maxWidth={scale(500)}
-                mx="auto"
-                w="full"
-                pt={Platform.OS === "android" ? 55 : 0}
-            >
-                {historyCards.map((card, idx) => (
+        <>
+            <FlatList
+                showsHorizontalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
+                data={data?.data?.items || []}
+                renderItem={({ item, index }) => (
                     <HistoryCard
-                        starting={card?.starting}
-                        destination={card?.destination}
-                        duration={card?.duration}
-                        fair={card?.fair}
-                        distance={card?.distance}
-                        key={idx}
+                        starting={item?.starting}
+                        destination={item?.destination}
+                        duration={item?.duration}
+                        fair={item?.fair}
+                        distance={item?.distance}
+                        key={index}
                     />
-                ))}
-            </VStack>
-        </Scroller>
+                )}
+                contentContainerStyle={{
+                    paddingTop: Platform.OS === "ios" ? insets.top : 50,
+                    paddingBottom: insets.bottom,
+                    paddingHorizontal: scale(20),
+                    backgroundColor: colors.light[300],
+                }}
+                onEndReached={onLoadMore}
+                onEndReachedThreshold={0.5}
+                ListFooterComponent={() => {
+                    if (isFetching) return <LoadingComponent />;
+                    return null;
+                }}
+                keyExtractor={(item, index) => index.toString()}
+            />
+        </>
     );
 }

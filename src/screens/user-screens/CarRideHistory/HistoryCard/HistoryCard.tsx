@@ -23,7 +23,7 @@ export default function HistoryCard({
     distance,
 }: IHistoryCard) {
     return (
-        <Card py="0" px="0" overflow="hidden">
+        <Card py="0" px="0" overflow="hidden" my="2">
             <HStack position={"relative"}>
                 <VStack w="12%" alignItems={"center"} bg="primary.100">
                     <Box mt={6} w="4" h="4" borderRadius={16} bg="#B6E495" />

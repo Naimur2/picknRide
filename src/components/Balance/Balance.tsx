@@ -1,6 +1,8 @@
 import Wallet from "@assets/svgs/Wallet";
 import { HStack, Pressable, Text } from "native-base";
 import React from "react";
+import { useSelector } from "react-redux";
+import { selectAuth } from "../../redux/store";
 
 export default function Balance({
     balance,
@@ -15,6 +17,10 @@ export default function Balance({
     textColor?: string;
     currency?: string;
 }) {
+    const auth = useSelector(selectAuth);
+
+    console.log("auth", auth);
+
     return (
         <Pressable onPress={onPress}>
             <HStack alignItems={"center"} space={2}>
@@ -26,7 +32,7 @@ export default function Balance({
                         color: "#fff",
                     }}
                 >
-                    {balance || 50} {currency || "QAR"}
+                    {auth?.wallet || 50} {currency || "QAR"}
                 </Text>
             </HStack>
         </Pressable>
