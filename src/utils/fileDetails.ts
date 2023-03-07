@@ -11,14 +11,7 @@ export function fileDetails(url: string): {
     };
 }
 
-export function createFormFile(
-    fileUrl: string,
-    type: string = "image"
-): {
-    uri: string;
-    name: string;
-    type: string;
-} {
+const createFormFile = (fileUrl: string, type: string = "image") => {
     const { fileName, fileExtensionName } = fileDetails(fileUrl);
     const file = {
         uri: fileUrl,
@@ -26,4 +19,6 @@ export function createFormFile(
         type: `${type}/${fileExtensionName}`,
     };
     return file;
-}
+};
+
+export default createFormFile;

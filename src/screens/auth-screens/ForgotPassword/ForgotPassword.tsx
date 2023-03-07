@@ -8,9 +8,11 @@ import { FormControl, HStack, Text, Toast, VStack } from "native-base";
 import React from "react";
 import { scale } from "react-native-size-matters";
 import * as Yup from "yup";
-import ErrorToast from "../../../components/ErrorToast/ErrorToast";
-import ScreenWithScrollImage from "../../../components/ScreenWithScrollImage/ScreenWithScrollImage";
+import ErrorToast from "@components/ErrorToast/ErrorToast";
+import ScreenWithScrollImage from "@components/ScreenWithScrollImage/ScreenWithScrollImage";
 import { ISelectAuthTypeParams } from "../SelectAuthOtpType/SelectAuthOtpType.types";
+import { useSelector } from "react-redux";
+import { selectAuth } from "@store/store";
 
 import {
     useForgotPasswordByEmailMutation,
@@ -113,6 +115,8 @@ export default function ForgotPassword() {
         },
     });
 
+    const auth = useSelector(selectAuth);
+
     return (
         <ScreenWithScrollImage>
             <VStack alignItems={"center"} space="4">
@@ -122,7 +126,7 @@ export default function ForgotPassword() {
                     fontSize={fontSizes.md}
                     fontWeight="bold"
                 >
-                    Forgot Password
+                    {auth?.token ? "Reset Password" : "Forgot Password"}
                 </Text>
                 <Text
                     color="gray.100"

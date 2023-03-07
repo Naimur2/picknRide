@@ -1,8 +1,10 @@
 import { apiSlice } from "../apiSlice";
 
-import { login } from "@store/features/auth/authSlice";
+import {
+    login,
+    setCheckOtherInformation,
+} from "@store/features/auth/authSlice";
 import { IAuthState } from "@store/features/auth/authSlice.types";
-import { setCheckOtherInformation } from "@store/features/auth/authSlice";
 import {
     IAddCard,
     ILoginProps,
@@ -10,6 +12,7 @@ import {
     IUpdateResidency,
     TResendOtp,
 } from "./authApiSlice.types";
+import createFormFile from "@utils/fileDetails";
 
 const authApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -31,12 +34,7 @@ const authApiSlice = apiSlice.injectEndpoints({
                     const result = await queryFulfilled;
                     const { data } = result;
                     console.log({ data });
-                    dispatch(
-                        login({
-                            ...data.data,
-                            photo: "https://png.pngtree.com/png-clipart/20221207/ourmid/pngtree-art-boy-avatar-png-image_6514653.png",
-                        })
-                    );
+                    dispatch(login(data.data));
                 } catch (error) {}
             },
         }),
@@ -146,6 +144,24 @@ const authApiSlice = apiSlice.injectEndpoints({
                 body: body,
             }),
         }),
+        updateUserProfile: builder.mutation({
+            query: (data: {
+                photo: string;
+                firstName: string;
+                lastName: string;
+            }) => {
+                const formData = new FormData();
+                formData.append("Photo", createFormFile(data.photo, "image"));
+                formData.append("FirstName", data.firstName);
+                formData.append("Lastname", data.lastName);
+
+                return {
+                    url: "Customer/UpdateCustomerProfile",
+                    method: "PUT",
+                    body: formData,
+                };
+            },
+        }),
     }),
     overrideExisting: true,
 });
@@ -162,4 +178,5 @@ export const {
     useVerifyForgotPasswordOtpWhatsappMutation,
     useVerifyForgotPasswordOtpEmailMutation,
     useChangePasswordMutation,
+    useUpdateUserProfileMutation,
 } = authApiSlice;

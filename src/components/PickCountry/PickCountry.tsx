@@ -84,7 +84,8 @@ function PickCountry({
     return (
         <VStack>
             <Input
-                borderWidth={0}
+                borderWidth={Platform.OS === "ios" ? 2 : 0}
+                borderColor="gray.300"
                 bg="white"
                 shadow="9"
                 px={6}

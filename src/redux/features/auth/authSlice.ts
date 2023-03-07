@@ -66,11 +66,21 @@ const authSlice = createSlice({
         setCurrentForm(state, action) {
             state.currentForm = action.payload;
         },
+        updateProfileData(state, action) {
+            state.f_name = action.payload?.f_name;
+            state.l_name = action.payload?.l_name;
+            state.photo = action.payload?.photo;
+        },
     },
 });
 
-export const { login, logout, setCheckOtherInformation, setCurrentForm } =
-    authSlice.actions;
+export const {
+    login,
+    logout,
+    setCheckOtherInformation,
+    setCurrentForm,
+    updateProfileData,
+} = authSlice.actions;
 
 const authReducer = authSlice.reducer;
 export const selectToken = (state: { auth: IAuthState }) => state.auth.token;

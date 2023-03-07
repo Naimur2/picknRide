@@ -381,6 +381,13 @@ export default function PaymentForm({
                     }).unwrap();
 
                     if (res3.succeeded) {
+                        if (res3?.data?.paymentURL && res3?.data?.callBackURL) {
+                            const info = await WebBrowser.openAuthSessionAsync(
+                                res3?.data?.paymentURL,
+                                res3?.data?.callBackURL
+                            );
+                            console.log({ info });
+                        }
                         alert("Payment Success");
                     } else {
                         alert("Payment Failed");

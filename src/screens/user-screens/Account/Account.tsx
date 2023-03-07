@@ -16,6 +16,7 @@ import {
     Image,
     Input,
     Pressable,
+    Toast,
     VStack,
     useColorMode,
 } from "native-base";
@@ -23,17 +24,21 @@ import React from "react";
 import { Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
-import { useSelector } from "react-redux";
-import { selectAuth } from "../../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { selectAuth } from "@store/store";
 import { useFormik } from "formik";
+import ErrorToast from "@components/ErrorToast/ErrorToast";
+import { useUpdateUserProfileMutation } from "@store/api/v1/authApi/authApiSlice";
+import { updateProfileData } from "@store/features/auth/authSlice";
 
 export default function Account() {
     const navigation = useNavigation();
-    const insets = useSafeAreaInsets();
     const auth = useSelector(selectAuth);
-    const [image, setImage] = React.useState(null);
+    const [image, setImage] = React.useState(auth.photo);
     const [isOpen, setIsOpen] = React.useState(false);
     const colormode = useColorMode();
+    const dispatch = useDispatch();
+    const [updateProfile, result] = useUpdateUserProfileMutation();
 
     const formik = useFormik({
         initialValues: {
@@ -44,9 +49,41 @@ export default function Account() {
             qid: auth?.qid,
             dob: auth?.dob,
             dialing_code: auth?.dialing_code,
+            photo: auth?.photo,
         },
-        onSubmit: (values) => {
-            console.log(values);
+        onSubmit: async (values) => {
+            try {
+                const res = await updateProfile({
+                    firstName: values.f_name,
+                    lastName: values.l_name,
+                    photo: values.photo,
+                }).unwrap();
+                dispatch(
+                    updateProfileData({
+                        f_name: values.f_name,
+                        l_name: values.l_name,
+                        photo: values.photo,
+                    })
+                );
+                Toast.show({
+                    id: "Success",
+                    render: () => (
+                        <ErrorToast
+                            message={"Information updated successfully."}
+                        />
+                    ),
+                    placement: "top",
+                });
+            } catch (error) {
+                console.log(error);
+                Toast.show({
+                    id: "Error",
+                    render: () => (
+                        <ErrorToast message={"Error updating information."} />
+                    ),
+                    placement: "top",
+                });
+            }
         },
     });
 
@@ -104,7 +141,7 @@ export default function Account() {
                 <VStack alignItems={"center"} position="relative">
                     <Avatar
                         shadow="9"
-                        source={{ uri: image }}
+                        source={{ uri: formik.values.photo }}
                         size={"120px"}
                         borderWidth={6}
                         borderColor="#fff"
@@ -120,6 +157,7 @@ export default function Account() {
                         borderRadius="50px"
                         position="absolute"
                         bottom={-22}
+                        ml={2}
                         onPress={checkImagePermission}
                     >
                         <Image source={camera} alt="camera" />
@@ -128,7 +166,10 @@ export default function Account() {
                 <ImagePickerSheet
                     isOpen={isOpen}
                     onClose={() => setIsOpen(false)}
-                    setImage={(img) => setImage(img)}
+                    setImage={(img) => {
+                        formik.setFieldValue("photo", img);
+                        setIsOpen(false);
+                    }}
                 />
 
                 <VStack w="full" mt={4}>
@@ -318,7 +359,13 @@ export default function Account() {
                         />
                     </FormControl>
                 </VStack>
-                <GradientBtn title="Submit" mx="auto" mt="4" />
+                <GradientBtn
+                    onPress={formik.handleSubmit}
+                    title="Submit"
+                    mx="auto"
+                    mt="4"
+                    disabled={result.isLoading}
+                />
             </VStack>
         </Scroller>
     );

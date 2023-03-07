@@ -49,8 +49,8 @@ export const store = configureStore({
 
 export const persistor = persistStore(store);
 
-export const selectAuth = (state: any) => state.auth;
-export const selectLoading = (state: any) => state.ui.loading;
+export const selectAuth = (state: RootState) => state.auth;
+export const selectLoading = (state: RootState) => state.ui.loading;
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

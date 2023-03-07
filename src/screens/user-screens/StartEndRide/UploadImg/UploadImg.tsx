@@ -4,6 +4,7 @@ import { setLoading } from "@store/features/ui/uiSlice";
 import { Image, Pressable, Text, VStack } from "native-base";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { Platform } from "react-native";
 
 function UploadImg({
     setImage,
@@ -56,6 +57,8 @@ function UploadImg({
                 <Pressable
                     h={"120px"}
                     w="full"
+                    borderWidth={Platform.OS === "ios" ? 1 : 0}
+                    borderColor="gray.300"
                     borderRadius={35}
                     bg="#fff"
                     shadow="9"

@@ -3,6 +3,7 @@ import config from "@config";
 
 import { setLoading } from "@store/features/ui/uiSlice";
 import { RootState } from "@store/store";
+import createFormFile from "@utils/fileDetails";
 
 const baseQuery = fetchBaseQuery({
     baseUrl: config.API_V2,

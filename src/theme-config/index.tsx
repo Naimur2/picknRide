@@ -25,6 +25,9 @@ import * as SplashScreen from "expo-splash-screen";
 import { NativeBaseProvider, StatusBar } from "native-base";
 import React from "react";
 import theme from "./config";
+import LottieView from "lottie-react-native";
+import { Dimensions } from "react-native";
+import loader from "@assets/lottie/splash.json";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -54,14 +57,7 @@ export default function ThemeConFig({
         Montserrat_900Black_Italic,
     });
 
-    const config = {
-        dependencies: {
-            // For Expo projects (Bare or managed workflow)
-            "linear-gradient": require("expo-linear-gradient").LinearGradient,
-            // For non expo projects
-            // 'linear-gradient': require('react-native-linear-gradient').default,
-        },
-    };
+    const [showSplash, setShowSplash] = React.useState(true);
 
     const onLayoutRootView = React.useCallback(async () => {
         if (fontsLoaded) {
@@ -71,6 +67,17 @@ export default function ThemeConFig({
             // we hide the splash screen once we know the root view has already
             // performed layout.
             await SplashScreen.hideAsync();
+        }
+    }, [fontsLoaded]);
+
+    React.useEffect(() => {
+        if (fontsLoaded) {
+            const timer = setTimeout(() => {
+                setShowSplash(false);
+            }, 10000);
+            return () => {
+                clearTimeout(timer);
+            };
         }
     }, [fontsLoaded]);
 
@@ -85,7 +92,20 @@ export default function ThemeConFig({
     return (
         <NativeBaseProvider theme={theme}>
             <StatusBar backgroundColor={"#fff"} />
-            {children}
+            {showSplash ? (
+                <LottieView
+                    source={loader}
+                    autoPlay
+                    loop
+                    style={{
+                        width: Dimensions.get("window").width / 2,
+                        height: Dimensions.get("window").height,
+                    }}
+                    onAnimationFinish={() => setShowSplash(false)}
+                />
+            ) : (
+                children
+            )}
         </NativeBaseProvider>
     );
 }

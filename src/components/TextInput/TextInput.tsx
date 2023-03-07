@@ -2,6 +2,7 @@ import { Input, VStack } from "native-base";
 import React from "react";
 import { scale } from "react-native-size-matters";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import { Platform } from "react-native";
 
 interface ItextInput extends React.ComponentProps<typeof Input> {
     value: string;
@@ -19,7 +20,8 @@ export default function TextInput({
     return (
         <VStack>
             <Input
-                borderWidth={0}
+                borderWidth={Platform.OS === "ios" ? 2 : 0}
+                borderColor="gray.300"
                 bg="white"
                 shadow="9"
                 px={6}

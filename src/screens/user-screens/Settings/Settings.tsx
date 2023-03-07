@@ -15,6 +15,7 @@ import colors from "@theme/colors";
 
 import SettingsMenu, { ISettingsMenu } from "./SettingsMenu/SettingsMenu";
 import ThemeToggler from "./ThemeToggler/ThemeToggler";
+import { ISelectAuthOtpTypeParams } from "../../auth-screens/SelectAuthOtpType/SelectAuthOtpType.types";
 
 export default function Settings() {
     const navigation = useNavigation();
@@ -34,7 +35,10 @@ export default function Settings() {
         },
         {
             title: "Change Password",
-            onPress: () => {},
+            onPress: () =>
+                navigation.navigate("SelectAuthOtpType", {
+                    authType: "Changepassword",
+                } as ISelectAuthOtpTypeParams),
         },
         {
             title: "Privacy Policy",

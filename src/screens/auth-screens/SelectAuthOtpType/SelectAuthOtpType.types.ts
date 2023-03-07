@@ -1,5 +1,5 @@
 export interface ISelectAuthOtpTypeParams {
-    authType: "forgotPassword" | "login" | "signup";
+    authType: "forgotPassword" | "login" | "signup" | "ChangePassword";
 }
 
 export type IValidationType = "email" | "whatsapp" | "phone";
