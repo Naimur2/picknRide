@@ -37,6 +37,7 @@ function MapscreenComp({ type, setType }: IMapTopDetailsProps) {
         undefined,
         {
             skip: !doFetch,
+            refetchOnMountOrArgChange: true,
         }
     );
 
@@ -53,6 +54,10 @@ function MapscreenComp({ type, setType }: IMapTopDetailsProps) {
     React.useEffect(() => {
         setDoFetch(true);
     }, []);
+
+    React.useEffect(() => {
+        setDoFetch(true);
+    }, [navigation]);
 
     React.useEffect(() => {
         console.log("data?.data?.succeeded", data?.succeeded);
@@ -108,6 +113,7 @@ function MapscreenComp({ type, setType }: IMapTopDetailsProps) {
                 availableBattery={"100%"}
                 carId={"10545"}
                 hasStartedJourney={data?.succeeded}
+                tripDetails={data?.data}
             />
 
             <GeoSheet sheetId={"geoSheet"} />

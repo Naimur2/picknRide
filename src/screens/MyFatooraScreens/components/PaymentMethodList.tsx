@@ -67,24 +67,40 @@ function PaymentMethodsList({
     setSelectedIndex,
     setIsDirectPayment,
     selectedIndex,
+    setPaymentMethodId,
 }: {
     paymentMethods: ICardListProps[];
     setSelectedIndex: (index: number) => void;
     setIsDirectPayment: (isDirectPayment: boolean) => void;
     selectedIndex: number;
+    setPaymentMethodId: (paymentMethodId: string) => void;
 }) {
+    const paymentMethodsWithIndex = paymentMethods.map((item, index) => {
+        return {
+            ...item,
+            index,
+        };
+    });
+
+    const payMentMethodsWithDirectPayment = paymentMethodsWithIndex.filter(
+        (item) => item.IsDirectPayment
+    );
+
     return (
         <VStack space="2">
-            {paymentMethods.map((item, index) => {
+            {payMentMethodsWithDirectPayment.map((item, index) => {
                 return (
                     <Cards
                         selectedIndex={selectedIndex}
-                        setSelectedIndex={setSelectedIndex}
+                        setSelectedIndex={(val) => {
+                            setSelectedIndex(val);
+                            setPaymentMethodId(item.PaymentMethodId);
+                        }}
                         isDirectPayment={item.IsDirectPayment}
                         setIsDirectPayment={setIsDirectPayment}
                         imageUrl={item.ImageUrl}
                         paymentMethodEn={item.PaymentMethodEn}
-                        row={index}
+                        row={item?.index}
                         key={index.toString() + "card"}
                     />
                 );

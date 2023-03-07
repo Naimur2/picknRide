@@ -83,10 +83,24 @@ export default function ScanQrCode() {
         });
     }, [navigation]);
 
-    const errorHandler = (error: {
-        code: 701 | 712 | 715 | 711 | 702 | 703 | 704 | 706 | 707 | 708 | 901;
-        message: string;
-    }) => {
+    const errorHandler = (
+        error: {
+            code:
+                | 701
+                | 712
+                | 715
+                | 711
+                | 702
+                | 703
+                | 704
+                | 706
+                | 707
+                | 708
+                | 901;
+            message: string;
+        },
+        data: any
+    ) => {
         console.log("error", error);
         switch (error.code) {
             case 701:
@@ -96,9 +110,38 @@ export default function ScanQrCode() {
                     placement: "top",
                 });
 
-                navigation.navigate("MFPayment", {
-                    amount: 250,
-                } as IMyFatooraRouteParams);
+                if (data && data.tripDetails) {
+                    const {
+                        totalTripTime,
+                        totalKM,
+                        startLatitude,
+                        startLongitude,
+                        endLatitude,
+                        endLongitude,
+                        price,
+                    } = data?.tripDetails;
+                    navigation.navigate("MFPayment", {
+                        amount: price || data?.tripAmount,
+                        paymentFor: "lowBalance",
+                        showTimers: true,
+                        paymentDetails: {
+                            to: {
+                                latitude: startLatitude,
+                                longitude: startLongitude,
+                            },
+                            from: {
+                                latitude: endLatitude,
+                                longitude: endLongitude,
+                            },
+                            distance: totalKM,
+                            time: totalTripTime,
+                            message: error.message,
+                            currentBalance: data?.walletBalance,
+                            requiredAmount: data?.walletBalance - price || 0,
+                            duration: data?.tripDetails?.totalTripTime,
+                        },
+                    } as IMyFatooraRouteParams);
+                }
                 break;
             case 712:
             case 707:
@@ -124,11 +167,38 @@ export default function ScanQrCode() {
                 });
                 break;
             case 708:
-                const numbers = error?.message?.match?.(/\d+/g)?.map?.(Number);
-                const amount = numbers?.[1] || 250;
-                navigation.navigate("MFPayment", {
-                    amount: amount,
-                });
+                if (data && data.tripDetails) {
+                    const {
+                        totalTripTime,
+                        totalKM,
+                        startLatitude,
+                        startLongitude,
+                        endLatitude,
+                        endLongitude,
+                        price,
+                    } = data?.tripDetails;
+                    navigation.navigate("MFPayment", {
+                        amount: price || data?.tripAmount,
+                        paymentFor: "lowBalance",
+                        showTimers: true,
+                        paymentDetails: {
+                            to: {
+                                latitude: startLatitude,
+                                longitude: startLongitude,
+                            },
+                            from: {
+                                latitude: endLatitude,
+                                longitude: endLongitude,
+                            },
+                            distance: totalKM,
+                            time: totalTripTime,
+                            message: error.message,
+                            currentBalance: data?.walletBalance,
+                            requiredAmount: data?.walletBalance - price || 0,
+                            duration: data?.tripDetails?.totalTripTime,
+                        },
+                    } as IMyFatooraRouteParams);
+                }
                 break;
             case 901:
                 Toast.show({
@@ -140,6 +210,7 @@ export default function ScanQrCode() {
                     ),
                     placement: "top",
                 });
+                break;
             default:
                 Toast.show({
                     id: "errorToast",
@@ -205,7 +276,7 @@ export default function ScanQrCode() {
                 console.log("res", res);
 
                 if (!res?.succeeded && res?.error) {
-                    errorHandler(res?.error);
+                    errorHandler(res?.error, data);
                 } else {
                     handleNavigation(res?.data);
                 }

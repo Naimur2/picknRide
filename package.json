@@ -41,6 +41,7 @@
     "expo-status-bar": "~1.4.0",
     "expo-task-manager": "~10.3.0",
     "expo-updates": "~0.14.7",
+    "expo-web-browser": "~11.0.0",
     "formik": "^2.2.9",
     "libphonenumber-js": "^1.10.13",
     "lottie-react-native": "5.1.3",

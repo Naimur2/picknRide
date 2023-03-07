@@ -57,6 +57,7 @@ interface ICarDetails extends SheetProps {
     availableBattery: string;
     sheetId: string;
     hasStartedJourney: boolean;
+    tripDetails?: any;
 }
 
 function CarDetailsSheet({
@@ -67,6 +68,7 @@ function CarDetailsSheet({
     availableBattery,
     sheetId,
     hasStartedJourney,
+    tripDetails,
     ...rest
 }: ICarDetails) {
     const RnImage = Factory(Image);
@@ -77,8 +79,6 @@ function CarDetailsSheet({
     const [isModalVisible, setIsModalVisible] = React.useState(false);
 
     const isLocked = useSelector(selectIsLocked);
-
-    const carTripState: ICarTripState = useSelector(selectCarTripInfo);
 
     const [setLockStatus, lockResult] = useLockUnlockMutation();
     const [executeComannd, executionResult] = useExecuteCarCommandMutation();
@@ -101,13 +101,16 @@ function CarDetailsSheet({
                 placement: "top",
             });
         } else {
-            if (carTripState?.tripInfo) {
+            if (tripDetails) {
                 setIsYesNoModalVisible(false);
                 dispatch(setStartOrEndRide("end"));
-                navigation.navigate("StartEndRide", {
-                    data: carTripState?.tripInfo,
-                    type: "END",
-                });
+                navigation.navigate(
+                    "StartEndRide" as never,
+                    {
+                        data: tripDetails,
+                        type: "END",
+                    } as any
+                );
             } else {
                 Toast.show({
                     id: "errorToast",
@@ -152,13 +155,13 @@ function CarDetailsSheet({
     const handleLockUnlock = async (status: boolean) => {
         setLoadingModalVisible(true);
         console.warn("status", {
-            tripToken: carTripState?.tripInfo?.tripToken as string,
+            tripToken: tripDetails?.tripToken as string,
             lock: status,
         });
 
         try {
             const res = await setLockStatus({
-                tripToken: carTripState?.tripInfo?.tripToken as string,
+                tripToken: tripDetails?.tripToken as string,
                 lock: status,
             }).unwrap();
 

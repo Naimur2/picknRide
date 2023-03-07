@@ -18,6 +18,7 @@ import { IAuthState } from "../../redux/features/auth/authSlice.types";
 import { formatCountSuffix } from "../../utils/formatCountSuffix";
 import { clearCarTrip } from "@store/features/car-trip/carTripSlice";
 import { clearDocument } from "@store/features/document/documentSlice";
+import { IMyFatooraRouteParams } from "../MyFatooraScreens/types/myfatoora.interface";
 
 interface IDrawerMenuItem {
     title: string;
@@ -53,7 +54,10 @@ export default function CustomDrawer() {
         },
         {
             title: "Wallet",
-            onPress: () => navigation.navigate("MFPayment" as never),
+            onPress: () =>
+                navigation.navigate("MFPayment", {
+                    paymentFor: "recharge",
+                } as IMyFatooraRouteParams),
         },
         {
             title: "Cars",

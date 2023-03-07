@@ -101,6 +101,9 @@ export default function MyFatooraPayment() {
     }, []);
 
     let showAddMoney = params?.paymentFor === "lowBalance";
+    let showPayNow = params?.paymentFor === "recharge";
+
+    console.log("params", params);
 
     return (
         <ImageBg type={colorMode} flexGrow={1}>
@@ -108,7 +111,7 @@ export default function MyFatooraPayment() {
                 <H3 mt={10} px={4}>
                     {showAddMoney ? "Add Money" : "Pay Now"}
                 </H3>
-                {showAddMoney ? (
+                {showPayNow ? (
                     <HStack px={4} justifyContent={"space-between"}>
                         {amounts.map((amount, index) => (
                             <WalletTab
