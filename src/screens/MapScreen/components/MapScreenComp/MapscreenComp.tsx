@@ -16,12 +16,16 @@ import MapTopDetails from "../MapTopDetails/MapTopDetails";
 import SpeedMeter from "../SpeedMeter/SpeedMeter";
 
 import { useCheckIsCarTripActiveQuery } from "@store/api/v2/tripApi/tripApiSlice";
-import { selectCarTripInfo } from "@store/features/car-trip/carTripSlice";
+import {
+    selectCarTripInfo,
+    selectHasStartedJourney,
+} from "@store/features/car-trip/carTripSlice";
 import { ICarTripState } from "@store/features/car-trip/carTripSlice.types";
 import { fontSizes } from "@theme/typography";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Sos from "../Sos/Sos";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { tripApiSlice } from "../../../../redux/api/v2/tripApi/tripApiSlice";
 
 export interface IMapTopDetailsProps {
     type: ICAR;
@@ -30,13 +34,17 @@ export interface IMapTopDetailsProps {
 
 function MapscreenComp({ type, setType }: IMapTopDetailsProps) {
     const navigation = useNavigation();
+    const hasStartedJournny = useSelector(selectHasStartedJourney);
+
     const [doFetch, setDoFetch] = React.useState<boolean>(false);
     const { height, width } = Dimensions.get("window");
+    // const [data, setData] = React.useState<any>(null);
+    const dispatch = useDispatch();
+
     const carTripDetails: ICarTripState = useSelector(selectCarTripInfo);
     const { data, isFetching, isLoading } = useCheckIsCarTripActiveQuery(
         undefined,
         {
-            skip: !doFetch,
             refetchOnMountOrArgChange: true,
         }
     );
@@ -52,7 +60,12 @@ function MapscreenComp({ type, setType }: IMapTopDetailsProps) {
     const insets = useSafeAreaInsets();
 
     React.useEffect(() => {
-        setDoFetch(true);
+        dispatch(tripApiSlice.endpoints.checkIsCarTripActive.initiate())
+            .unwrap()
+            .then((res) => {
+                console.log("res", res);
+                // setData(res);
+            });
     }, []);
 
     React.useEffect(() => {

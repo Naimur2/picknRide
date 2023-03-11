@@ -39,10 +39,11 @@ import { useDispatch, useSelector } from "react-redux";
 import LoadingView from "@components/LoadingView/LoadingView";
 import { useNavigation } from "@react-navigation/native";
 import { setStartOrEndRide } from "@store/features/ui/uiSlice";
-import { selectIsLocked } from "../../../../../../redux/features/car-trip/carTripSlice";
+import { selectIsLocked } from "@store/features/car-trip/carTripSlice";
 import colors from "../../../../../../theme-config/colors";
 import { fontConfig } from "../../../../../../theme-config/fontConfig";
 import YesNoModal from "../YesNoModal/YesNoModal";
+import { selectHasStartedJourney } from "../../../../../../redux/features/car-trip/carTripSlice";
 
 const images = {
     carSmall,
@@ -73,6 +74,8 @@ function CarDetailsSheet({
 }: ICarDetails) {
     const RnImage = Factory(Image);
     const dispatch = useDispatch();
+
+    console.log("tripDetails", tripDetails);
 
     const [loadingModalVisible, setLoadingModalVisible] = React.useState(false);
 

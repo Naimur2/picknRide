@@ -13,7 +13,10 @@ import {
 } from "@store/api/v2/tripApi/tripApiSlice";
 import { IUploadCarImages } from "@store/api/v2/tripApi/tripApiSlice.types";
 import { setCurrentForm } from "@store/features/auth/authSlice";
-import { stopCarTrip } from "@store/features/car-trip/carTripSlice";
+import {
+    setTripInfo,
+    stopCarTrip,
+} from "@store/features/car-trip/carTripSlice";
 import { selectStartOrEndRide } from "@store/features/ui/uiSlice";
 import { useFormik } from "formik";
 import {
@@ -215,7 +218,7 @@ export default function StartEndRide() {
                 const price = res?.data?.tripDetails?.price;
 
                 console.log("res", res);
-
+                dispatch(setTripInfo(null));
                 dispatch(stopCarTrip());
                 setShowRideComplete(true);
                 setStartingPoint({
@@ -308,6 +311,8 @@ export default function StartEndRide() {
                                 tripToken: res.data.tripToken,
                             },
                         };
+
+                        dispatch(setTripInfo(paramsData));
 
                         navigation.navigate("SelectOtpType", paramsData);
                     } else {

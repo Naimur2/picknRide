@@ -16,7 +16,6 @@ function ResetPassword() {
     const [resetPassword, result] = useChangePasswordMutation();
 
     const navigation = useNavigation();
-    const routeParams = useRoute().params as ISelectValidateOtpTypeParams;
 
     const schema = Yup.object().shape({
         password_1: Yup.string()
@@ -56,7 +55,7 @@ function ResetPassword() {
                 }
                 if (result?.succeeded) {
                     alert("Password reset successful");
-                    navigation.navigate("Login");
+                    // navigation.navigate("Login");
                 }
             } catch (error) {
                 Toast.show({

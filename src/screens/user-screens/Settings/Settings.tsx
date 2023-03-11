@@ -35,10 +35,7 @@ export default function Settings() {
         },
         {
             title: "Change Password",
-            onPress: () =>
-                navigation.navigate("SelectAuthOtpType", {
-                    authType: "Changepassword",
-                } as ISelectAuthOtpTypeParams),
+            onPress: () => navigation.navigate("ResetPassword"),
         },
         {
             title: "Privacy Policy",

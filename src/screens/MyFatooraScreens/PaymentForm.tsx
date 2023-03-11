@@ -61,11 +61,11 @@ export default function PaymentForm({
     console.log(amount);
 
     const initialState = {
-        cardHolderName: "Jhon Smith",
-        cardNumber: "4012001037141112",
-        month: "12",
-        year: "24",
-        cvv: "207",
+        cardHolderName: "",
+        cardNumber: "",
+        month: "",
+        year: "",
+        cvv: "",
         paymentAmount: amount?.toString() || "",
         paymentMethodId: "",
     };

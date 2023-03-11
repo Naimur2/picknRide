@@ -26,8 +26,14 @@ const loadingBaseQuery: any = async (
     api: any,
     extraOptions: any
 ) => {
+    console.log({ args });
+    console.log({ api });
     const { dispatch } = api;
-    dispatch(setLoading(true));
+
+    if (api.endpointName !== "getNearestCarsApi") {
+        dispatch(setLoading(true));
+    }
+
     const result = await baseQuery(args, api, extraOptions);
     dispatch(setLoading(false));
     return result;

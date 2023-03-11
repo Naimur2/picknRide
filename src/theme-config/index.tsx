@@ -22,7 +22,7 @@ import {
 
 import * as SplashScreen from "expo-splash-screen";
 
-import { NativeBaseProvider, StatusBar } from "native-base";
+import { Center, NativeBaseProvider, StatusBar, VStack } from "native-base";
 import React from "react";
 import theme from "./config";
 import LottieView from "lottie-react-native";
@@ -93,16 +93,15 @@ export default function ThemeConFig({
         <NativeBaseProvider theme={theme}>
             <StatusBar backgroundColor={"#fff"} />
             {showSplash ? (
-                <LottieView
-                    source={loader}
-                    autoPlay
-                    loop
-                    style={{
-                        width: Dimensions.get("window").width / 2,
-                        height: Dimensions.get("window").height,
-                    }}
-                    onAnimationFinish={() => setShowSplash(false)}
-                />
+                <Center flex="1">
+                    <LottieView
+                        source={loader}
+                        style={{
+                            width: Dimensions.get("window").width / 2,
+                            height: Dimensions.get("window").height / 2,
+                        }}
+                    />
+                </Center>
             ) : (
                 children
             )}
