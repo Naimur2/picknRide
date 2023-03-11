@@ -39,6 +39,7 @@ export const tripApiSlice = apiSliceV2.injectEndpoints({
                 method: "POST",
                 body,
             }),
+            invalidatesTags: ["getTripStatus"],
         }),
         endCarTrip: builder.mutation({
             query: (body: IEndCarTrip) => ({
@@ -76,6 +77,7 @@ export const tripApiSlice = apiSliceV2.injectEndpoints({
                 url: "CarTrip/TripStatus",
                 method: "GET",
             }),
+            providesTags: ["getTripStatus"],
         }),
         getAllCarTrips: builder.query({
             query: () => ({

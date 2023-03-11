@@ -43,4 +43,5 @@ export const apiSliceV2 = createApi({
     reducerPath: "apiSliceV2",
     baseQuery: loadingBaseQuery,
     endpoints: (builder) => ({}),
+    tagTypes: ["startCarTrip", "getTripStatus"],
 });

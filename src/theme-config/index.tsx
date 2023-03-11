@@ -95,6 +95,8 @@ export default function ThemeConFig({
             {showSplash ? (
                 <Center flex="1">
                     <LottieView
+                        autoPlay
+                        loop
                         source={loader}
                         style={{
                             width: Dimensions.get("window").width / 2,

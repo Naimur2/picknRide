@@ -276,7 +276,7 @@ export default function ScanQrCode() {
                 console.log("res", res);
 
                 if (!res?.succeeded && res?.error) {
-                    errorHandler(res?.error, data);
+                    errorHandler(res?.error, res?.data);
                 } else {
                     handleNavigation(res?.data);
                 }
@@ -426,6 +426,7 @@ export default function ScanQrCode() {
                             bg="#BFDFBA"
                             borderRadius={15}
                             onChangeText={(text) => (inputRef.current = text)}
+                            keyboardType="numeric"
                         />
                     </VStack>
 

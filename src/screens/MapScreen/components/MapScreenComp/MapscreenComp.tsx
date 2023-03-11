@@ -24,7 +24,11 @@ import { ICarTripState } from "@store/features/car-trip/carTripSlice.types";
 import { fontSizes } from "@theme/typography";
 import { useDispatch, useSelector } from "react-redux";
 import Sos from "../Sos/Sos";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import {
+    useFocusEffect,
+    useNavigation,
+    useRoute,
+} from "@react-navigation/native";
 import { tripApiSlice } from "../../../../redux/api/v2/tripApi/tripApiSlice";
 
 export interface IMapTopDetailsProps {
@@ -33,21 +37,17 @@ export interface IMapTopDetailsProps {
 }
 
 function MapscreenComp({ type, setType }: IMapTopDetailsProps) {
-    const navigation = useNavigation();
-    const hasStartedJournny = useSelector(selectHasStartedJourney);
+    const { width } = Dimensions.get("window");
 
-    const [doFetch, setDoFetch] = React.useState<boolean>(false);
-    const { height, width } = Dimensions.get("window");
-    // const [data, setData] = React.useState<any>(null);
+    const route = useRoute();
+    const params = route.params as any;
+
     const dispatch = useDispatch();
 
     const carTripDetails: ICarTripState = useSelector(selectCarTripInfo);
-    const { data, isFetching, isLoading } = useCheckIsCarTripActiveQuery(
-        undefined,
-        {
-            refetchOnMountOrArgChange: true,
-        }
-    );
+    const { data, refetch } = useCheckIsCarTripActiveQuery(undefined, {
+        refetchOnMountOrArgChange: true,
+    });
 
     console.log("data", data);
 
@@ -67,10 +67,6 @@ function MapscreenComp({ type, setType }: IMapTopDetailsProps) {
                 // setData(res);
             });
     }, []);
-
-    React.useEffect(() => {
-        setDoFetch(true);
-    }, [navigation]);
 
     React.useEffect(() => {
         console.log("data?.data?.succeeded", data?.succeeded);

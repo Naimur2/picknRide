@@ -201,6 +201,8 @@ export default function Account() {
                             value={formik.values.qid}
                             onChangeText={formik.handleChange("qid")}
                             onBlur={formik.handleBlur("qid")}
+                            editable={false}
+                            pointerEvents="none"
                         />
                     </FormControl>
                     <FormControl mt={3} w="full">
@@ -291,6 +293,8 @@ export default function Account() {
                             value={formik.values.dob}
                             onChangeText={formik.handleChange("dob")}
                             onBlur={formik.handleBlur("dob")}
+                            editable={false}
+                            pointerEvents="none"
                         />
                     </FormControl>
                     <FormControl mt={3} w="full">
@@ -325,6 +329,8 @@ export default function Account() {
                             }
                             onChangeText={formik.handleChange("phone")}
                             onBlur={formik.handleBlur("phone")}
+                            editable={false}
+                            pointerEvents="none"
                         />
                     </FormControl>
 
@@ -356,6 +362,8 @@ export default function Account() {
                             value={formik.values.email}
                             onChangeText={formik.handleChange("email")}
                             onBlur={formik.handleBlur("email")}
+                            editable={false}
+                            pointerEvents="none"
                         />
                     </FormControl>
                 </VStack>

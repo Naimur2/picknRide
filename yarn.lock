@@ -7404,6 +7404,13 @@ react-native-country-picker-modal@^2.0.0:
     prop-types "15.7.2"
     react-async-hook "3.6.1"
 
+react-native-expo-fancy-alerts@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-expo-fancy-alerts/-/react-native-expo-fancy-alerts-2.1.1.tgz#2cf514d12ee8b0680e3ea4581113d486a1803876"
+  integrity sha512-oaB1Eyca0EeAiCbM7xMwyxMOjJA4bhMZCLoGKHIYXu5ZQAIn/h281wT+0g3fpGurBXDwn6P5uMx18q7dFFoC2A==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-native-gesture-handler@~2.5.0:
   version "2.5.0"
   resolved "https://registry.npmjs.org/react-native-gesture-handler/-/react-native-gesture-handler-2.5.0.tgz"

@@ -3,6 +3,7 @@ import ImageBg from "@components/ImageBg/ImageBg";
 import TopSection from "@components/TopSection/TopSection";
 import UserAvatar from "@components/UserAvatar/UserAvatar";
 import useLocationPermissions from "@hooks/useLocationPermissions";
+import useShowModal from "@hooks/useShowModal";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
@@ -11,9 +12,14 @@ import { setCurrentLocation } from "@store/features/user-location/userLocationSl
 import { selectAuth } from "@store/store";
 import colors from "@theme/colors";
 import * as Location from "expo-location";
-import { Center, Factory, Pressable, ScrollView, useColorMode } from "native-base";
+import {
+    Button,
+    Center,
+    Pressable,
+    ScrollView,
+    useColorMode,
+} from "native-base";
 import React from "react";
-import { TouchableOpacity } from "react-native";
 import { scale } from "react-native-size-matters";
 import { useDispatch, useSelector } from "react-redux";
 import DashModal from "./DashModal/DashModal";
@@ -24,11 +30,12 @@ export default function Dashboard() {
     const { colorMode } = useColorMode();
     const auth: IAuthState = useSelector(selectAuth);
 
+    const showMessageWithModal = useShowModal();
+
     const dispatch = useDispatch();
 
     console.log("colorMode", colorMode);
 
-    const Touchable = Factory(TouchableOpacity);
     const [isModalVisible, setIsModalVisible] = React.useState(true);
     const {
         hasBackGroundPermissions,
@@ -119,6 +126,9 @@ export default function Dashboard() {
             showsVerticalScrollIndicator={false}
             nestedScrollEnabled={true}
             keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{
+                flexGrow: 1,
+            }}
         >
             <ImageBg type={colorMode} flexGrow={1}>
                 <Center pb={5}>
@@ -128,14 +138,14 @@ export default function Dashboard() {
                     />
 
                     <VeichleCards />
-                    <DashModal
-                        isOpen={isModalVisible}
-                        onClose={() => {
-                            setIsModalVisibleHandler(false);
-                        }}
-                    />
                 </Center>
             </ImageBg>
+            <DashModal
+                isOpen={isModalVisible}
+                onClose={() => {
+                    setIsModalVisibleHandler(false);
+                }}
+            />
         </ScrollView>
     );
 }

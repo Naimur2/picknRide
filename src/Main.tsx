@@ -25,6 +25,7 @@ import { MFSettings, MFTheme } from "myfatoorah-reactnative";
 import dayjs from "dayjs";
 import { setTemperature } from "@store/features/ui/uiSlice";
 import HomeRoutes from "@navigation/home.routes";
+import WModal from "./layouts/Modal";
 
 export default function Main() {
     const loading = useSelector(selectLoading);
@@ -127,6 +128,7 @@ export default function Main() {
             </Modal>
 
             <HomeRoutes />
+            <WModal />
         </>
     );
 }

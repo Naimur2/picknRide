@@ -57,6 +57,7 @@
     "react-native-collapsible": "^1.6.0",
     "react-native-country-codes-picker": "^2.2.2",
     "react-native-country-picker-modal": "^2.0.0",
+    "react-native-expo-fancy-alerts": "^2.1.1",
     "react-native-gesture-handler": "~2.5.0",
     "react-native-google-places-autocomplete": "^2.4.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",

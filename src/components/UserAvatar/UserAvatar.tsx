@@ -4,6 +4,7 @@ import { IUserAvatarProps } from "./UserAvatar.types";
 import { useSelector } from "react-redux";
 import { selectAuth } from "@store/store";
 import { IAuthState } from "../../redux/features/auth/authSlice.types";
+import { useNavigation } from "@react-navigation/native";
 
 export default function UserAvatar({
     isActive = true,
@@ -15,9 +16,10 @@ export default function UserAvatar({
     ...rest
 }: IUserAvatarProps) {
     const auth: IAuthState = useSelector(selectAuth);
+    const navigation = useNavigation();
 
     return (
-        <Pressable onPress={onPress} {...rest}>
+        <Pressable onPress={() => navigation.navigate("Account")} {...rest}>
             <Avatar
                 source={{
                     uri: image || auth.photo,
