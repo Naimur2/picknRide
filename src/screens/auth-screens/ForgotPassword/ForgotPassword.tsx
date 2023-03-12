@@ -18,9 +18,11 @@ import {
     useForgotPasswordByEmailMutation,
     useForgotPasswordByWhatsAppMutation,
 } from "@store/api/v1/authApi/authApiSlice";
+import useShowModal from "@hooks/useShowModal";
 
 export default function ForgotPassword() {
     const navigation = useNavigation();
+    const showModal = useShowModal();
     const params = useRoute().params as ISelectAuthTypeParams;
     const [handleEmailQuery, { loading: emailLoading }] =
         useForgotPasswordByEmailMutation();
@@ -51,12 +53,9 @@ export default function ForgotPassword() {
                 }).unwrap();
 
                 if (result.error) {
-                    Toast.show({
-                        id: "otpError",
-                        render: () => (
-                            <ErrorToast message={result.error.message} />
-                        ),
-                        placement: "top",
+                    showModal("error", {
+                        title: "Error",
+                        message: result.error.message,
                     });
                 } else {
                     navigation.navigate("ForgotPasswordOtp", {
@@ -66,10 +65,9 @@ export default function ForgotPassword() {
                 }
             } catch (error) {
                 console.log(error);
-                Toast.show({
-                    id: "otpError",
-                    render: () => <ErrorToast message={"Error sending OTP"} />,
-                    placement: "top",
+                showModal("error", {
+                    title: "Error",
+                    message: "Error sending OTP",
                 });
             }
         },
@@ -90,12 +88,9 @@ export default function ForgotPassword() {
                 }).unwrap();
 
                 if (result.error) {
-                    Toast.show({
-                        id: "otpError",
-                        render: () => (
-                            <ErrorToast message={result.error.message} />
-                        ),
-                        placement: "top",
+                    showModal("error", {
+                        title: "Error",
+                        message: result.error.message,
                     });
                 } else {
                     navigation.navigate("ForgotPasswordOtp", {
@@ -106,10 +101,9 @@ export default function ForgotPassword() {
                 }
             } catch (error) {
                 console.log(error);
-                Toast.show({
-                    id: "otpError",
-                    render: () => <ErrorToast message={"Error sending OTP"} />,
-                    placement: "top",
+                showModal("error", {
+                    title: "Error",
+                    message: "Error sending OTP",
                 });
             }
         },

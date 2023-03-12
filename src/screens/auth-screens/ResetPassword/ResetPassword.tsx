@@ -11,9 +11,11 @@ import * as Yup from "yup";
 import { ISelectValidateOtpTypeParams } from "../ForgotPassword/ForgotPassword.types";
 import { useChangePasswordMutation } from "@store/api/v1/authApi/authApiSlice";
 import ErrorToast from "@components/ErrorToast/ErrorToast";
+import useShowModal from "@hooks/useShowModal";
 
 function ResetPassword() {
     const [resetPassword, result] = useChangePasswordMutation();
+    const showModal = useShowModal();
 
     const navigation = useNavigation();
 
@@ -45,25 +47,23 @@ function ResetPassword() {
                     confirmNewPassword: password_2,
                 });
                 if (result?.error) {
-                    Toast.show({
-                        id: "otpError",
-                        render: () => (
-                            <ErrorToast message={result.error.message} />
-                        ),
-                        placement: "top",
+                    showModal("error", {
+                        title: "Error",
+                        message: result.error.message,
                     });
                 }
                 if (result?.succeeded) {
-                    alert("Password reset successful");
+                    showModal("success", {
+                        title: "Success",
+                        message: "Password reset successful",
+                    });
+                    // alert("Password reset successful");
                     // navigation.navigate("Login");
                 }
             } catch (error) {
-                Toast.show({
-                    id: "otpError",
-                    render: () => (
-                        <ErrorToast message={"Error reseting passwword"} />
-                    ),
-                    placement: "top",
+                showModal("error", {
+                    title: "Error",
+                    message: "Error reseting passwword",
                 });
             }
         },

@@ -35,7 +35,7 @@ export default function SplashSecond() {
                     mt="30%"
                     onPress={() => {
                         console.log("pressed");
-                        navigation.navigate("SplashThird");
+                        navigation.navigate("Login");
                     }}
                 >
                     <Next />

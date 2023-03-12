@@ -5,6 +5,7 @@ import PasswordInput from "@components/PasswordInput/PasswordInput";
 import PickCountry from "@components/PickCountry/PickCountry";
 import Select from "@components/Select/Select";
 import TextInput from "@components/TextInput/TextInput";
+import useShowModal from "@hooks/useShowModal";
 import { useNavigation } from "@react-navigation/native";
 import { useRegisterApiMutation } from "@store/api/v1/authApi/authApiSlice";
 import { useFormik } from "formik";
@@ -15,18 +16,14 @@ import * as Yup from "yup";
 function SignUpInputForm() {
     const navigation = useNavigation();
     const [regster, result] = useRegisterApiMutation();
+    const showModal = useShowModal();
 
     React.useEffect(() => {
         if (result.data?.status === 400) {
             console.log("result.error", result);
-            Toast.show({
-                id: "error",
-                render: () => (
-                    <ErrorToast
-                        message={result.data?.message || "Something went wrong"}
-                    />
-                ),
-                placement: "top",
+            showModal("error", {
+                title: "Error",
+                message: result.data?.message || "Something went wrong",
             });
         }
     }, [result]);

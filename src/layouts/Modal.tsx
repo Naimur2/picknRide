@@ -65,10 +65,10 @@ export default function WModal() {
                     <Center>
                         <LottieView
                             autoPlay
-                            loop
+                            loop={false}
                             source={lottieFile}
                             style={{
-                                width: 150,
+                                width: 200,
                                 height: 100,
                             }}
                         />

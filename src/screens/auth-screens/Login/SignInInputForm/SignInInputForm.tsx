@@ -2,21 +2,22 @@ import GradientBtn from "@components/GradientBtn/GradientBtn";
 import PasswordInput from "@components/PasswordInput/PasswordInput";
 import PickCountry from "@components/PickCountry/PickCountry";
 import { useFormik } from "formik";
-import { Text, Toast, VStack } from "native-base";
+import { Text, VStack } from "native-base";
 import React from "react";
 import { scale } from "react-native-size-matters";
 import * as Yup from "yup";
 
 import { fontSizes } from "@theme/typography";
 
+import useShowModal from "@hooks/useShowModal";
 import { useNavigation } from "@react-navigation/native";
 import { useLoginApiMutation } from "@store/api/v1/authApi/authApiSlice";
 import { ILoginProps } from "@store/api/v1/authApi/authApiSlice.types";
 import { Keyboard } from "react-native";
-import ErrorToast from "../../../../components/ErrorToast/ErrorToast";
 
 function SignInInputForm() {
     const navigation = useNavigation();
+    const showModal = useShowModal();
     const schema = Yup.object().shape({
         password: Yup.string().required("Password is required"),
         phone: Yup.number().required("Phone number is required"),
@@ -43,17 +44,10 @@ function SignInInputForm() {
             try {
                 const result = await login(body).unwrap();
                 if (result.error) {
-                    Toast.show({
-                        id: "error",
-                        render: () => (
-                            <ErrorToast
-                                message={
-                                    result.error?.message ||
-                                    "Something went wrong"
-                                }
-                            />
-                        ),
-                        placement: "top",
+                    showModal("error", {
+                        title: "Error",
+                        message:
+                            result.error?.message || "Something went wrong",
                     });
                 }
             } catch (error) {

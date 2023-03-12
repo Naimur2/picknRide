@@ -14,6 +14,7 @@ import {
     selectCheckOtherInformation,
     setCheckOtherInformation,
 } from "@store/features/auth/authSlice";
+import useShowModal from "@hooks/useShowModal";
 
 export interface ICitizenship {
     id: number;
@@ -29,6 +30,7 @@ export default function SelectCitizenShip() {
     const navigation = useNavigation();
     const selected = React.useRef(null);
     const dispatch = useDispatch();
+    const showModal = useShowModal();
 
     const [updateCitizenShip, result] = useUpdateResidencyApiMutation();
     const residencyData = useGetResidencyApiQuery(undefined, {
@@ -41,14 +43,9 @@ export default function SelectCitizenShip() {
             result.data?.status === 500 ||
             result.isError
         ) {
-            Toast.show({
-                id: "otpError",
-                render: () => (
-                    <ErrorToast
-                        message={result.data?.message || "Something went wrong"}
-                    />
-                ),
-                placement: "top",
+            showModal("error", {
+                title: "Error",
+                message: result.data?.message || "Something went wrong",
             });
         }
     }, [result]);

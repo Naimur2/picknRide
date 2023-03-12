@@ -14,12 +14,14 @@ import { selectAuth } from "@store/store";
 import GradientBtn from "../../../components/GradientBtn/GradientBtn";
 import { setCurrentForm } from "@store/features/auth/authSlice";
 import ErrorToast from "@components/ErrorToast/ErrorToast";
+import useShowModal from "@hooks/useShowModal";
 
 export default function VideoSubmission() {
     const navigation = useNavigation();
     const values = useSelector(selectAllDocumentFieldValues) as any;
     const [error, setError] = React.useState<Error | null>(null);
     const dispatch = useDispatch();
+    const showModal = useShowModal();
 
     const auth = useSelector(selectAuth);
     const { resident_status } = auth as IAuthState;
@@ -70,10 +72,9 @@ export default function VideoSubmission() {
 
             const res4 = await submitDocument(document4).unwrap();
             if (res4.error) {
-                Toast.show({
-                    id: "otpError",
-                    render: () => <ErrorToast message={res4.error.message} />,
-                    placement: "top",
+                showModal("error", {
+                    title: "Error",
+                    message: res4.error.message,
                 });
             }
             if (res4?.succeeded) {

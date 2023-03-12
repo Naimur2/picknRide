@@ -16,6 +16,7 @@ import Signature from "./DocumentForm/Signature/Signature";
 import { setCurrentForm } from "@store/features/auth/authSlice";
 import ErrorToast from "@components/ErrorToast/ErrorToast";
 import { useNavigation } from "@react-navigation/native";
+import useShowModal from "@hooks/useShowModal";
 
 export default function SignatureSubmission() {
     const navigation = useNavigation();
@@ -25,6 +26,8 @@ export default function SignatureSubmission() {
     const auth = useSelector(selectAuth);
     const { resident_status } = auth as IAuthState;
     const [submitDocument, result] = useUploadDocumentMutation();
+
+    const showModal = useShowModal();
 
     const setFieldValue = (field: string, value: any) => {
         dispatch(setDocumentFieldValue({ fieldName: field, value }));
@@ -58,10 +61,9 @@ export default function SignatureSubmission() {
             const res4 = await submitDocument(document3).unwrap();
 
             if (res4.error) {
-                Toast.show({
-                    id: "otpError",
-                    render: () => <ErrorToast message={res4.error.message} />,
-                    placement: "top",
+                showModal("error", {
+                    title: "Error",
+                    message: res4.error.message,
                 });
             }
 

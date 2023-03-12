@@ -44,6 +44,7 @@ import colors from "../../../../../../theme-config/colors";
 import { fontConfig } from "../../../../../../theme-config/fontConfig";
 import YesNoModal from "../YesNoModal/YesNoModal";
 import { selectHasStartedJourney } from "../../../../../../redux/features/car-trip/carTripSlice";
+import useShowModal from "@hooks/useShowModal";
 
 const images = {
     carSmall,
@@ -74,6 +75,7 @@ function CarDetailsSheet({
 }: ICarDetails) {
     const RnImage = Factory(Image);
     const dispatch = useDispatch();
+    const showModal = useShowModal();
 
     console.log("tripDetails", tripDetails);
 
@@ -94,14 +96,9 @@ function CarDetailsSheet({
 
     const onEndRide = async () => {
         if (!isLocked) {
-            Toast.show({
-                id: "errorToast",
-                render: () => (
-                    <ErrorToast
-                        message={"Please lock the car before ending the ride"}
-                    />
-                ),
-                placement: "top",
+            showModal("warning", {
+                title: "Warning",
+                message: "Please lock the car before ending the ride",
             });
         } else {
             if (tripDetails) {
@@ -115,13 +112,11 @@ function CarDetailsSheet({
                     } as any
                 );
             } else {
-                Toast.show({
-                    id: "errorToast",
-                    render: () => (
-                        <ErrorToast message={"Please try again later"} />
-                    ),
-                    placement: "top",
+                showModal("warning", {
+                    title: "Warning",
+                    message: "Please try again later",
                 });
+
                 setIsYesNoModalVisible(false);
             }
         }
@@ -137,12 +132,9 @@ function CarDetailsSheet({
                     0;
                 if (hasTimedOut) {
                     // swipeHandlerRef.current?.resetStatus(!currentStatus);
-                    Toast.show({
-                        id: "locktimeout",
-                        render: () => (
-                            <ErrorToast message={"Please try again later"} />
-                        ),
-                        placement: "top",
+                    showModal("warning", {
+                        title: "Warning",
+                        message: "Please try again later",
                     });
                 } else {
                     dispatch(setIsLocked(currentStatus));
@@ -173,21 +165,18 @@ function CarDetailsSheet({
                 setLoadingModalVisible(false);
             } else {
                 // swipeHandlerRef.current?.resetStatus(!status);
-                Toast.show({
-                    id: "locktimeout",
-                    render: () => (
-                        <ErrorToast message={"Please try again later"} />
-                    ),
-                    placement: "top",
+                showModal("error", {
+                    title: "Error",
+                    message: "Please try again later",
                 });
+
                 setLoadingModalVisible(false);
             }
         } catch (error) {
             console.log("error", error);
-            Toast.show({
-                id: "locktimeout",
-                render: () => <ErrorToast message={"Please try again later"} />,
-                placement: "top",
+            showModal("error", {
+                title: "Error",
+                message: "Please try again later",
             });
             setLoadingModalVisible(false);
         }

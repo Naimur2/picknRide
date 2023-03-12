@@ -17,6 +17,7 @@ import { setCheckOtherInformation } from "@store/features/auth/authSlice";
 import { fontSizes } from "@theme/typography";
 import { useDispatch } from "react-redux";
 import ResetOtp from "./ResendOtp";
+import useShowModal from "@hooks/useShowModal";
 
 const inputs = Array(6).fill("");
 let newInputIndex = 0;
@@ -36,6 +37,7 @@ export default function OtpForm() {
     const [verifyOtp, otpResult] = useOtpVerifyApiMutation();
     const [resendOtp, resendOtpResult] = useResendOtpApiMutation();
     const dispatch = useDispatch();
+    const showModal = useShowModal();
 
     const [startTimer, setStartTimer] = useState(false);
 
@@ -45,16 +47,9 @@ export default function OtpForm() {
             otpResult.data?.status === 500 ||
             otpResult.isError
         ) {
-            Toast.show({
-                id: "otpError",
-                render: () => (
-                    <ErrorToast
-                        message={
-                            otpResult.data?.message || "Something went wrong"
-                        }
-                    />
-                ),
-                placement: "top",
+            showModal("error", {
+                title: "Error",
+                message: otpResult.data?.message || "Something went wrong",
             });
         }
         if (
@@ -62,17 +57,10 @@ export default function OtpForm() {
             resendOtpResult.data?.status === 500 ||
             resendOtpResult.isError
         ) {
-            Toast.show({
-                id: "otpError",
-                render: () => (
-                    <ErrorToast
-                        message={
-                            resendOtpResult.data?.message ||
-                            "Something went wrong"
-                        }
-                    />
-                ),
-                placement: "top",
+            showModal("error", {
+                title: "Error",
+                message:
+                    resendOtpResult.data?.message || "Something went wrong",
             });
         }
     }, [otpResult.data, resendOtpResult.data]);

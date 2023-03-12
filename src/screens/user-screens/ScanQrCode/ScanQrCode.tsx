@@ -35,9 +35,11 @@ import { useDispatch } from "react-redux";
 import { IMyFatooraRouteParams } from "../../MyFatooraScreens/types/myfatoora.interface";
 import PaymentTimer from "@screens/MyFatooraScreens/components/PaymentTimer";
 import { HStack } from "native-base";
+import useShowModal from "@hooks/useShowModal";
 
 export default function ScanQrCode() {
     const navigation = useNavigation();
+    const showModal = useShowModal();
 
     const [cameraPhoto, setCameraPhoto] = React.useState<any>(null);
     const [imageUri, setImageUri] = React.useState<string>("");
@@ -104,10 +106,9 @@ export default function ScanQrCode() {
         console.log("error", error);
         switch (error.code) {
             case 701:
-                Toast.show({
-                    id: "errorToast",
-                    render: () => <ErrorToast message={error.message} />,
-                    placement: "top",
+                showModal("error", {
+                    title: "Error",
+                    message: error.message,
                 });
 
                 if (data && data.tripDetails) {
@@ -160,11 +161,11 @@ export default function ScanQrCode() {
             case 703:
             case 704:
             case 706:
-                Toast.show({
-                    id: "errorToast",
-                    render: () => <ErrorToast message={error.message} />,
-                    placement: "top",
+                showModal("error", {
+                    title: "Error",
+                    message: error.message,
                 });
+
                 break;
             case 708:
                 if (data && data.tripDetails) {
@@ -201,26 +202,18 @@ export default function ScanQrCode() {
                 }
                 break;
             case 901:
-                Toast.show({
-                    id: "errorToast",
-                    render: () => (
-                        <ErrorToast
-                            message={error?.message || "Something Went wrong"}
-                        />
-                    ),
-                    placement: "top",
+                showModal("error", {
+                    title: "Error",
+                    message: error?.message || "Something Went wrong",
                 });
+
                 break;
             default:
-                Toast.show({
-                    id: "errorToast",
-                    render: () => (
-                        <ErrorToast
-                            message={error?.message || "Something Went wrong"}
-                        />
-                    ),
-                    placement: "top",
+                showModal("error", {
+                    title: "Error",
+                    message: error?.message || "Something Went wrong",
                 });
+
                 break;
         }
     };

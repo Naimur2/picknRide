@@ -17,6 +17,7 @@ import AddImage from "./AddImage/AddImage";
 import { useUploadDocumentMutation } from "@store/api/v2/documentApi/documentApiSlice";
 import GradientBtn from "@components/GradientBtn/GradientBtn";
 import { setCurrentForm } from "@store/features/auth/authSlice";
+import useShowModal from "@hooks/useShowModal";
 
 export default function IdSubmission() {
     const dispatch = useDispatch();
@@ -24,6 +25,7 @@ export default function IdSubmission() {
     const values = useSelector(selectAllDocumentFieldValues);
     const [submitDocument, result] = useUploadDocumentMutation();
     const { resident_status } = auth as IAuthState;
+    const showModal = useShowModal();
 
     const [errors, setErrors] = React.useState<{ [key: string]: string }>({});
 
@@ -92,10 +94,9 @@ export default function IdSubmission() {
             console.log(res1?.succeeded);
 
             if (res1.error) {
-                Toast.show({
-                    id: "otpError",
-                    render: () => <ErrorToast message={res1.error.message} />,
-                    placement: "top",
+                showModal("error", {
+                    title: "Error",
+                    message: res1.error.message,
                 });
             }
 
@@ -116,21 +117,9 @@ export default function IdSubmission() {
         const errorsValues = await errorValidation();
         const numberOfErrors = Object.keys(errorsValues).length;
         if (numberOfErrors > 0) {
-            Toast.show({
-                id: "otpError",
-                render: () => (
-                    <ErrorToast
-                        space={4}
-                        w={"320px"}
-                        direction={"column"}
-                        textProps={{ textAlign: "center" }}
-                        px={4}
-                        message={
-                            "Please fill all the required fields to proceed"
-                        }
-                    />
-                ),
-                placement: "top",
+            showModal("error", {
+                title: "Error",
+                message: "Please fill all the required fields to proceed",
             });
             return;
         }

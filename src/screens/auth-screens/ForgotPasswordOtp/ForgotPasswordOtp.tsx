@@ -12,10 +12,12 @@ import {
     useVerifyForgotPasswordOtpWhatsappMutation,
 } from "@store/api/v1/authApi/authApiSlice";
 import ErrorToast from "@components/ErrorToast/ErrorToast";
+import useShowModal from "@hooks/useShowModal";
 
 export default function ForgotPasswordOtp() {
     const [otp, setOtp] = React.useState<string>("");
     const navigation = useNavigation();
+    const showModal = useShowModal();
 
     const routeParams = useRoute().params as ISelectValidateOtpTypeParams;
     const [whatsappOtpVerify, whatsappOtpVerifyResult] =
@@ -25,10 +27,9 @@ export default function ForgotPasswordOtp() {
 
     const handleVerifyOtp = async () => {
         if (otp.length !== 6) {
-            Toast.show({
-                id: "otpError" + Math.random(),
-                render: () => <ErrorToast message="Please enter a valid OTP" />,
-                placement: "top",
+            showModal("error", {
+                title: "Error",
+                message: "Please enter a valid OTP",
             });
         } else {
             if (routeParams.validationType === "whatsapp") {
@@ -39,23 +40,17 @@ export default function ForgotPasswordOtp() {
                         mobileNo: routeParams.mobileNo,
                     });
                     if (result.error) {
-                        Toast.show({
-                            id: "otpError",
-                            render: () => (
-                                <ErrorToast message={result.error.message} />
-                            ),
-                            placement: "top",
+                        showModal("error", {
+                            title: "Error",
+                            message: result?.error?.message,
                         });
                     } else {
                         navigation.navigate("ResetPassword", routeParams);
                     }
                 } catch (error) {
-                    Toast.show({
-                        id: "otpError",
-                        render: () => (
-                            <ErrorToast message={"Error validating otp"} />
-                        ),
-                        placement: "top",
+                    showModal("error", {
+                        title: "Error",
+                        message: "Error validating otp",
                     });
                 }
             } else if (routeParams.validationType === "email") {
@@ -65,23 +60,17 @@ export default function ForgotPasswordOtp() {
                         email: routeParams.emailId,
                     });
                     if (result.error) {
-                        Toast.show({
-                            id: "otpError",
-                            render: () => (
-                                <ErrorToast message={result.error.message} />
-                            ),
-                            placement: "top",
+                        showModal("error", {
+                            title: "Error",
+                            message: result.error.message,
                         });
                     } else {
                         navigation.navigate("ResetPassword", routeParams);
                     }
                 } catch (error) {
-                    Toast.show({
-                        id: "otpError",
-                        render: () => (
-                            <ErrorToast message={"Error validating otp"} />
-                        ),
-                        placement: "top",
+                    showModal("error", {
+                        title: "Error",
+                        message: "Error validating otp",
                     });
                 }
             }

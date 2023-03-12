@@ -5,6 +5,7 @@ import ErrorToast from "@components/ErrorToast/ErrorToast";
 import GradientBtn from "@components/GradientBtn/GradientBtn";
 import OutlineButton from "@components/OutlineButton/OutlineButton";
 import Scroller from "@components/Scroller/Scroller";
+import useShowModal from "@hooks/useShowModal";
 import { useNavigation } from "@react-navigation/native";
 import { useAddCardsApiMutation } from "@store/api/v1/authApi/authApiSlice";
 import { fontSizes } from "@theme/typography";
@@ -35,6 +36,7 @@ interface IRouteProps {
 
 export default function AddCards() {
     const navigation = useNavigation();
+    const showModal = useShowModal();
 
     const [addCard, result] = useAddCardsApiMutation();
 
@@ -44,14 +46,9 @@ export default function AddCards() {
             result.data?.status === 500 ||
             result.isError
         ) {
-            Toast.show({
-                id: "otpError",
-                render: () => (
-                    <ErrorToast
-                        message={result.data?.message || "Something went wrong"}
-                    />
-                ),
-                placement: "top",
+            showModal("error", {
+                title: "Error",
+                message: result.data?.message || "Something went wrong",
             });
         }
     }, [result]);

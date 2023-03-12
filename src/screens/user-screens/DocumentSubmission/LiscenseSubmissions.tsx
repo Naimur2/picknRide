@@ -22,6 +22,7 @@ import { useUploadDocumentMutation } from "@store/api/v2/documentApi/documentApi
 import ErrorToast from "@components/ErrorToast/ErrorToast";
 import GradientBtn from "../../../components/GradientBtn/GradientBtn";
 import { setCurrentForm } from "@store/features/auth/authSlice";
+import useShowModal from "@hooks/useShowModal";
 
 export default function LiscenseSubmissions() {
     const dispatch = useDispatch();
@@ -31,6 +32,7 @@ export default function LiscenseSubmissions() {
     const [submitDocument, result] = useUploadDocumentMutation();
     const [show, setShow] = React.useState(false);
     const [errors, setErrors] = React.useState<{ [key: string]: string }>({});
+    const showModal = useShowModal();
 
     const userTypes = {
         "0": "Residence",
@@ -89,10 +91,9 @@ export default function LiscenseSubmissions() {
             const res2 = await submitDocument(document2Form).unwrap();
 
             if (res2.error) {
-                Toast.show({
-                    id: "otpError",
-                    render: () => <ErrorToast message={res2.error.message} />,
-                    placement: "top",
+                showModal("error", {
+                    title: "Error",
+                    message: res2.error.message,
                 });
             }
 
@@ -113,22 +114,11 @@ export default function LiscenseSubmissions() {
         const errorsValues = await errorValidation();
         const numberOfErrors = Object.keys(errorsValues).length;
         if (numberOfErrors > 0) {
-            Toast.show({
-                id: "Error",
-                render: () => (
-                    <ErrorToast
-                        space={4}
-                        w={"320px"}
-                        direction={"column"}
-                        textProps={{ textAlign: "center" }}
-                        px={4}
-                        message={
-                            "Please fill all the required fields to proceed"
-                        }
-                    />
-                ),
-                placement: "top",
+            showModal("error", {
+                title: "Error",
+                message: "Please fill all the required fields to proceed",
             });
+
             return;
         }
 

@@ -33,12 +33,13 @@ import React from "react";
 import { TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
-import WarningModal from "../../../components/WarningModal/WarningModal";
+import WarningModal from "@components/WarningModal/WarningModal";
 import { ILatLng } from "../../MapScreen/MapScreen.types";
 import { IValidateCarTripData } from "../ScanQrCode/ScanQrCode.types";
 import { IStartEndTripParams } from "./StartEnTrip.types";
 import UploadImg from "./UploadImg/UploadImg";
 import { IMyFatooraRouteParams } from "@screens/MyFatooraScreens/types/myfatoora.interface";
+import useShowModal from "@hooks/useShowModal";
 
 export default function StartEndRide() {
     const navigation = useNavigation();
@@ -59,6 +60,7 @@ export default function StartEndRide() {
     const [distanceTravelled, setDistanceTravelled] = React.useState(0);
     const [timeElapsed, setTimeElapsed] = React.useState(0);
     const [amount, setAmount] = React.useState(0);
+    const showModal = useShowModal();
 
     const [showWarningModal, setShowWarningModal] =
         React.useState<boolean>(false);
@@ -92,11 +94,11 @@ export default function StartEndRide() {
             case 718:
             case 719:
             case 708:
-                Toast.show({
-                    id: "errorToast",
-                    render: () => <ErrorToast message={error.message} />,
-                    placement: "top",
+                showModal("error", {
+                    title: "Error",
+                    message: error?.message || "Something Went wrong",
                 });
+
                 if (data && data.tripDetails) {
                     const {
                         totalTripTime,
@@ -148,10 +150,9 @@ export default function StartEndRide() {
             case 703:
             case 704:
             case 706:
-                Toast.show({
-                    id: "errorToast",
-                    render: () => <ErrorToast message={error.message} />,
-                    placement: "top",
+                showModal("error", {
+                    title: "Error",
+                    message: error?.message || "Something Went wrong",
                 });
                 break;
 
@@ -189,14 +190,9 @@ export default function StartEndRide() {
                 }
                 break;
             default:
-                Toast.show({
-                    id: "errorToast",
-                    render: () => (
-                        <ErrorToast
-                            message={error?.message || "Something Went wrong"}
-                        />
-                    ),
-                    placement: "top",
+                showModal("error", {
+                    title: "Error",
+                    message: error?.message || "Something Went wrong",
                 });
                 break;
         }

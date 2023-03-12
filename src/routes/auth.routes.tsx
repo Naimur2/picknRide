@@ -9,6 +9,7 @@ import OtpScreen from "@screens/auth-screens/OtpScreen/OtpScreen";
 import Register from "@screens/auth-screens/Register/Register";
 import SelectArrivalDate from "@screens/auth-screens/SelectArrivalDate/SelectArrivalDate";
 import SelectCitizenShip from "@screens/auth-screens/SelectCitizenShip/SelectCitizenShip";
+import SplashSecond from "@screens/auth-screens/SplashSecond/SplashSecond";
 import SplashThird from "@screens/auth-screens/SplashThird/SplashThird";
 import { useColorMode } from "native-base";
 import React from "react";
@@ -41,17 +42,17 @@ export default function AuthRoute() {
             screenOptions={(props: any) =>
                 authScreenOptions({ ...props, colorMode })
             }
-            initialRouteName="SplashThird"
+            initialRouteName="SplashSecond"
         >
-            {/* <Stack.Screen
+            <Stack.Screen
                 options={{
                     headerShown: false,
                     headerTransparent: true,
                 }}
                 name="SplashSecond"
                 component={SplashSecond}
-            /> */}
-            <Stack.Screen name="SplashThird" component={SplashThird} />
+            />
+            {/* <Stack.Screen name="SplashThird" component={SplashThird} /> */}
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="OtpScreen" component={OtpScreen} />

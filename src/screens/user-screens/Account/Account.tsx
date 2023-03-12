@@ -6,30 +6,28 @@ import GradientBtn from "@components/GradientBtn/GradientBtn";
 import HeaderTitle from "@components/HeaderTitle/HeaderTitle";
 import ImagePickerSheet from "@components/ImagePickerSheet/ImagePickerSheet";
 import Scroller from "@components/Scroller/Scroller";
+import useShowModal from "@hooks/useShowModal";
 import { useNavigation } from "@react-navigation/native";
+import { useUpdateUserProfileMutation } from "@store/api/v1/authApi/authApiSlice";
+import { updateProfileData } from "@store/features/auth/authSlice";
+import { selectAuth } from "@store/store";
 import colors from "@theme/colors";
 import { fontSizes } from "@theme/typography";
 import * as ImagePicker from "expo-image-picker";
+import { useFormik } from "formik";
 import {
     Avatar,
     FormControl,
     Image,
     Input,
     Pressable,
-    Toast,
     VStack,
     useColorMode,
 } from "native-base";
 import React from "react";
 import { Platform } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
 import { useDispatch, useSelector } from "react-redux";
-import { selectAuth } from "@store/store";
-import { useFormik } from "formik";
-import ErrorToast from "@components/ErrorToast/ErrorToast";
-import { useUpdateUserProfileMutation } from "@store/api/v1/authApi/authApiSlice";
-import { updateProfileData } from "@store/features/auth/authSlice";
 
 export default function Account() {
     const navigation = useNavigation();
@@ -39,6 +37,7 @@ export default function Account() {
     const colormode = useColorMode();
     const dispatch = useDispatch();
     const [updateProfile, result] = useUpdateUserProfileMutation();
+    const showModal = useShowModal();
 
     const formik = useFormik({
         initialValues: {
@@ -65,23 +64,14 @@ export default function Account() {
                         photo: values.photo,
                     })
                 );
-                Toast.show({
-                    id: "Success",
-                    render: () => (
-                        <ErrorToast
-                            message={"Information updated successfully."}
-                        />
-                    ),
-                    placement: "top",
+                showModal("success", {
+                    title: "Success",
+                    message: "Information updated successfully.",
                 });
             } catch (error) {
-                console.log(error);
-                Toast.show({
-                    id: "Error",
-                    render: () => (
-                        <ErrorToast message={"Error updating information."} />
-                    ),
-                    placement: "top",
+                showModal("error", {
+                    title: "Error",
+                    message: "Error updating information.",
                 });
             }
         },
@@ -113,7 +103,12 @@ export default function Account() {
         const { status } =
             await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== "granted") {
-            alert("Sorry, we need camera roll permissions to make this work!");
+            showModal("warning", {
+                title: "Warning",
+                message:
+                    "Sorry, we need camera roll permissions to make this work!",
+            });
+            // alert("Sorry, we need camera roll permissions to make this work!");
         } else {
             setIsOpen(true);
         }
