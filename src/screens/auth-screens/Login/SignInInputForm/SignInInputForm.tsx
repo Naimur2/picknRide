@@ -14,6 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useLoginApiMutation } from "@store/api/v1/authApi/authApiSlice";
 import { ILoginProps } from "@store/api/v1/authApi/authApiSlice.types";
 import { Keyboard } from "react-native";
+import { ISelectAuthTypeParams } from "@screens/auth-screens/SelectAuthOtpType/SelectAuthOtpType.types";
 
 function SignInInputForm() {
     const navigation = useNavigation();
@@ -109,9 +110,9 @@ function SignInInputForm() {
                     color: "white",
                 }}
                 onPress={() =>
-                    navigation.navigate("SelectAuthOtpType", {
-                        authType: "ForgotPassword",
-                    })
+                    navigation.navigate("ForgotPassword", {
+                        validationType: "email",
+                    } as ISelectAuthTypeParams)
                 }
             >
                 Forgot Password

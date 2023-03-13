@@ -1,4 +1,5 @@
 const config = {
+    API_AUTH: "https://pickandride.qa/api/v2/",
     API_V1: "http://3.139.151.111/api/",
     API_V2: "http://3.139.151.111/api/",
     DEV_MODE: false,

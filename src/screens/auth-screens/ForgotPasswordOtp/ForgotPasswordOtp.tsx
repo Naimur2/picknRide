@@ -45,7 +45,15 @@ export default function ForgotPasswordOtp() {
                             message: result?.error?.message,
                         });
                     } else {
-                        navigation.navigate("ResetPassword", routeParams);
+                        showModal("success", {
+                            title: "Success",
+                            message:
+                                "Your old password was sent to your whatsapp, please login with that password and change it",
+                        });
+                        navigation.navigate("Login");
+                        // navigation.navigate("ResetPassword", {
+                        //     type: "ResetPassword",
+                        // });
                     }
                 } catch (error) {
                     showModal("error", {
@@ -65,7 +73,15 @@ export default function ForgotPasswordOtp() {
                             message: result.error.message,
                         });
                     } else {
-                        navigation.navigate("ResetPassword", routeParams);
+                        // navigation.navigate("ResetPassword", {
+                        //     type: "ResetPassword",
+                        // });
+                        showModal("success", {
+                            title: "Success",
+                            message:
+                                "Your old password was sent to your email, please login with that password and change it",
+                        });
+                        navigation.navigate("Login");
                     }
                 } catch (error) {
                     showModal("error", {

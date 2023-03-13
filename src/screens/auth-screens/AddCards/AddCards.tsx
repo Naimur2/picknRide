@@ -7,7 +7,7 @@ import OutlineButton from "@components/OutlineButton/OutlineButton";
 import Scroller from "@components/Scroller/Scroller";
 import useShowModal from "@hooks/useShowModal";
 import { useNavigation } from "@react-navigation/native";
-import { useAddCardsApiMutation } from "@store/api/v1/authApi/authApiSlice";
+import { useAddCardsApiMutation } from "@store/api/auth/authApi/authApiSlice";
 import { fontSizes } from "@theme/typography";
 import { useFormik } from "formik";
 import {

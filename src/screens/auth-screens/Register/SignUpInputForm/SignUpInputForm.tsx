@@ -7,7 +7,8 @@ import Select from "@components/Select/Select";
 import TextInput from "@components/TextInput/TextInput";
 import useShowModal from "@hooks/useShowModal";
 import { useNavigation } from "@react-navigation/native";
-import { useRegisterApiMutation } from "@store/api/v1/authApi/authApiSlice";
+import { useRegisterApiMutation } from "@store/api/auth/authApi/authApiSlice";
+
 import { useFormik } from "formik";
 import { Toast, VStack } from "native-base";
 import React from "react";

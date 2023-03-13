@@ -45,7 +45,7 @@ function ResetPassword() {
                     currentPassword: old_password,
                     newPassword: password_1,
                     confirmNewPassword: password_2,
-                });
+                }).unwrap();
                 if (result?.error) {
                     showModal("error", {
                         title: "Error",
@@ -57,6 +57,7 @@ function ResetPassword() {
                         title: "Success",
                         message: "Password reset successful",
                     });
+                    formik.resetForm();
                     // alert("Password reset successful");
                     // navigation.navigate("Login");
                 }

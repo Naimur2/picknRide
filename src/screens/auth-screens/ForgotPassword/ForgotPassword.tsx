@@ -188,7 +188,7 @@ export default function ForgotPassword() {
                 }}
             />
 
-            <HStack
+            {/* <HStack
                 my={10}
                 alignItems={"center"}
                 justifyContent="center"
@@ -215,7 +215,7 @@ export default function ForgotPassword() {
                 >
                     Sign Up
                 </Text>
-            </HStack>
+            </HStack> */}
         </ScreenWithScrollImage>
     );
 }

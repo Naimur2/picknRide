@@ -7,7 +7,7 @@ interface IResendOtpTextProps {
     setStartTimer?: (value: boolean) => void;
 }
 
-const ResetOtp = ({
+const ResetOtpComp = ({
     onResend,
     startTimer = false,
     setStartTimer,
@@ -72,4 +72,6 @@ const ResetOtp = ({
     );
 };
 
-export default React.memo(ResetOtp);
+const ResetOtp = React.memo(ResetOtpComp);
+
+export default ResetOtp;

@@ -11,8 +11,8 @@ import { IRegisterProps } from "@screens/auth-screens/Register/SignUpInputForm/S
 import {
     useOtpVerifyApiMutation,
     useResendOtpApiMutation,
-} from "@store/api/v1/authApi/authApiSlice";
-import { IOtpVerify } from "@store/api/v1/authApi/authApiSlice.types";
+} from "@store/api/auth/authApi/authApiSlice";
+import { IOtpVerify } from "@store/api/auth/authApi/authApiSlice.types";
 import { setCheckOtherInformation } from "@store/features/auth/authSlice";
 import { fontSizes } from "@theme/typography";
 import { useDispatch } from "react-redux";

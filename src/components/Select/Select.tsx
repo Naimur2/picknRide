@@ -2,7 +2,7 @@ import { Actionsheet, Pressable, Text } from "native-base";
 import React from "react";
 
 import { scale } from "react-native-size-matters";
-import { useGetLocationApiQuery } from "@store/api/v1/configApi/configApiSlice";
+import { useGetLocationApiQuery } from "@store/api/auth/configApi/configApiSlice";
 import { ChevronDown } from "../Icons/Icons";
 import LocationSheetContent from "./components/LocationSheetContent/LocationSheetContent";
 

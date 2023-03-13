@@ -87,10 +87,10 @@ export default function SelectAuthOtpType() {
                         onPress={handleOtpViaEmail}
                         title="OTP via Email"
                     />
-                    <GradientBtn
+                    {/* <GradientBtn
                         onPress={handleOtpViaWhatsapp}
                         title="OTP via Whatsapp"
-                    />
+                    /> */}
                 </VStack>
             </Scroller>
         </ImageBg>

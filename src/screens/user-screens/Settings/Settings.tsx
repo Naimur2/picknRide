@@ -35,7 +35,10 @@ export default function Settings() {
         },
         {
             title: "Change Password",
-            onPress: () => navigation.navigate("ResetPassword"),
+            onPress: () =>
+                navigation.navigate("ResetPassword", {
+                    type: "ChangePassword",
+                }),
         },
         {
             title: "Privacy Policy",

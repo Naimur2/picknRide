@@ -10,6 +10,7 @@ import documentReducer from "./features/document/documentSlice";
 import uiReducer from "./features/ui/uiSlice";
 import userLocationReducer from "./features/user-location/userLocationSlice";
 import { mapsApiSlice } from "./api/v3/mapsApiSlice";
+import { authApiV1 } from "./api/auth/apiSlice";
 
 const persistConfig = {
     key: "root",
@@ -43,7 +44,8 @@ export const store = configureStore({
         })
             .concat(apiSlice.middleware)
             .concat(apiSliceV2.middleware)
-            .concat(mapsApiSlice.middleware),
+            .concat(mapsApiSlice.middleware)
+            .concat(authApiV1.middleware),
     devTools: false,
 });
 

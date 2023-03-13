@@ -1,3 +1,5 @@
+import { Telephone, Whatsapp } from "@components/Icons/Icons";
+import Scroller from "@components/Scroller/Scroller";
 import {
     HStack,
     Image,
@@ -9,15 +11,13 @@ import {
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
-import { Telephone, Whatsapp } from "@components/Icons/Icons";
-import Scroller from "@components/Scroller/Scroller";
 import SignUpInputForm from "./SignUpInputForm/SignUpInputForm";
 
 import dark from "@assets/images/background-map-dark.png";
 import light from "@assets/images/background-map-light.png";
+import config from "@config";
 import { fontSizes } from "@theme/typography";
 import * as Linking from "expo-linking";
-import config from "@config";
 
 export default function Register() {
     const { colorMode } = useColorMode();
@@ -25,6 +25,12 @@ export default function Register() {
     const insets = useSafeAreaInsets();
     const openWhatsapp = () => {
         Linking.openURL(`https://wa.me/${config.whatsappNumber}`);
+    };
+
+    const openDialScreen = (number) => {
+        if (Linking.canOpenURL(`tel:${number}`)) {
+            Linking.openURL(`tel:${number}`);
+        }
     };
 
     return (
@@ -47,7 +53,13 @@ export default function Register() {
                     right={0}
                     bottom={0}
                 />
-                <VStack maxW={scale(320) + "px"} w="full" px={4} py={5}>
+                <VStack
+                    maxW={scale(320) + "px"}
+                    flexGrow={1}
+                    w="full"
+                    px={4}
+                    py={5}
+                >
                     <VStack alignItems={"center"} space="3">
                         <Text
                             color="primary.200"
@@ -88,16 +100,25 @@ export default function Register() {
                                 </Text>
                             </HStack>
                         </Pressable>
-                        <HStack alignItems={"center"} space="2">
+                        <Pressable
+                            display="flex"
+                            flexDir={"row"}
+                            alignItems={"center"}
+                            space="2"
+                            onPress={() =>
+                                openDialScreen(`+${config.whatsappNumber}`)
+                            }
+                        >
                             <Telephone color="primary.100" />
                             <Text
                                 fontSize={fontSizes.xs}
                                 fontWeight={500}
                                 color={"gray.100"}
+                                ml={2}
                             >
                                 +{config.whatsappNumber}
                             </Text>
-                        </HStack>
+                        </Pressable>
                     </HStack>
                 </VStack>
             </Scroller>

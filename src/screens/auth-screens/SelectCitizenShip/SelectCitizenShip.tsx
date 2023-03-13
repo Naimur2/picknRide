@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Button, Text, Toast, VStack, useColorMode } from "native-base";
 import React, { useLayoutEffect } from "react";
 
-import { useUpdateResidencyApiMutation } from "@store/api/v1/authApi/authApiSlice";
+import { useUpdateResidencyApiMutation } from "@store/api/auth/authApi/authApiSlice";
 import colors from "@theme/colors";
 import { NavigationStackOptions } from "react-navigation-stack";
 import { useGetResidencyApiQuery } from "@store/api/v1/configApi/configApiSlice";
