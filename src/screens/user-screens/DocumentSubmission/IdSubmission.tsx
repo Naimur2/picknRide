@@ -1,23 +1,22 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import GradientBtn from "@components/GradientBtn/GradientBtn";
+import useShowModal from "@hooks/useShowModal";
+import { useUploadDocumentMutation } from "@store/api/v2/documentApi/documentApiSlice";
+import { TDDocumentType } from "@store/api/v2/documentApi/documentApiSlice.types";
+import { IAuthState } from "@store/features/auth/authSlice.types";
 import {
     selectAllDocumentFieldValues,
     setDocumentFieldValue,
 } from "@store/features/document/documentSlice";
-import { VStack, FormControl, Input, Toast } from "native-base";
-import FormLabel from "./DocumentForm/FormLabel/FormLabel";
 import { selectAuth } from "@store/store";
-import { IAuthState } from "@store/features/auth/authSlice.types";
-import ErrorToast from "@components/ErrorToast/ErrorToast";
+import createFormFile from "@utils/fileDetails";
+import { FormControl, Input, VStack } from "native-base";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
-import { createFormFile } from "@utils/fileDetails";
-import { TDDocumentType } from "@store/api/v2/documentApi/documentApiSlice.types";
-import ExpiryDate from "./DocumentForm/ExpiryDate/ExpiryDate";
 import AddImage from "./AddImage/AddImage";
-import { useUploadDocumentMutation } from "@store/api/v2/documentApi/documentApiSlice";
-import GradientBtn from "@components/GradientBtn/GradientBtn";
+import ExpiryDate from "./DocumentForm/ExpiryDate/ExpiryDate";
+import FormLabel from "./DocumentForm/FormLabel/FormLabel";
 import { setCurrentForm } from "@store/features/auth/authSlice";
-import useShowModal from "@hooks/useShowModal";
 
 export default function IdSubmission() {
     const dispatch = useDispatch();
@@ -107,13 +106,14 @@ export default function IdSubmission() {
                 dispatch(setCurrentForm(2));
             }
         } catch (error) {
-            console.warn(error);
+            console.log(error);
             alert(error.message ?? "Something went wrong");
         }
     };
 
     const submitForm = async () => {
-        // check if all the fields are filled
+        console.log("submitting form");
+        // // check if all the fields are filled
         const errorsValues = await errorValidation();
         const numberOfErrors = Object.keys(errorsValues).length;
         if (numberOfErrors > 0) {

@@ -6,7 +6,7 @@ import colors from "@theme/colors";
 import { useColorMode } from "native-base";
 import React from "react";
 import { scale } from "react-native-size-matters";
-import UserAvatar from "../../../components/UserAvatar/UserAvatar";
+import UserAvatar from "@components/UserAvatar/UserAvatar";
 import DocumentForm from "./DocumentForm/DocumentForm";
 
 export default function DocumentSubmission() {

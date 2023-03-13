@@ -5,6 +5,7 @@ import ImageBg from "@components/ImageBg/ImageBg";
 import Logo from "@assets/svgs/Logo";
 import Next from "@assets/svgs/Next";
 import Scroller from "@components/Scroller/Scroller";
+import GradientBtn from "@components/GradientBtn/GradientBtn";
 
 export default function SplashSecond() {
     const navigation = useNavigation();
@@ -13,8 +14,9 @@ export default function SplashSecond() {
             <Scroller
                 contentContainerStyle={{
                     flexGrow: 1,
-                    justifyContent: "center",
+                    justifyContent: "space-between",
                     alignItems: "center",
+                    paddingVertical: 100,
                 }}
             >
                 <Logo />
@@ -22,24 +24,17 @@ export default function SplashSecond() {
                     mt={"30%"}
                     textAlign={"center"}
                     fontSize="15"
-                    maxW={270}
+                    maxW={180}
                     color="white"
-                    fontWeight={"400"}
+                    fontWeight={"700"}
                 >
                     {" "}
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Minus obcaecati sint dolore modi doloremque ducimus porro!
-                    Distinctio ut quo velit.{" "}
+                    Pick and ride that comes to your mind.{" "}
                 </Text>
-                <Pressable
-                    mt="30%"
-                    onPress={() => {
-                        console.log("pressed");
-                        navigation.navigate("Login");
-                    }}
-                >
-                    <Next />
-                </Pressable>
+                <GradientBtn
+                    title={"Get Started"}
+                    onPress={() => navigation.navigate("Login")}
+                />
             </Scroller>
         </ImageBg>
     );

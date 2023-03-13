@@ -1,20 +1,19 @@
+import GradientBtn from "@components/GradientBtn/GradientBtn";
+import OutlineButton from "@components/OutlineButton/OutlineButton";
+import useShowModal from "@hooks/useShowModal";
 import { useNavigation } from "@react-navigation/native";
+import { useUploadDocumentMutation } from "@store/api/v2/documentApi/documentApiSlice";
+import { setCurrentForm } from "@store/features/auth/authSlice";
+import { IAuthState } from "@store/features/auth/authSlice.types";
 import { selectAllDocumentFieldValues } from "@store/features/document/documentSlice";
+import { selectAuth } from "@store/store";
 import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
-import { VStack, Toast } from "native-base";
+import { VStack } from "native-base";
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import OutlineButton from "../../../components/OutlineButton/OutlineButton";
+import { useDispatch, useSelector } from "react-redux";
 import VideoPlayer from "./DocumentForm/VideoPlayer/VideoPlayer";
-import { createFormFile } from "@utils/fileDetails";
-import { IAuthState } from "../../../redux/features/auth/authSlice.types";
-import { useUploadDocumentMutation } from "@store/api/v2/documentApi/documentApiSlice";
-import { selectAuth } from "@store/store";
-import GradientBtn from "../../../components/GradientBtn/GradientBtn";
-import { setCurrentForm } from "@store/features/auth/authSlice";
-import ErrorToast from "@components/ErrorToast/ErrorToast";
-import useShowModal from "@hooks/useShowModal";
+import createFormFile from "@utils/fileDetails";
 
 export default function VideoSubmission() {
     const navigation = useNavigation();

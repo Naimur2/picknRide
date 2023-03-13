@@ -7,16 +7,16 @@ import {
     setDocumentFieldValue,
 } from "@store/features/document/documentSlice";
 import { selectAuth } from "@store/store";
-import { createFormFile } from "@utils/fileDetails";
-import { Center, HStack, Pressable, Text, VStack, Toast } from "native-base";
+
+import { Center, HStack, Pressable, Text, VStack } from "native-base";
 import React from "react";
 
+import useShowModal from "@hooks/useShowModal";
+import { useNavigation } from "@react-navigation/native";
+import { setCurrentForm } from "@store/features/auth/authSlice";
+import createFormFile from "@utils/fileDetails";
 import { useDispatch, useSelector } from "react-redux";
 import Signature from "./DocumentForm/Signature/Signature";
-import { setCurrentForm } from "@store/features/auth/authSlice";
-import ErrorToast from "@components/ErrorToast/ErrorToast";
-import { useNavigation } from "@react-navigation/native";
-import useShowModal from "@hooks/useShowModal";
 
 export default function SignatureSubmission() {
     const navigation = useNavigation();

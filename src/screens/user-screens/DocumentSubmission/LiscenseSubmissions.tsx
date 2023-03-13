@@ -1,28 +1,25 @@
-import React from "react";
-import { FormControl, VStack, Toast, Input } from "native-base";
-import FormLabel from "./DocumentForm/FormLabel/FormLabel";
-import PickerButton from "./DocumentForm/PickerButton/PickerButton";
-import CountryPicker from "react-native-country-picker-modal";
-import AddImage from "./AddImage/AddImage";
-import ExpiryDate from "./DocumentForm/ExpiryDate/ExpiryDate";
-import {
-    EDocumentType,
-    TDDocumentType,
-} from "../../../redux/api/v2/documentApi/documentApiSlice.types";
-import { useDispatch, useSelector } from "react-redux";
+import useShowModal from "@hooks/useShowModal";
+import { useUploadDocumentMutation } from "@store/api/v2/documentApi/documentApiSlice";
+import { setCurrentForm } from "@store/features/auth/authSlice";
+import { IAuthState } from "@store/features/auth/authSlice.types";
 import {
     selectAllDocumentFieldValues,
     setDocumentFieldValue,
 } from "@store/features/document/documentSlice";
 import { selectAuth } from "@store/store";
-import { IAuthState } from "@store/features/auth/authSlice.types";
+
+import { FormControl, Input, VStack } from "native-base";
+import React from "react";
+import CountryPicker from "react-native-country-picker-modal";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
-import { createFormFile } from "@utils/fileDetails";
-import { useUploadDocumentMutation } from "@store/api/v2/documentApi/documentApiSlice";
-import ErrorToast from "@components/ErrorToast/ErrorToast";
-import GradientBtn from "../../../components/GradientBtn/GradientBtn";
-import { setCurrentForm } from "@store/features/auth/authSlice";
-import useShowModal from "@hooks/useShowModal";
+import GradientBtn from "@components/GradientBtn/GradientBtn";
+import { EDocumentType } from "@store/api/v2/documentApi/documentApiSlice.types";
+import AddImage from "./AddImage/AddImage";
+import ExpiryDate from "./DocumentForm/ExpiryDate/ExpiryDate";
+import FormLabel from "./DocumentForm/FormLabel/FormLabel";
+import PickerButton from "./DocumentForm/PickerButton/PickerButton";
+import createFormFile from "@utils/fileDetails";
 
 export default function LiscenseSubmissions() {
     const dispatch = useDispatch();
@@ -105,7 +102,7 @@ export default function LiscenseSubmissions() {
             }
         } catch (error) {
             console.warn(error);
-            alert(error.message ?? "Something went wrong");
+            alert(error?.message ?? "Something went wrong");
         }
     };
 
