@@ -1,12 +1,14 @@
 import Toggler from "@assets/svgs/Toggler";
-import ErrorToast from "@components/ErrorToast/ErrorToast";
 import GradientBtn from "@components/GradientBtn/GradientBtn";
 import ImageBg from "@components/ImageBg/ImageBg";
 import TopSection from "@components/TopSection/TopSection";
 import UserAvatar from "@components/UserAvatar/UserAvatar";
+import WarningModal from "@components/WarningModal/WarningModal";
 import config from "@config";
+import useShowModal from "@hooks/useShowModal";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import RideCompleteModal from "@screens/MapScreen/components/RideCompleteModal/RideCompleteModal";
+import { IMyFatooraRouteParams } from "@screens/MyFatooraScreens/types/myfatoora.interface";
 import {
     useEndCarTripMutation,
     useUploadCarImageMutation,
@@ -21,25 +23,19 @@ import { selectStartOrEndRide } from "@store/features/ui/uiSlice";
 import { useFormik } from "formik";
 import {
     Center,
-    Factory,
     HStack,
     Pressable,
     ScrollView,
-    Toast,
     VStack,
     useColorMode,
 } from "native-base";
 import React from "react";
-import { TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
-import WarningModal from "@components/WarningModal/WarningModal";
 import { ILatLng } from "../../MapScreen/MapScreen.types";
 import { IValidateCarTripData } from "../ScanQrCode/ScanQrCode.types";
 import { IStartEndTripParams } from "./StartEnTrip.types";
 import UploadImg from "./UploadImg/UploadImg";
-import { IMyFatooraRouteParams } from "@screens/MyFatooraScreens/types/myfatoora.interface";
-import useShowModal from "@hooks/useShowModal";
 
 export default function StartEndRide() {
     const navigation = useNavigation();
@@ -61,6 +57,7 @@ export default function StartEndRide() {
     const [timeElapsed, setTimeElapsed] = React.useState(0);
     const [amount, setAmount] = React.useState(0);
     const showModal = useShowModal();
+    console.log("params", params);
 
     const [showWarningModal, setShowWarningModal] =
         React.useState<boolean>(false);
@@ -154,7 +151,6 @@ export default function StartEndRide() {
                     title: "Error",
                     message: error?.message || "Something Went wrong",
                 });
-                break;
 
                 if (data && data.tripDetails) {
                     const {
@@ -204,7 +200,7 @@ export default function StartEndRide() {
                 tripToken: tripToken ? tripToken : params?.data?.tripToken,
             }).unwrap();
 
-            if (res.data) {
+            if (res.data && !res.error) {
                 const totalTripTime = res?.data?.tripDetails?.totalTripTime;
                 const totalKM = res?.data?.tripDetails?.totalKM;
                 const startLatitude = res?.data?.tripDetails?.startLatitude;
@@ -267,7 +263,7 @@ export default function StartEndRide() {
         leftSideImage: "",
         rightSideImage: "",
         tripToken: params.data.tripToken,
-        vehicleNo: params.data.vehicleNo,
+        vehicleNo: params.data.number,
     };
 
     const formik = useFormik({
@@ -304,6 +300,7 @@ export default function StartEndRide() {
                             ...params,
                             data: {
                                 ...params.data,
+                                vehicleNo: values.vehicleNo,
                                 tripToken: res.data.tripToken,
                             },
                         };

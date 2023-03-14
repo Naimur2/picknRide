@@ -47,6 +47,7 @@ export const tripApiSlice = apiSliceV2.injectEndpoints({
                 method: "POST",
                 body,
             }),
+            invalidatesTags: ["getTripStatus"],
         }),
         sendCarTripOtpType: builder.mutation({
             query: (body: IStartCarTripOtpType) => ({

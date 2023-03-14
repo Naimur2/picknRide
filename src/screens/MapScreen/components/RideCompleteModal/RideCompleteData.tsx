@@ -159,8 +159,8 @@ export default function RideCompleteData({
                 <HStack>
                     <VStack>
                         <Box
-                            ml={"60%"}
-                            mt={-4}
+                            ml={hideCompletText ? "58%" : "60%"}
+                            mt={hideCompletText ? "-7px" : -4}
                             h="60px"
                             w="5px"
                             bg="primary.100"
@@ -306,23 +306,27 @@ export default function RideCompleteData({
                 </HStack>
             </HStack>
 
-            <H3 pt={4} fontSize={scale(15) + "px"}>
-                How was your trip?
-            </H3>
-            <VStack py={2} bg="#fff" w="full">
-                <Rating
-                    count={5}
-                    defaultRating={3}
-                    imageSize={20}
-                    ratingColor="#52BF04"
-                    style={{
-                        backgroundColot: "transparent",
-                    }}
-                    ratingContainerStyle={{
-                        backgroundColor: "transparent",
-                    }}
-                />
-            </VStack>
+            {!hideCompletText ? (
+                <VStack>
+                    <H3 pt={4} fontSize={scale(15) + "px"}>
+                        How was your trip?
+                    </H3>
+                    <VStack py={2} bg="#fff" w="full">
+                        <Rating
+                            count={5}
+                            defaultRating={3}
+                            imageSize={20}
+                            ratingColor="#52BF04"
+                            style={{
+                                backgroundColot: "transparent",
+                            }}
+                            ratingContainerStyle={{
+                                backgroundColor: "transparent",
+                            }}
+                        />
+                    </VStack>
+                </VStack>
+            ) : null}
         </VStack>
     );
 }

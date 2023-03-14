@@ -26,7 +26,7 @@ import {
 } from "./types/myfatoora.interface";
 import { useTopUpBalanceMutation } from "@store/api/v2/documentApi/documentApiSlice";
 import { MFCurrencyISO } from "./types/enums.myfatoora";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import {
     useExecuteDirectPaymentWithoutTokenMutation,
     useExexuteDirectPaymentWithTokenMutation,
@@ -34,6 +34,7 @@ import {
 } from "@store/api/v2/payment/paymentApiSlice";
 
 import * as WebBrowser from "expo-web-browser";
+import useShowModal from "../../hooks/useShowModal";
 
 export default function PaymentForm({
     paymentMethods,
@@ -42,6 +43,8 @@ export default function PaymentForm({
     paymentMethods: ICardListProps[];
     amount: number;
 }) {
+    const navigation = useNavigation();
+    const showModal = useShowModal();
     const params = useRoute().params as IMyFatooraRouteParams;
 
     console.log(params);
@@ -117,13 +120,26 @@ export default function PaymentForm({
                         })
                             .unwrap()
                             .then((res) => {
-                                alert("Payment Success");
+                                showModal("success", {
+                                    title: "Success",
+                                    message: "Your Payment Successfully Done",
+                                });
+                                if (navigation.canGoBack()) {
+                                    navigation.goBack();
+                                }
                             })
                             .catch((err) => {
-                                alert("Payment Failed");
+                                showModal("error", {
+                                    title: "Error",
+                                    message:
+                                        "Failed to topup, please try again",
+                                });
                             });
                     } else {
-                        alert("Payment Failed");
+                        showModal("error", {
+                            title: "Error",
+                            message: "Failed to topup, please try again",
+                        });
                     }
                 })
                 .catch((err) => {

@@ -76,6 +76,7 @@ export default function MyFatooraPayment() {
     const params = useRoute().params as IMyFatooraRouteParams;
     const [selected, setSelected] = React.useState(amounts[0]);
     const navigation = useNavigation();
+    console.log("params", params);
 
     const [paymentMethods, setPaymentMethods] = useState<ICardListProps[]>([]);
 
@@ -109,7 +110,7 @@ export default function MyFatooraPayment() {
         <ImageBg type={colorMode} flexGrow={1}>
             <Scroller>
                 <H3 mt={10} px={4}>
-                    {showAddMoney ? "Add Money" : "Pay Now"}
+                    {showAddMoney ? "Pay Now" : "Add Money"}
                 </H3>
                 {showPayNow ? (
                     <HStack px={4} justifyContent={"space-between"}>
@@ -154,7 +155,9 @@ export default function MyFatooraPayment() {
                         <RideCompleteData
                             startLocation={params?.paymentDetails?.from}
                             endLocation={params?.paymentDetails?.to}
-                            amount={params?.paymentDetails?.amount}
+                            amount={
+                                params?.paymentDetails?.requiredAmount * -1 || 0
+                            }
                             distanceTravelled={params?.paymentDetails?.distance}
                             timeElapsed={params?.paymentDetails?.duration}
                             hideCompletText={true}
