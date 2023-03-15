@@ -263,7 +263,7 @@ export default function StartEndRide() {
         leftSideImage: "",
         rightSideImage: "",
         tripToken: params.data.tripToken,
-        vehicleNo: params.data.number,
+        vehicleNo: params.data.number || params.data.vehicleNo,
     };
 
     const formik = useFormik({
