@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     selectSelectedVeichleType,
     setSelectedVeichleType,
-} from "../../redux/features/cars/carsSlice";
+} from "@store/features/cars/carsSlice";
 import { TCarType, ECarType } from "@store/features/cars/carsSlice.types";
 import ViichleCircle from "./ViichleCircle/ViichleCircle";
 

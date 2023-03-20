@@ -15,10 +15,12 @@ function ViichleCircle({
     type,
     onPress,
     isActive,
+    imageWidth = 14,
 }: {
     type: TCarType;
     isActive: boolean;
     onPress: () => void;
+    imageWidth?: number;
 }) {
     return (
         <VStack alignItems={"center"} space="1.5">
@@ -31,8 +33,8 @@ function ViichleCircle({
                 onPress={onPress}
             >
                 <Image
-                    w="14px"
-                    h="14px"
+                    w={imageWidth + "px"}
+                    h={imageWidth + "px"}
                     resizeMode="contain"
                     source={images[type] || scooter}
                     alt="cycle"

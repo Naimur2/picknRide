@@ -9,7 +9,7 @@ const MapTopDetails = ({ ...rest }) => {
     const weather = useSelector(selectTemperature);
 
     return (
-        <HStack alignItems="center" justifyContent="space-between" {...rest}>
+        <VStack alignItems="center" justifyContent="space-between" {...rest}>
             <VeichleSelector />
             {weather ? (
                 <HStack alignItems={"center"} space="2">
@@ -33,7 +33,7 @@ const MapTopDetails = ({ ...rest }) => {
                     </Text>
                 </HStack>
             ) : null}
-        </HStack>
+        </VStack>
     );
 };
 

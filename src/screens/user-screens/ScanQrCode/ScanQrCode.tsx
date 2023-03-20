@@ -247,9 +247,15 @@ export default function ScanQrCode() {
             await Location.getForegroundPermissionsAsync();
 
         if (status !== "granted" || !granted) {
-            alert("Permission to access location was denied");
-        } else if (!imageUri && !inputRef?.current) {
-            alert("Image or number is required");
+            showModal("error", {
+                title: "Error",
+                message: "Permission to access location was denied",
+            });
+        } else if (!nameplateImage && !inputRef?.current?.length) {
+            showModal("error", {
+                title: "Error",
+                message: "Image or number is required",
+            });
         } else {
             if (!config.DEV_MODE) {
                 const location = await Location.getCurrentPositionAsync({});
@@ -259,10 +265,11 @@ export default function ScanQrCode() {
                     mobileLatitude: location.coords.latitude,
                     mobileLongitude: location.coords.longitude,
                 };
+                console.log(imageData);
                 if (nameplateImage) {
-                    imageData["nameplateImage"] = nameplateImage;
+                    imageData["numberPlateImage"] = nameplateImage;
                 }
-                console.log("imageData", imageData);
+                console.log("imageData", Object.keys(imageData));
 
                 const res = await validateCarTrip(imageData).unwrap();
 

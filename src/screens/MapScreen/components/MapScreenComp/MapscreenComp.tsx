@@ -15,21 +15,14 @@ import LocationSearch from "../LocationSearch/LocationSearch";
 import MapTopDetails from "../MapTopDetails/MapTopDetails";
 import SpeedMeter from "../SpeedMeter/SpeedMeter";
 
+import { useRoute } from "@react-navigation/native";
 import { useCheckIsCarTripActiveQuery } from "@store/api/v2/tripApi/tripApiSlice";
-import {
-    selectCarTripInfo,
-    selectHasStartedJourney,
-} from "@store/features/car-trip/carTripSlice";
+import { selectCarTripInfo } from "@store/features/car-trip/carTripSlice";
 import { ICarTripState } from "@store/features/car-trip/carTripSlice.types";
 import { fontSizes } from "@theme/typography";
 import { useDispatch, useSelector } from "react-redux";
+import { tripApiSlice } from "@store/api/v2/tripApi/tripApiSlice";
 import Sos from "../Sos/Sos";
-import {
-    useFocusEffect,
-    useNavigation,
-    useRoute,
-} from "@react-navigation/native";
-import { tripApiSlice } from "../../../../redux/api/v2/tripApi/tripApiSlice";
 
 export interface IMapTopDetailsProps {
     type: ICAR;
