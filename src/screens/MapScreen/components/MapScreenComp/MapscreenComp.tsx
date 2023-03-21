@@ -71,6 +71,8 @@ function MapscreenComp({ type, setType }: IMapTopDetailsProps) {
         }
     }, [data]);
 
+    // console.log(new Date("2023-03-21T17:16:45.495Z").getTime());
+
     return (
         <VStack
             flex={1}
@@ -98,6 +100,12 @@ function MapscreenComp({ type, setType }: IMapTopDetailsProps) {
                     px="4"
                     setSelected={updateType}
                     mt={"80px"}
+                    hasStartedJourny={data?.succeeded}
+                    startedTime={
+                        data?.data?.tripStartTime
+                            ? new Date(data?.data?.tripStartTime)
+                            : undefined
+                    }
                 />
             </VStack>
             <SpeedMeter />

@@ -4,8 +4,16 @@ import React from "react";
 import VeichleSelector from "@components/VeichleSelector/VeichleSelector";
 import { selectTemperature } from "@store/features/ui/uiSlice";
 import { useSelector } from "react-redux";
+import RideTimer from "../../../../layouts/RideTimer";
 
-const MapTopDetails = ({ ...rest }) => {
+const MapTopDetails = ({
+    hasStartedJourny,
+    startedTime = new Date(),
+    ...rest
+}: {
+    hasStartedJourny?: boolean;
+    startedTime?: Date;
+}) => {
     const weather = useSelector(selectTemperature);
 
     return (
@@ -16,22 +24,26 @@ const MapTopDetails = ({ ...rest }) => {
                     <Image
                         source={{ uri: weather.icon }}
                         alt="weather"
-                        size={10}
+                        size={16}
                     />
                     {/* <Sun color="primary.100" /> */}
                     <VStack>
-                        <Text color={"#000"} fontSize={6} fontWeight={700}>
+                        <Text color={"#000"} fontSize={12} fontWeight={700}>
                             {weather?.currentDay}
                         </Text>
-                        <Text color={"#000"} fontSize={10} fontWeight={700}>
+                        <Text color={"#000"} fontSize={16} fontWeight={700}>
                             {weather?.condtion}
                         </Text>
                     </VStack>
-                    <Box h="5" w="2px" bg="primary.100" />
-                    <Text color={"#000"} fontSize={18} fontWeight={700}>
+                    <Box h="10" w="4px" bg="primary.100" />
+                    <Text color={"#000"} fontSize={26} fontWeight={700}>
                         {weather?.temp}° C
                     </Text>
                 </HStack>
+            ) : null}
+
+            {hasStartedJourny ? (
+                <RideTimer hasStartedJourny startedTime={startedTime} />
             ) : null}
         </VStack>
     );

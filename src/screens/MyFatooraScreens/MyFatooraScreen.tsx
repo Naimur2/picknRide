@@ -91,7 +91,7 @@ export default function MyFatooraPayment() {
         distpatch(setLoading(true));
         initiatePayments()
             .then((res) => {
-                console.log("initiatePayments", res);
+                console.log("initiatePayments", JSON.stringify(res));
                 setPaymentMethods(res?.Data?.PaymentMethods);
                 distpatch(setLoading(false));
             })

@@ -1,6 +1,7 @@
 import { fontSizes } from "@theme/typography";
 import { HStack, Image, Pressable, Text, VStack } from "native-base";
 import { ICardListProps, ICardProps } from "../types/myfatoora.interface";
+import { Platform } from "react-native";
 
 const Cards = ({
     selectedIndex,
@@ -82,13 +83,29 @@ function PaymentMethodsList({
         };
     });
 
+    const applePaumentMethods = [11, 25];
+
     const payMentMethodsWithDirectPayment = paymentMethodsWithIndex.filter(
         (item) => item.IsDirectPayment
     );
 
+    const applePayMethods = paymentMethodsWithIndex.filter((item) =>
+        applePaumentMethods.includes(item.PaymentMethodId)
+    );
+
+    const directpaymentsWithApplePay = [
+        ...payMentMethodsWithDirectPayment,
+        ...applePayMethods,
+    ];
+
+    const paymentmethodsToShow =
+        Platform.OS === "ios"
+            ? directpaymentsWithApplePay
+            : payMentMethodsWithDirectPayment;
+
     return (
         <VStack space="2">
-            {payMentMethodsWithDirectPayment.map((item, index) => {
+            {paymentmethodsToShow.map((item, index) => {
                 return (
                     <Cards
                         selectedIndex={selectedIndex}

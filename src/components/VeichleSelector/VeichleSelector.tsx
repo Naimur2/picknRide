@@ -17,21 +17,27 @@ export default function VeichleSelector({ ...rest }) {
     };
 
     return (
-        <HStack space={2} {...rest}>
+        <HStack space={4} {...rest}>
             <ViichleCircle
                 type={ECarType.SCOTTER}
                 isActive={selected === ECarType.SCOTTER}
                 onPress={() => setSelected(ECarType.SCOTTER)}
+                p={4}
+                imageWidth={24}
             />
             <ViichleCircle
                 type={ECarType.CAR}
                 isActive={selected === ECarType.CAR}
                 onPress={() => setSelected(ECarType.CAR)}
+                p={4}
+                imageWidth={24}
             />
             <ViichleCircle
                 type={ECarType.CYCLE}
                 isActive={selected === ECarType.CYCLE}
                 onPress={() => setSelected(ECarType.CYCLE)}
+                p={4}
+                imageWidth={24}
             />
         </HStack>
     );

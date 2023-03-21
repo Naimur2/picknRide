@@ -16,6 +16,7 @@ function ViichleCircle({
     onPress,
     isActive,
     imageWidth = 14,
+    ...rest
 }: {
     type: TCarType;
     isActive: boolean;
@@ -30,6 +31,7 @@ function ViichleCircle({
                 borderColor="#fff"
                 p="8px"
                 borderRadius={50}
+                {...rest}
                 onPress={onPress}
             >
                 <Image

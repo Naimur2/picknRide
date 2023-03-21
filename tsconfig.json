@@ -13,7 +13,8 @@
             "@assets/*": ["assets/*"],
             "@config": ["config.ts"],
             "@hooks/*": ["src/hooks/*"],
-            "@utils/*": ["src/utils/*"]
+            "@utils/*": ["src/utils/*"],
+            "@layots/*": ["src/layouts/*"]
         }
     },
     "extends": "expo/tsconfig.base"

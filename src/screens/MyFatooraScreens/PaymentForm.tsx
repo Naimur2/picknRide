@@ -84,278 +84,65 @@ export default function PaymentForm({
     });
 
     const onExecutePaymentButtonClickHandler = () => {
-        if (paymentMethods[selectedIndex].IsDirectPayment) {
-            executeDirectPayment({
-                cardExpiryMonth: values.month,
-                cardExpiryYear: values.year,
-                cardHolderName: values.cardHolderName,
-                cardNumber: values.cardNumber,
-                cardSecureCode: values.cvv,
-                paymentMethods: paymentMethods,
-                selectedIndex,
-                invoiceValue: parseFloat(values.paymentAmount),
-                paymentType: "CARD",
-            })
-                .then((res) => {
-                    console.log("executeDirectPayment", res);
-                })
-                .catch((err) => {
-                    alert(err);
-                });
-        } else {
-            executePayment({
-                invoiceValue: parseFloat(values.paymentAmount),
-                paymentMethods: paymentMethods,
-                selectedIndex,
-            })
-                .then((res) => {
-                    dispatch(setLoading(false));
-                    if (res?.Data?.PaymentURL) {
-                        topUp({
-                            amount: parseFloat(values.paymentAmount),
-                            payemntStatus: 1,
-                            paymentData: res?.Data?.PaymentURL,
-                            paymentType: selectedIndex,
-                            remark: "topup",
-                        })
-                            .unwrap()
-                            .then((res) => {
-                                showModal("success", {
-                                    title: "Success",
-                                    message: "Your Payment Successfully Done",
-                                });
-                                if (navigation.canGoBack()) {
-                                    navigation.goBack();
-                                }
-                            })
-                            .catch((err) => {
-                                showModal("error", {
-                                    title: "Error",
-                                    message:
-                                        "Failed to topup, please try again",
-                                });
+        executePayment({
+            invoiceValue: parseFloat(values.paymentAmount),
+            paymentMethods: paymentMethods,
+            selectedIndex,
+        })
+            .then((res) => {
+                dispatch(setLoading(false));
+                if (res?.Data?.PaymentURL) {
+                    topUp({
+                        amount: parseFloat(values.paymentAmount),
+                        payemntStatus: 1,
+                        paymentData: res?.Data?.PaymentURL,
+                        paymentType: selectedIndex,
+                        remark: "topup",
+                    })
+                        .unwrap()
+                        .then((res) => {
+                            showModal("success", {
+                                title: "Success",
+                                message: "Your Payment Successfully Done",
                             });
-                    } else {
-                        showModal("error", {
-                            title: "Error",
-                            message: "Failed to topup, please try again",
+                            if (navigation.canGoBack()) {
+                                navigation.goBack();
+                            }
+                        })
+                        .catch((err) => {
+                            showModal("error", {
+                                title: "Error",
+                                message: "Failed to topup, please try again",
+                            });
                         });
-                    }
-                })
-                .catch((err) => {
-                    dispatch(setLoading(false));
-                    alert("Payment Failed");
+                } else {
+                    showModal("error", {
+                        title: "Error",
+                        message: "Failed to topup, please try again",
+                    });
+                }
+            })
+            .catch((err) => {
+                console.log("executePayment", err);
+                dispatch(setLoading(false));
+                showModal("error", {
+                    title: "Error",
+                    message: err,
                 });
-        }
+            });
     };
 
     const formik = useFormik({
         initialValues: initialState,
-        validationSchema: creditCardNumberSchema,
+        validationSchema: isDirectPayment ? creditCardNumberSchema : null,
         onSubmit: async (values) => {
             try {
-                // const res = await initiateDirectPaymentMutation({
-                //     currencyIso: MFCurrencyISO.QATAR_QAR,
-                //     invoiceValue: parseFloat(values.paymentAmount),
-                // }).unwrap();
+                const res = await initiateDirectPaymentMutation({
+                    currencyIso: MFCurrencyISO.QATAR_QAR,
+                    invoiceValue: parseFloat(values.paymentAmount),
+                }).unwrap();
 
-                // const initiateDirectPaymentMutationData = {
-                //     data: {
-                //         isSuccess: true,
-                //         message: null,
-                //         validationErrors: null,
-                //         data: {
-                //             paymentMethods: [
-                //                 {
-                //                     paymentMethodId: 4,
-                //                     paymentMethodAr: "سداد",
-                //                     paymentMethodEn: "Sadad",
-                //                     paymentMethodCode: "s",
-                //                     isDirectPayment: false,
-                //                     serviceCharge: 2.222,
-                //                     totalAmount: 42.222,
-                //                     currencyIso: "QAR",
-                //                     imageUrl:
-                //                         "https://demo.myfatoorah.com/imgs/payment-methods/s.png",
-                //                     isEmbeddedSupported: false,
-                //                     paymentCurrencyIso: "SAR",
-                //                 },
-                //                 {
-                //                     paymentMethodId: 7,
-                //                     paymentMethodAr: "البطاقات المدينة - قطر",
-                //                     paymentMethodEn: "Qatar Debit Cards",
-                //                     paymentMethodCode: "np",
-                //                     isDirectPayment: false,
-                //                     serviceCharge: 2.222,
-                //                     totalAmount: 42.222,
-                //                     currencyIso: "QAR",
-                //                     imageUrl:
-                //                         "https://demo.myfatoorah.com/imgs/payment-methods/np.png",
-                //                     isEmbeddedSupported: false,
-                //                     paymentCurrencyIso: "QAR",
-                //                 },
-                //                 {
-                //                     paymentMethodId: 6,
-                //                     paymentMethodAr: "مدى",
-                //                     paymentMethodEn: "MADA",
-                //                     paymentMethodCode: "md",
-                //                     isDirectPayment: false,
-                //                     serviceCharge: 12.218,
-                //                     totalAmount: 40,
-                //                     currencyIso: "QAR",
-                //                     imageUrl:
-                //                         "https://demo.myfatoorah.com/imgs/payment-methods/md.png",
-                //                     isEmbeddedSupported: true,
-                //                     paymentCurrencyIso: "SAR",
-                //                 },
-                //                 {
-                //                     paymentMethodId: 1,
-                //                     paymentMethodAr: "كي نت",
-                //                     paymentMethodEn: "KNET",
-                //                     paymentMethodCode: "kn",
-                //                     isDirectPayment: false,
-                //                     serviceCharge: 12.618,
-                //                     totalAmount: 40,
-                //                     currencyIso: "QAR",
-                //                     imageUrl:
-                //                         "https://demo.myfatoorah.com/imgs/payment-methods/kn.png",
-                //                     isEmbeddedSupported: false,
-                //                     paymentCurrencyIso: "KWD",
-                //                 },
-                //                 {
-                //                     paymentMethodId: 11,
-                //                     paymentMethodAr: "أبل الدفع",
-                //                     paymentMethodEn: "Apple Pay",
-                //                     paymentMethodCode: "ap",
-                //                     isDirectPayment: false,
-                //                     serviceCharge: 12.618,
-                //                     totalAmount: 40,
-                //                     currencyIso: "QAR",
-                //                     imageUrl:
-                //                         "https://demo.myfatoorah.com/imgs/payment-methods/ap.png",
-                //                     isEmbeddedSupported: true,
-                //                     paymentCurrencyIso: "QAR",
-                //                 },
-                //                 {
-                //                     paymentMethodId: 2,
-                //                     paymentMethodAr: "فيزا / ماستر",
-                //                     paymentMethodEn: "VISA/MASTER",
-                //                     paymentMethodCode: "vm",
-                //                     isDirectPayment: false,
-                //                     serviceCharge: 1.262,
-                //                     totalAmount: 40,
-                //                     currencyIso: "QAR",
-                //                     imageUrl:
-                //                         "https://demo.myfatoorah.com/imgs/payment-methods/vm.png",
-                //                     isEmbeddedSupported: true,
-                //                     paymentCurrencyIso: "KWD",
-                //                 },
-                //                 {
-                //                     paymentMethodId: 14,
-                //                     paymentMethodAr: "STC Pay",
-                //                     paymentMethodEn: "STC Pay",
-                //                     paymentMethodCode: "stc",
-                //                     isDirectPayment: false,
-                //                     serviceCharge: 1.262,
-                //                     totalAmount: 40,
-                //                     currencyIso: "QAR",
-                //                     imageUrl:
-                //                         "https://demo.myfatoorah.com/imgs/payment-methods/stc.png",
-                //                     isEmbeddedSupported: false,
-                //                     paymentCurrencyIso: "SAR",
-                //                 },
-                //                 {
-                //                     paymentMethodId: 8,
-                //                     paymentMethodAr:
-                //                         "كروت الدفع المدنية (الإمارات)",
-                //                     paymentMethodEn: "UAE Debit Cards",
-                //                     paymentMethodCode: "uaecc",
-                //                     isDirectPayment: false,
-                //                     serviceCharge: 2.222,
-                //                     totalAmount: 42.222,
-                //                     currencyIso: "QAR",
-                //                     imageUrl:
-                //                         "https://demo.myfatoorah.com/imgs/payment-methods/uaecc.png",
-                //                     isEmbeddedSupported: true,
-                //                     paymentCurrencyIso: "AED",
-                //                 },
-                //                 {
-                //                     paymentMethodId: 5,
-                //                     paymentMethodAr: "بنفت",
-                //                     paymentMethodEn: "Benefit",
-                //                     paymentMethodCode: "b",
-                //                     isDirectPayment: false,
-                //                     serviceCharge: 2.022,
-                //                     totalAmount: 40,
-                //                     currencyIso: "QAR",
-                //                     imageUrl:
-                //                         "https://demo.myfatoorah.com/imgs/payment-methods/b.png",
-                //                     isEmbeddedSupported: false,
-                //                     paymentCurrencyIso: "BHD",
-                //                 },
-                //                 {
-                //                     paymentMethodId: 9,
-                //                     paymentMethodAr:
-                //                         "Visa/Master Direct 3DS Flow",
-                //                     paymentMethodEn:
-                //                         "Visa/Master Direct 3DS Flow",
-                //                     paymentMethodCode: "vm",
-                //                     isDirectPayment: true,
-                //                     serviceCharge: 2.222,
-                //                     totalAmount: 42.222,
-                //                     currencyIso: "QAR",
-                //                     imageUrl:
-                //                         "https://demo.myfatoorah.com/imgs/payment-methods/vm.png",
-                //                     isEmbeddedSupported: true,
-                //                     paymentCurrencyIso: "KWD",
-                //                 },
-                //                 {
-                //                     paymentMethodId: 20,
-                //                     paymentMethodAr: "Visa/Master Direct",
-                //                     paymentMethodEn: "Visa/Master Direct",
-                //                     paymentMethodCode: "vm",
-                //                     isDirectPayment: true,
-                //                     serviceCharge: 1.262,
-                //                     totalAmount: 40,
-                //                     currencyIso: "QAR",
-                //                     imageUrl:
-                //                         "https://demo.myfatoorah.com/imgs/payment-methods/vm.png",
-                //                     isEmbeddedSupported: true,
-                //                     paymentCurrencyIso: "KWD",
-                //                 },
-                //                 {
-                //                     paymentMethodId: 3,
-                //                     paymentMethodAr: "اميكس",
-                //                     paymentMethodEn: "AMEX",
-                //                     paymentMethodCode: "ae",
-                //                     isDirectPayment: false,
-                //                     serviceCharge: 2.222,
-                //                     totalAmount: 42.222,
-                //                     currencyIso: "QAR",
-                //                     imageUrl:
-                //                         "https://demo.myfatoorah.com/imgs/payment-methods/ae.png",
-                //                     isEmbeddedSupported: true,
-                //                     paymentCurrencyIso: "USD",
-                //                 },
-                //                 {
-                //                     paymentMethodId: 25,
-                //                     paymentMethodAr: "أبل باي (مدي)",
-                //                     paymentMethodEn: "Apple Pay (Mada)",
-                //                     paymentMethodCode: "ap",
-                //                     isDirectPayment: false,
-                //                     serviceCharge: 0.4,
-                //                     totalAmount: 40,
-                //                     currencyIso: "QAR",
-                //                     imageUrl:
-                //                         "https://demo.myfatoorah.com/imgs/payment-methods/ap.png",
-                //                     isEmbeddedSupported: true,
-                //                     paymentCurrencyIso: "KWD",
-                //                 },
-                //             ],
-                //         },
-                //     },
-                //     succeeded: true,
-                // };
+                const data = res?.data;
 
                 const res2 = await execDirPayWithToken({
                     currencyIso: MFCurrencyISO.QATAR_QAR,
@@ -371,18 +158,7 @@ export default function PaymentForm({
                         );
                         console.log({ info });
                     }
-                    // const resData = {
-                    //     data: {
-                    //         amount: "20",
-                    //         callBackURL:
-                    //             "http://3.139.151.111/api/Payment/CallBackPayment",
-                    //         paymentId: "07072107602148613271",
-                    //         paymentURL:
-                    //             "https://demo.MyFatoorah.com/En/KWT/PayInvoice/MpgsAuthentication?paymentId=07072107602148613271&sessionId=SESSION0002365723296J1007127F14",
-                    //         status: "Success",
-                    //     },
-                    //     succeeded: true,
-                    // };
+
                     alert("Payment Success");
                 } else {
                     const res3 = await execDirPayWithoutToken({
@@ -435,11 +211,11 @@ export default function PaymentForm({
     }, [amount]);
 
     const formHandler = () => {
-        if (isDirectPayment) {
-            handleSubmit();
-        } else {
-            onExecutePaymentButtonClickHandler();
-        }
+        // if (isDirectPayment) {
+        handleSubmit();
+        // } else {
+        //     onExecutePaymentButtonClickHandler();
+        // }
     };
 
     return (

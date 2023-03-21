@@ -9,7 +9,14 @@ import {
 } from "@store/features/document/documentSlice";
 import { selectAuth } from "@store/store";
 import createFormFile from "@utils/fileDetails";
-import { FormControl, Input, VStack } from "native-base";
+import {
+    FormControl,
+    HStack,
+    Input,
+    Pressable,
+    Text,
+    VStack,
+} from "native-base";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -17,14 +24,21 @@ import AddImage from "./AddImage/AddImage";
 import ExpiryDate from "./DocumentForm/ExpiryDate/ExpiryDate";
 import FormLabel from "./DocumentForm/FormLabel/FormLabel";
 import { setCurrentForm } from "@store/features/auth/authSlice";
+import CheckBox from "@components/CheckBox/CheckBox";
 
 export default function IdSubmission() {
     const dispatch = useDispatch();
     const auth = useSelector(selectAuth);
     const values = useSelector(selectAllDocumentFieldValues);
     const [submitDocument, result] = useUploadDocumentMutation();
-    const { resident_status } = auth as IAuthState;
+
     const showModal = useShowModal();
+
+    const [userType, setUserType] = React.useState<"Residence" | "Tourist">(
+        "Residence"
+    );
+
+    const resident_status = userType === "Residence" ? "0" : "1";
 
     const [errors, setErrors] = React.useState<{ [key: string]: string }>({});
 
@@ -34,14 +48,6 @@ export default function IdSubmission() {
         0: "Address",
         1: "Passport",
     };
-
-    const userTypes = {
-        "0": "Residence",
-        "1": "Tourist",
-    };
-
-    const userType =
-        userTypes[resident_status as keyof typeof userTypes] ?? "Residence";
 
     const schema = Yup.object().shape({
         docId1: Yup.number().required("Required"),
@@ -147,6 +153,20 @@ export default function IdSubmission() {
 
     return (
         <VStack>
+            <HStack space={4} alignItems={"center"}>
+                <Pressable onPress={() => setUserType("Residence")}>
+                    <CheckBox isChecked={userType === "Residence"} />
+                    <Text fontSize={17} fontWeight={600}>
+                        Residence
+                    </Text>
+                </Pressable>
+                <Pressable onPress={() => setUserType("Tourist")}>
+                    <CheckBox isChecked={userType === "Tourist"} />
+                    <Text fontSize={17} fontWeight={600}>
+                        Tourist
+                    </Text>
+                </Pressable>
+            </HStack>
             <FormControl mt={5}>
                 <FormLabel title="ID Number" />
                 <Input
