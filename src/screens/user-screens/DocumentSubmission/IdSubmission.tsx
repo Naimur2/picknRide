@@ -153,20 +153,23 @@ export default function IdSubmission() {
 
     return (
         <VStack>
-            <HStack space={4} alignItems={"center"}>
-                <Pressable onPress={() => setUserType("Residence")}>
-                    <CheckBox isChecked={userType === "Residence"} />
-                    <Text fontSize={17} fontWeight={600}>
-                        Residence
-                    </Text>
-                </Pressable>
-                <Pressable onPress={() => setUserType("Tourist")}>
-                    <CheckBox isChecked={userType === "Tourist"} />
-                    <Text fontSize={17} fontWeight={600}>
-                        Tourist
-                    </Text>
-                </Pressable>
-            </HStack>
+            <FormControl mt={5}>
+                <FormLabel title="Select Residence Status" />
+                <HStack space={4} alignItems={"center"}>
+                    <Pressable onPress={() => setUserType("Residence")}>
+                        <CheckBox isChecked={userType === "Residence"} />
+                        <Text fontSize={17} fontWeight={600}>
+                            Residence
+                        </Text>
+                    </Pressable>
+                    <Pressable onPress={() => setUserType("Tourist")}>
+                        <CheckBox isChecked={userType === "Tourist"} />
+                        <Text fontSize={17} fontWeight={600}>
+                            Tourist
+                        </Text>
+                    </Pressable>
+                </HStack>
+            </FormControl>
             <FormControl mt={5}>
                 <FormLabel title="ID Number" />
                 <Input
