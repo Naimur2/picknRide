@@ -44,7 +44,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
                 googleMapsApiKey: "AIzaSyDS-lAgjgs0rT8FzzB9woxe8sTPPh6v7F4",
             },
             bundleIdentifier: "com.PickNRide",
-            buildNumber: "1.1.2",
+            buildNumber: "1.1.5",
+            bitcode: false,
             infoPlist: {
                 NSLocationAlwaysAndWhenInUseUsageDescription:
                     "This app requires location access to provide you with the best experience.",

@@ -1,39 +1,39 @@
 {
-  "cli": {
-    "version": ">= 0.56.0"
-  },
-  "build": {
-    "development": {
-      "ios": {
-        "image": "latest"
-      },
-      "developmentClient": true,
-      "distribution": "internal"
+    "cli": {
+        "version": ">= 0.56.0"
     },
-    "preview": {
-      "distribution": "internal",
-      "ios": {
-        "image": "latest"
-      },
-      "android": {
-        "buildType": "apk"
-      }
+    "build": {
+        "development": {
+            "ios": {
+                "image": "latest"
+            },
+            "developmentClient": true,
+            "distribution": "internal"
+        },
+        "preview": {
+            "distribution": "internal",
+            "ios": {
+                "image": "latest"
+            },
+            "android": {
+                "buildType": "apk"
+            }
+        },
+        "preview2": {
+            "android": {
+                "gradleCommand": ":app:assembleRelease"
+            }
+        },
+        "preview3": {
+            "developmentClient": true
+        },
+        "production": {
+            "ios": {
+                "image": "latest"
+            }
+        }
     },
-    "preview2": {
-      "android": {
-        "gradleCommand": ":app:assembleRelease"
-      }
-    },
-    "preview3": {
-      "developmentClient": true
-    },
-    "production": {
-      "ios": {
-        "image": "latest"
-      }
+    "submit": {
+        "production": {}
     }
-  },
-  "submit": {
-    "production": {}
-  }
 }
