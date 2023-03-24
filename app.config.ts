@@ -45,6 +45,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
             },
             bundleIdentifier: "com.PickNRide",
             buildNumber: "1.1.2",
+            bitcode: false,
             infoPlist: {
                 NSLocationAlwaysAndWhenInUseUsageDescription:
                     "This app requires location access to provide you with the best experience.",

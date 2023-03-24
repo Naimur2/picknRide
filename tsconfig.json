@@ -14,7 +14,7 @@
             "@config": ["config.ts"],
             "@hooks/*": ["src/hooks/*"],
             "@utils/*": ["src/utils/*"],
-            "@layots/*": ["src/layouts/*"]
+            "@layouts/*": ["src/layouts/*"]
         }
     },
     "extends": "expo/tsconfig.base"

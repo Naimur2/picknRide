@@ -19,7 +19,7 @@ module.exports = function (api) {
                         "@config":"./config.ts",
                         "@hooks": "./src/hooks",
                         "@utils": "./src/utils",
-                        "@layouts": "./src/layouts
+                        "@layouts": "./src/layouts"
                     },
                 },
             ],
