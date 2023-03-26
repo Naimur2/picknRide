@@ -55,21 +55,8 @@ const authApiSlice = authApiV1.injectEndpoints({
                 try {
                     const result = await queryFulfilled;
                     const { data } = result;
-
                     const dispatchData = data.data as IAuthState;
-
-                    if (
-                        dispatchData?.resident_status === "0" &&
-                        dispatchData?.userdocuments_status === "0"
-                    ) {
-                        const dataInfo = {
-                            ...dispatchData,
-                            checkOtherInformation: true,
-                        };
-                        dispatch(login(dataInfo));
-                    } else {
-                        dispatch(login(dispatchData));
-                    }
+                    dispatch(login(dispatchData));
                 } catch (error) {}
             },
         }),

@@ -17,19 +17,9 @@ export default function HomeRoutes() {
     const { colorMode } = useColorMode();
     const auth = useSelector(selectAuth) as IAuthState;
 
-    const [goToDashboard, setGoToDashboard] = React.useState(false);
-
-    React.useEffect(() => {
-        if (auth?.token && !auth.checkOtherInformation) {
-            setGoToDashboard(true);
-        } else {
-            setGoToDashboard(false);
-        }
-    }, [auth?.token, auth.checkOtherInformation]);
-
     return (
         <Stack.Navigator>
-            {goToDashboard ? (
+            {auth?.token ? (
                 <Stack.Screen
                     options={{
                         headerShown: false,

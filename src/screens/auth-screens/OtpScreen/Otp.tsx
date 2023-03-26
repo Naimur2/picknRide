@@ -95,19 +95,19 @@ export default function OtpForm() {
         };
 
         try {
-            const data = await verifyOtp(submitFromData).unwrap();
+            await verifyOtp(submitFromData).unwrap();
 
-            if (data?.status === 200) {
-                if (
-                    data?.data?.resident_status === "0" &&
-                    data?.data?.userdocuments_status === "0" &&
-                    data?.data?.card_status === "0"
-                ) {
-                    navigation.navigate("SelectCitizenShip");
-                } else {
-                    dispatch(setCheckOtherInformation(true));
-                }
-            }
+            // if (data?.status === 200) {
+            //     if (
+            //         data?.data?.resident_status === "0" &&
+            //         data?.data?.userdocuments_status === "0" &&
+            //         data?.data?.card_status === "0"
+            //     ) {
+            //         navigation.navigate("SelectCitizenShip");
+            //     } else {
+            //         dispatch(setCheckOtherInformation(true));
+            //     }
+            // }
         } catch (error) {
             console.log(error);
         }
@@ -120,8 +120,8 @@ export default function OtpForm() {
     // Resend Otp api call
     const handelResendOtp = async () => {
         const resendOtpData = {
-            dialing_code: dialing_code,
-            phone: phone,
+            dialing_code: routeParams?.dialing_code,
+            phone: routeParams?.phone,
         };
         setStartTimer(true);
         await resendOtp(resendOtpData);
