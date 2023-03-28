@@ -14,8 +14,13 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import VideoPlayer from "./DocumentForm/VideoPlayer/VideoPlayer";
 import createFormFile from "@utils/fileDetails";
+import { TCitizen } from "./DocumentForm/DocumentForm";
 
-export default function VideoSubmission() {
+export default function VideoSubmission({
+    residentType,
+}: {
+    residentType: TCitizen;
+}) {
     const navigation = useNavigation();
     const values = useSelector(selectAllDocumentFieldValues) as any;
     const [error, setError] = React.useState<Error | null>(null);
@@ -23,16 +28,9 @@ export default function VideoSubmission() {
     const showModal = useShowModal();
 
     const auth = useSelector(selectAuth);
-    const { resident_status } = auth as IAuthState;
     const [submitDocument, result] = useUploadDocumentMutation();
 
-    const userTypes = {
-        "0": "Residence",
-        "1": "Tourist",
-    };
-
-    const userType =
-        userTypes[resident_status as keyof typeof userTypes] ?? "Residence";
+    const userType = residentType;
 
     const handleRecoder = async () => {
         try {

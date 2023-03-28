@@ -12,9 +12,13 @@ import VideoSubmission from "../VideoSubmission";
 import { Entypo } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 import { selectCurrentForm } from "@store/features/auth/authSlice";
+export type TCitizen = "Residence" | "Tourist";
 
 function DocumentForm() {
     const current = useSelector(selectCurrentForm);
+
+    const [residentType, setResidentType] =
+        React.useState<TCitizen>("Residence");
 
     console.log("current", current);
 
@@ -24,24 +28,30 @@ function DocumentForm() {
         {
             id: 1,
             title: "Residency information",
-            component: <IdSubmission />,
+            component: (
+                <IdSubmission
+                    residentType={residentType}
+                    setResidentType={setResidentType}
+                />
+            ),
         },
         {
             id: 2,
             title: "Driver's license",
-            component: <LiscenseSubmissions />,
+            component: <LiscenseSubmissions residentType={residentType} />,
         },
         {
             id: 3,
             title: "Selfie",
-            component: <VideoSubmission />,
+            component: <VideoSubmission residentType={residentType} />,
         },
         {
             id: 4,
             title: "Signature",
-            component: <SignatureSubmission />,
+            component: <SignatureSubmission residentType={residentType} />,
         },
     ];
+
     return (
         <VStack w={scale(300) + "px"} mx="auto" py={4}>
             <H3 mt={4}>Documents</H3>

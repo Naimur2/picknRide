@@ -20,24 +20,23 @@ import ExpiryDate from "./DocumentForm/ExpiryDate/ExpiryDate";
 import FormLabel from "./DocumentForm/FormLabel/FormLabel";
 import PickerButton from "./DocumentForm/PickerButton/PickerButton";
 import createFormFile from "@utils/fileDetails";
+import { TCitizen } from "./DocumentForm/DocumentForm";
 
-export default function LiscenseSubmissions() {
+export default function LiscenseSubmissions({
+    residentType,
+}: {
+    residentType: TCitizen;
+}) {
     const dispatch = useDispatch();
     const auth = useSelector(selectAuth);
-    const { resident_status } = auth as IAuthState;
+
     const values = useSelector(selectAllDocumentFieldValues) as any;
     const [submitDocument, result] = useUploadDocumentMutation();
     const [show, setShow] = React.useState(false);
     const [errors, setErrors] = React.useState<{ [key: string]: string }>({});
     const showModal = useShowModal();
 
-    const userTypes = {
-        "0": "Residence",
-        "1": "Tourist",
-    };
-
-    const userType =
-        userTypes[resident_status as keyof typeof userTypes] ?? "Residence";
+    const userType = residentType;
 
     const schema = Yup.object().shape({
         docId2: Yup.number().required("Required"),

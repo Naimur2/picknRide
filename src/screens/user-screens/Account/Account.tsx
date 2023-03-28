@@ -188,11 +188,11 @@ export default function Account() {
                                 color: "#fff",
                                 placeholderTextColor: "white",
                             }}
-                            rightElement={
-                                <Pressable>
-                                    <Pen width={scale(16)} height={scale(16)} />
-                                </Pressable>
-                            }
+                            // rightElement={
+                            //     <Pressable>
+                            //         <Pen width={scale(16)} height={scale(16)} />
+                            //     </Pressable>
+                            // }
                             value={formik.values.qid}
                             onChangeText={formik.handleChange("qid")}
                             onBlur={formik.handleBlur("qid")}
@@ -288,8 +288,8 @@ export default function Account() {
                             value={formik.values.dob}
                             onChangeText={formik.handleChange("dob")}
                             onBlur={formik.handleBlur("dob")}
-                            editable={false}
-                            pointerEvents="none"
+                            // editable={false}
+                            // pointerEvents="none"
                         />
                     </FormControl>
                     <FormControl mt={3} w="full">
@@ -312,11 +312,11 @@ export default function Account() {
                                 color: "#fff",
                                 placeholderTextColor: "white",
                             }}
-                            rightElement={
-                                <Pressable>
-                                    <Pen width={scale(16)} height={scale(16)} />
-                                </Pressable>
-                            }
+                            // rightElement={
+                            //     <Pressable>
+                            //         <Pen width={scale(16)} height={scale(16)} />
+                            //     </Pressable>
+                            // }
                             value={
                                 formik.values.dialing_code +
                                 "" +
@@ -349,11 +349,11 @@ export default function Account() {
                                 color: "#fff",
                                 placeholderTextColor: "white",
                             }}
-                            rightElement={
-                                <Pressable>
-                                    <Pen width={scale(16)} height={scale(16)} />
-                                </Pressable>
-                            }
+                            // rightElement={
+                            //     <Pressable>
+                            //         <Pen width={scale(16)} height={scale(16)} />
+                            //     </Pressable>
+                            // }
                             value={formik.values.email}
                             onChangeText={formik.handleChange("email")}
                             onBlur={formik.handleBlur("email")}

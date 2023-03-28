@@ -10,6 +10,7 @@ import {
 import { selectAuth } from "@store/store";
 import createFormFile from "@utils/fileDetails";
 import {
+    Checkbox,
     FormControl,
     HStack,
     Input,
@@ -24,9 +25,15 @@ import AddImage from "./AddImage/AddImage";
 import ExpiryDate from "./DocumentForm/ExpiryDate/ExpiryDate";
 import FormLabel from "./DocumentForm/FormLabel/FormLabel";
 import { setCurrentForm } from "@store/features/auth/authSlice";
-import CheckBox from "@components/CheckBox/CheckBox";
+import { TCitizen } from "./DocumentForm/DocumentForm";
 
-export default function IdSubmission() {
+export default function IdSubmission({
+    residentType,
+    setResidentType,
+}: {
+    residentType: TCitizen;
+    setResidentType: React.Dispatch<React.SetStateAction<TCitizen>>;
+}) {
     const dispatch = useDispatch();
     const auth = useSelector(selectAuth);
     const values = useSelector(selectAllDocumentFieldValues);
@@ -34,9 +41,7 @@ export default function IdSubmission() {
 
     const showModal = useShowModal();
 
-    const [userType, setUserType] = React.useState<"Residence" | "Tourist">(
-        "Residence"
-    );
+    const userType = residentType;
 
     const resident_status = userType === "Residence" ? "0" : "1";
 
@@ -156,22 +161,48 @@ export default function IdSubmission() {
             <FormControl mt={5}>
                 <FormLabel title="Select Residence Status" />
                 <HStack space={4} alignItems={"center"}>
-                    <Pressable onPress={() => setUserType("Residence")}>
-                        <CheckBox isChecked={userType === "Residence"} />
+                    <Checkbox
+                        rounded={"full"}
+                        bg="transparent"
+                        borderColor="primary.100"
+                        _checked={{
+                            bg: "primary.100",
+                            borderColor: "primary.100",
+                        }}
+                        value="Residence"
+                        isChecked={userType === "Residence"}
+                        onChange={(nextValue) => setResidentType("Residence")}
+                    >
                         <Text fontSize={17} fontWeight={600}>
                             Residence
                         </Text>
-                    </Pressable>
-                    <Pressable onPress={() => setUserType("Tourist")}>
-                        <CheckBox isChecked={userType === "Tourist"} />
+                    </Checkbox>
+                    <Checkbox
+                        value="Tourist"
+                        isChecked={userType === "Tourist"}
+                        onChange={(nextValue) => setResidentType("Tourist")}
+                        rounded={"full"}
+                        bg="transparent"
+                        borderColor="primary.100"
+                        _checked={{
+                            bg: "primary.100",
+                            borderColor: "primary.100",
+                        }}
+                    >
                         <Text fontSize={17} fontWeight={600}>
                             Tourist
                         </Text>
-                    </Pressable>
+                    </Checkbox>
                 </HStack>
             </FormControl>
             <FormControl mt={5}>
-                <FormLabel title="ID Number" />
+                <FormLabel
+                    title={
+                        residentType === "Residence"
+                            ? "ID Number"
+                            : "Passport Number"
+                    }
+                />
                 <Input
                     fontSize={17}
                     fontWeight={600}

@@ -3,6 +3,7 @@ import { getTextDate } from "@utils/date.helper";
 import { FormControl } from "native-base";
 import React from "react";
 import PickerButton from "../PickerButton/PickerButton";
+import { Keyboard } from "react-native";
 
 export default function ExpiryDate({
     onChange,
@@ -29,7 +30,10 @@ export default function ExpiryDate({
 
             <DatePickerModal
                 isOpen={show}
-                onClose={() => setShow(false)}
+                onClose={() => {
+                    setShow(false);
+                    if (Keyboard.dismiss) Keyboard.dismiss();
+                }}
                 setDate={(dt) => {
                     onChange?.(dt);
                     setShow(false);

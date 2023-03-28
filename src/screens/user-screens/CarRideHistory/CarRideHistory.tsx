@@ -4,7 +4,7 @@ import HeaderTitle from "@components/HeaderTitle/HeaderTitle";
 import Scroller from "@components/Scroller/Scroller";
 import { useNavigation } from "@react-navigation/native";
 import colors from "@theme/colors";
-import { FlatList, VStack, useColorMode } from "native-base";
+import { FlatList, Text, VStack, useColorMode } from "native-base";
 import React from "react";
 import { ActivityIndicator, Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -186,6 +186,26 @@ export default function CarRideHistory() {
                 ListFooterComponent={() => {
                     if (isFetching) return <LoadingComponent />;
                     return null;
+                }}
+                ListEmptyComponent={() => {
+                    if (isLoading) return null;
+                    return (
+                        <VStack
+                            alignItems="center"
+                            justifyContent="center"
+                            height={scale(100)}
+                        >
+                            <Text
+                                textAlign={"center"}
+                                maxWidth={200}
+                                fontWeight={700}
+                                fontSize={"xl"}
+                                color={"red.100"}
+                            >
+                                No history found for this vehicle
+                            </Text>
+                        </VStack>
+                    );
                 }}
                 keyExtractor={(item, index) => index.toString()}
             />

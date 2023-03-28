@@ -32,7 +32,7 @@ export default function Balance({
                         color: "#fff",
                     }}
                 >
-                    {auth?.wallet || 50} {currency || "QAR"}
+                    {auth?.wallet || "00"} {currency || "QAR"}
                 </Text>
             </HStack>
         </Pressable>

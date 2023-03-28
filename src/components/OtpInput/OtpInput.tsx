@@ -44,7 +44,7 @@ const OtpInput = ({ numInputs, setOtp, ...rest }: OtpInputProps) => {
 
     const handleOnKeyPress = (index: number, event: any) => {
         // prevent moving to next input field if previous one is empty
-        if (event.nativeEvent.key === "Backspace" && values[index] === "") {
+        if (event.nativeEvent.key === "Backspace" && values[index] !== "") {
             if (inputRefs.current[index - 1]) {
                 inputRefs.current[index - 1].focus();
             }
@@ -74,6 +74,8 @@ const OtpInput = ({ numInputs, setOtp, ...rest }: OtpInputProps) => {
                     height={INPUT_HEIGHT}
                     borderRadius={INPUT_BORDER_RADIUS}
                     shadow={5}
+                    borderWidth={1}
+                    borderColor={"light.100"}
                     overflow={"hidden"}
                     bg={values[index] ? "primary.100" : "white"}
                 >

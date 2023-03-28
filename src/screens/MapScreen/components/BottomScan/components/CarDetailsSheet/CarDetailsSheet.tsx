@@ -281,7 +281,7 @@ function CarDetailsSheet({
                         />
 
                         <Text mt={2} fontWeight={"bold"}>
-                            {!isLocked ? "Press to lock" : "Press to unlocke"}
+                            {!isLocked ? "Press to lock" : "Press to unlock"}
                         </Text>
                     </Center>
                     {isLocked ? (

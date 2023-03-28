@@ -3,6 +3,7 @@ import ImagePickerSheet from "@components/ImagePickerSheet/ImagePickerSheet";
 import * as ImagePicker from "expo-image-picker";
 import { Image, Pressable, Text, VStack } from "native-base";
 import React from "react";
+import { useDispatch } from "react-redux";
 
 export default function ImageCard({
     setImage,
@@ -14,8 +15,6 @@ export default function ImageCard({
     title: string;
 }) {
     const [isOpen, setIsOpen] = React.useState(false);
-    const [libraryStatus, requestPermission] =
-        ImagePicker.useMediaLibraryPermissions();
 
     const checkImagePermission = async () => {
         const { status } =
@@ -36,6 +35,8 @@ export default function ImageCard({
                     borderRadius={35}
                     bg="#fff"
                     shadow="9"
+                    borderWidth={1}
+                    borderColor={"light.200"}
                     alignItems={"center"}
                     justifyContent={"center"}
                     onPress={checkImagePermission}
@@ -76,10 +77,13 @@ export default function ImageCard({
             <ImagePickerSheet
                 setImage={(image) => {
                     setIsOpen(false);
+
                     setImage(image);
                 }}
                 isOpen={isOpen}
-                onClose={() => setIsOpen(false)}
+                onClose={() => {
+                    setIsOpen(false);
+                }}
             />
         </>
     );

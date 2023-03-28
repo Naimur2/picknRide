@@ -17,8 +17,13 @@ import { setCurrentForm } from "@store/features/auth/authSlice";
 import createFormFile from "@utils/fileDetails";
 import { useDispatch, useSelector } from "react-redux";
 import Signature from "./DocumentForm/Signature/Signature";
+import { TCitizen } from "./DocumentForm/DocumentForm";
 
-export default function SignatureSubmission() {
+export default function SignatureSubmission({
+    residentType,
+}: {
+    residentType: TCitizen;
+}) {
     const navigation = useNavigation();
     const [termAccept, setTermAccept] = React.useState(false);
     const dispatch = useDispatch();
@@ -33,13 +38,7 @@ export default function SignatureSubmission() {
         dispatch(setDocumentFieldValue({ fieldName: field, value }));
     };
 
-    const userTypes = {
-        "0": "Residence",
-        "1": "Tourist",
-    };
-
-    const userType =
-        userTypes[resident_status as keyof typeof userTypes] ?? "Residence";
+    const userType = residentType;
 
     const handleSubmit = async () => {
         try {

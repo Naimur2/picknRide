@@ -4,6 +4,8 @@ import { TouchableOpacity } from "react-native";
 import useImagePicker from "@hooks/use-image-picker";
 import Camera from "@assets/svgs/Camera";
 import { UploadIcon } from "../Icons/Icons";
+import { useDispatch } from "react-redux";
+import { setLoading } from "@store/features/ui/uiSlice";
 
 interface IPickerSheet {
     isOpen: boolean;
@@ -20,6 +22,7 @@ const ImagePickerSheet = ({
     hideFromGallery,
     backCameraOnly,
 }: IPickerSheet) => {
+    const dispatch = useDispatch();
     const { image, pickImage, captureImage } = useImagePicker({
         useCamera: backCameraOnly,
     });
@@ -30,6 +33,14 @@ const ImagePickerSheet = ({
             setImage?.(image);
         }
     }, [image]);
+
+    React.useEffect(() => {
+        dispatch(setLoading(isOpen));
+
+        return () => {
+            dispatch(setLoading(false));
+        };
+    }, [isOpen]);
 
     return (
         <Actionsheet isOpen={isOpen} onClose={onClose}>
