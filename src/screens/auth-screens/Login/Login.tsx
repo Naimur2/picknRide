@@ -8,11 +8,32 @@ import { fontSizes } from "@theme/typography";
 import SignInInputForm from "./SignInInputForm/SignInInputForm";
 import SocialButton from "./SocialButton/SocialButton";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useGoogleSignInMutation } from "@store/api/v2/authorizationApi";
+import * as WebBrowser from "expo-web-browser";
 
 export default function Login() {
     const { colorMode } = useColorMode();
     const navigation = useNavigation();
     const inset = useSafeAreaInsets();
+
+    const [googleSignInFn, googleSignInResult] = useGoogleSignInMutation();
+
+    const googleSignIn = async () => {
+        try {
+            const data = await googleSignInFn(undefined).unwrap();
+            const { authUrl } = data?.data;
+            console.log(authUrl);
+            const authUrlWithoutSpace = authUrl?.replace(" ", "%20");
+            const redirectUrl = authUrl?.split("redirect_uri=")[1];
+
+            const result = await WebBrowser.openAuthSessionAsync(
+                authUrlWithoutSpace,
+                redirectUrl
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <ImageBg type={colorMode}>
@@ -54,10 +75,7 @@ export default function Login() {
                         type={"facebook"}
                         onPress={() => console.log("log")}
                     />
-                    <SocialButton
-                        type={"google"}
-                        onPress={() => console.log("log")}
-                    />
+                    <SocialButton type={"google"} onPress={googleSignIn} />
                 </VStack>
 
                 <HStack

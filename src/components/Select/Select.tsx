@@ -27,7 +27,9 @@ export default function Select({
 }) {
     const [isOpen, setIsOpen] = React.useState(false);
 
-    const { data } = useGetLocationApiQuery(undefined);
+    const { data, error } = useGetLocationApiQuery(undefined);
+
+    console.log(error);
 
     // get locations from api
     const locations: Ilocations[] = data?.data || [];
