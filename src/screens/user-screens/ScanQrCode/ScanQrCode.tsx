@@ -251,7 +251,7 @@ export default function ScanQrCode() {
                 title: "Error",
                 message: "Permission to access location was denied",
             });
-        } else if (!nameplateImage && !inputRef?.current?.length) {
+        } else if (!nameplateImage && inputRef?.current?.length === 0) {
             showModal("error", {
                 title: "Error",
                 message: "Image or number is required",

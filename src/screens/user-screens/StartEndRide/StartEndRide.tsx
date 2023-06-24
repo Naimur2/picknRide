@@ -379,8 +379,10 @@ export default function StartEndRide() {
             <ImageBg type={colorMode}>
                 <Center>
                     <TopSection
-                        title="Upload photos
-                        to end ride."
+                        title={`Upload photos to  ${
+                            startOrEnd === "start" ? "start" : "end"
+                        }
+                             ride.`}
                         subtitle="Please upload 4 photos to end ride"
                     />
 
