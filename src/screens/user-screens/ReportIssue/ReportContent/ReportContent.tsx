@@ -11,6 +11,9 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
 import { ISelection } from "../ReportIssue";
 import TopSelection from "../TopSelection/TopSelection";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { useRoute } from "@react-navigation/native";
 
 export default function ReportContent({
     selections,
@@ -22,6 +25,7 @@ export default function ReportContent({
     const [isOpenImagePickerSheet, setIsOpenImagePickerSheet] =
         React.useState(false);
     const insets = useSafeAreaInsets();
+    const params = useRoute().params;
 
     const [isOpen, setIsOpen] = React.useState(false);
     const selectedImage = image?.split("/").pop();
@@ -35,6 +39,18 @@ export default function ReportContent({
             setIsOpenImagePickerSheet(true);
         }
     };
+
+    const formik = useFormik({
+        initialValues: {
+            customerMessage: "",
+            categoryId: 0,
+        },
+        onSubmit: async (values) => {},
+        validationSchema: Yup.object().shape({
+            customerMessage: Yup.string().required("Required"),
+            categoryId: Yup.number().required("Required"),
+        }),
+    });
 
     return (
         <VStack
@@ -54,12 +70,20 @@ export default function ReportContent({
                         isActive={selectedMenu === selection._id}
                         iconName={selection.icon}
                         title={selection.title}
-                        onPress={() => setSelectedMenu(selection._id)}
+                        onPress={() => {
+                            setSelectedMenu(selection._id);
+                            formik.setFieldValue("categoryId", id);
+                        }}
                     />
                 ))}
+                {formik.errors.categoryId && formik.touched.categoryId ? (
+                    <Text color="red.500" fontSize={12} fontWeight={500}>
+                        {formik.errors.categoryId}
+                    </Text>
+                ) : null}
             </HStack>
 
-            <Card onPress={checkImagePermission} shadow={5}>
+            {/* <Card onPress={checkImagePermission} shadow={5}>
                 <HStack justifyContent={"space-between"}>
                     <Text
                         color="gray.100"
@@ -72,7 +96,7 @@ export default function ReportContent({
                     </Text>
                     <UploadIcon fontSize={18} color="gray.100" />
                 </HStack>
-            </Card>
+            </Card> */}
             <Card px="3" shadow="5">
                 <Input
                     _focus={{
@@ -83,26 +107,36 @@ export default function ReportContent({
                     multiline={true}
                     textAlignVertical={"top"}
                     borderWidth={0}
+                    height={200}
                     _dark={{
                         bg: "gray.200",
                     }}
                     bg="#fff"
                     placeholderTextColor={"gray.100"}
+                    onChangeText={formik.handleChange("customerMessage")}
+                    value={formik.values.customerMessage}
+                    onBlur={formik.handleBlur("customerMessage")}
                 />
+                {formik.errors.customerMessage &&
+                formik.touched.customerMessage ? (
+                    <Text color="red.500" fontSize={12} fontWeight={500}>
+                        {formik.errors.customerMessage}
+                    </Text>
+                ) : null}
             </Card>
-            <ImagePickerSheet
+            {/* <ImagePickerSheet
                 isOpen={isOpenImagePickerSheet}
                 onClose={() => setIsOpenImagePickerSheet(false)}
                 setImage={(img) => {
                     setIsOpenImagePickerSheet(false);
                     setImage(img);
                 }}
-            />
+            /> */}
             <GradientBtn
                 mt="20%"
                 title="report"
                 mx="auto"
-                onPress={() => setIsOpen(true)}
+                onPress={formik.handleSubmit}
             />
             {isOpen ? (
                 <CModal isOpen={isOpen} onClose={() => setIsOpen(false)} py={8}>

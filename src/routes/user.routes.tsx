@@ -14,6 +14,7 @@ import ReportIssue from "@screens/user-screens/ReportIssue/ReportIssue";
 import ScanQrCode from "@screens/user-screens/ScanQrCode/ScanQrCode";
 import Settings from "@screens/user-screens/Settings/Settings";
 import StartEndRide from "@screens/user-screens/StartEndRide/StartEndRide";
+import Support from "@screens/user-screens/Support";
 import TripDetails from "@screens/user-screens/TripDetails/TripDetails";
 import VarificationStatus from "@screens/user-screens/VarificationStatus/VarificationStatus";
 import Wallet from "@screens/user-screens/Wallet/Wallet";
@@ -21,10 +22,9 @@ import colors from "@theme/colors";
 import { MFWebView } from "myfatoorah-reactnative";
 import { useColorMode } from "native-base";
 import React from "react";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import MyFatooraScreen from "../screens/MyFatooraScreens/MyFatooraScreen";
 import SelectOtpType from "../screens/user-screens/SelectOtpType/SelectOtpType";
 import TripOtpScreen from "../screens/user-screens/TripOtpScreen/TripOtpScreen";
-import MyFatooraScreen from "../screens/MyFatooraScreens/MyFatooraScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -113,6 +113,7 @@ export default function UserRoutes() {
             />
             <Stack.Screen name="SelectOtpType" component={SelectOtpType} />
             <Stack.Screen name="TripOtpScreen" component={TripOtpScreen} />
+            <Stack.Screen name="Support" component={Support} />
             <Stack.Screen
                 name="MFWebView"
                 component={MFWebView}

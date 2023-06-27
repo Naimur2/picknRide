@@ -1,7 +1,6 @@
 import BackButton from "@components/BackButton/BackButton";
 import Balance from "@components/Balance/Balance";
 import HeaderTitle from "@components/HeaderTitle/HeaderTitle";
-import Scroller from "@components/Scroller/Scroller";
 import { useNavigation } from "@react-navigation/native";
 import colors from "@theme/colors";
 import { FlatList, Text, VStack, useColorMode } from "native-base";
@@ -10,99 +9,12 @@ import { ActivityIndicator, Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
 
-import HistoryCard, { IHistoryCard } from "./HistoryCard/HistoryCard";
 import {
     tripApiSlice,
     useGetAllCarTripsQuery,
 } from "@store/api/v2/tripApi/tripApiSlice";
 import { useDispatch } from "react-redux";
-
-const historyCards: IHistoryCard[] = [
-    {
-        _id: "1",
-        starting: {
-            locationName: "Masraf Al-Rayan Building",
-            time: "10 September, 10.30 AM",
-        },
-        destination: {
-            locationName: "Al Wakrah",
-            time: "10 September, 11.00 AM",
-        },
-        duration: "30 min",
-        distance: "1.2 km",
-        fair: "3.2",
-    },
-    {
-        _id: "2",
-        starting: {
-            locationName: "Masraf Al-Rayan Building",
-            time: "10 September, 10.30 AM",
-        },
-        destination: {
-            locationName: "Al Wakrah",
-            time: "10 September, 11.00 AM",
-        },
-        duration: "30 min",
-        distance: "1.2 km",
-        fair: "3.2",
-    },
-    {
-        _id: "3",
-        starting: {
-            locationName: "Masraf Al-Rayan Building",
-            time: "10 September, 10.30 AM",
-        },
-        destination: {
-            locationName: "Al Wakrah",
-            time: "10 September, 11.00 AM",
-        },
-        duration: "30 min",
-        distance: "1.2 km",
-        fair: "3.2",
-    },
-    {
-        _id: "4",
-        starting: {
-            locationName: "Masraf Al-Rayan Building",
-            time: "10 September, 10.30 AM",
-        },
-        destination: {
-            locationName: "Al Wakrah",
-            time: "10 September, 11.00 AM",
-        },
-        duration: "30 min",
-        distance: "1.2 km",
-        fair: "3.2",
-    },
-    {
-        _id: "5",
-        starting: {
-            locationName: "Masraf Al-Rayan Building",
-            time: "10 September, 10.30 AM",
-        },
-        destination: {
-            locationName: "Al Wakrah",
-            time: "10 September, 11.00 AM",
-        },
-        duration: "30 min",
-        distance: "1.2 km",
-        fair: "3.2",
-    },
-    {
-        _id: "6",
-        starting: {
-            locationName: "Masraf Al-Rayan Building",
-            time: "10 September, 10.30 AM",
-        },
-        destination: {
-            locationName: "Al Wakrah",
-            time: "10 September, 11.00 AM",
-        },
-        duration: "30 min",
-        distance: "1.2 km",
-        fair: "3.2",
-    },
-];
+import HistoryCard, { IHistoryCard } from "./HistoryCard/HistoryCard";
 
 const LoadingComponent = () => {
     return (
@@ -165,16 +77,19 @@ export default function CarRideHistory() {
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
                 data={data?.data?.items || []}
-                renderItem={({ item, index }) => (
-                    <HistoryCard
-                        starting={item?.starting}
-                        destination={item?.destination}
-                        duration={item?.duration}
-                        fair={item?.fair}
-                        distance={item?.distance}
-                        key={index}
-                    />
-                )}
+                renderItem={({ item, index }) => {
+                    return (
+                        <HistoryCard
+                            starting={item?.starting}
+                            destination={item?.destination}
+                            duration={item?.duration}
+                            fair={item?.fair}
+                            distance={item?.distance}
+                            key={index}
+                            rideId={item?._id}
+                        />
+                    );
+                }}
                 contentContainerStyle={{
                     paddingTop: Platform.OS === "ios" ? insets.top : 50,
                     paddingBottom: insets.bottom,

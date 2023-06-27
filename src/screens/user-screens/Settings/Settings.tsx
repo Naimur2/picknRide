@@ -48,10 +48,10 @@ export default function Settings() {
             title: "Terms & Conditions",
             onPress: () => {},
         },
-        {
-            title: "Report An Issue",
-            onPress: () => navigation.navigate("ReportIssue"),
-        },
+        // {
+        //     title: "Report An Issue",
+        //     onPress: () => navigation.navigate("ReportIssue"),
+        // },
     ];
 
     React.useLayoutEffect(() => {

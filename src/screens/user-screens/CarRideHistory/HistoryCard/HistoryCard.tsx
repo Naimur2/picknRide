@@ -1,4 +1,4 @@
-import { Box, HStack, Image, Text, VStack } from "native-base";
+import { Box, HStack, Image, Text, VStack, Pressable } from "native-base";
 import React from "react";
 import Card from "@components/Card/Card";
 import Station, { IStation } from "../Station/Station";
@@ -6,6 +6,9 @@ import Station, { IStation } from "../Station/Station";
 import { scale } from "react-native-size-matters";
 import clock from "@assets/images/clock.png";
 import locationOutline from "@assets/images/location-outline.png";
+import { FontAwesome5 } from "@expo/vector-icons";
+import colors from "@theme/colors";
+import { useNavigation } from "@react-navigation/native";
 
 export interface IHistoryCard {
     starting: IStation;
@@ -13,6 +16,7 @@ export interface IHistoryCard {
     duration: string;
     fair: number;
     distance: number;
+    rideId: string;
 }
 
 export default function HistoryCard({
@@ -21,7 +25,11 @@ export default function HistoryCard({
     duration,
     fair,
     distance,
+    rideId,
 }: IHistoryCard) {
+    const navigation = useNavigation();
+    console.log({ rideId });
+
     return (
         <Card py="0" px="0" overflow="hidden" my="2">
             <HStack position={"relative"}>
@@ -97,21 +105,36 @@ export default function HistoryCard({
                                 {distance}
                             </Text>
                         </HStack>
-                        <HStack alignItems={"center"} space="1.5" mr={2}>
-                            <Image
-                                w="18px"
-                                h="18px"
-                                resizeMode="contain"
-                                source={clock}
-                                alt="loc"
-                            />
-                            <Text
-                                color={"#000"}
-                                fontSize={scale(12)}
-                                fontWeight="500"
+                        <HStack alignItems={"center"} space="1.5">
+                            <HStack alignItems={"center"} space="1.5" mr={2}>
+                                <Image
+                                    w="18px"
+                                    h="18px"
+                                    resizeMode="contain"
+                                    source={clock}
+                                    alt="loc"
+                                />
+                                <Text
+                                    color={"#000"}
+                                    fontSize={scale(12)}
+                                    fontWeight="500"
+                                >
+                                    {duration}
+                                </Text>
+                            </HStack>
+                            <Pressable
+                                onPress={() =>
+                                    navigation.navigate("ReportIssue", {
+                                        tripId: rideId,
+                                    })
+                                }
                             >
-                                {duration}
-                            </Text>
+                                <FontAwesome5
+                                    name="font-awesome-flag"
+                                    size={18}
+                                    color={colors.primary[100]}
+                                />
+                            </Pressable>
                         </HStack>
                     </HStack>
                 </VStack>
