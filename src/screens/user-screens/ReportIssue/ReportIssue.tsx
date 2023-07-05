@@ -8,29 +8,29 @@ import colors from "@theme/colors";
 import ReportContent from "./ReportContent/ReportContent";
 
 export interface ISelection {
-    _id: string;
+    _id: number;
     icon: string;
     title: string;
 }
 
 const selections: ISelection[] = [
     {
-        _id: 1,
+        _id: 0,
         title: "Veichle",
         icon: "veichle",
     },
     {
-        _id: 2,
+        _id: 1,
         title: "Lock",
         icon: "lock",
     },
     {
-        _id: 3,
+        _id: 2,
         title: "Mobile App",
         icon: "mobileApp",
     },
     {
-        _id: 4,
+        _id: 3,
         title: "Other",
         icon: "search",
     },

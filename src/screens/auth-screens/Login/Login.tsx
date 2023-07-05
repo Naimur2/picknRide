@@ -8,7 +8,10 @@ import { fontSizes } from "@theme/typography";
 import SignInInputForm from "./SignInInputForm/SignInInputForm";
 import SocialButton from "./SocialButton/SocialButton";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useGoogleSignInMutation } from "@store/api/v2/authorizationApi";
+import {
+    useAppleSignInMutation,
+    useGoogleSignInMutation,
+} from "@store/api/v2/authorizationApi";
 import * as WebBrowser from "expo-web-browser";
 
 export default function Login() {
@@ -17,10 +20,27 @@ export default function Login() {
     const inset = useSafeAreaInsets();
 
     const [googleSignInFn, googleSignInResult] = useGoogleSignInMutation();
+    const [appleSignInFn, appleSignInInResult] = useAppleSignInMutation();
 
     const googleSignIn = async () => {
         try {
             const data = await googleSignInFn(undefined).unwrap();
+            const { authUrl } = data?.data;
+            console.log(authUrl);
+            const authUrlWithoutSpace = authUrl?.replace(" ", "%20");
+            const redirectUrl = authUrl?.split("redirect_uri=")[1];
+
+            const result = await WebBrowser.openAuthSessionAsync(
+                authUrlWithoutSpace,
+                redirectUrl
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    const appleSignIn = async () => {
+        try {
+            const data = await appleSignInFn(undefined).unwrap();
             const { authUrl } = data?.data;
             console.log(authUrl);
             const authUrlWithoutSpace = authUrl?.replace(" ", "%20");
@@ -71,10 +91,7 @@ export default function Login() {
                 <SignInInputForm />
 
                 <VStack space={4} mt={6}>
-                    <SocialButton
-                        type={"facebook"}
-                        onPress={() => console.log("log")}
-                    />
+                    <SocialButton type={"apple"} onPress={appleSignIn} />
                     <SocialButton type={"google"} onPress={googleSignIn} />
                 </VStack>
 

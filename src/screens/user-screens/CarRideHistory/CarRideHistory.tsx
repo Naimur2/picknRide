@@ -3,7 +3,7 @@ import Balance from "@components/Balance/Balance";
 import HeaderTitle from "@components/HeaderTitle/HeaderTitle";
 import { useNavigation } from "@react-navigation/native";
 import colors from "@theme/colors";
-import { FlatList, Text, VStack, useColorMode } from "native-base";
+import { FlatList, HStack, Text, VStack, useColorMode } from "native-base";
 import React from "react";
 import { ActivityIndicator, Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -15,6 +15,8 @@ import {
 } from "@store/api/v2/tripApi/tripApiSlice";
 import { useDispatch } from "react-redux";
 import HistoryCard, { IHistoryCard } from "./HistoryCard/HistoryCard";
+import ViichleCircle from "@components/VeichleSelector/ViichleCircle/ViichleCircle";
+import { ECarType } from "@store/features/cars/carsSlice.types";
 
 const LoadingComponent = () => {
     return (
@@ -24,11 +26,48 @@ const LoadingComponent = () => {
     );
 };
 
+const HeadaderComponent = ({
+    selected,
+    setSelected,
+    ...rest
+}: {
+    selected: ECarType;
+    setSelected: React.Dispatch<React.SetStateAction<ECarType>>;
+}) => {
+    return (
+        <HStack space={4} my={4} {...rest}>
+            <ViichleCircle
+                type={ECarType.SCOTTER}
+                isActive={selected === ECarType.SCOTTER}
+                onPress={() => setSelected(ECarType.SCOTTER)}
+                p={4}
+                imageWidth={24}
+            />
+            <ViichleCircle
+                type={ECarType.CAR}
+                isActive={selected === ECarType.CAR}
+                onPress={() => setSelected(ECarType.CAR)}
+                p={4}
+                imageWidth={24}
+            />
+            <ViichleCircle
+                type={ECarType.CYCLE}
+                isActive={selected === ECarType.CYCLE}
+                onPress={() => setSelected(ECarType.CYCLE)}
+                p={4}
+                imageWidth={24}
+            />
+        </HStack>
+    );
+};
+
 export default function CarRideHistory() {
     const navigation = useNavigation();
     const insets = useSafeAreaInsets();
     const colormode = useColorMode();
     const dispatch = useDispatch();
+
+    const [selected, setSelected] = React.useState<ECarType>(ECarType.SCOTTER);
 
     const { data, isFetching, isLoading } = useGetAllCarTripsQuery(undefined);
 
@@ -53,8 +92,6 @@ export default function CarRideHistory() {
             },
         });
     }, [navigation]);
-
-    const [selected, setSelected] = React.useState("scooter");
 
     const onLoadMore = async () => {
         console.log("onLoadMore");
@@ -123,6 +160,12 @@ export default function CarRideHistory() {
                     );
                 }}
                 keyExtractor={(item, index) => index.toString()}
+                ListHeaderComponent={() => (
+                    <HeadaderComponent
+                        selected={selected}
+                        setSelected={setSelected}
+                    />
+                )}
             />
         </>
     );

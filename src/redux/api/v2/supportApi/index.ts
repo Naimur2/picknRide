@@ -27,4 +27,8 @@ const supportApiSlice = apiSliceV2.injectEndpoints({
     overrideExisting: true,
 });
 
-export const {} = supportApiSlice;
+export const {
+    useGetAllSupportApiCategoriesQuery,
+    useGetAllCustomerSupportsQuery,
+    useCreateSupportMutation,
+} = supportApiSlice;

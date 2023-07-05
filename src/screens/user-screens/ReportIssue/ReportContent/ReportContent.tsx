@@ -6,26 +6,34 @@ import ImagePickerSheet from "@components/ImagePickerSheet/ImagePickerSheet";
 import * as ImagePicker from "expo-image-picker";
 import { HStack, Input, Text, VStack } from "native-base";
 import React from "react";
-import { Platform } from "react-native";
+import { Alert, Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scale } from "react-native-size-matters";
 import { ISelection } from "../ReportIssue";
 import TopSelection from "../TopSelection/TopSelection";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useCreateSupportMutation } from "@store/api/v2/supportApi";
+import LoadingView from "@components/LoadingView/LoadingView";
+import useShowModal from "@hooks/useShowModal";
 
 export default function ReportContent({
     selections,
 }: {
-    selections: ISelection;
+    selections: ISelection[];
 }) {
     const [selectedMenu, setSelectedMenu] = React.useState(1);
+    const showModal = useShowModal();
+    const [sendReport, { isLoading }] = useCreateSupportMutation();
+    const navigation = useNavigation();
     const [image, setImage] = React.useState<string | null>(null);
     const [isOpenImagePickerSheet, setIsOpenImagePickerSheet] =
         React.useState(false);
     const insets = useSafeAreaInsets();
-    const params = useRoute().params;
+    const params = useRoute().params as { tripId: string };
+
+    console.log("params", params);
 
     const [isOpen, setIsOpen] = React.useState(false);
     const selectedImage = image?.split("/").pop();
@@ -45,7 +53,32 @@ export default function ReportContent({
             customerMessage: "",
             categoryId: 0,
         },
-        onSubmit: async (values) => {},
+        onSubmit: async (values) => {
+            try {
+                await sendReport({
+                    categoryId: values.categoryId,
+                    customerMessage: values.customerMessage,
+                    tripID: parseInt(params?.tripId),
+                });
+
+                showModal("success", {
+                    title: "Success",
+                    message:
+                        "Your report has been sent successfully, we will get back to you soon",
+                });
+
+                setTimeout(() => {
+                    if (navigation.canGoBack()) {
+                        navigation.goBack();
+                    }
+                }, 2000);
+            } catch (error) {
+                showModal("error", {
+                    title: "Error",
+                    message: "Something went wrong, please try again later",
+                });
+            }
+        },
         validationSchema: Yup.object().shape({
             customerMessage: Yup.string().required("Required"),
             categoryId: Yup.number().required("Required"),
@@ -66,13 +99,13 @@ export default function ReportContent({
             <HStack justifyContent={"space-between"}>
                 {selections?.map((selection, id) => (
                     <TopSelection
-                        key={id}
+                        key={selection._id}
                         isActive={selectedMenu === selection._id}
                         iconName={selection.icon}
                         title={selection.title}
                         onPress={() => {
                             setSelectedMenu(selection._id);
-                            formik.setFieldValue("categoryId", id);
+                            formik.setFieldValue("categoryId", selection._id);
                         }}
                     />
                 ))}

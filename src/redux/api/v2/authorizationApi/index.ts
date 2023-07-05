@@ -24,7 +24,12 @@ const authoriztionApi = apiSliceV2.injectEndpoints({
                 method: "POST",
             }),
         }),
-
+        appleSignIn: builder.mutation({
+            query: () => ({
+                url: "Authorization/AppleSignIn",
+                method: "POST",
+            }),
+        }),
         googleSignInResponse: builder.query({
             query: () => ({
                 url: "Authorization/GoogleSignInResponse",
@@ -39,4 +44,5 @@ export const {
     useSignInApiMutation,
     useGoogleSignInMutation,
     useGoogleSignInResponseQuery,
+    useAppleSignInMutation,
 } = authoriztionApi;

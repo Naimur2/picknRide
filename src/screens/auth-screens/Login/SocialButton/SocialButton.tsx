@@ -1,10 +1,18 @@
 import { HStack, Image, Pressable, Text } from "native-base";
 import React from "react";
 import { scale } from "react-native-size-matters";
-import fb from "@assets/images/facebook.png";
+
+import apple from "@assets/images/apple-logo.png";
 import google from "@assets/images/google.png";
 
-export default function SocialButton({ type, onPress, ...rest }) {
+export default function SocialButton({
+    type,
+    onPress,
+    ...rest
+}: {
+    type: "apple" | "google";
+    onPress: () => void;
+}) {
     return (
         <Pressable
             onPress={onPress}
@@ -15,7 +23,7 @@ export default function SocialButton({ type, onPress, ...rest }) {
         >
             <HStack
                 alignItems="center"
-                bg={type === "facebook" ? "blue.100" : "red.100"}
+                bg={type === "apple" ? "#000000" : "red.100"}
                 px={6}
                 py={4}
                 borderRadius={20}
@@ -24,10 +32,11 @@ export default function SocialButton({ type, onPress, ...rest }) {
                 maxWidth={[400, null, null, 300]}
             >
                 <Image
-                    source={type === "facebook" ? fb : google}
-                    alt="facebook"
+                    source={type === "apple" ? apple : google}
+                    alt="apple"
                     height={scale(20) + "px"}
                     width={scale(20) + "px"}
+                    resizeMode="contain"
                 />
                 <Text
                     fontWeight={500}
@@ -35,7 +44,7 @@ export default function SocialButton({ type, onPress, ...rest }) {
                     mx={"auto"}
                     color="#fff"
                 >
-                    Continue with {type === "facebook" ? "Facebook" : "Google"}
+                    Continue with {type === "apple" ? "Apple" : "Google"}
                 </Text>
             </HStack>
         </Pressable>
