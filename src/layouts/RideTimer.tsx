@@ -1,7 +1,8 @@
 import React from "react";
 import { HStack, Text } from "native-base";
+import dayjs from "dayjs";
 
-const TIMER_FONTSIZE = 14;
+const TIMER_FONTSIZE = 24;
 
 const formatTime = (time: number) => {
     return time < 10 ? "0" + time : time;
@@ -14,7 +15,7 @@ export default function RideTimer({
     startedTime: Date;
     hasStartedJourny: boolean;
 }) {
-    const totalTimeSpent = new Date().getTime() - startedTime.getTime();
+    const totalTimeSpent = dayjs().diff(startedTime);
 
     const [time, setTime] = React.useState(totalTimeSpent / 1000);
 
