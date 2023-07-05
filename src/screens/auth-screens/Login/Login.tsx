@@ -30,14 +30,24 @@ export default function Login() {
             const data = await googleSignInFn(undefined).unwrap();
             const { authUrl } = data?.data;
             console.log(authUrl);
-            const authUrlWithoutSpace = authUrl?.replace(" ", "%20");
             const redirectUrl = authUrl?.split("redirect_uri=")[1];
-
-            const result = await WebBrowser.openAuthSessionAsync(
+            const authUrlWithoutSpace = authUrl?.replace(" ", "%20");
+            // Open the browser
+            const { type, url } = await WebBrowser.openAuthSessionAsync(
                 authUrlWithoutSpace,
                 redirectUrl
             );
-            dispatch(login(result));
+            console.log(type, url);
+
+            // If the user successfully signed in and redirected back
+            if (type === "success" && url.includes(redirectUrl)) {
+                // Close the browser
+                WebBrowser.dismissBrowser();
+
+                // Extract the data from the URL or perform any necessary actions
+
+                console.log(url);
+            }
         } catch (error) {
             console.log(error);
         }
@@ -45,15 +55,18 @@ export default function Login() {
     const appleSignIn = async () => {
         try {
             const data = await appleSignInFn(undefined).unwrap();
+            console.log(data);
             const { authUrl } = data?.data;
-            console.log(authUrl);
-            const authUrlWithoutSpace = authUrl?.replace(" ", "%20");
-            const redirectUrl = authUrl?.split("redirect_uri=")[1];
-
-            const result = await WebBrowser.openAuthSessionAsync(
-                authUrlWithoutSpace,
-                redirectUrl
-            );
+            if (authUrl) {
+                const authUrlWithoutSpace = authUrl?.replace(" ", "%20");
+                // const redirectUrl = authUrl?.split("redirect_uri=")[1];
+                const result = await WebBrowser.openAuthSessionAsync(
+                    authUrlWithoutSpace,
+                    "https://webapi.pickandride.qa"
+                );
+            } else {
+                alert("Something went wrong");
+            }
         } catch (error) {
             console.log(error);
         }
