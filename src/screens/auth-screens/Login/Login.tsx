@@ -10,11 +10,14 @@ import SocialButton from "./SocialButton/SocialButton";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useGoogleSignInMutation } from "@store/api/v2/authorizationApi";
 import * as WebBrowser from "expo-web-browser";
+import { useDispatch } from "react-redux";
+import { login } from "@store/features/auth/authSlice";
 
 export default function Login() {
     const { colorMode } = useColorMode();
     const navigation = useNavigation();
     const inset = useSafeAreaInsets();
+    const dispatch = useDispatch();
 
     const [googleSignInFn, googleSignInResult] = useGoogleSignInMutation();
 
@@ -30,6 +33,7 @@ export default function Login() {
                 authUrlWithoutSpace,
                 redirectUrl
             );
+            dispatch(login(result));
         } catch (error) {
             console.log(error);
         }
