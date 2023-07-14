@@ -1,20 +1,20 @@
 import ImageBg from "@components/ImageBg/ImageBg";
 import Scroller from "@components/Scroller/Scroller";
 import { useNavigation } from "@react-navigation/native";
-import { HStack, Text, VStack, useColorMode } from "native-base";
-import React from "react";
-import { scale } from "react-native-size-matters";
-import { fontSizes } from "@theme/typography";
-import SignInInputForm from "./SignInInputForm/SignInInputForm";
-import SocialButton from "./SocialButton/SocialButton";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
     useAppleSignInMutation,
     useGoogleSignInMutation,
 } from "@store/api/v2/authorizationApi";
+import { fontSizes } from "@theme/typography";
+import * as Linking from "expo-linking";
 import * as WebBrowser from "expo-web-browser";
+import { HStack, Text, VStack, useColorMode } from "native-base";
+import React from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { scale } from "react-native-size-matters";
 import { useDispatch } from "react-redux";
-import { login } from "@store/features/auth/authSlice";
+import SignInInputForm from "./SignInInputForm/SignInInputForm";
+import SocialButton from "./SocialButton/SocialButton";
 
 export default function Login() {
     const { colorMode } = useColorMode();
@@ -31,13 +31,23 @@ export default function Login() {
             const { authUrl } = data?.data;
             console.log(authUrl);
             const redirectUrl = authUrl?.split("redirect_uri=")[1];
+            const baseUrl = authUrl
+                ?.split("redirect_uri=")[0]
+                .replace(" ", "%20");
             const authUrlWithoutSpace = authUrl?.replace(" ", "%20");
+            const linkingUrl = Linking.createURL(redirectUrl, {
+                scheme: "picknride",
+            });
+            const baseUrlWithlinkingUrl =
+                baseUrl + "redirect_uri=" + linkingUrl;
+
             // Open the browser
+            console.log(linkingUrl);
             const { type, url } = await WebBrowser.openAuthSessionAsync(
                 authUrlWithoutSpace,
-                redirectUrl
+                linkingUrl
             );
-            console.log(type, url);
+            console.log({ type, url });
 
             // If the user successfully signed in and redirected back
             if (type === "success" && url.includes(redirectUrl)) {
@@ -49,7 +59,7 @@ export default function Login() {
                 console.log(url);
             }
         } catch (error) {
-            console.log(error);
+            console.log({ error });
         }
     };
     const appleSignIn = async () => {

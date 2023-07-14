@@ -16,7 +16,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         androidStatusBar: {
             hidden: true,
         },
-        jsEngine: "hermes",
+        jEngine: "hermes",
         android: {
             ...config.android,
             softwareKeyboardLayoutMode: "pan",
@@ -44,7 +44,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
                 googleMapsApiKey: "AIzaSyDS-lAgjgs0rT8FzzB9woxe8sTPPh6v7F4",
             },
             bundleIdentifier: "com.PickNRide",
-            buildNumber: "1.1.5",
+            buildNumber: "1.1.10",
             bitcode: false,
             infoPlist: {
                 NSLocationAlwaysAndWhenInUseUsageDescription:
