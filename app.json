@@ -23,7 +23,8 @@
             "buildNumber": "1.1.7",
             "config": {
                 "googleMapsApiKey": "AIzaSyDS-lAgjgs0rT8FzzB9woxe8sTPPh6v7F4"
-            }
+            },
+            "associatedDomains": ["applinks:webapi.pickandride.qa"]
         },
         "android": {
             "adaptiveIcon": {
@@ -36,7 +37,21 @@
                 "googleMaps": {
                     "apiKey": "AIzaSyDS-lAgjgs0rT8FzzB9woxe8sTPPh6v7F4"
                 }
-            }
+            },
+            "intentFilters": [
+                {
+                    "action": "VIEW",
+                    "autoVerify": true,
+                    "data": [
+                        {
+                            "scheme": "https",
+                            "host": "*.pickandride.qa",
+                            "pathPrefix": "/records"
+                        }
+                    ],
+                    "category": ["BROWSABLE", "DEFAULT"]
+                }
+            ]
         },
         "web": {
             "favicon": "./assets/favicon.png"

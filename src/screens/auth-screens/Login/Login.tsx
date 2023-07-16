@@ -45,7 +45,7 @@ export default function Login() {
             console.log(linkingUrl);
             const { type, url } = await WebBrowser.openAuthSessionAsync(
                 authUrlWithoutSpace,
-                linkingUrl
+                redirectUrl
             );
             console.log({ type, url });
 
