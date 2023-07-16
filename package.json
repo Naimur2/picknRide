@@ -53,6 +53,7 @@
     "react-native": "0.69.9",
     "react-native-actions-sheet": "^0.8.1",
     "react-native-base64": "^0.2.1",
+    "react-native-branch": "5.8.0",
     "react-native-calendar-picker": "^7.1.2",
     "react-native-collapsible": "^1.6.0",
     "react-native-country-codes-picker": "^2.2.2",

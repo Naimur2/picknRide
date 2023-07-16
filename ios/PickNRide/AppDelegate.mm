@@ -38,6 +38,9 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+
+  [RNBranch initSessionWithLaunchOptions:launchOptions isReferrable:YES];
+    NSURL *jsCodeLocation;
   RCTAppSetupPrepareApp(application);
 
 // @generated begin react-native-maps-init - expo prebuild (DO NOT MODIFY) sync-233487206bd5dba7064d1a7b1a0afd9cbc1f1d1a
@@ -172,5 +175,16 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 }
 
 #endif
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+    [RNBranch application:app openURL:url options:options];
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler {
+   [RNBranch continueUserActivity:userActivity];
+   return YES;
+}
+
 
 @end
