@@ -76,7 +76,6 @@ export default function MyFatooraPayment() {
     const params = useRoute().params as IMyFatooraRouteParams;
     const [selected, setSelected] = React.useState(amounts[0]);
     const navigation = useNavigation();
-    console.log("params", params);
 
     const [paymentMethods, setPaymentMethods] = useState<ICardListProps[]>([]);
 

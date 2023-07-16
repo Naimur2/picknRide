@@ -16,11 +16,12 @@ import { useDispatch } from "react-redux";
 import SignInInputForm from "./SignInInputForm/SignInInputForm";
 import SocialButton from "./SocialButton/SocialButton";
 
-export default function Login() {
+export default function Login({ route }) {
     const { colorMode } = useColorMode();
     const navigation = useNavigation();
     const inset = useSafeAreaInsets();
     const dispatch = useDispatch();
+    const params = route.params as { data: string };
 
     const [googleSignInFn, googleSignInResult] = useGoogleSignInMutation();
     const [appleSignInFn, appleSignInInResult] = useAppleSignInMutation();
@@ -43,21 +44,16 @@ export default function Login() {
 
             // Open the browser
             console.log(linkingUrl);
-            const { type, url } = await WebBrowser.openAuthSessionAsync(
-                authUrlWithoutSpace,
-                redirectUrl
-            );
-            console.log({ type, url });
-
-            // If the user successfully signed in and redirected back
-            if (type === "success" && url.includes(redirectUrl)) {
-                // Close the browser
-                WebBrowser.dismissBrowser();
-
-                // Extract the data from the URL or perform any necessary actions
-
-                console.log(url);
-            }
+            // const { type, url } = await WebBrowser.openAuthSessionAsync(
+            //     authUrlWithoutSpace,
+            //     redirectUrl
+            // );
+            navigation.navigate("RedirectionWebview", {
+                url: baseUrlWithlinkingUrl,
+                previousRoute: "Login",
+                callBackUrl: redirectUrl,
+            });
+            // console.log({ type, url });
         } catch (error) {
             console.log({ error });
         }
@@ -69,11 +65,16 @@ export default function Login() {
             const { authUrl } = data?.data;
             if (authUrl) {
                 const authUrlWithoutSpace = authUrl?.replace(" ", "%20");
-                // const redirectUrl = authUrl?.split("redirect_uri=")[1];
-                const result = await WebBrowser.openAuthSessionAsync(
-                    authUrlWithoutSpace,
-                    "https://webapi.pickandride.qa"
-                );
+                const redirectUrl = authUrl?.split("redirect_uri=")[1];
+                const baseUrl = authUrl
+                    ?.split("redirect_uri=")[0]
+                    .replace(" ", "%20");
+
+                navigation.navigate("RedirectionWebview", {
+                    url: baseUrl + "redirect_uri=" + redirectUrl,
+                    previousRoute: "Login",
+                    callBackUrl: redirectUrl,
+                });
             } else {
                 alert("Something went wrong");
             }

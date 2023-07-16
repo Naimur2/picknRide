@@ -29,6 +29,7 @@ import { MFCurrencyISO } from "./types/enums.myfatoora";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
     useExecuteDirectPaymentWithoutTokenMutation,
+    useExecuteRegularPaymentMutation,
     useExexuteDirectPaymentWithTokenMutation,
     useInitiateDirectPaymentMutation,
 } from "@store/api/v2/payment/paymentApiSlice";
@@ -60,6 +61,8 @@ export default function PaymentForm({
         useExexuteDirectPaymentWithTokenMutation();
     const [execDirPayWithoutToken, execDirPayWithoutTokenResult] =
         useExecuteDirectPaymentWithoutTokenMutation();
+    const [regularPaymentFn, regularPaymentRes] =
+        useExecuteRegularPaymentMutation();
 
     console.log(amount);
 
@@ -142,48 +145,68 @@ export default function PaymentForm({
                     invoiceValue: parseFloat(values.paymentAmount),
                 }).unwrap();
 
-                const data = res?.data;
-
-                const res2 = await execDirPayWithToken({
-                    currencyIso: MFCurrencyISO.QATAR_QAR,
-                    invoiceValue: parseFloat(values.paymentAmount),
-                    paymentMethodId: values.paymentMethodId,
-                }).unwrap();
-
-                if (res2.succeeded) {
-                    if (res2?.data?.paymentURL && res2?.data?.callBackURL) {
-                        const info = await WebBrowser.openAuthSessionAsync(
-                            res2?.data?.paymentURL,
-                            res2?.data?.callBackURL
-                        );
-                        console.log({ info });
-                    }
-
-                    alert("Payment Success");
-                } else {
-                    const res3 = await execDirPayWithoutToken({
+                if (isDirectPayment) {
+                    const res2 = await execDirPayWithToken({
                         currencyIso: MFCurrencyISO.QATAR_QAR,
                         invoiceValue: parseFloat(values.paymentAmount),
                         paymentMethodId: values.paymentMethodId,
-                        cardNumber: values.cardNumber,
-                        expiryMonth: values.month,
-                        expiryYear: values.year,
-                        securityCode: values.cvv,
-                        cardHolderName: values.cardHolderName,
                     }).unwrap();
 
-                    if (res3.succeeded) {
-                        if (res3?.data?.paymentURL && res3?.data?.callBackURL) {
-                            const info = await WebBrowser.openAuthSessionAsync(
-                                res3?.data?.paymentURL,
-                                res3?.data?.callBackURL
-                            );
-                            console.log({ info });
+                    if (res2.succeeded) {
+                        if (res2?.data?.paymentURL && res2?.data?.callBackURL) {
+                            navigation.navigate("RedirectionWebview", {
+                                url: res2?.data?.paymentURL,
+                                previousRoute: "MyFatooraScreen",
+                                callBackUrl: res2?.data?.callBackURL,
+                            });
+                            // const info = await WebBrowser.openAuthSessionAsync(
+                            //     res2?.data?.paymentURL,
+                            //     res2?.data?.callBackURL
+                            // );
+                            // console.log({ info });
                         }
+
                         alert("Payment Success");
                     } else {
-                        alert("Payment Failed");
+                        const res3 = await execDirPayWithoutToken({
+                            currencyIso: MFCurrencyISO.QATAR_QAR,
+                            invoiceValue: parseFloat(values.paymentAmount),
+                            paymentMethodId: values.paymentMethodId,
+                            cardNumber: values.cardNumber,
+                            expiryMonth: values.month,
+                            expiryYear: values.year,
+                            securityCode: values.cvv,
+                            cardHolderName: values.cardHolderName,
+                        }).unwrap();
+                        console.log(res3);
+
+                        if (res3.succeeded) {
+                            if (
+                                res3?.data?.paymentURL &&
+                                res3?.data?.callBackURL
+                            ) {
+                                navigation.navigate("RedirectionWebview", {
+                                    url: res3?.data?.paymentURL,
+                                    previousRoute: "MyFatooraScreen",
+                                    callBackUrl: res3?.data?.callBackURL,
+                                });
+
+                                // console.log({ info });
+                            }
+                            alert("Payment Success");
+                        } else {
+                            alert("Payment Failed");
+                        }
                     }
+                } else {
+                    const res2 = await regularPaymentFn({
+                        currencyIso: MFCurrencyISO.QATAR_QAR,
+                        invoiceValue: parseFloat(values.paymentAmount),
+                        paymentMethodId: values.paymentMethodId,
+                    }).unwrap();
+
+                    console.log({ res2 });
+                    alert("Payment Success");
                 }
             } catch (error) {
                 alert("Payment Failed");

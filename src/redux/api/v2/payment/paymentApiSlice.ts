@@ -17,7 +17,7 @@ export const paymentApiSilce = apiSliceV2.injectEndpoints({
         }),
         initiateDirectPayment: builder.mutation({
             query: (body: IInitiateDirectPayment) => ({
-                url: "Payment/InitiateDirectPayment",
+                url: "Payment/InitiatePayment",
                 method: "POST",
                 body,
             }),
@@ -54,6 +54,13 @@ export const paymentApiSilce = apiSliceV2.injectEndpoints({
                 method: "GET",
             }),
         }),
+        executeRegularPayment: builder.mutation({
+            query: (body) => ({
+                url: "Payment/ExecuteRegularPayment",
+                method: "POST",
+                body,
+            }),
+        }),
     }),
 });
 
@@ -65,4 +72,5 @@ export const {
     useCallbackPaymentQuery,
     useCallbackPaymentErrorQuery,
     useGetPaymentStatusQuery,
+    useExecuteRegularPaymentMutation,
 } = paymentApiSilce;

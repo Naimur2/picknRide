@@ -10,6 +10,7 @@ import ResetPassword from "../screens/auth-screens/ResetPassword/ResetPassword";
 import AuthRoute, { authScreenOptions } from "./auth.routes";
 import DrawerRoute from "./drawer.routes";
 import { useColorMode } from "native-base";
+import RedirectionWebview from "@screens/common/RedirectionWebview";
 
 const Stack = createNativeStackNavigator();
 
@@ -55,6 +56,13 @@ export default function HomeRoutes() {
                     component={SelectAuthOtpType}
                 />
             </Stack.Group>
+            <Stack.Screen
+                name="RedirectionWebview"
+                component={RedirectionWebview}
+                // options={{
+                //     headerShown: false,
+                // }}
+            />
         </Stack.Navigator>
     );
 }

@@ -12,13 +12,22 @@ import ThemeConFig from "./src/theme-config/index";
 import { StatusBar } from "react-native";
 
 export default function App() {
+    const linking = {
+        prefixes: ["picknride://", "https://webapi.pickandride.qa"],
+        config: {
+            screens: {
+                RedirectionWebview: "webview",
+            },
+        },
+    };
+
     return (
         <Provider store={store}>
             <StatusBar hidden />
             <PersistGate loading={null} persistor={persistor}>
                 <SafeAreaProvider>
                     <ThemeConFig>
-                        <NavigationContainer>
+                        <NavigationContainer linking={linking} fallback={<></>}>
                             <Main />
                         </NavigationContainer>
                     </ThemeConFig>
