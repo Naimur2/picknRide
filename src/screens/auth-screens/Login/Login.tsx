@@ -1,6 +1,6 @@
 import ImageBg from "@components/ImageBg/ImageBg";
 import Scroller from "@components/Scroller/Scroller";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import {
     useAppleSignInMutation,
     useGoogleSignInMutation,
@@ -16,12 +16,14 @@ import { useDispatch } from "react-redux";
 import SignInInputForm from "./SignInInputForm/SignInInputForm";
 import SocialButton from "./SocialButton/SocialButton";
 
-export default function Login({ route }) {
+export default function Login() {
     const { colorMode } = useColorMode();
     const navigation = useNavigation();
     const inset = useSafeAreaInsets();
     const dispatch = useDispatch();
-    const params = route.params as { data: string };
+    const params = useRoute().params as any;
+
+    console.log(params);
 
     const [googleSignInFn, googleSignInResult] = useGoogleSignInMutation();
     const [appleSignInFn, appleSignInInResult] = useAppleSignInMutation();
@@ -32,6 +34,7 @@ export default function Login({ route }) {
             const { authUrl } = data?.data;
             console.log(authUrl);
             const redirectUrl = authUrl?.split("redirect_uri=")[1];
+            console.log(redirectUrl);
             const baseUrl = authUrl
                 ?.split("redirect_uri=")[0]
                 .replace(" ", "%20");
@@ -44,16 +47,21 @@ export default function Login({ route }) {
 
             // Open the browser
             console.log(linkingUrl);
-            // const { type, url } = await WebBrowser.openAuthSessionAsync(
-            //     authUrlWithoutSpace,
-            //     redirectUrl
-            // );
-            navigation.navigate("RedirectionWebview", {
-                url: baseUrlWithlinkingUrl,
-                previousRoute: "Login",
-                callBackUrl: redirectUrl,
-            });
-            // console.log({ type, url });
+            const info = await WebBrowser.openAuthSessionAsync(
+                authUrlWithoutSpace,
+                redirectUrl
+            );
+            console.log(info);
+
+            // If the user successfully signed in and redirected back
+            if (info.type === "success") {
+                // Close the browser
+                WebBrowser.dismissBrowser();
+
+                // Extract the data from the URL or perform any necessary actions
+
+                console.log(url);
+            }
         } catch (error) {
             console.log({ error });
         }
@@ -65,16 +73,11 @@ export default function Login({ route }) {
             const { authUrl } = data?.data;
             if (authUrl) {
                 const authUrlWithoutSpace = authUrl?.replace(" ", "%20");
-                const redirectUrl = authUrl?.split("redirect_uri=")[1];
-                const baseUrl = authUrl
-                    ?.split("redirect_uri=")[0]
-                    .replace(" ", "%20");
-
-                navigation.navigate("RedirectionWebview", {
-                    url: baseUrl + "redirect_uri=" + redirectUrl,
-                    previousRoute: "Login",
-                    callBackUrl: redirectUrl,
-                });
+                // const redirectUrl = authUrl?.split("redirect_uri=")[1];
+                const result = await WebBrowser.openAuthSessionAsync(
+                    authUrlWithoutSpace,
+                    "https://webapi.pickandride.qa"
+                );
             } else {
                 alert("Something went wrong");
             }
