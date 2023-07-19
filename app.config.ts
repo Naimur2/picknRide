@@ -16,7 +16,6 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         androidStatusBar: {
             hidden: true,
         },
-        jEngine: "hermes",
         android: {
             ...config.android,
             softwareKeyboardLayoutMode: "pan",
