@@ -1,5 +1,6 @@
 {
     "emmet.includeLanguages": {
         "javascript": "javascriptreact"
-    }
+    },
+    "java.compile.nullAnalysis.mode": "automatic"
 }
